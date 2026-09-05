@@ -233,11 +233,13 @@ export function TimeOffPage() {
                         <td className="py-[12px] px-[12px]"><StatusBadge status={r.status} domain="timeOffRequest" /></td>
                         {isHr && (
                           <td className="py-[12px] px-[12px] text-right">
-                            {r.status === 'submitted' && (
+                            {r.status === 'submitted' ? (
                               <div className="flex gap-[4px] justify-end">
                                 <button onClick={() => approveReqMut.mutate(r.id)} className="bg-[#e6f0ff] hover:bg-[#c2d7f8] text-[#006644] p-[4px] rounded transition-colors"><Check className="h-[14px] w-[14px]" /></button>
                                 <button onClick={() => refuseReqMut.mutate(r.id)} className="bg-[#ffebe6] hover:bg-[#fce8e6] text-[#de350b] p-[4px] rounded transition-colors"><X className="h-[14px] w-[14px]" /></button>
                               </div>
+                            ) : (
+                              <span className="text-[12px] text-[#434654]">—</span>
                             )}
                           </td>
                         )}
@@ -314,6 +316,7 @@ export function TimeOffPage() {
                   <thead>
                     <tr className="bg-[#f4f5f7] border-b border-[#dfe1e6]">
                       <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Employee</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Type</th>
                       <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Allocated</th>
                       <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Taken</th>
                       <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Remaining</th>
@@ -324,14 +327,26 @@ export function TimeOffPage() {
                   <tbody className="font-medium text-[13px] text-[#172b4d]">
                     {allocations.map((a) => (
                       <tr key={a.id} className="border-b border-[#ebecf0] hover:bg-[#f4f5f7] transition-colors">
-                        <td className="py-[12px] px-[12px] font-mono text-[12px] text-[#434654]">{a.employee_id.slice(0, 8)}</td>
+                        <td className="py-[12px] px-[12px]">
+                          {a.first_name ? (
+                            <>
+                              {a.first_name} {a.last_name}{' '}
+                              <span className="font-mono text-[11px] text-[#434654]">({a.employee_code})</span>
+                            </>
+                          ) : (
+                            <span className="font-mono text-[12px] text-[#434654]">{a.employee_id.slice(0, 8)}</span>
+                          )}
+                        </td>
+                        <td className="py-[12px] px-[12px] text-[#434654]">{a.type_name ?? '—'}</td>
                         <td className="py-[12px] px-[12px] font-mono text-[#434654]">{a.allocated}</td>
                         <td className="py-[12px] px-[12px] font-mono text-[#434654]">{a.taken}</td>
                         <td className="py-[12px] px-[12px] font-mono font-bold text-[#172b4d]">{a.remaining}</td>
                         <td className="py-[12px] px-[12px]"><StatusBadge status={a.status} domain="timeOffAllocation" /></td>
                         <td className="py-[12px] px-[12px] text-right">
-                          {a.status === 'draft' && (
+                          {a.status === 'draft' ? (
                             <button onClick={() => approveAllocMut.mutate(a.id)} className="bg-[#e6f0ff] hover:bg-[#c2d7f8] text-[#3062e1] text-[11px] font-bold px-[8px] py-[4px] rounded transition-colors">Approve</button>
+                          ) : (
+                            <span className="text-[12px] text-[#434654]">—</span>
                           )}
                         </td>
                       </tr>

@@ -16,8 +16,11 @@ async function list(req, res, next) {
 
     const { rows } = await pool.query(
       `SELECT a.id, a.employee_id, a.time_off_type_id, a.allocated, a.valid_from, a.valid_to,
-              a.status, a.approved_by, a.created_at
+              a.status, a.approved_by, a.created_at,
+              e.first_name, e.last_name, e.employee_code, t.name AS type_name
        FROM time_off_allocations a
+       JOIN employees e ON e.id = a.employee_id
+       JOIN time_off_types t ON t.id = a.time_off_type_id
        ${where}
        ORDER BY a.created_at DESC`,
       params

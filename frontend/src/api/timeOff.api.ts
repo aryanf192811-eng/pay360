@@ -18,6 +18,10 @@ export interface TimeOffAllocation {
   valid_from: string;
   valid_to: string | null;
   status: 'draft' | 'approved' | 'refused';
+  first_name?: string;
+  last_name?: string;
+  employee_code?: string;
+  type_name?: string;
 }
 
 export interface TimeOffRequest {
