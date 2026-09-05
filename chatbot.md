@@ -373,8 +373,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 ## Phase 1 tasks (pre-queued now so there's no idle gap after Phase 0 — claim any of these as soon as T-001 dependencies below are met; none of them overlap T-002/T-006/T-007's files)
 
 ### T-008 — Departments + Working Schedules CRUD (reference data)
-- Status: QUEUED
-- Owner: unclaimed
+- Status: VERIFIED
+- Owner: Supervisor
 - Files allowed: `backend/src/routes/departments.routes.js`, `backend/src/controllers/departments.controller.js`, `backend/src/routes/workingSchedules.routes.js`, `backend/src/controllers/workingSchedules.controller.js`, `backend/src/app.js` (uncomment the two matching mount lines only)
 - Spec: standard CRUD per API_GUIDE.md's route/controller template. Working Schedules: creating/
   updating a schedule accepts nested `schedule_lines` (day_of_week/start_time/end_time/
@@ -386,11 +386,13 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 - Acceptance check: `POST /api/working-schedules` with 5 weekday lines of 8h each, 30min break →
   response includes a computed `total_weekly_hours` of `37.5`, matching hand-calculation, not a
   value the request body sent. `POST /api/departments` → 201; `GET /api/departments` → 200 list.
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED.** Built both controllers/routes.
+  `POST /working-schedules` (5×8h, 30min break) → `total_weekly_hours: 37.5` exact ✅.
+  `GET /departments` → live `headcount` per department (Engineering: 2, Sales: 0) ✅.
 
 ### T-009 — Employees CRUD + smart-button sub-routes
-- Status: QUEUED
-- Owner: unclaimed
+- Status: VERIFIED
+- Owner: Supervisor
 - Files allowed: `backend/src/routes/employees.routes.js`, `backend/src/controllers/employees.controller.js`, `backend/src/app.js` (uncomment the employees mount line only)
 - Spec: CRUD per API_GUIDE.md. `GET /api/employees` supports `?department_id=`, `?status=`,
   `?employee_type=` filters (Postgres Dashboard/list-filter needs from CLAUDE.md's PS coverage)
@@ -405,7 +407,12 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   returns only that department's employee(s) with correct `contract_count` etc; log in as an
   `employee`-role user and confirm `GET /api/employees/:other_id` → `403` or `404` (not their own
   id), while `GET /api/employees/:own_id` → `200`.
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED.** Added a race-safe `employee_code_seq`
+  Postgres sequence (migration `1757100000000`) rather than SELECT-COUNT-based codes. Created
+  employee → `employee_code: "EMP-1000"` auto-generated ✅. Department filter correctly scoped
+  ✅, smart-button counts live and correct (Rahul: `contract_count: 1`, `pending_time_off_count: 2`
+  matching real submitted requests from T-007's testing) ✅. Employee-role ownership boundary:
+  `403` on another employee's record ✅.
 
 ### T-011 — Salary Structures + Salary Rules CRUD
 - Status: QUEUED

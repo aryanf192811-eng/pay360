@@ -64,9 +64,9 @@ app.get('/health', (_req, res) => {
 
 // Mount domain routers here as they land (Phase 0+)
 app.use('/api/auth',                require('./routes/auth.routes'));
-// app.use('/api/departments',         require('./routes/departments.routes'));
-// app.use('/api/working-schedules',   require('./routes/workingSchedules.routes'));
-// app.use('/api/employees',           require('./routes/employees.routes'));
+app.use('/api/departments',         require('./routes/departments.routes'));
+app.use('/api/working-schedules',   require('./routes/workingSchedules.routes'));
+app.use('/api/employees',           require('./routes/employees.routes'));
 // app.use('/api/contracts',           require('./routes/contracts.routes'));
 // app.use('/api/attendances',         require('./routes/attendances.routes'));
 app.use('/api/time-off-types',      require('./routes/timeOffTypes.routes'));
