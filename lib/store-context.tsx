@@ -30,6 +30,18 @@ import {
   createPayslipRecord,
 } from "./mock-data";
 
+// Curated professional avatars
+const robustAvatars = [
+  "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80", // professional man
+  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80", // professional woman
+  "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80", // professional man
+  "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80", // professional woman
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80", // professional man
+  "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&q=80", // professional woman
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80", // professional man
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80"  // professional woman
+];
+
 interface StoreContextType {
   // Role & Company Switcher
   currentRole: UserRole;
@@ -112,6 +124,25 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       try {
         const apiEmployees = await listEmployees();
         
+        // Helper to stably map old mock IDs to new backend IDs
+        const mapMockId = (empId: string, mEmps: Employee[]) => {
+          const match = empId.match(/EMP-10(\d+)/);
+          if (match) {
+            const idx = parseInt(match[1]) - 1;
+            return mEmps[idx]?.id || empId;
+          }
+          return empId;
+        };
+
+        const mapMockName = (empId: string, mEmps: Employee[], fallback: string) => {
+          const match = empId.match(/EMP-10(\d+)/);
+          if (match) {
+            const idx = parseInt(match[1]) - 1;
+            return mEmps[idx]?.name || fallback;
+          }
+          return fallback;
+        };
+
         // Map backend Employee format to the frontend UI Employee format
         const mappedEmployees: Employee[] = apiEmployees.map((apiEmp: any, idx: number) => {
           let status: Employee["status"] = "Active";
@@ -126,7 +157,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             status,
             email: apiEmp.email,
             phone: apiEmp.phone || "+91 00000 00000",
-            avatar: `https://ui-avatars.com/api/?name=${apiEmp.first_name}+${apiEmp.last_name}&background=random`,
+            avatar: robustAvatars[idx % robustAvatars.length],
             manager: apiEmp.manager_id ? "Manager" : "None",
             joinedDate: new Date(apiEmp.hire_date).toISOString().split('T')[0],
             smartMetrics: {
@@ -155,27 +186,27 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         if (mappedEmployees.length > 0) {
           setEmployees(mappedEmployees);
 
-          // Align mock data to use the real IDs from the backend
-          setAttendance(INITIAL_ATTENDANCE.map((rec, i) => ({
+          // Align mock data to use the real IDs from the backend stably!
+          setAttendance(INITIAL_ATTENDANCE.map((rec) => ({
             ...rec,
-            employeeId: mappedEmployees[i % mappedEmployees.length].id
+            employeeId: mapMockId(rec.employeeId, mappedEmployees)
           })));
 
-          setTimeOff(INITIAL_TIMEOFF.map((rec, i) => ({
+          setTimeOff(INITIAL_TIMEOFF.map((rec) => ({
             ...rec,
-            employeeId: mappedEmployees[i % mappedEmployees.length].id
+            employeeId: mapMockId(rec.employeeId, mappedEmployees)
           })));
 
-          setContracts(INITIAL_CONTRACTS.map((rec, i) => ({
+          setContracts(INITIAL_CONTRACTS.map((rec) => ({
             ...rec,
-            employeeId: mappedEmployees[i % mappedEmployees.length].id,
-            employeeName: mappedEmployees[i % mappedEmployees.length].name
+            employeeId: mapMockId(rec.employeeId, mappedEmployees),
+            employeeName: mapMockName(rec.employeeId, mappedEmployees, rec.employeeName)
           })));
 
-          setAllocations(INITIAL_ALLOCATIONS.map((rec, i) => ({
+          setAllocations(INITIAL_ALLOCATIONS.map((rec) => ({
             ...rec,
-            employeeId: mappedEmployees[i % mappedEmployees.length].id,
-            employeeName: mappedEmployees[i % mappedEmployees.length].name
+            employeeId: mapMockId(rec.employeeId, mappedEmployees),
+            employeeName: mapMockName(rec.employeeId, mappedEmployees, rec.employeeName)
           })));
         }
       } catch (err) {
@@ -228,7 +259,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       
       // 2. Refetch full list to keep UI in sync with backend
       const apiEmployees = await listEmployees();
-      const mappedEmployees: Employee[] = apiEmployees.map((apiEmp: any) => {
+      const mappedEmployees: Employee[] = apiEmployees.map((apiEmp: any, idx: number) => {
         let status: Employee["status"] = "Active";
         if (apiEmp.status === "inactive") status = "On Leave";
         
@@ -241,7 +272,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           status,
           email: apiEmp.email,
           phone: apiEmp.phone || "+91 00000 00000",
-          avatar: `https://ui-avatars.com/api/?name=${apiEmp.first_name}+${apiEmp.last_name}&background=random`,
+          avatar: robustAvatars[idx % robustAvatars.length],
           manager: apiEmp.manager_id ? "Manager" : "None",
           joinedDate: new Date(apiEmp.hire_date).toISOString().split('T')[0],
           smartMetrics: {

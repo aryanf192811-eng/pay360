@@ -80,10 +80,8 @@ function MainContent() {
                   backgroundPosition: 'center'
                 }}
               >
-                {/* Light Overlay for readability without obscuring the image */}
-                <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-0" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent" />
-                
+                {/* Transparent overlay just enough for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-900/30 to-transparent" />
                 {/* Decorative Background Elements */}
                 <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#00A09D]/30 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3 pointer-events-none" />
