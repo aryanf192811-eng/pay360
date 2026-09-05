@@ -660,4 +660,230 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   data → `200` with zeroed/empty fields, not a 500.
 - Result/Notes: —
 
-<!-- Add Phase 3+ tasks here once Phase 2 is underway — keep this board to the current + next phase, not the whole roadmap at once, so it stays skimmable. -->
+## Design tasks (presentation-layer only — see the hard boundary below)
+
+### T-015 — Visual redesign pass: elevate every screen to a rich, premium HR/payroll product
+- Status: QUEUED
+- Owner: unclaimed (Antigravity — design only, never reassign this one to Supervisor)
+- Files allowed: `frontend/src/**/*.tsx`, `frontend/src/index.css`, `frontend/tailwind.config.js` —
+  **presentation only, see the hard boundary below.** Do not touch anything under
+  `frontend/src/api/**` (the data-fetching layer), any backend file, or any `.ts` file that isn't
+  a `.tsx` component.
+- Spec: The current UI (Ledger design system, `UI_GUIDE.md`) is functionally correct but reads
+  as plain/generic compared to the quality bar we actually want. This task is a full visual
+  redesign pass across every existing page — not new features, not new data, purely how the
+  already-correct data is presented.
+
+  **Tools and references — use all of these, don't freehand it:**
+  1. **Use the Stitch MCP server for actual UI generation/iteration on every screen** — this is
+     a hard requirement, not optional. Every redesigned screen should be produced/iterated
+     through Stitch, not hand-written from scratch in isolation.
+  2. **Apply the ui-ux-pro-max methodology**
+     (https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) — it's a design-intelligence skill
+     covering industry-specific rules, UI style search (glassmorphism/claymorphism/etc.), color
+     palettes, font pairings, and UX anti-patterns. Use it to make deliberate, reasoned choices
+     (this product's industry = HR/fintech-adjacent B2B SaaS, audience = HR/payroll officers
+     doing repetitive high-stakes data work all day) — not to copy a random style off the shelf.
+  3. **Quality-bar reference:** `docs/research/peoplexio-dashboard-reference.png` — a rich, modern
+     bento-grid SaaS HR dashboard (photo-based employee cards, layered widgets, real depth/shadow
+     use, confident color). This is the *level of visual richness* to aim for — not a literal
+     template to copy (wrong industry accent color, different information architecture).
+  4. **What NOT to look like:** `docs/research/odoo-excalidraw-wireframe-reference.jpeg` — the
+     bare gray/white functional wireframe Odoo itself provided as the PS's mockup. The whole
+     point of this redesign is to visibly, obviously exceed this baseline.
+  5. **Existing tokens in `UI_GUIDE.md`** (colors, type scale, spacing, radius) are a *starting
+     point*, not a cage — if the ui-ux-pro-max analysis calls for evolving the palette/type
+     choices to hit a richer, more premium feel, that's fine, but update `UI_GUIDE.md` to match
+     what's actually shipped afterward so the doc and the code don't drift apart (a stale design
+     doc is worse than no design doc).
+
+  **The hard boundary — read this twice, this is the actual point of scoping it this way:**
+  Every number, name, status, date, and list on every screen currently comes from a real
+  `useQuery`/`useMutation` hook hitting the real backend (CLAUDE.md's Dynamic Data Mandate — this
+  has been verified extensively, screen by screen, all session). A redesign pass is exactly the
+  kind of work that accidentally regresses this — swapping a real `{employee.first_name}` for a
+  placeholder string while restyling a card, or hardcoding a KPI number to "get the layout right
+  first." **Do not do this.** Concretely:
+  - Every existing `useQuery`/`useMutation` call, prop, and data binding must survive the
+    redesign untouched in behavior — you're changing `className`/JSX structure/component
+    composition around the data, never the data itself or how it's fetched.
+  - No new hardcoded strings/numbers where a real value already renders today (a loading skeleton
+    placeholder is fine and expected — a *shipped* fake value is not).
+  - No component may be replaced with a version that silently drops a role-conditional render
+    (e.g. `PayslipDetail.tsx`'s payrun-link-only-for-payroll-roles check, `Layout.tsx`'s
+    per-role nav filtering) — RBAC-driven UI differences are business logic, not styling, and
+    must survive.
+  - `npm run build` must pass (0 TypeScript errors) after every page you touch, before moving to
+    the next one — don't batch 10 pages of changes and discover a break at the end.
+- Acceptance check: for each redesigned page, `npm run build` stays clean, and a manual
+  before/after data check on at least 3 real records (e.g. Employee list still shows the actual
+  seeded/test employees with correct department/contract counts, not placeholder cards) confirms
+  no data binding was lost. Supervisor will independently re-verify a sample of pages against
+  live data before marking VERIFIED, same as every other task on this board.
+- Result/Notes: —
+
+## Phase 3 tasks — from a full PS-vs-codebase audit (subagent-run, supervisor-reviewed)
+
+A dedicated read-only audit agent traced every PS bullet against actual running code (not
+comments/column names) and found 10 real gaps, several severe enough to block the PS's own
+required demo path. Split below by who owns the fix, per this project's ownership rules
+(security/data-integrity → supervisor; well-specified CRUD/UI → Antigravity).
+
+### T-016 — Time Off allocation integrity: enforce requires_allocation, fix cross-employee exploit
+- Status: QUEUED
+- Owner: Supervisor
+- Files allowed: `backend/src/controllers/timeOffRequests.controller.js`, `backend/src/services/timeOff.service.js`
+- Spec: Two real gaps found by audit. (1) `create()` never checks `time_off_types.requires_allocation`
+  before accepting a request with no `allocation_id` — PS §A4 says types "define... allocation
+  requirements," but nothing enforced it; add the check (422 if the type requires an allocation
+  and none was given). (2) `approveRequest()` in `timeOff.service.js` never verified
+  `allocation.employee_id === request.employee_id` — a request could be submitted (or crafted via
+  raw API) pointing at a *different* employee's allocation, and approval would deduct from the
+  wrong person's balance. Add that ownership check inside the same row-locked transaction, before
+  the balance math.
+- Acceptance check: create a `requires_allocation: true` type; `POST /api/time-off-requests` with
+  no `allocation_id` for that type → `422`. Create two employees, each with their own allocation
+  of the same type; submit a request for employee A but pass employee B's `allocation_id` →
+  approval attempt → `409`/`422` (rejected, not silently deducted from B's balance). Existing
+  T-007 scenarios (same-employee approve/over-allocate) must still pass unchanged.
+- Result/Notes: —
+
+### T-017 — Admin: User management (link users to employees, role assignment)
+- Status: QUEUED
+- Owner: Supervisor
+- Files allowed: `backend/src/routes/users.routes.js`, `backend/src/controllers/users.controller.js`, `backend/src/app.js` (uncomment its own mount stub — add one if missing, per the standing carve-out), `frontend/src/api/users.api.ts`, `frontend/src/pages/UserManagement.tsx`, `frontend/src/App.tsx` (add the one route), `frontend/src/components/Layout.tsx` (add one nav item, admin-only)
+- Spec: PS §3 Admin role: "User management, role assignment, permission updates." This did not
+  exist anywhere — no way to link a `users` row to an `employees` row after the fact, which meant
+  every self-registered `employee` account was permanently unable to use self-service (own
+  attendance/leave/payslips), since `MySpace.tsx` already renders "ask HR to link it" for a
+  feature that never existed. `GET /api/users` (admin-only) — list users with email, role, and
+  linked employee name if any. `PATCH /api/users/:id` (admin-only) — update `role` and/or
+  `employee_id`; validate the target employee exists; catch the `users.employee_id` unique
+  constraint violation (23505) and return 409 ("this employee is already linked to another
+  account") rather than a raw error. Minimal frontend: a `/user-management` page (admin nav item
+  only) listing users in a table with an inline employee-picker dropdown and a role `<select>`
+  per row, saving via the PATCH endpoint.
+- Acceptance check: `GET /api/users` as admin → 200 list; as any other role → 403. `PATCH
+  /api/users/:id` with `{"employee_id": "<real-id>"}` → 200, and that user can then log in and
+  successfully hit their own `/api/employees/:id` (their own) and `/api/payslips` scoped
+  correctly. Attempting to link a second user to an already-linked employee_id → 409.
+- Result/Notes: —
+
+### T-018 — Fix duplicate_payslip dead warning + Dashboard "Payslips Generated" KPI conflation
+- Status: QUEUED
+- Owner: Supervisor
+- Files allowed: `backend/src/controllers/payruns.controller.js`, `backend/src/controllers/dashboard.controller.js`
+- Spec: Two independent dead-code/wrong-metric bugs found by audit. (1) `warning_type =
+  'duplicate_payslip'` exists in the schema and is fully wired into the frontend's warning-display
+  code, but nothing ever inserts one — `payruns.controller.js`'s `create()` just lets the
+  `payslips` unique-constraint violation abort the whole transaction if the same employee_id
+  appears twice in `employee_ids[]`, instead of the pre-emptive warning DB_GUIDE.md documents.
+  Fix: dedupe `employee_ids` before the insert loop; if duplicates were found, insert a
+  `payroll_warnings` row (`payrun_id`, type `duplicate_payslip`) noting which employee(s) were
+  duplicated, and proceed with one payslip per unique employee (don't abort the whole payrun
+  creation over this). (2) `dashboard.controller.js`'s `payslips_generated` KPI is computed in
+  the same `WHERE p.status = 'paid'` query as `total_net_paid`, so it undercounts — "Payslips
+  Generated" should mean payslips that have actually been computed (`status IN ('computed',
+  'validated', 'paid')`), a materially different, and correct, number from the paid-only total.
+- Acceptance check: submit `employee_ids: [A, A, B]` to `POST /api/payruns` → `201`, exactly 2
+  payslips created (one for A, one for B), and `GET /api/payruns/:id` shows a `duplicate_payslip`
+  warning mentioning A. Dashboard: create payslips in `computed` and `paid` status separately,
+  confirm `payslips_generated` counts both while `total_net_paid`/`average_salary` still only
+  reflect the `paid` one.
+- Result/Notes: —
+
+### T-019 — Employee Create/Edit forms (frontend — backend already fully supports this)
+- Status: QUEUED
+- Owner: Supervisor
+- Files allowed: `frontend/src/pages/EmployeeList.tsx`, `frontend/src/pages/EmployeeDetail.tsx`, `frontend/src/pages/EmployeeForm.tsx` (new), `frontend/src/App.tsx` (add `/employees/new` and `/employees/:id/edit` routes only)
+- Spec: PS §A1/§B1/§B2 call the Employee record "the central hub" with Kanban/List/Form
+  management — there is currently no way to create or edit an employee through the UI at all
+  (confirmed: `createEmployee`/`updateEmployee` in `employees.api.ts` are never called from any
+  component). This makes the PS's own required demo scenario (full employee-to-payslip flow)
+  impossible to run without dropping to curl/Postman. Build a form (React Hook Form + Zod per
+  `UI_GUIDE.md`) covering every field `employees.controller.js`'s `create`/`update` accept:
+  first/last name, email, phone, department (select from `GET /api/departments`), manager
+  (select from `GET /api/employees`), job_position, schedule (select from `GET
+  /api/working-schedules` — note T-020 may still be landing this; if so, the select can be empty/
+  optional, not blocking), employee_type, status, hire_date, bank_account_number. "New Employee"
+  button on `EmployeeList.tsx` → `/employees/new`; an "Edit" action on `EmployeeDetail.tsx` →
+  `/employees/:id/edit`. Both routes `HR_ROLES`-gated (reuse the existing `ProtectedRoute` pattern
+  already in `App.tsx` for `/employees`).
+- Acceptance check: create a real new employee through the actual UI form (not curl) with a real
+  department/manager selected → appears in the Employee list/Kanban with correct data, matches
+  what a `GET /api/employees/:id` shows. Edit an existing employee's job_position through the UI
+  → change persists and displays correctly.
+- Result/Notes: —
+
+### T-020 — Working Schedule frontend (backend already fully supports this, zero frontend surface exists)
+- Status: QUEUED
+- Owner: Supervisor
+- Files allowed: `frontend/src/pages/WorkingSchedules.tsx` (new), `frontend/src/App.tsx` (add `/working-schedules` route only), `frontend/src/components/Layout.tsx` (add one nav item, `HR_ROLES`)
+- Spec: PS §A3 is a fully named module (List/Form views, weekly-hours auto-calculated) with a
+  complete, correct backend (`workingSchedules.controller.js` — verified in T-008) and zero
+  frontend surface — not reachable in a demo at all right now. Build: a list view (name, type,
+  live `total_weekly_hours` — this is server-computed, never let the form send it) and a form for
+  creating/editing a schedule's weekly pattern (day of week × start time × end time × break
+  minutes, one row per configured day — a simple repeatable row editor is sufficient, no need for
+  a calendar widget). Use `reference.api.ts`'s existing `listSchedules`/`createSchedule` — check
+  if an `updateSchedule` wrapper exists; if not, add one calling the already-built `PATCH
+  /api/working-schedules/:id`.
+- Acceptance check: create a schedule through the UI with 5 weekday rows (9am-5pm, 30min break) →
+  list shows it with `total_weekly_hours: 37.5`, computed and displayed, not typed in by the user.
+  Assign it to an employee via the (now-existing, per T-019) employee form's schedule select →
+  employee detail shows the schedule name.
+- Result/Notes: —
+
+### T-021 — Contract form: add missing Department + Position fields
+- Status: QUEUED
+- Owner: Supervisor
+- Files allowed: `frontend/src/pages/ContractList.tsx`
+- Spec: PS §A2: "Contract forms should capture employment terms including duration, department,
+  position, wage, and salary structure." The existing "New Contract" form has Employee/Structure/
+  Wage/Status/Dates but is missing Department (select from `GET /api/departments`) and Position
+  (free text) — `contracts.controller.js` already accepts both, they're just never sent, so every
+  contract silently gets `department_id: null, position: null`.
+- Acceptance check: create a contract through the UI with a department and position filled in →
+  `GET /api/contracts?employee_id=...` shows both persisted correctly, not null.
+- Result/Notes: —
+
+### T-022 — Dashboard: add missing Period + Employee Type filters
+- Status: QUEUED
+- Owner: Supervisor
+- Files allowed: `frontend/src/pages/Dashboard.tsx`
+- Spec: PS §A7/§B9 name three filter dimensions — Period, Department, Employee Type. Only
+  Department exists on the page today; `dashboard.controller.js` already fully supports
+  `period_start`/`period_end`/`employee_type` query params (verified in T-014). Add a date-range
+  picker (two date inputs is fine, no need for a fancy calendar component) and an Employee Type
+  `<select>` (full_time/part_time/contract/All), wired into the existing `useQuery` call's params
+  alongside the department filter already there.
+- Acceptance check: filtering by a date range that excludes all current payslips → KPIs/charts
+  zero out (per T-014's already-verified backend behavior) without an error. Filtering by
+  `employee_type` → dashboard numbers change to reflect only that group (verify against a manual
+  count of matching test employees).
+- Result/Notes: —
+
+### T-023 — Time Off Request form: add the Allocation selector (currently unreachable via UI)
+- Status: QUEUED
+- Owner: Supervisor
+- Files allowed: `frontend/src/pages/TimeOffPage.tsx`
+- Spec: **Depends on T-016 (already VERIFIED) — read it first**, it changed backend validation
+  behavior this form must match. The "New Time Off Request" form has Employee/Type/Duration/
+  Dates but no way to pick an `allocation_id` — every request created through the UI today has
+  `allocation_id: null`, which (before T-016) meant the entire balance-enforcement ledger was
+  silently bypassed for any request submitted through the actual product. Fix: when the selected
+  Time Off Type has `requires_allocation: true`, show a required Allocation `<select>` populated
+  from that employee's own `approved`-status allocations of that type (`GET
+  /api/time-off-allocations?employee_id=...`, filter client-side or note if the API needs a
+  `time_off_type_id` param added — if so, that's a backend change outside this task's file list,
+  flag it in Result/Notes instead of adding it yourself). When the type has `requires_allocation:
+  false`, hide the field entirely (matches T-016's backend rule — omitting it is correct, not an
+  oversight).
+- Acceptance check: select a `requires_allocation: true` type with no approved allocation for
+  that employee → form clearly shows there's nothing to select (empty state, not a silent
+  disabled dropdown) rather than letting submission proceed with no allocation. Select a type
+  with an available allocation → request submits with a real `allocation_id`, approvable through
+  the existing flow with real balance deduction visible afterward.
+- Result/Notes: —
+
+<!-- Add Phase 4+ tasks here once Phase 3 is underway — keep this board to the current + next phase, not the whole roadmap at once, so it stays skimmable. -->

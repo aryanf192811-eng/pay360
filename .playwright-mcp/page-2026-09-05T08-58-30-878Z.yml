@@ -1,0 +1,19 @@
+- generic [ref=e48]:
+  - generic [ref=e49]:
+    - link "Back to overview" [ref=e50] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e53]:
+      - heading "Payroll that shows its work." [level=1] [ref=e58]
+      - paragraph [ref=e59]: Every payslip on this platform traces back to the exact rule that produced it — sign in to see contracts, attendance, and payroll agree with each other.
+    - generic [ref=e60]: PeoplePay360 · HR & Payroll Operations
+  - generic [ref=e62]:
+    - heading "Sign in" [level=2] [ref=e63]
+    - paragraph [ref=e64]: Use the credentials issued by your HR team.
+    - generic [ref=e65]:
+      - generic [ref=e66]:
+        - text: Email
+        - textbox "Email" [active] [ref=e67]
+      - generic [ref=e68]:
+        - text: Password
+        - textbox "Password" [ref=e69]
+      - button "Sign in" [ref=e70] [cursor=pointer]
