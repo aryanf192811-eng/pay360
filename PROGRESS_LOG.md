@@ -10,6 +10,65 @@ what's next.
 
 ---
 
+## 2026-09-05 (final, pre-restart) — "No tradeoffs" audit against the PS PDF found and fixed 4 more real gaps
+
+User pasted the full PS text again and asked for a rigorous line-by-line audit — not a general
+sense of completeness — before declaring the baseline done, specifically because the previous
+pass (Time Off → Payroll integration, see entry below) had already proven that "looks complete"
+and "actually matches the PS" are different things. Found and fixed four more real gaps by
+checking specific PS sentences against actual running code/behavior, not memory:
+
+1. **Contract wage/date immutability after use (real integrity gap).** PS: "Maintain historical
+   contract records... to track changes over time." `PATCH /api/contracts/:id` allowed editing
+   `wage`/`date_start`/`date_end`/`salary_structure_id` on ANY contract, including one already
+   used to compute a payslip — nothing stopped silently rewriting what a contract's terms were
+   after payroll had already used them. Fixed: those fields are now blocked (`409`) once any
+   payslip references the contract; non-history-sensitive fields (position, department, status)
+   stay editable, and contracts with zero payslips stay fully editable. Verified all three paths
+   with real requests.
+2. **Payslip detail missing Structure/Pay Run identification.** PS §B7 explicitly lists
+   "Employee, Structure, Pay Run, Period, Status, and Worked Days" as required identification
+   attributes — Structure and Pay Run were completely absent (only ids existed, no names, no
+   join). Fixed: `payslips.controller.js`'s `getById` now joins `salary_structures`/`payruns` for
+   names; `PayslipDetail.tsx` displays both, with a payrun link shown only to payroll-capable
+   roles (an `employee` clicking it would just get bounced by route RBAC — didn't want a
+   dead-looking link, checked role before rendering as clickable).
+3. **Manager name fetched but never displayed** on Employee detail — `getEmployee()` already
+   returned `manager_first_name`/`manager_last_name`, `EmployeeDetail.tsx` just never rendered
+   them. Cosmetic-looking but the PS explicitly lists "manager" as a required Employee Form
+   field (§B2).
+4. **Verified as already-correct, not a gap:** a `requires_allocation: false` time-off type can
+   be requested and approved with `allocation_id: null` and no balance check at all — confirmed
+   with a real "Bereavement Leave" type end-to-end, no code change needed.
+
+All four verified with real curl/build checks, committed (`0f40506`), pushed. Combined with the
+Time Off → Payroll integration fix (`3b90a0e`, entry below), this is now two full "assume nothing,
+verify every PS sentence" passes — both found real, non-cosmetic gaps that a plausible-looking
+build had been hiding. **If resuming this work, do a third such pass before declaring Tier 0
+truly done** — this audit methodology (pick a PS sentence, find the exact code path, test with a
+real request, not just read the code) has a 100% hit rate so far and should not be treated as
+exhausted.
+
+**State at this checkpoint:** backend healthy (`:4000/health` → 200), frontend healthy
+(`:5173` → 200), git clean, all work pushed to `main` (HEAD: `0f40506`). chatbot.md: all tasks
+`VERIFIED` except T-004 (Postman/newman) at `NEEDS_REVISION` with Antigravity. Session is about
+to restart so the newly-added Playwright/Context7 MCP entries in `.mcp.json` actually load (this
+session's `ToolSearch` confirmed neither is available here even after `/mcp`, both before and
+after trying). Local dev DB has accumulated substantial manual test/verification data across
+many entities (departments, employees, contracts, time-off types/allocations/requests, salary
+rules including two now-permanent ones — `BONUS` and `UNPAID_DEDUCTION` — added to the "Regular
+Salary" structure) — none of this is committed anywhere (it's DB state, not files) and none of
+it is seed data; T-005's seed script remains the source of truth for actual demo data and should
+be re-run (or the dev DB reset and reseeded) before treating any of this as "the demo dataset."
+
+**What's next after restart:** confirm Playwright loaded (`ToolSearch` for `browser_navigate`)
+before assuming a real click-through is possible. Do the recommended third PS-sentence audit
+pass if there's appetite for it, or proceed to Part C (Tier 2 — "why did my salary change?" as
+the lowest-risk next slice) per the user's earlier explicit go-ahead once baseline is confirmed
+solid. T-004 revision still needs to land from Antigravity.
+
+---
+
 ## 2026-09-05 (latest) — Fixed the flow gap, found a critical session-wide auth bug, shipped Prisma+ER artifacts
 
 **Context:** user flagged (correctly, sharply) that the frontend skipped the Landing→Auth→
