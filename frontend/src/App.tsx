@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { StoreProvider, useStore } from "@/lib/store-context";
 import { useAuthStore } from "@/lib/store/auth.store";
@@ -23,7 +21,7 @@ import { PayrunWizardDialog } from "@/components/payroll/payrun-wizard-dialog";
 import { PayslipModal } from "@/components/payroll/payslip-modal";
 import { LoginDialog } from "@/components/auth/login-dialog";
 import { EnterpriseFooter } from "@/components/footer/enterprise-footer";
-import { Clock, FileText, Calendar, Building, Briefcase, MapPin, Mail, UserCheck, Phone, Users, Plus } from "lucide-react";
+import { Users, Plus } from "lucide-react";
 
 function MainContent() {
   const {
@@ -65,9 +63,14 @@ function MainContent() {
     <div className="flex-1 flex flex-col min-h-screen">
       <TopBar />
 
+      {/* Dashboard */}
+      {activeNavTab === "Dashboard" && (
+        <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
+          <ExecutiveDashboard />
+        </main>
+      )}
 
-
-      {/* Module 1: Employees Hub — PDF §B1, B2 */}
+      {/* Module 1: Employees Hub */}
       {activeNavTab === "Employees" && (
         <div className="flex-1 flex flex-col">
           {!selectedEmployee && <HubHeader />}
@@ -145,21 +148,21 @@ function MainContent() {
         </div>
       )}
 
-      {/* Module 2: Contracts Management Hub — PDF §A2 */}
+      {/* Module 2: Contracts Management Hub */}
       {activeNavTab === "Contracts" && (
         <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <ContractsHub />
         </main>
       )}
 
-      {/* Module 3: Attendance — PDF §A3 Working Schedules + §B3 Attendance List/Form */}
+      {/* Module 3: Attendance */}
       {activeNavTab === "Attendance" && (
         <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <AttendanceHub />
         </main>
       )}
 
-      {/* Module 4: Time Off & Leave Approvals — PDF §A4 + §B4 */}
+      {/* Module 4: Time Off & Leave Approvals */}
       {activeNavTab === "Time Off" && (
         <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <TimeOffHub />
@@ -200,7 +203,7 @@ function MainContent() {
   );
 }
 
-export default function Home() {
+export default function App() {
   return (
     <StoreProvider>
       <MainContent />
