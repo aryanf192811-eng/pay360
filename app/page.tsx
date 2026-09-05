@@ -7,6 +7,7 @@ import { TopBar } from "@/components/navigation/top-bar";
 import { HubHeader } from "@/components/employee-hub/hub-header";
 import { EmployeeCard } from "@/components/employee-hub/employee-card";
 import { EmployeeList } from "@/components/employee-hub/employee-list";
+import { OrgChart } from "@/components/employee-hub/org-chart";
 import { EmployeeForm } from "@/components/employee-hub/employee-form";
 import { AddEmployeeDialog } from "@/components/employee-hub/add-employee-dialog";
 import { ContractsHub } from "@/components/contracts/contracts-hub";
@@ -16,6 +17,7 @@ import { PayrollHub } from "@/components/payroll/payroll-hub";
 import { ExecutiveDashboard } from "@/components/dashboard/executive-dashboard";
 import { UserManagementHub } from "@/components/user-management/user-management-hub";
 import { SchedulesHub } from "@/components/schedules/schedules-hub";
+import { HrAssistant } from "@/components/ai/hr-assistant";
 
 import { PayrunWizardDialog } from "@/components/payroll/payrun-wizard-dialog";
 import { PayslipModal } from "@/components/payroll/payslip-modal";
@@ -128,6 +130,8 @@ function MainContent() {
                   <span>+ Add New Employee</span>
                 </button>
               </div>
+            ) : viewMode === "org" ? (
+              <OrgChart />
             ) : viewMode === "kanban" ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {filteredEmployees.map((emp) => (
@@ -190,6 +194,8 @@ function MainContent() {
       <PayslipModal />
       {/* LoginDialog used for role-switch when already authenticated */}
       <LoginDialog />
+      
+      <HrAssistant />
     </div>
   );
 }

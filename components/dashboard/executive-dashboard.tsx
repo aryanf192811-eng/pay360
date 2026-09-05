@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useStore } from "@/lib/store-context";
 import { useAuthStore } from "@/lib/store/auth.store";
+import { AdvancedCharts } from "@/components/analytics/advanced-charts";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -239,6 +240,11 @@ export function ExecutiveDashboard() {
           </div>
         </motion.div>
       </div>
+
+      {/* Advanced Analytics Charts */}
+      <motion.div variants={itemVariants}>
+        <AdvancedCharts />
+      </motion.div>
     </motion.div>
   );
 }

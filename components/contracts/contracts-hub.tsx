@@ -5,6 +5,7 @@ import { useStore } from "@/lib/store-context";
 import { Search, FileSignature, ArrowLeft, Calendar, Building2, Briefcase, IndianRupee, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 import { Contract } from "@/lib/mock-data";
 import { formatINR } from "@/lib/utils";
+import { exportToPDF } from "@/lib/utils/pdf-export";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function ContractsHub() {
@@ -128,18 +129,17 @@ export function ContractsHub() {
               </div>
               <div className="relative z-10 flex items-center gap-3">
                 <button
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     const btn = e.currentTarget;
                     const originalText = btn.innerHTML;
-                    btn.innerHTML = '<svg class="animate-spin w-4 h-4 inline mr-2" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Downloading...';
+                    btn.innerHTML = '<svg class="animate-spin w-4 h-4 inline mr-2" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Generating...';
+                    await exportToPDF('contract-document', `Contract_${selectedContract.id}`);
+                    btn.innerHTML = '<svg class="w-4 h-4 inline mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Downloaded';
+                    btn.classList.add('bg-emerald-500', 'border-emerald-400');
                     setTimeout(() => {
-                      btn.innerHTML = '<svg class="w-4 h-4 inline mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Downloaded';
-                      btn.classList.add('bg-emerald-500', 'border-emerald-400');
-                      setTimeout(() => {
-                        btn.innerHTML = originalText;
-                        btn.classList.remove('bg-emerald-500', 'border-emerald-400');
-                      }, 2000);
-                    }, 1500);
+                      btn.innerHTML = originalText;
+                      btn.classList.remove('bg-emerald-500', 'border-emerald-400');
+                    }, 2000);
                   }}
                   className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider backdrop-blur-md border bg-white/10 border-white/20 text-white hover:bg-white/20 transition-all flex items-center shadow-sm"
                 >
@@ -157,7 +157,7 @@ export function ContractsHub() {
 
             {/* Document Body */}
             <div className="flex-1 overflow-y-auto p-8 bg-slate-50/50">
-              <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-xl border border-slate-200 shadow-sm relative">
+              <div id="contract-document" className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-xl border border-slate-200 shadow-sm relative">
                 
                 {/* Watermark */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">

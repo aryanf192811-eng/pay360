@@ -65,8 +65,8 @@ interface StoreContextType {
   setSelectedEmployee: (emp: Employee | null) => void;
   isAddEmployeeOpen: boolean;
   setIsAddEmployeeOpen: (open: boolean) => void;
-  viewMode: "kanban" | "list";
-  setViewMode: (mode: "kanban" | "list") => void;
+  viewMode: "kanban" | "list" | "org";
+  setViewMode: (mode: "kanban" | "list" | "org") => void;
   activeFilter: string;
   setActiveFilter: (filter: string) => void;
   searchQuery: string;
@@ -224,7 +224,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [isAddEmployeeOpen, setIsAddEmployeeOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<"kanban" | "list">("kanban");
+  const [viewMode, setViewMode] = useState<"kanban" | "list" | "org">("kanban");
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeNavTab, setActiveNavTab] = useState<string>("Employees");

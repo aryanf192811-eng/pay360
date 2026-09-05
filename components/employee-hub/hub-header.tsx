@@ -7,7 +7,7 @@ import {
   LayoutGrid,
   List,
   Filter,
-  ChevronRight,
+  Network,
 } from "lucide-react";
 import { useStore } from "@/lib/store-context";
 import { motion } from "framer-motion";
@@ -96,6 +96,18 @@ export function HubHeader() {
               >
                 <List className="w-4 h-4" />
                 <span className="hidden sm:inline">List</span>
+              </button>
+              <button
+                onClick={() => setViewMode("org")}
+                title="Org Chart"
+                className={`px-3 py-1.5 rounded-lg text-sm flex items-center gap-1.5 transition-all ${
+                  viewMode === "org"
+                    ? "bg-white text-[#714B67] shadow-sm font-bold"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                <Network className="w-4 h-4" />
+                <span className="hidden sm:inline">Org Chart</span>
               </button>
             </div>
 

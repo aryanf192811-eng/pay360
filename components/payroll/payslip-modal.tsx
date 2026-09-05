@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useStore } from "@/lib/store-context";
 import { formatINR, amountInWords } from "@/lib/utils";
+import { exportToPDF } from "@/lib/utils/pdf-export";
 
 export function PayslipModal() {
   const { selectedPayslip, setSelectedPayslip } = useStore();
@@ -24,6 +25,10 @@ export function PayslipModal() {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleExportPDF = () => {
+    exportToPDF('printable-payslip', `Payslip_${slip.employeeName.replace(/\s+/g, '_')}_${slip.period.replace(/\s+/g, '_')}`);
   };
 
   const handleEmail = () => {
@@ -44,11 +49,11 @@ export function PayslipModal() {
 
           <div className="flex items-center gap-2.5">
             <button
-              onClick={handlePrint}
+              onClick={handleExportPDF}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white text-xs font-bold transition-colors shadow-xs"
             >
               <Printer className="w-4 h-4" />
-              <span>Print / Save PDF</span>
+              <span>Download PDF</span>
             </button>
             <button
               onClick={handleEmail}
