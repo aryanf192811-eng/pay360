@@ -3,6 +3,13 @@
 Postgres, node-pg (raw parameterized SQL), node-pg-migrate. No ORM. This file is the single
 source of truth for schema — read it before writing any query or migration.
 
+`backend/prisma/schema.prisma` also exists, generated via `prisma db pull` against this same
+live database, purely as a familiar-format reference artifact for reviewing the schema — it is
+never imported or run by the application (no `@prisma/client` dependency exists in
+`package.json`). See its header comment for why Prisma's own introspection is, in fact, evidence
+*for* the raw-SQL approach: it can't represent the exclusion constraint or most CHECK
+constraints documented below.
+
 ## Golden Rules
 
 1. **Always parameterized queries.** `$1, $2...` placeholders via `pg`. Never string-concatenate

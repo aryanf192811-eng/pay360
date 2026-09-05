@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PeoplePay360 — Database Schema (Excalidraw-style)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1e1e2e;
+    --paper: #fdfcf7;
+    --line: #2b2b3a;
+    --dept: #4a63c0;
+    --auth: #a25ed6;
+    --timeoff: #2f9e6e;
+    --payroll: #d9722e;
+    --note-bg: #fff6cc;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    font-family: 'Kalam', 'Comic Sans MS', 'Bradley Hand', cursive, sans-serif;
+    color: var(--ink);
+  }
+  .toolbar {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 24px; background: var(--paper);
+    border-bottom: 2px solid var(--line);
+  }
+  .toolbar h1 { font-size: 20px; margin: 0; }
+  .toolbar p { margin: 0; font-size: 13px; color: #555; }
+  .legend { display: flex; gap: 14px; margin-left: auto; font-size: 12px; flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 14px; height: 14px; border-radius: 3px; display: inline-block; border: 2px solid var(--line); }
+  .canvas-wrap { overflow: auto; padding: 24px; }
+  svg { display: block; }
+  .box-title { font-weight: 700; font-size: 15px; }
+  .box-field { font-size: 12px; }
+  .box-field.pk { font-weight: 700; }
+  .rel-label { font-size: 11px; fill: #444; }
+  .note text { font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div>
+    <h1>PeoplePay360 — Database Schema</h1>
+    <p>Same tables &amp; relationships as DB_GUIDE.md's Mermaid diagram — this is a second, more distinctive rendering for the pitch deck / judge walkthrough. Hand-drawn look via a pure SVG filter, no drawing library.</p>
+  </div>
+  <div class="legend">
+    <span><i class="swatch" style="background:#e8edfc;border-color:var(--dept)"></i>HR Core</span>
+    <span><i class="swatch" style="background:#f3e8fc;border-color:var(--auth)"></i>Auth</span>
+    <span><i class="swatch" style="background:#e6f7ee;border-color:var(--timeoff)"></i>Time Off</span>
+    <span><i class="swatch" style="background:#fdece0;border-color:var(--payroll)"></i>Payroll</span>
+  </div>
+</div>
+
+<div class="canvas-wrap">
+<svg id="diagram" width="1780" height="1180" viewBox="0 0 1780 1180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="sketch" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.035" numOctaves="2" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="sketchLine" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03 0.09" numOctaves="2" seed="3" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--line)"/>
+    </marker>
+  </defs>
+
+  <!-- ============ CONNECTORS (drawn first, under the boxes) ============ -->
+  <g fill="none" stroke="var(--line)" stroke-width="2" filter="url(#sketchLine)" marker-end="url(#arrow)">
+    <!-- HR core -->
+    <path d="M 220,150 L 220,190"/>                         <!-- Departments -> Employees -->
+    <path d="M 500,150 L 500,190"/>                         <!-- Working Schedules -> Schedule Lines -->
+    <path d="M 420,230 L 480,230"/>                         <!-- Employees -> manager (self) drawn as loop below -->
+    <path d="M 330,270 L 330,330"/>                         <!-- Employees -> Contracts -->
+    <path d="M 330,270 L 660,410"/>                         <!-- Employees -> Attendances -->
+    <path d="M 330,270 L 60,560"/>                          <!-- Employees -> Time Off Allocations -->
+    <path d="M 330,270 L 60,780"/>                          <!-- Employees -> Time Off Requests -->
+    <path d="M 330,270 L 1180,270"/>                        <!-- Employees -> Users -->
+    <!-- Auth -->
+    <path d="M 1260,310 L 1260,370"/>                       <!-- Users -> Refresh Tokens -->
+    <!-- Time off -->
+    <path d="M 220,600 L 220,700"/>                         <!-- TO Types -> Allocations -->
+    <path d="M 220,600 L 480,780"/>                         <!-- TO Types -> Requests -->
+    <path d="M 220,740 L 220,820"/>                         <!-- Allocations -> Requests (ledger) -->
+    <!-- Payroll -->
+    <path d="M 900,330 L 900,410"/>                         <!-- Salary Structures -> Salary Rules -->
+    <path d="M 900,330 L 1180,610"/>                        <!-- Salary Structures -> Contracts (assigned on) -->
+    <path d="M 900,330 L 1420,610"/>                        <!-- Salary Structures -> Payruns (chosen for) -->
+    <path d="M 1500,650 L 1500,730"/>                       <!-- Payruns -> Payrun Employees -->
+    <path d="M 1500,650 L 1650,730"/>                       <!-- Payruns -> Payslips -->
+    <path d="M 1650,770 L 1650,850"/>                       <!-- Payslips -> Payslip Lines -->
+    <path d="M 900,450 L 1650,850"/>                        <!-- Salary Rules -> Payslip Lines (produces) -->
+    <path d="M 1330,650 L 1690,890"/>                       <!-- Contracts -> Payslips (applies to) -->
+    <path d="M 1650,770 L 1500,970"/>                       <!-- Payslips -> Payroll Warnings -->
+    <path d="M 1500,650 L 1420,970"/>                       <!-- Payruns -> Payroll Warnings -->
+  </g>
+
+  <!-- ============ ANNOTATION NOTES (sticky-note style) ============ -->
+  <g class="note" filter="url(#sketch)">
+    <rect x="560" y="1000" width="330" height="90" fill="var(--note-bg)" stroke="var(--line)" stroke-width="1.5" transform="rotate(-1.2 725 1045)"/>
+  </g>
+  <text x="580" y="1025" class="rel-label" transform="rotate(-1.2 725 1045)">Ledger Pattern (DB_GUIDE.md): payslip totals &amp;</text>
+  <text x="580" y="1042" class="rel-label" transform="rotate(-1.2 725 1045)">leave balances are never stored columns — always</text>
+  <text x="580" y="1059" class="rel-label" transform="rotate(-1.2 725 1045)">SUM()'d live from payslip_lines / time_off_requests.</text>
+  <text x="580" y="1076" class="rel-label" transform="rotate(-1.2 725 1045)">Contracts are effective-dated, never overwritten.</text>
+
+  <!-- ============ TABLE BOXES ============ -->
+  <!-- Each box: group with sketch-filtered rect + title + fields. PK marked bold. -->
+
+  <!-- DEPARTMENTS -->
+  <g transform="translate(120,60)">
+    <rect width="200" height="90" rx="6" fill="#e8edfc" stroke="var(--dept)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">DEPARTMENTS</text>
+    <line x1="0" y1="34" x2="200" y2="34" stroke="var(--dept)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="72" class="box-field">name (unique)</text>
+  </g>
+
+  <!-- WORKING SCHEDULES -->
+  <g transform="translate(400,60)">
+    <rect width="220" height="90" rx="6" fill="#e8edfc" stroke="var(--dept)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">WORKING_SCHEDULES</text>
+    <line x1="0" y1="34" x2="220" y2="34" stroke="var(--dept)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="72" class="box-field">name, schedule_type</text>
+  </g>
+
+  <!-- SCHEDULE LINES -->
+  <g transform="translate(400,190)">
+    <rect width="220" height="100" rx="6" fill="#e8edfc" stroke="var(--dept)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">SCHEDULE_LINES</text>
+    <line x1="0" y1="34" x2="220" y2="34" stroke="var(--dept)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK schedule_id</text>
+    <text x="12" y="86" class="box-field">day_of_week, start/end_time</text>
+  </g>
+
+  <!-- EMPLOYEES (central hub — bigger box) -->
+  <g transform="translate(120,190)">
+    <rect width="260" height="140" rx="6" fill="#e8edfc" stroke="var(--dept)" stroke-width="3" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">EMPLOYEES</text>
+    <line x1="0" y1="34" x2="260" y2="34" stroke="var(--dept)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">employee_code (unique)</text>
+    <text x="12" y="86" class="box-field">FK department_id</text>
+    <text x="12" y="102" class="box-field">FK manager_id (self)</text>
+    <text x="12" y="118" class="box-field">FK schedule_id, status, type</text>
+    <text x="12" y="134" class="box-field">bank_account_number</text>
+  </g>
+
+  <!-- USERS -->
+  <g transform="translate(1180,190)">
+    <rect width="200" height="120" rx="6" fill="#f3e8fc" stroke="var(--auth)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">USERS</text>
+    <line x1="0" y1="34" x2="200" y2="34" stroke="var(--auth)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">email (unique), role</text>
+    <text x="12" y="86" class="box-field">FK employee_id (opt.)</text>
+    <text x="12" y="102" class="box-field">password_hash</text>
+  </g>
+
+  <!-- REFRESH TOKENS -->
+  <g transform="translate(1180,370)">
+    <rect width="200" height="90" rx="6" fill="#f3e8fc" stroke="var(--auth)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">REFRESH_TOKENS</text>
+    <line x1="0" y1="34" x2="200" y2="34" stroke="var(--auth)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK user_id, token_hash</text>
+  </g>
+
+  <!-- CONTRACTS -->
+  <g transform="translate(120,330)">
+    <rect width="260" height="150" rx="6" fill="#e8edfc" stroke="var(--dept)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">CONTRACTS</text>
+    <line x1="0" y1="34" x2="260" y2="34" stroke="var(--dept)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK employee_id</text>
+    <text x="12" y="86" class="box-field">FK salary_structure_id</text>
+    <text x="12" y="102" class="box-field">wage, date_start, date_end</text>
+    <text x="12" y="118" class="box-field">status, date_range (generated)</text>
+    <text x="12" y="140" class="box-field" fill="var(--payroll)">⚡ EXCLUDE constraint: no two</text>
+    <text x="12" y="154" class="box-field" fill="var(--payroll)">overlapping active contracts</text>
+  </g>
+
+  <!-- ATTENDANCES -->
+  <g transform="translate(600,330)">
+    <rect width="230" height="130" rx="6" fill="#f3e8fc" stroke="var(--auth)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">ATTENDANCES</text>
+    <line x1="0" y1="34" x2="230" y2="34" stroke="var(--auth)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK employee_id</text>
+    <text x="12" y="86" class="box-field">check_in, check_out</text>
+    <text x="12" y="102" class="box-field">worked_hours (generated)</text>
+    <text x="12" y="118" class="box-field">status, is_manual_correction</text>
+  </g>
+
+  <!-- AUDIT LOGS -->
+  <g transform="translate(870,330)">
+    <rect width="220" height="110" rx="6" fill="#f3e8fc" stroke="var(--auth)" stroke-width="2" stroke-dasharray="6 4" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">AUDIT_LOGS</text>
+    <text x="12" y="40" class="rel-label" fill="#888">(designed, Phase 2+)</text>
+    <line x1="0" y1="48" x2="220" y2="48" stroke="var(--auth)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="66" class="box-field pk">PK id</text>
+    <text x="12" y="82" class="box-field">table_name, record_id</text>
+    <text x="12" y="98" class="box-field">FK user_id, changed_fields</text>
+  </g>
+
+  <!-- TIME OFF TYPES -->
+  <g transform="translate(120,510)">
+    <rect width="200" height="90" rx="6" fill="#e6f7ee" stroke="var(--timeoff)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">TIME_OFF_TYPES</text>
+    <line x1="0" y1="34" x2="200" y2="34" stroke="var(--timeoff)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="72" class="box-field">name, unit, requires_allocation</text>
+  </g>
+
+  <!-- TIME OFF ALLOCATIONS (the ledger "grant") -->
+  <g transform="translate(120,650)">
+    <rect width="220" height="130" rx="6" fill="#e6f7ee" stroke="var(--timeoff)" stroke-width="3" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">TIME_OFF_ALLOCATIONS</text>
+    <line x1="0" y1="34" x2="220" y2="34" stroke="var(--timeoff)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK employee_id, type_id</text>
+    <text x="12" y="86" class="box-field">allocated, valid_from/to</text>
+    <text x="12" y="102" class="box-field">status</text>
+    <text x="12" y="122" class="box-field" fill="var(--timeoff)">⚡ taken/remaining = live SUM,</text>
+  </g>
+
+  <!-- TIME OFF REQUESTS (the ledger "movement") -->
+  <g transform="translate(400,730)">
+    <rect width="240" height="140" rx="6" fill="#e6f7ee" stroke="var(--timeoff)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">TIME_OFF_REQUESTS</text>
+    <line x1="0" y1="34" x2="240" y2="34" stroke="var(--timeoff)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK employee_id, type_id</text>
+    <text x="12" y="86" class="box-field">FK allocation_id (opt.)</text>
+    <text x="12" y="102" class="box-field">date_from/to, duration</text>
+    <text x="12" y="118" class="box-field">status, approved_by</text>
+  </g>
+
+  <!-- SALARY STRUCTURES -->
+  <g transform="translate(780,190)">
+    <rect width="220" height="90" rx="6" fill="#fdece0" stroke="var(--payroll)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">SALARY_STRUCTURES</text>
+    <line x1="0" y1="34" x2="220" y2="34" stroke="var(--payroll)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="72" class="box-field">name (unique), active</text>
+  </g>
+
+  <!-- SALARY RULES -->
+  <g transform="translate(780,410)">
+    <rect width="240" height="150" rx="6" fill="#fdece0" stroke="var(--payroll)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">SALARY_RULES</text>
+    <line x1="0" y1="34" x2="240" y2="34" stroke="var(--payroll)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK structure_id</text>
+    <text x="12" y="86" class="box-field">code, category, sequence</text>
+    <text x="12" y="102" class="box-field">computation_method</text>
+    <text x="12" y="118" class="box-field">amount / percentage / formula</text>
+    <text x="12" y="140" class="box-field" fill="var(--payroll)">⚡ formula evaluated via mathjs,</text>
+  </g>
+
+  <!-- PAYRUNS -->
+  <g transform="translate(1380,510)">
+    <rect width="240" height="140" rx="6" fill="#fdece0" stroke="var(--payroll)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">PAYRUNS</text>
+    <line x1="0" y1="34" x2="240" y2="34" stroke="var(--payroll)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK salary_structure_id</text>
+    <text x="12" y="86" class="box-field">period_start/end</text>
+    <text x="12" y="102" class="box-field">status (draft→...→paid)</text>
+    <text x="12" y="118" class="box-field">FK created_by</text>
+  </g>
+
+  <!-- PAYRUN EMPLOYEES -->
+  <g transform="translate(1380,730)">
+    <rect width="220" height="90" rx="6" fill="#fdece0" stroke="var(--payroll)" stroke-width="2" stroke-dasharray="6 4" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">PAYRUN_EMPLOYEES</text>
+    <line x1="0" y1="34" x2="220" y2="34" stroke="var(--payroll)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK (payrun_id, employee_id)</text>
+    <text x="12" y="72" class="box-field">join table — wizard step 2</text>
+  </g>
+
+  <!-- PAYSLIPS -->
+  <g transform="translate(1620,730)">
+    <rect width="240" height="140" rx="6" fill="#fdece0" stroke="var(--payroll)" stroke-width="3" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">PAYSLIPS</text>
+    <line x1="0" y1="34" x2="240" y2="34" stroke="var(--payroll)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK payrun_id, employee_id</text>
+    <text x="12" y="86" class="box-field">FK contract_id, structure_id</text>
+    <text x="12" y="102" class="box-field">status, worked_days</text>
+    <text x="12" y="122" class="box-field" fill="var(--payroll)">⚡ NO gross/net column —</text>
+  </g>
+
+  <!-- PAYSLIP LINES -->
+  <g transform="translate(1620,850)">
+    <rect width="240" height="130" rx="6" fill="#fdece0" stroke="var(--payroll)" stroke-width="3" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">PAYSLIP_LINES</text>
+    <line x1="0" y1="34" x2="240" y2="34" stroke="var(--payroll)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK payslip_id, salary_rule_id</text>
+    <text x="12" y="86" class="box-field">code, category, sequence</text>
+    <text x="12" y="102" class="box-field">amount</text>
+    <text x="12" y="120" class="box-field" fill="var(--payroll)">⚡ the ledger — totals summed live</text>
+  </g>
+
+  <!-- PAYROLL WARNINGS -->
+  <g transform="translate(1380,970)">
+    <rect width="220" height="110" rx="6" fill="#fdece0" stroke="var(--payroll)" stroke-width="2.5" filter="url(#sketch)"/>
+    <text x="12" y="24" class="box-title">PAYROLL_WARNINGS</text>
+    <line x1="0" y1="34" x2="220" y2="34" stroke="var(--payroll)" stroke-width="1.5" filter="url(#sketch)"/>
+    <text x="12" y="54" class="box-field pk">PK id</text>
+    <text x="12" y="70" class="box-field">FK payslip_id / payrun_id</text>
+    <text x="12" y="86" class="box-field">warning_type, resolved</text>
+  </g>
+
+</svg>
+</div>
+
+</body>
+</html>
