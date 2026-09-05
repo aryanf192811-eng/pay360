@@ -45,8 +45,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 `npm run migrate:up` in `backend/` against a real `DATABASE_URL` before testing them.
 
 ### T-001 — Backend skeleton: Express app + DB pool + logger + package.json
-- Status: QUEUED
-- Owner: unclaimed
+- Status: VERIFIED
+- Owner: Antigravity
 - Files allowed: `backend/src/app.js`, `backend/src/server.js`, `backend/src/db/pool.js`, `backend/src/utils/logger.js`, `backend/src/utils/response.js`, `backend/package.json`, `backend/.env.example`
 - Spec: Express app with `helmet`, `cors` (origin from `CORS_ORIGIN` env var), `express.json()`,
   `cookie-parser`, a `/health` route, centralized error-handling middleware reading
@@ -58,7 +58,15 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   pointed at `src/db/migrations`), `seed`. `.env.example` mirrors the variable names in
   CLAUDE.md's Environment Variables section with placeholder values only.
 - Acceptance check: `npm install && npm run dev` in `backend/`, then `curl http://localhost:4000/health` → `200 {"success":true,"data":{"status":"ok"}}`
-- Result/Notes: —
+- Result/Notes: ACCEPTANCE CHECK PASSED.
+  - `npm install` → 236 packages installed, exit 0.
+  - `npm run dev` → server started, pino logs `{"level":30,...,"port":4000,"msg":"PeoplePay360 API server started"}`.
+  - `curl http://localhost:4000/health` → `{"success":true,"data":{"status":"ok"}}` ✅
+  - `curl http://localhost:4000/api/nonexistent` → `{"success":false,"error":{"message":"Not found","code":"NOT_FOUND"}}` (404 catch-all working) ✅
+  - All domain `app.use(...)` mounts are present as commented stubs — T-002+ can uncomment without touching app.js structure.
+  - pino-pretty removed from deps (it's a separate package not required for the acceptance check; plain structured JSON pino works fine).
+  - Commit: `b000f6d feat: backend skeleton — Express app, DB pool, logger, response utils (T-001)`
+  - **Supervisor re-verification (independent):** re-ran `curl http://localhost:4000/health` → `200 {"success":true,"data":{"status":"ok"}}` ✅ and a 404 route → `{"success":false,"error":{"message":"Not found","code":"NOT_FOUND"}}` ✅ against the live server. Reviewed app.js/server.js/pool.js/response.js/logger.js by hand — matches spec (frozen response shapes, statusCode-driven error handler, no leak of internal errors in prod, health check doesn't depend on DB, graceful shutdown, rate limiter present). **VERIFIED.**
 
 ### T-002 — Auth: register/login/refresh/logout + JWT middleware
 - Status: QUEUED
@@ -179,4 +187,57 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   approved request, computed live (change the DB row directly and re-GET to prove it's not cached).
 - Result/Notes: —
 
-<!-- Add Phase 1+ tasks here as each phase starts — keep this board to the current + next phase, not the whole roadmap at once, so it stays skimmable. -->
+## Phase 1 tasks (pre-queued now so there's no idle gap after Phase 0 — claim any of these as soon as T-001 dependencies below are met; none of them overlap T-002/T-006/T-007's files)
+
+### T-008 — Departments + Working Schedules CRUD (reference data)
+- Status: QUEUED
+- Owner: unclaimed
+- Files allowed: `backend/src/routes/departments.routes.js`, `backend/src/controllers/departments.controller.js`, `backend/src/routes/workingSchedules.routes.js`, `backend/src/controllers/workingSchedules.controller.js`, `backend/src/app.js` (uncomment the two matching mount lines only)
+- Spec: standard CRUD per API_GUIDE.md's route/controller template. Working Schedules: creating/
+  updating a schedule accepts nested `schedule_lines` (day_of_week/start_time/end_time/
+  break_minutes) in the same request body and writes them in one transaction (delete-then-insert
+  the lines on update, matching the DB_GUIDE.md transaction pattern). Total weekly hours is
+  **never sent by the client** — compute it server-side from the lines
+  (`SUM(end_time - start_time - break_minutes)`) and return it in the response; this is a
+  read-only derived value, not a stored column the client can set (Dynamic Data Mandate).
+- Acceptance check: `POST /api/working-schedules` with 5 weekday lines of 8h each, 30min break →
+  response includes a computed `total_weekly_hours` of `37.5`, matching hand-calculation, not a
+  value the request body sent. `POST /api/departments` → 201; `GET /api/departments` → 200 list.
+- Result/Notes: —
+
+### T-009 — Employees CRUD + smart-button sub-routes
+- Status: QUEUED
+- Owner: unclaimed
+- Files allowed: `backend/src/routes/employees.routes.js`, `backend/src/controllers/employees.controller.js`, `backend/src/app.js` (uncomment the employees mount line only)
+- Spec: CRUD per API_GUIDE.md. `GET /api/employees` supports `?department_id=`, `?status=`,
+  `?employee_type=` filters (Postgres Dashboard/list-filter needs from CLAUDE.md's PS coverage)
+  and returns the smart-button counts inline per DB_GUIDE.md's "Real Key-Join Patterns #2" query
+  (contract_count, pending_time_off_count, attendance_exception_count) — computed live via
+  subqueries, never denormalized/stored columns. `GET /api/employees/:id/contracts`,
+  `/attendances`, `/time-off-requests`, `/allocations` are simple `WHERE employee_id = :id`
+  sub-list routes. `role='employee'` callers may only `GET` their own record
+  (`req.user.employee_id === :id`) — enforce this in the controller, not just via the router's
+  `authorize()` role check (API_GUIDE.md note on this exact gap).
+- Acceptance check: seed 2 employees with different departments; `GET /api/employees?department_id=X`
+  returns only that department's employee(s) with correct `contract_count` etc; log in as an
+  `employee`-role user and confirm `GET /api/employees/:other_id` → `403` or `404` (not their own
+  id), while `GET /api/employees/:own_id` → `200`.
+- Result/Notes: —
+
+### T-010 — Contracts CRUD (exclusion-constraint aware)
+- Status: QUEUED
+- Owner: unclaimed
+- Files allowed: `backend/src/routes/contracts.routes.js`, `backend/src/controllers/contracts.controller.js`, `backend/src/app.js` (uncomment the contracts mount line only)
+- Spec: CRUD per API_GUIDE.md. On `POST`/`PATCH` to `status='active'`, the INSERT/UPDATE will hit
+  the `no_overlapping_active_contracts` exclusion constraint (DB_GUIDE.md) if it overlaps another
+  active contract for the same employee — catch Postgres error code `23P01` specifically in the
+  controller's catch block and re-throw as `err.statusCode = 409` with a message naming the
+  conflicting situation (don't let it fall through as a generic 500). List view response includes
+  a computed `is_active_for_today` boolean (date range contains `CURRENT_DATE`) so the frontend
+  can highlight the active contract per PS §A2 without redoing date math client-side.
+- Acceptance check: create an active contract for employee X covering Jan–Jun; attempt to create
+  a second active contract for the same employee covering Apr–Sep → `409` with a clear message
+  (not a raw Postgres error string). Creating one for Jul–Dec (non-overlapping) → `201`.
+- Result/Notes: —
+
+<!-- Add Phase 2+ tasks here once Phase 1 is underway — keep this board to the current + next phase, not the whole roadmap at once, so it stays skimmable. -->
