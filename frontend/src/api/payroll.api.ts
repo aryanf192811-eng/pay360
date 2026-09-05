@@ -122,3 +122,43 @@ export async function fetchPayslipPdfObjectUrl(id: string) {
   const { data } = await apiClient.get(`/api/payslips/${id}/pdf`, { responseType: 'blob' });
   return URL.createObjectURL(data as Blob);
 }
+
+export interface PayslipDiffLine {
+  code: string;
+  name: string;
+  category: 'basic' | 'allowance' | 'gross' | 'deduction' | 'net';
+  from_amount: number;
+  to_amount: number;
+  delta: number;
+  status: 'added' | 'removed' | 'unchanged' | 'increased' | 'decreased';
+}
+
+export interface PayslipDiff {
+  employee: { id: string; first_name: string; last_name: string };
+  from: { id: string; period_start: string; period_end: string; structure_name: string | null };
+  to: { id: string; period_start: string; period_end: string; structure_name: string | null };
+  diff: PayslipDiffLine[];
+}
+
+export async function comparePayslips(id: string, withId: string) {
+  const { data } = await apiClient.get(`/api/payslips/${id}/compare`, { params: { with: withId } });
+  return data.data as PayslipDiff;
+}
+
+export interface SimulationResult {
+  computed: boolean;
+  reason?: string;
+  netAmount?: number;
+  lines: PayslipLine[];
+  warnings: { type: string; message: string }[];
+}
+
+export async function simulatePayslip(payload: {
+  employee_id: string;
+  period_start: string;
+  period_end: string;
+  salary_structure_id: string;
+}) {
+  const { data } = await apiClient.post('/api/payslip-simulations', payload);
+  return data.data as SimulationResult;
+}

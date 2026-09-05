@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, Printer } from 'lucide-react';
-import { getPayslip, fetchPayslipPdfObjectUrl } from '../api/payroll.api';
+import { ArrowLeft, Printer, GitCompare } from 'lucide-react';
+import { getPayslip, fetchPayslipPdfObjectUrl, listPayslips, comparePayslips, type PayslipDiffLine } from '../api/payroll.api';
 import { useAuthStore, PAYROLL_ROLES } from '../store/auth.store';
 import { StatusBadge } from '../components/StatusBadge';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
+import { Select } from '../components/ui/input';
 import { CardSkeleton } from '../components/ui/skeleton';
 import { cn } from '../lib/utils';
 
@@ -26,6 +27,19 @@ export function PayslipDetail() {
   const { data: payslip, isLoading } = useQuery({ queryKey: ['payslip', id], queryFn: () => getPayslip(id!), enabled: !!id });
   const [pdfError, setPdfError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
+  const [compareWithId, setCompareWithId] = useState('');
+
+  const { data: siblingPayslips } = useQuery({
+    queryKey: ['payslips', 'by-employee', payslip?.employee_id],
+    queryFn: () => listPayslips({ employee_id: payslip!.employee_id }),
+    enabled: !!payslip?.employee_id,
+  });
+
+  const { data: diff, isLoading: diffLoading, error: diffError } = useQuery({
+    queryKey: ['payslip-compare', id, compareWithId],
+    queryFn: () => comparePayslips(id!, compareWithId),
+    enabled: !!id && !!compareWithId,
+  });
 
   if (isLoading || !payslip) return <CardSkeleton />;
 
@@ -122,6 +136,75 @@ export function PayslipDetail() {
                   </div>
                 </div>
               )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-8"><GitCompare className="h-[16px] w-[16px]" /> Why did my salary change?</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-12">
+            <span className="text-sm text-text-muted">Compare with</span>
+            <Select
+              className="w-auto"
+              value={compareWithId}
+              onChange={(e) => setCompareWithId(e.target.value)}
+            >
+              <option value="">Select another payslip…</option>
+              {(siblingPayslips ?? [])
+                .filter((p) => p.id !== payslip.id)
+                .map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.period_start} → {p.period_end} ({p.status})
+                  </option>
+                ))}
+            </Select>
+          </div>
+
+          {diffLoading && <div className="mt-16 text-sm text-text-muted">Comparing…</div>}
+          {diffError && (
+            <div className="mt-16 text-sm text-danger">
+              {(diffError as { response?: { data?: { error?: { message?: string } } } })?.response?.data?.error?.message ||
+                'Could not compare these payslips.'}
+            </div>
+          )}
+
+          {diff && (
+            <div className="mt-16 space-y-4">
+              <div className="flex justify-between text-xs text-text-muted">
+                <span>{diff.from.period_start} → {diff.from.period_end}</span>
+                <span>{diff.to.period_start} → {diff.to.period_end}</span>
+              </div>
+              {diff.diff.map((line: PayslipDiffLine) => (
+                <div key={line.code} className="flex items-center justify-between border-b border-border py-12 last:border-0">
+                  <div>
+                    <div className="text-sm font-medium text-text">{line.name}</div>
+                    <div className="text-xs text-text-muted">
+                      {CATEGORY_LABEL[line.category]} · code <span className="font-mono">{line.code}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-16 font-mono text-sm tabular-nums">
+                    <span className="text-text-muted">₹{line.from_amount.toLocaleString()}</span>
+                    <span className="text-text-muted">→</span>
+                    <span className="text-text">₹{line.to_amount.toLocaleString()}</span>
+                    <span
+                      className={cn(
+                        'w-[88px] text-right font-semibold',
+                        line.status === 'increased' || line.status === 'added'
+                          ? 'text-success'
+                          : line.status === 'decreased' || line.status === 'removed'
+                            ? 'text-danger'
+                            : 'text-text-muted'
+                      )}
+                    >
+                      {line.delta > 0 ? '+' : ''}₹{line.delta.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </CardContent>
