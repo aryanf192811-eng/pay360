@@ -81,6 +81,7 @@ app.use('/api/payslip-simulations', require('./routes/payslipSimulations.routes'
 app.use('/api/dashboard',           require('./routes/dashboard.routes'));
 app.use('/api/audit-logs',          require('./routes/auditLogs.routes'));
 app.use('/api/insights',            require('./routes/insights.routes'));
+app.use('/api/ai',                  require('./routes/ai.routes'));
 
 // ─── 404 catch-all ────────────────────────────────────────────────────────────
 
