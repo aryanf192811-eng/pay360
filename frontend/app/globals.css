@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --color-odoo-purple: #714B67;
+  --color-odoo-purple-hover: #5C3D54;
+  --color-odoo-purple-dark: #482F42;
+  --color-odoo-purple-light: #F6EFF4;
+  --color-odoo-purple-50: #FAF7F9;
+
+  --color-odoo-teal: #00A09D;
+  --color-odoo-teal-hover: #008A87;
+  --color-odoo-teal-dark: #006E6B;
+  --color-odoo-teal-light: #E6F6F6;
+  --color-odoo-teal-50: #F0FAF9;
+
+  --color-primary: #714B67;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #00A09D;
+  --color-secondary-foreground: #FFFFFF;
+
+  --color-canvas: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #0F172A;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #0F172A;
+
+  --color-muted: #F1F5F9;
+  --color-muted-foreground: #64748B;
+  --color-accent: #F6EFF4;
+  --color-accent-foreground: #714B67;
+
+  --color-border: #E2E8F0;
+  --color-input: #E2E8F0;
+  --color-ring: #714B67;
+
+  --radius-lg: 0.5rem;
+  --radius-md: 0.375rem;
+  --radius-sm: 0.25rem;
+
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+:root {
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --primary: #714B67;
+  --primary-foreground: #FFFFFF;
+  --secondary: #00A09D;
+  --secondary-foreground: #FFFFFF;
+  --border: #E2E8F0;
+  --radius: 0.5rem;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
