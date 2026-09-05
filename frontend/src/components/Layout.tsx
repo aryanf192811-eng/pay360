@@ -41,8 +41,11 @@ const NAV_ITEMS: NavItem[] = [
       { to: '/dashboard', label: 'Dashboard' },
       { to: '/payroll', label: 'Payruns' },
       { to: '/salary-config', label: 'Structures & Rules' },
+      { to: '/payroll/simulator', label: 'What-If Simulator' },
     ],
   },
+  { label: 'Insights', to: '/insights', roles: HR_ROLES },
+  { label: 'Audit Log', to: '/audit-logs', roles: [ROLES.HR_PAYROLL_MANAGER, ROLES.ADMIN] },
 ];
 
 function NavDropdown({ item }: { item: NavItem }) {

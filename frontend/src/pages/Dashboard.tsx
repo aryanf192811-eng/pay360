@@ -4,6 +4,7 @@ import { Wallet, FileCheck, TrendingUp, CalendarClock, Activity, ArrowUpRight, B
 import { getDashboard } from '../api/dashboard.api';
 import { listDepartments } from '../api/reference.api';
 import { KpiCard } from '../components/KpiCard';
+import { AiAssistantCard } from '../components/AiAssistantCard';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { CardSkeleton } from '../components/ui/skeleton';
 import { Select, Input } from '../components/ui/input';
@@ -216,6 +217,15 @@ export function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <AiAssistantCard
+        filters={{
+          period_start: periodStart || undefined,
+          period_end: periodEnd || undefined,
+          department_id: departmentId || undefined,
+          employee_type: employeeType || undefined,
+        }}
+      />
 
       <Card>
         <CardHeader><CardTitle>Department Overview</CardTitle></CardHeader>

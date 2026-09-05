@@ -20,6 +20,9 @@ import { PayrunDetail } from './pages/PayrunDetail';
 import { PayslipDetail } from './pages/PayslipDetail';
 import { SalaryConfigPage } from './pages/SalaryConfigPage';
 import { Dashboard } from './pages/Dashboard';
+import { WhatIfSimulator } from './pages/WhatIfSimulator';
+import { AuditTimeline } from './pages/AuditTimeline';
+import { InsightsPage } from './pages/InsightsPage';
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
   const { isAuthenticated, isInitializing, user } = useAuthStore();
@@ -190,6 +193,30 @@ export default function App() {
               element={
                 <ProtectedRoute roles={PAYROLL_ROLES}>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payroll/simulator"
+              element={
+                <ProtectedRoute roles={PAYROLL_ROLES}>
+                  <WhatIfSimulator />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/audit-logs"
+              element={
+                <ProtectedRoute roles={[ROLES.HR_PAYROLL_MANAGER, ROLES.ADMIN]}>
+                  <AuditTimeline />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/insights"
+              element={
+                <ProtectedRoute roles={HR_ROLES}>
+                  <InsightsPage />
                 </ProtectedRoute>
               }
             />
