@@ -17,6 +17,19 @@ type LineRow = ScheduleLine;
 
 const EMPTY_LINE: LineRow = { day_of_week: 1, start_time: '09:00', end_time: '17:00', break_minutes: 30 };
 
+// Live preview only — the authoritative total is always recomputed server-side on save
+// (never trust a client-computed number as the stored value). Mirrors the same
+// end-minus-start-minus-break arithmetic so the preview matches what gets saved.
+function calculateWeeklyHours(rows: LineRow[]): number {
+  const total = rows.reduce((sum, line) => {
+    const [sh, sm] = line.start_time.split(':').map(Number);
+    const [eh, em] = line.end_time.split(':').map(Number);
+    const minutes = eh * 60 + em - (sh * 60 + sm) - (line.break_minutes || 0);
+    return sum + Math.max(minutes, 0);
+  }, 0);
+  return Math.round((total / 60) * 100) / 100;
+}
+
 export function WorkingSchedules() {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
@@ -123,9 +136,12 @@ export function WorkingSchedules() {
               <div className="space-y-8">
                 <div className="flex items-center justify-between">
                   <Label>Weekly Pattern</Label>
-                  <Button type="button" size="sm" variant="secondary" onClick={addLine}>
-                    <Plus className="h-[14px] w-[14px]" /> Add Day
-                  </Button>
+                  <div className="flex items-center gap-12">
+                    <span className="font-mono text-sm font-semibold text-primary">{calculateWeeklyHours(lines)}h / week</span>
+                    <Button type="button" size="sm" variant="secondary" onClick={addLine}>
+                      <Plus className="h-[14px] w-[14px]" /> Add Day
+                    </Button>
+                  </div>
                 </div>
                 <div className="space-y-8">
                   {lines.map((line, idx) => (
