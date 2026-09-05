@@ -41,3 +41,10 @@ export const ROLES = {
 export const HR_ROLES: string[] = [ROLES.HR_MANAGER, ROLES.HR_PAYROLL_USER, ROLES.HR_PAYROLL_MANAGER, ROLES.ADMIN];
 export const PAYROLL_ROLES: string[] = [ROLES.HR_PAYROLL_USER, ROLES.HR_PAYROLL_MANAGER, ROLES.ADMIN];
 export const PAYROLL_WRITE_ROLES: string[] = [ROLES.HR_PAYROLL_MANAGER, ROLES.ADMIN];
+
+// Single source of truth for "where does this role land" — every redirect (Landing, Login,
+// ProtectedRoute's role-mismatch fallback, the catch-all route) calls this instead of each
+// carrying its own copy of the role check, so they can't silently drift out of sync.
+export function homeFor(role: string | undefined | null): string {
+  return role === ROLES.EMPLOYEE ? '/my-space' : '/employees';
+}

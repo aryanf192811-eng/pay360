@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Users, FileText, CalendarClock, Clock, Wallet, Settings, LogOut } from 'lucide-react';
-import { useAuthStore, HR_ROLES, PAYROLL_ROLES } from '../store/auth.store';
+import { LayoutDashboard, Users, FileText, CalendarClock, Clock, Wallet, Settings, LogOut, Home } from 'lucide-react';
+import { useAuthStore, ROLES, HR_ROLES, PAYROLL_ROLES } from '../store/auth.store';
 import { cn } from '../lib/utils';
 import { logout as apiLogout } from '../api/auth.api';
 import { useNavigate } from 'react-router-dom';
@@ -12,9 +12,14 @@ interface NavItem {
   roles?: string[]; // undefined = every authenticated role
 }
 
+// Nav visibility is a UX courtesy, not the security boundary — the real boundary is the
+// ProtectedRoute `roles` guard on each route in App.tsx plus API-level authorization
+// (independently verified all session). This list just keeps each role from seeing links to
+// workspaces that aren't theirs.
 const NAV_ITEMS: NavItem[] = [
+  { to: '/my-space', label: 'My Space', icon: Home, roles: [ROLES.EMPLOYEE] },
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: PAYROLL_ROLES },
-  { to: '/employees', label: 'Employees', icon: Users },
+  { to: '/employees', label: 'Employees', icon: Users, roles: HR_ROLES },
   { to: '/contracts', label: 'Contracts', icon: FileText, roles: HR_ROLES },
   { to: '/attendance', label: 'Attendance', icon: Clock },
   { to: '/time-off', label: 'Time Off', icon: CalendarClock },

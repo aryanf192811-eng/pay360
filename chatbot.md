@@ -163,6 +163,33 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - **NEW negative regression:** unauthenticated `POST /register` with `role=admin` → `403 "Only an admin may create privileged-role users"` ✅ (blocked, no regression)
   - Commit: `95ef38c fix: add optionalAuthenticate so admin can register privileged-role users (T-002 revision)`
 
+- **SUPERVISOR FOLLOW-UP FIX (found much later, during T-013/self-service work) — SEVERE, now
+  fixed.** The access-token payload signed here only ever contained `{ sub, role }` —
+  `employee_id` was never included, despite `authenticate()`'s own docstring claiming
+  `req.user = { id, role, employee_id? }`. Every ownership check built on top of this all session
+  (employees/attendances/time-off/payslips controllers, all reading `req.user.employee_id`) was
+  silently comparing `undefined === realEmployeeId` — always false. This went undetected through
+  every prior "employee-role RBAC" verification in this file because every one of those tests
+  only checked the *negative* case (a real employee correctly blocked from someone else's
+  record) — which still passes when the comparison is `undefined !== otherId` — and never the
+  *positive* case (a real, employee-linked account correctly allowed to see their **own**
+  record), which is the one `undefined !== ownId` actually breaks. Caught only when building
+  employee self-service and testing a genuinely employee_id-linked account against their own
+  payslip for the first time, and it 403'd. Fixed in `auth.service.js`
+  (`signAccessToken(userId, role, employeeId)`, both call sites in `login`/`refresh` now pass
+  it) and `middleware/auth.js` (`authenticate`/`optionalAuthenticate` now actually read
+  `payload.employee_id` into `req.user.employee_id`, matching the docstring that was already
+  there). Re-verified broadly, not just for payslips: a real employee-linked account (`Rahul`,
+  freshly linked via SQL for this test since no seeded account had been used for a positive-case
+  check before) now correctly gets `200` on their own payslip/employee-record/attendance-list,
+  while a *different* employee (`Frank`) is still correctly `403`'d from Rahul's payslip — the
+  negative-case protection that was already passing did not regress.
+  - **Lesson generalized for the rest of the build:** every future ownership/self-access check
+    needs its acceptance test to cover the *positive* case with a real, properly-linked account,
+    not only the negative case with an unlinked or different account — the negative case can
+    pass by coincidence (comparing against `undefined`) while the actual feature is completely
+    broken for real users.
+
 ### T-003 — Frontend scaffold: Vite+TS+Tailwind+shadcn init, router shell, auth store
 - Status: VERIFIED
 - Owner: Antigravity

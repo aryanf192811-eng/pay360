@@ -19,7 +19,7 @@ async function authenticate(req, res, next) {
     const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET, {
       algorithms: ['HS256'], // pinned — never allow 'none' or RS256 switching
     });
-    req.user = { id: payload.sub, role: payload.role };
+    req.user = { id: payload.sub, role: payload.role, employee_id: payload.employee_id ?? null };
     return next();
   } catch (err) {
     // jwt.TokenExpiredError, jwt.JsonWebTokenError, etc. — all map to 401
@@ -43,7 +43,7 @@ async function optionalAuthenticate(req, _res, next) {
       const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET, {
         algorithms: ['HS256'],
       });
-      req.user = { id: payload.sub, role: payload.role };
+      req.user = { id: payload.sub, role: payload.role, employee_id: payload.employee_id ?? null };
     } catch {
       // Invalid/expired token on an optional route — ignore, proceed as anonymous
     }

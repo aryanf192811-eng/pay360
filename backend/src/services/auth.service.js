@@ -12,9 +12,15 @@ const ALL_ROLES = ['employee', 'hr_manager', 'hr_payroll_user', 'hr_payroll_mana
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function signAccessToken(userId, role) {
+function signAccessToken(userId, role, employeeId = null) {
+  // employee_id MUST be in the token — every ownership check across the backend
+  // (employees/attendances/time-off/payslips controllers) reads req.user.employee_id, which
+  // authenticate() populates straight from this payload. Omitting it silently breaks every
+  // self-access check for a real employee (they'd never match their own record) while the
+  // negative "someone else's record" checks would still happen to pass — exactly the kind of
+  // bug that only shows up when you test the positive case, not just the negative one.
   return jwt.sign(
-    { sub: userId, role },
+    { sub: userId, role, employee_id: employeeId },
     process.env.JWT_ACCESS_SECRET,
     { algorithm: 'HS256', expiresIn: process.env.JWT_ACCESS_TTL || '15m' }
   );
@@ -103,7 +109,7 @@ async function login(email, password) {
     throw e;
   }
 
-  const accessToken = signAccessToken(user.id, user.role);
+  const accessToken = signAccessToken(user.id, user.role, user.employee_id);
   const { raw: refreshTokenRaw, hash: refreshTokenHash } = signRefreshToken(user.id);
   const expiresAt = refreshTokenExpiresAt();
 
@@ -173,7 +179,7 @@ async function refresh(rawToken) {
 
     await client.query('COMMIT');
 
-    const accessToken = signAccessToken(record.user_id, record.role);
+    const accessToken = signAccessToken(record.user_id, record.role, record.employee_id);
     return { accessToken, refreshTokenRaw: newRaw };
   } catch (e) {
     await client.query('ROLLBACK');

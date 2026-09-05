@@ -3,6 +3,12 @@
 const pool = require('../db/pool');
 const { sendSuccess } = require('../utils/response');
 
+function assertOwnRecordOrPayroll(req, employeeId) {
+  if (req.user.role === 'employee' && req.user.employee_id !== employeeId) {
+    const e = new Error('Employees may only view their own payslips'); e.statusCode = 403; throw e;
+  }
+}
+
 // ─── GET /api/payslips?payrun_id=&employee_id= ────────────────────────────────────────────────
 
 async function list(req, res, next) {
@@ -11,8 +17,15 @@ async function list(req, res, next) {
     const conditions = [];
     const params = [];
 
+    // Employee role only ever sees their own payslips, regardless of query params sent.
+    if (req.user.role === 'employee') {
+      params.push(req.user.employee_id);
+      conditions.push(`ps.employee_id = $${params.length}`);
+    } else if (employee_id) {
+      params.push(employee_id);
+      conditions.push(`ps.employee_id = $${params.length}`);
+    }
     if (payrun_id) { params.push(payrun_id); conditions.push(`ps.payrun_id = $${params.length}`); }
-    if (employee_id) { params.push(employee_id); conditions.push(`ps.employee_id = $${params.length}`); }
 
     const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
 
@@ -46,6 +59,7 @@ async function getById(req, res, next) {
       [req.params.id]
     );
     if (!rows[0]) { const e = new Error('Payslip not found'); e.statusCode = 404; throw e; }
+    assertOwnRecordOrPayroll(req, rows[0].employee_id);
 
     const { rows: lines } = await pool.query(
       `SELECT id, salary_rule_id, code, name, category, sequence, amount
@@ -57,7 +71,7 @@ async function getById(req, res, next) {
   } catch (err) { next(err); }
 }
 
-//  GET /api/payslips/:id/pdf - stream PDF 
+//  GET /api/payslips/:id/pdf - stream PDF
 
 async function getPdf(req, res, next) {
   try {
@@ -71,6 +85,7 @@ async function getPdf(req, res, next) {
       [req.params.id]
     );
     if (!rows[0]) { const e = new Error('Payslip not found'); e.statusCode = 404; throw e; }
+    assertOwnRecordOrPayroll(req, rows[0].employee_id);
 
     const { rows: lines } = await pool.query(
       `SELECT id, salary_rule_id, code, name, category, sequence, amount

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+import { ArrowLeft, Wallet } from 'lucide-react';
 import { login } from '../api/auth.api';
-import { useAuthStore } from '../store/auth.store';
+import { useAuthStore, homeFor } from '../store/auth.store';
 import { Button } from '../components/ui/button';
 import { Input, Label } from '../components/ui/input';
-import { Card, CardContent } from '../components/ui/card';
 
 export function Login() {
   const [email, setEmail] = useState('');
@@ -18,8 +18,8 @@ export function Login() {
     mutationFn: () => login(email, password),
     onSuccess: (data) => {
       setAuth(data.user, data.accessToken);
-      const from = (location.state as { from?: string })?.from || '/employees';
-      navigate(from, { replace: true });
+      const from = (location.state as { from?: string })?.from;
+      navigate(from && from !== '/login' ? from : homeFor(data.user.role), { replace: true });
     },
   });
 
@@ -29,19 +29,49 @@ export function Login() {
       'Login failed');
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg px-16">
-      <Card className="w-full max-w-sm">
-        <CardContent className="pt-32">
-          <div className="mb-24 flex flex-col items-center gap-8">
-            <div className="flex h-40 w-40 items-center justify-center rounded-md bg-primary font-mono text-base font-bold text-white">
-              P360
-            </div>
-            <div className="text-lg font-semibold text-text">PeoplePay360</div>
-            <div className="text-sm text-text-muted">HR &amp; Payroll Operations Platform</div>
+    <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
+      {/* Brand panel — deliberately not a plain centered card, per UI_GUIDE's Ledger identity */}
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-primary p-48 text-white lg:flex">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, white 1.5px, transparent 1.5px)',
+            backgroundSize: '28px 28px',
+          }}
+        />
+        <Link to="/" className="relative flex items-center gap-8 text-sm font-medium text-white/80 hover:text-white">
+          <ArrowLeft className="h-16 w-16" /> Back to overview
+        </Link>
+
+        <div className="relative">
+          <div className="flex h-56 w-56 items-center justify-center rounded-lg bg-white/10 backdrop-blur">
+            <Wallet className="h-28 w-28" />
+          </div>
+          <h1 className="mt-32 text-3xl font-bold leading-tight">
+            Payroll that shows its work.
+          </h1>
+          <p className="mt-16 max-w-sm text-sm text-white/70">
+            Every payslip on this platform traces back to the exact rule that produced it —
+            sign in to see contracts, attendance, and payroll agree with each other.
+          </p>
+        </div>
+
+        <div className="relative font-mono text-xs text-white/50">PeoplePay360 · HR &amp; Payroll Operations</div>
+      </div>
+
+      {/* Form panel */}
+      <div className="flex flex-col items-center justify-center px-24 py-48">
+        <div className="w-full max-w-sm">
+          <div className="mb-32 flex items-center gap-8 lg:hidden">
+            <div className="flex h-32 w-32 items-center justify-center rounded-md bg-primary font-mono text-sm font-bold text-white">P360</div>
+            <span className="text-sm font-semibold text-text">PeoplePay360</span>
           </div>
 
+          <h2 className="text-xl font-bold text-text">Sign in</h2>
+          <p className="mt-4 text-sm text-text-muted">Use the credentials issued by your HR team.</p>
+
           <form
-            className="space-y-16"
+            className="mt-24 space-y-16"
             onSubmit={(e) => {
               e.preventDefault();
               mutation.mutate();
@@ -66,8 +96,8 @@ export function Login() {
               {mutation.isPending ? 'Signing in…' : 'Sign in'}
             </Button>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
