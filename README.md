@@ -112,17 +112,23 @@ All seeded accounts share the password **`SeedPass1!`**.
 | grace.sales@example.com | Employee |
 | heidi.sales@example.com | Employee (part-time) |
 | ivan.c@example.com | Employee (contract) |
+| jack.chen@example.com | Employee |
+| kara.mehta@example.com | Employee |
+| liam.fernandes@example.com | Employee |
 
 `npm run seed` (or `node src/db/seed.js`) rebuilds the *entire* demo dataset from scratch every
 time it's run — it's idempotent and safe to re-run right before a live demo. It seeds:
 
-- 9 employees above, with realistic job positions and bank account numbers (two — Frank and
-  Heidi — deliberately left without one, so `missing_bank_details` warnings are real)
+- 12 employees above (4 each in Engineering / Human Resources / Sales — deliberately even, so
+  filtering Insights to any single department still clears its minimum sample size), with
+  realistic job positions and bank account numbers (two — Frank and Heidi — deliberately left
+  without one, so `missing_bank_details` warnings are real)
 - 2 Salary Structures (`Regular Salary` — HRA/PF/Gross/Net; `Contractor Rate` for Ivan)
-- 9 contracts, including a real raise for Eve (₹85,000 → ₹95,000 on 2026-09-01, modeled as two
+- 12 contracts, including a real raise for Eve (₹85,000 → ₹95,000 on 2026-09-01, modeled as two
   contract rows, never an edit) — Grace is deliberately left with **no** contract at all
-- ~7 weeks of real attendance across every employee (Frank is a genuine statistical outlier, on
-  purpose, for the Insights anomaly detector to find)
+- ~7 weeks of real attendance across every employee (Frank is a genuine statistical outlier by
+  design, for the Insights anomaly detector to find — occasionally a second one turns up
+  naturally too, since the numbers are real, not curated to produce exactly one result)
 - 3 Time Off Types, allocations, and requests covering every status (approved/submitted/refused)
 - 4 payruns computed live by the real payroll engine — July and September go all the way to
   `paid`; August is deliberately left at `computed`, blocked from validation by Grace's real
