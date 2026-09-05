@@ -119,6 +119,13 @@ async function seed() {
       { code: 'EMP-007', first: 'Grace', last: 'Sales', email: 'grace.sales@example.com', dept: 'Sales', type: 'full_time', sched: 'Standard 40h', role: 'employee', position: 'Sales Executive', bank: '000111222007', hire: '2025-05-01' },
       { code: 'EMP-008', first: 'Heidi', last: 'SalesPT', email: 'heidi.sales@example.com', dept: 'Sales', type: 'part_time', sched: 'Part Time 20h', role: 'employee', position: 'Sales Associate', bank: null, hire: '2025-06-01' },
       { code: 'EMP-009', first: 'Ivan', last: 'Contractor', email: 'ivan.c@example.com', dept: 'Engineering', type: 'contract', sched: 'Standard 40h', role: 'employee', position: 'Contract Developer', bank: '000111222009', hire: '2025-03-01' },
+      // EMP-010/011/012 exist purely so Engineering and Sales each clear the Insights anomaly
+      // detector's minimum population size (4) on their own — before these, filtering Insights
+      // to either department (a completely normal thing to click during a demo) always hit the
+      // "not enough data" floor, since Engineering only had 3 people and Sales only had 2.
+      { code: 'EMP-010', first: 'Jack', last: 'Chen', email: 'jack.chen@example.com', dept: 'Engineering', type: 'full_time', sched: 'Standard 40h', role: 'employee', position: 'Software Engineer', bank: '000111222010', hire: '2024-09-01' },
+      { code: 'EMP-011', first: 'Kara', last: 'Mehta', email: 'kara.mehta@example.com', dept: 'Sales', type: 'full_time', sched: 'Standard 40h', role: 'employee', position: 'Sales Representative', bank: '000111222011', hire: '2025-02-01' },
+      { code: 'EMP-012', first: 'Liam', last: 'Fernandes', email: 'liam.fernandes@example.com', dept: 'Sales', type: 'full_time', sched: 'Standard 40h', role: 'employee', position: 'Sales Associate', bank: '000111222012', hire: '2025-04-01' },
     ];
 
     const passwordHash = await bcrypt.hash('SeedPass1!', 10);
@@ -241,6 +248,9 @@ async function seed() {
     // EMP-007 Grace: intentionally no contract.
     await addContract('EMP-008', { position: 'Sales Associate', wage: 35000, structureId: regularStructId, dateStart: '2025-06-01', dateEnd: null, status: 'active' });
     await addContract('EMP-009', { position: 'Contract Developer', wage: 80000, structureId: contractorStructId, dateStart: '2025-03-01', dateEnd: null, status: 'active' });
+    await addContract('EMP-010', { position: 'Software Engineer', wage: 72000, structureId: regularStructId, dateStart: '2024-09-01', dateEnd: null, status: 'active' });
+    await addContract('EMP-011', { position: 'Sales Representative', wage: 64000, structureId: regularStructId, dateStart: '2025-02-01', dateEnd: null, status: 'active' });
+    await addContract('EMP-012', { position: 'Sales Associate', wage: 58000, structureId: regularStructId, dateStart: '2025-04-01', dateEnd: null, status: 'active' });
 
     // 6. Attendance
     // Real check-in/out rows across July 1 -> yesterday for every employee, contractor included —
@@ -252,7 +262,7 @@ async function seed() {
     // detector has a genuine outlier to find against the rest of the population, not a
     // hand-picked "anomalous" flag.
     logger.info('Seeding attendance records...');
-    const attendanceEmployees = ['EMP-001', 'EMP-002', 'EMP-003', 'EMP-004', 'EMP-005', 'EMP-006', 'EMP-007', 'EMP-008', 'EMP-009'];
+    const attendanceEmployees = ['EMP-001', 'EMP-002', 'EMP-003', 'EMP-004', 'EMP-005', 'EMP-006', 'EMP-007', 'EMP-008', 'EMP-009', 'EMP-010', 'EMP-011', 'EMP-012'];
     const rangeStart = new Date('2026-07-01T00:00:00Z');
     const rangeEnd = addDays(TODAY, -1); // through yesterday — "today" itself may be mid-day/unworked yet
 
@@ -332,7 +342,7 @@ async function seed() {
     // approved request below, the leave-runway insight has a real "at risk" balance to surface
     // — not a hardcoded "at risk" flag, just numbers that happen to compute that way.
     logger.info('Seeding time off allocations...');
-    const allocEmployees = ['EMP-001', 'EMP-002', 'EMP-003', 'EMP-004', 'EMP-005', 'EMP-006', 'EMP-007', 'EMP-008'];
+    const allocEmployees = ['EMP-001', 'EMP-002', 'EMP-003', 'EMP-004', 'EMP-005', 'EMP-006', 'EMP-007', 'EMP-008', 'EMP-010', 'EMP-011', 'EMP-012'];
     const allocIds = {};
     for (const code of allocEmployees) {
       const annualAllocated = code === 'EMP-006' ? 3 : 18;
@@ -411,7 +421,7 @@ async function seed() {
       await logAudit(pool, { tableName: 'payruns', recordId: payrunId, userId: actorUserId, action: 'status_change', changedFields: { from: 'validated', to: 'paid' } });
     }
 
-    const regularEmployees = ['EMP-001', 'EMP-002', 'EMP-003', 'EMP-004', 'EMP-005', 'EMP-006', 'EMP-008'];
+    const regularEmployees = ['EMP-001', 'EMP-002', 'EMP-003', 'EMP-004', 'EMP-005', 'EMP-006', 'EMP-008', 'EMP-010', 'EMP-011', 'EMP-012'];
 
     const julyId = await createPayrun('July 2026 Payroll', '2026-07-01', '2026-07-31', regularStructId, regularEmployees);
     await validateAndPay(julyId);
