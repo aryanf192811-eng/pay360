@@ -10,6 +10,42 @@ what's next.
 
 ---
 
+## 2026-09-05 (later still) — T-002 caught a real bug on independent review
+
+T-001 VERIFIED (backend skeleton — Express/pool/logger/response utils, reviewed + re-run by
+supervisor independently, matches spec exactly). T-002 (auth) was submitted with a thorough
+self-report, but supervisor's independent verification (not just reading the diff) found a real
+bug: `/register` never runs any auth middleware, so `req.user` is always undefined, so the
+"authenticated admin can create privileged-role accounts" path is completely dead — every such
+attempt 403s, even from a genuine admin. Proved this by inserting a real admin user via direct
+SQL (bcrypt hash matching the service's own `bcrypt.hash(pw,12)`), logging in for a real token,
+and calling `/register` with that token — still 403. Sent back to `NEEDS_REVISION` in
+chatbot.md with the exact fix (an `optionalAuthenticate` middleware variant that sets `req.user`
+if a valid token is present but never rejects the request) and a new acceptance check that covers
+the positive case the original check missed. **Lesson reinforced: reading a subagent's diff is
+not verification — running the actual scenario is what caught this.** A local test admin user
+(`supervisor-admin@test.com` / `AdminPass1!`, role `admin`) now exists in the dev Postgres DB for
+continued manual testing — not seed data, not committed anywhere, just a supervisor testing
+artifact; T-005's real seed script should still create its own admin properly through whatever
+the fixed registration path ends up being.
+
+Local dev environment confirmed working end-to-end for backend testing: Postgres server running
+locally, `DATABASE_URL=postgresql://postgres:latent2026@localhost:5432/peoplepay360` (real local
+password, in untracked `.env` only), all 20 tables from the migration exist and match DB_GUIDE.md.
+Mermaid ER diagram added to DB_GUIDE.md (renders natively on GitHub) instead of a hand-maintained
+Excalidraw board, per an explicit user ask to visualize the schema — reasoning: a diagram as text
+next to the schema it describes can't drift out of sync the way a separately-maintained drawing
+would. Also addressed a user question about switching to Prisma: declined, staying on raw
+`node-pg` — nothing in the actual PS mandates an ORM, and Prisma hiding the generated SQL cuts
+against the "own the SQL, real technical depth" rationale the whole DB layer was built around.
+
+**What's next:** wait for T-002's revision, verify it the same way (real scenario, not diff
+reading), then continue working through T-003 through T-010 as they land — same verification
+discipline every time: read the code, then actually run the scenario the acceptance check
+describes, including the positive case a spec might not have explicitly called out.
+
+---
+
 ## 2026-09-05 (later) — Repo live, gh authenticated, calculation engine queued
 
 - `main`/`naresh`/`parth` all pushed to `https://github.com/aryanf192811-eng/pay360` and tracking

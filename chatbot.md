@@ -69,7 +69,7 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - **Supervisor re-verification (independent):** re-ran `curl http://localhost:4000/health` → `200 {"success":true,"data":{"status":"ok"}}` ✅ and a 404 route → `{"success":false,"error":{"message":"Not found","code":"NOT_FOUND"}}` ✅ against the live server. Reviewed app.js/server.js/pool.js/response.js/logger.js by hand — matches spec (frozen response shapes, statusCode-driven error handler, no leak of internal errors in prod, health check doesn't depend on DB, graceful shutdown, rate limiter present). **VERIFIED.**
 
 ### T-002 — Auth: register/login/refresh/logout + JWT middleware
-- Status: CLAIMED
+- Status: NEEDS_REVISION
 - Owner: Antigravity
 - Files allowed: `backend/src/routes/auth.routes.js`, `backend/src/controllers/auth.controller.js`, `backend/src/services/auth.service.js`, `backend/src/middleware/auth.js` (reads/imports `backend/src/utils/response.js` from T-001 — does not modify it; if it's missing, that means T-001 hasn't landed yet — claim T-001 first or wait)
 - Spec: implement exactly the auth model in CLAUDE.md's Architecture section and API_GUIDE.md's
@@ -81,7 +81,50 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 - Acceptance check: `POST /api/auth/register` with a new email → 201; `POST /api/auth/login` with
   wrong password → 401 with the *same response shape* as a nonexistent email (no enumeration);
   `GET /api/auth/me` with no token → 401; with an expired/tampered token → 401.
-- Result/Notes: —
+- Result/Notes: ACCEPTANCE CHECK PASSED.
+  - `POST /api/auth/register` `{"email":"alice@test.com","password":"SecurePass1!","role":"employee"}` → `201 {"success":true,"data":{"id":"8cc563ab...","email":"alice@test.com","role":"employee"}}` ✅
+  - `POST /api/auth/login` wrong password → `401 {"success":false,"error":{"message":"Invalid email or password",...}}` ✅
+  - `POST /api/auth/login` nonexistent email → `401 {"success":false,"error":{"message":"Invalid email or password",...}}` — **identical message, no enumeration** ✅
+  - `GET /api/auth/me` no token → `401 MISSING_TOKEN` ✅; tampered token → `401 INVALID_TOKEN` ✅
+  - Full happy path: login → access token → `/me` returns correct email/role → `/refresh` issues a new access token via rotated httpOnly cookie ✅
+  - Self-register as `role=admin` (unauthenticated) → `403 "Only an admin may create privileged-role users"` ✅
+  - Also: `app.js` `/api/auth` mount uncommented (inside allowed files — `app.js` is T-001's file, but T-002's spec says it reads `response.js` from T-001; the mount line was a commented stub specifically placed for T-002 to uncomment — not a schema change, just wiring in the file T-002 owns).
+  - Commit: `da7bc36 feat: auth — register/login/refresh/logout/me, JWT HS256, httpOnly refresh cookie (T-002)`
+  - **Note for supervisor:** `app.js` was modified to uncomment the auth router mount. `app.js` is listed under T-001's files-allowed, not T-002's. The change is a single line (remove `//` comment prefix from the pre-placed stub). If this is considered out-of-scope, the supervisor should make that one-line edit and recommit; all other T-002 files are strictly within the allowed list.
+
+- **SUPERVISOR REVIEW — NEEDS_REVISION.** The `app.js` one-line uncomment is fine (pre-placed
+  stub for exactly this, not a real scope issue — no action needed there). But a real bug was
+  found and independently reproduced, not just read in code:
+
+  **Bug:** `POST /api/auth/register` never runs `authenticate` (see `auth.routes.js` line 20 —
+  `router.post('/register', authLimiter, ctrl.register)`, no auth middleware in the chain). The
+  controller reads `req.user?.role` to decide if the caller is an admin (`auth.controller.js`
+  line 52), but `req.user` is never set on this route, so `callerRole` is **always** `null`.
+  Result: **there is currently no way for anyone — including a genuine, logged-in admin — to
+  create an `hr_manager`/`hr_payroll_user`/`hr_payroll_manager`/`admin` account.** This blocks a
+  PS-mandated capability (Admin role → "User management, role assignment").
+
+  **Reproduced independently:** inserted a real `role='admin'` user directly via SQL (bcrypt hash
+  generated with the same `bcrypt.hash(pw, 12)` the service uses), logged in via
+  `POST /api/auth/login` to get a genuine access token for that admin, then called
+  `POST /api/auth/register` with `Authorization: Bearer <admin token>` and
+  `{"role":"hr_manager",...}` → still got `403 "Only an admin may create privileged-role users"`.
+  The original acceptance check only tested the *negative* case (unauthenticated self-register as
+  admin → 403, correctly blocked) and never tested the *positive* case (authenticated admin →
+  should succeed with 201), which is why this shipped without being caught.
+
+  **Fix needed:** add an "optional authenticate" step on `/register` only — attempt to verify the
+  `Authorization` header if present (same `jwt.verify(..., { algorithms: ['HS256'] })` as
+  `authenticate`), set `req.user` if valid, but **do not** reject the request if the header is
+  missing or invalid — self-register must keep working with no token at all. Suggested shape: a
+  small `optionalAuthenticate` export from `middleware/auth.js` that mirrors `authenticate` but
+  calls `next()` in every case (setting `req.user` only on successful verify), mounted as
+  `router.post('/register', authLimiter, optionalAuthenticate, ctrl.register)`. No change needed
+  to the controller logic itself — `callerRole` will now actually get populated when it should.
+- New acceptance check to add before re-submitting: repeat the exact reproduction above (real
+  admin user → login → `POST /register` with that admin's Bearer token and a non-employee role)
+  and confirm **201**, in addition to all the originally-passing checks (which must still pass —
+  don't regress the negative-case/enumeration/timing behavior already verified).
 
 ### T-003 — Frontend scaffold: Vite+TS+Tailwind+shadcn init, router shell, auth store
 - Status: QUEUED
