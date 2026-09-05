@@ -1,0 +1,99 @@
+import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { ArrowLeft, Printer } from 'lucide-react';
+import { getPayslip, payslipPdfUrl } from '../api/payroll.api';
+import { StatusBadge } from '../components/StatusBadge';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { CardSkeleton } from '../components/ui/skeleton';
+import { cn } from '../lib/utils';
+
+const CATEGORY_LABEL: Record<string, string> = {
+  basic: 'Basic',
+  allowance: 'Allowance',
+  gross: 'Gross',
+  deduction: 'Deduction',
+  net: 'Net',
+};
+
+export function PayslipDetail() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { data: payslip, isLoading } = useQuery({ queryKey: ['payslip', id], queryFn: () => getPayslip(id!), enabled: !!id });
+
+  if (isLoading || !payslip) return <CardSkeleton />;
+
+  const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+  const lines = payslip.lines ?? [];
+  const netLine = [...lines].reverse().find((l) => l.category === 'net');
+
+  return (
+    <div className="space-y-24">
+      <button onClick={() => navigate(-1)} className="flex items-center gap-4 text-sm text-text-muted hover:text-text">
+        <ArrowLeft className="h-14 w-14" /> Back
+      </button>
+
+      <Card>
+        <CardContent className="flex items-center justify-between pt-24">
+          <div>
+            <div className="text-xl font-bold text-text">{payslip.first_name} {payslip.last_name}</div>
+            <div className="font-mono text-xs text-text-muted">{payslip.employee_code}</div>
+            <div className="mt-4 text-sm text-text-muted">{payslip.period_start} → {payslip.period_end} · {payslip.worked_days ?? '—'} worked days</div>
+          </div>
+          <div className="flex items-center gap-12">
+            <StatusBadge status={payslip.status} domain="payslip" />
+            <a href={payslipPdfUrl(payslip.id, baseURL)} target="_blank" rel="noreferrer">
+              <Button variant="secondary" size="sm"><Printer className="h-14 w-14" /> Print Payslip</Button>
+            </a>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader><CardTitle>Salary Computation</CardTitle></CardHeader>
+        <CardContent>
+          {lines.length === 0 ? (
+            <div className="py-32 text-center text-sm text-text-muted">This payslip hasn't been computed yet.</div>
+          ) : (
+            <div className="space-y-4">
+              {/* Calculation Trace — every rule that fired, in the sequence it ran, showing the
+                  real pipeline instead of just a final number. */}
+              {lines.map((line, i) => (
+                <div key={line.id} className="flex items-center justify-between border-b border-border py-12 last:border-0">
+                  <div className="flex items-center gap-12">
+                    <div className="flex h-24 w-24 items-center justify-center rounded-full bg-bg font-mono text-xs text-text-muted">
+                      {i + 1}
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-text">{line.name}</div>
+                      <div className="text-xs text-text-muted">
+                        {CATEGORY_LABEL[line.category]} · code <span className="font-mono">{line.code}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={cn(
+                      'font-mono text-base font-semibold tabular-nums',
+                      line.category === 'deduction' ? 'text-danger' : line.category === 'net' ? 'text-success' : 'text-text'
+                    )}
+                  >
+                    {line.category === 'deduction' ? '−' : ''}₹{Math.abs(Number(line.amount)).toLocaleString()}
+                  </div>
+                </div>
+              ))}
+
+              {netLine && (
+                <div className="mt-16 flex items-center justify-between rounded-md bg-bg px-16 py-16">
+                  <div className="text-base font-semibold text-text">Net Pay</div>
+                  <div className="font-mono text-2xl font-bold tabular-nums text-success">
+                    ₹{Number(netLine.amount).toLocaleString()}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
