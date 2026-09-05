@@ -6,21 +6,23 @@
    identity table exactly. If you change a value here, update UI_GUIDE.md in the same commit. */
 @layer base {
   :root {
-    --bg: #F6F5FC;
+    /* Odoo-purple identity (matches the real Odoo brand palette Naresh's design used —
+       fitting, given this is an Odoo Hackathon build) instead of a generic indigo/emerald pair. */
+    --bg: #F8FAFC;
     --surface: #FFFFFF;
     --surface-raised: #FFFFFF;
-    --surface-dark: #1E1B4B;
-    --surface-dark-foreground: #F1EFFC;
-    --border: #E6E2F5;
-    --text: #1E1B3A;
-    --text-muted: #6B6B85;
+    --surface-dark: #482F42;
+    --surface-dark-foreground: #F6EFF4;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --text-muted: #64748B;
 
-    --primary: #4F46E5;
-    --primary-hover: #4338CA;
-    --primary-light: #EEF0FE;
+    --primary: #714B67;
+    --primary-hover: #5C3D54;
+    --primary-light: #F6EFF4;
 
-    --accent: #059669;
-    --accent-light: #D6F5E7;
+    --accent: #00A09D;
+    --accent-light: #E6F6F6;
     --success: #16A34A;
     --warning: #D97706;
     --danger: #DC2626;
@@ -29,7 +31,7 @@
     --shadow-alpha-sm: 0.06;
     --shadow-alpha-md: 0.10;
     --shadow-alpha-lg: 0.16;
-    --shadow-tint: 243 60% 45%;
+    --shadow-tint: 316 25% 35%;
 
     --radius: 1rem;
   }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import { ArrowLeft, FileText, Clock, CalendarClock, Wallet, Pencil } from 'lucide-react';
 import {
   getEmployee,
@@ -10,6 +11,9 @@ import {
   listEmployeeAllocations,
 } from '../api/employees.api';
 import { StatusBadge } from '../components/StatusBadge';
+import { Avatar } from '../components/Avatar';
+import { Card, CardContent } from '../components/ui/card';
+import { Table, Thead, Tbody, Tr, Th, Td } from '../components/ui/table';
 import { CardSkeleton } from '../components/ui/skeleton';
 import { cn } from '../lib/utils';
 
@@ -28,6 +32,8 @@ export function EmployeeDetail() {
 
   if (isLoading || !employee) return <CardSkeleton />;
 
+  // Odoo-style "smart buttons": each is both a live count and a tab switch — the same real data
+  // that used to sit in a separate, redundant "Quick Stats" grid.
   const smartButtons: { key: Tab; label: string; count: number; icon: typeof FileText }[] = [
     { key: 'contracts', label: 'Contracts', count: contracts?.length ?? 0, icon: FileText },
     { key: 'attendance', label: 'Attendance', count: attendances?.length ?? 0, icon: Clock },
@@ -36,215 +42,203 @@ export function EmployeeDetail() {
   ];
 
   return (
-    <div className="flex-1 w-full max-w-[1440px] mx-auto px-[16px] md:px-[24px] py-[24px] grid grid-cols-1 md:grid-cols-12 gap-[12px] items-start">
+    <div className="flex-1 w-full max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
       {/* Left Sidebar: Profile Card */}
-      <aside className="md:col-span-3 flex flex-col gap-[16px]">
-        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-lg flex flex-col items-center p-[24px] text-center shadow-sm">
-          <div className="flex w-full justify-start mb-2">
-            <button onClick={() => navigate('/employees')} className="flex items-center gap-1 text-[13px] text-[#434654] hover:text-[#172b4d] font-medium">
-              <ArrowLeft className="h-[14px] w-[14px]" /> Back
-            </button>
-          </div>
-          <div className="w-[120px] h-[120px] rounded-full overflow-hidden border-2 border-[#dfe1e6] mb-[16px] bg-[#dedbc2] flex items-center justify-center text-[40px] font-bold text-[#4c5e83] shadow-sm">
-             {employee.first_name.charAt(0)}{employee.last_name.charAt(0)}
-          </div>
-          <h1 className="text-[18px] font-semibold text-[#1d1c0d] mb-[4px]">{employee.first_name} {employee.last_name}</h1>
-          <p className="text-[13px] text-[#4c5e83] font-medium mb-[16px]">{employee.job_position || 'No position'}</p>
-          <div className="mb-[16px]"><StatusBadge status={employee.status} domain="employee" /></div>
-          
-          <div className="w-full border-t border-[#dfe1e6] pt-[16px] flex flex-col gap-[8px] text-left">
-            <div className="flex justify-between items-center">
-              <span className="text-[11px] text-[#737686] uppercase tracking-wider font-medium">Department</span>
-              <span className="text-[13px] text-[#1d1c0d]">{(employee as Record<string, unknown>).department_name as string || 'No department'}</span>
+      <aside className="md:col-span-3 flex flex-col gap-16">
+        <Card>
+          <CardContent className="flex flex-col items-center pt-24 text-center">
+            <div className="mb-8 flex w-full justify-start">
+              <button onClick={() => navigate('/employees')} className="flex items-center gap-4 text-sm font-medium text-text-muted hover:text-text">
+                <ArrowLeft className="h-14 w-14" /> Back
+              </button>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-[11px] text-[#737686] uppercase tracking-wider font-medium">Manager</span>
-              <span className="text-[13px] text-[#1d1c0d]">
-                {(employee as Record<string, unknown>).manager_first_name ? 
-                  `${(employee as Record<string, unknown>).manager_first_name} ${(employee as Record<string, unknown>).manager_last_name}` : 
-                  'No manager'}
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-[11px] text-[#737686] uppercase tracking-wider font-medium">Employee ID</span>
-              <span className="text-[13px] text-[#1d1c0d] font-mono">{employee.employee_code}</span>
-            </div>
-          </div>
-          <button onClick={() => navigate(`/employees/${id}/edit`)} className="mt-[16px] w-full flex items-center justify-center gap-[4px] px-[16px] py-[8px] border border-[#dfe1e6] rounded text-[12px] font-semibold text-[#1d1c0d] hover:bg-[#e7e3ca] transition-colors bg-[#fefefe]">
-            <Pencil className="h-[14px] w-[14px]" /> Edit Profile
-          </button>
-        </div>
+            <Avatar seed={employee.id} size="lg" className="mb-16 h-[96px] w-[96px] text-3xl" initials={`${employee.first_name.charAt(0)}${employee.last_name.charAt(0)}`} />
+            <h1 className="mb-4 text-lg font-semibold text-text">{employee.first_name} {employee.last_name}</h1>
+            <p className="mb-16 text-sm font-medium text-primary">{employee.job_position || 'No position'}</p>
+            <div className="mb-16"><StatusBadge status={employee.status} domain="employee" /></div>
 
-        {/* Quick Stats Bento */}
-        <div className="grid grid-cols-2 gap-[12px]">
-          <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-lg p-[16px] flex flex-col shadow-sm">
-            <span className="text-[11px] text-[#737686] uppercase font-medium mb-[4px]">Contracts</span>
-            <span className="text-[18px] font-semibold text-[#1d1c0d]">{contracts?.length ?? 0}</span>
-          </div>
-          <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-lg p-[16px] flex flex-col shadow-sm">
-            <span className="text-[11px] text-[#737686] uppercase font-medium mb-[4px]">Allocations</span>
-            <span className="text-[18px] font-semibold text-[#3062e1]">{allocations?.length ?? 0}</span>
-          </div>
-        </div>
+            <div className="flex w-full flex-col gap-8 border-t border-border pt-16 text-left">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-wide text-text-muted">Department</span>
+                <span className="text-sm text-text">{(employee as Record<string, unknown>).department_name as string || 'No department'}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-wide text-text-muted">Manager</span>
+                <span className="text-sm text-text">
+                  {(employee as Record<string, unknown>).manager_first_name
+                    ? `${(employee as Record<string, unknown>).manager_first_name} ${(employee as Record<string, unknown>).manager_last_name}`
+                    : 'No manager'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-wide text-text-muted">Employee ID</span>
+                <span className="font-mono text-sm text-text">{employee.employee_code}</span>
+              </div>
+            </div>
+            <button
+              onClick={() => navigate(`/employees/${id}/edit`)}
+              className="mt-16 flex w-full items-center justify-center gap-4 rounded-md border border-border bg-surface px-16 py-8 text-xs font-semibold text-text transition-colors hover:bg-bg"
+            >
+              <Pencil className="h-14 w-14" /> Edit Profile
+            </button>
+          </CardContent>
+        </Card>
       </aside>
 
-      {/* Right Main Area: Tabbed Interface */}
-      <div className="md:col-span-9 bg-[#fefefe] border border-[#dfe1e6] rounded-lg flex flex-col overflow-hidden min-h-[600px] shadow-sm">
-        {/* Tabs Header */}
-        <div className="flex border-b border-[#dfe1e6] bg-[#ffffff] px-[16px] pt-[8px] gap-[16px] overflow-x-auto hide-scrollbar">
-          {smartButtons.map(({ key, label }) => (
-            <button
+      {/* Right Main Area: Smart buttons + tab content */}
+      <div className="md:col-span-9 flex flex-col overflow-hidden rounded-lg border border-border bg-surface shadow-tinted min-h-[600px]">
+        <div className="grid grid-cols-2 gap-8 border-b border-border p-16 sm:grid-cols-4">
+          {smartButtons.map(({ key, label, count, icon: Icon }, i) => (
+            <motion.button
               key={key}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, delay: i * 0.05 }}
               onClick={() => setTab(key)}
               className={cn(
-                'text-[12px] font-semibold pb-[4px] px-[4px] transition-colors cursor-pointer whitespace-nowrap',
-                tab === key ? 'text-[#3062e1] border-b-2 border-[#3062e1]' : 'text-[#434654] hover:text-[#3062e1] border-b-2 border-transparent'
+                'flex flex-col gap-4 rounded-md border px-16 py-12 text-left transition-colors',
+                tab === key ? 'border-primary bg-primary-light' : 'border-border hover:bg-bg'
               )}
             >
-              {label}
-            </button>
+              <div className="flex items-center gap-6 text-text-muted">
+                <Icon className="h-14 w-14" />
+                <span className="text-xs font-medium uppercase tracking-wide">{label}</span>
+              </div>
+              <span className={cn('text-xl font-bold', tab === key ? 'text-primary' : 'text-text')}>{count}</span>
+            </motion.button>
           ))}
         </div>
 
         {/* Tab Content */}
-        <div className="p-0 overflow-x-auto flex-1">
+        <div className="flex-1 overflow-x-auto">
           {tab === 'contracts' && (
-            <table className="w-full text-left border-collapse min-w-[700px]">
-              <thead>
-                <tr className="bg-[#ebecf0] text-[#1d1c0d] text-[12px] font-semibold border-b border-[#dfe1e6]">
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">Position</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap text-right">Wage</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">Start Date</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">End Date</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">Status</th>
+            <Table>
+              <Thead>
+                <tr>
+                  <Th>Position</Th>
+                  <Th className="text-right">Wage</Th>
+                  <Th>Start Date</Th>
+                  <Th>End Date</Th>
+                  <Th>Status</Th>
                 </tr>
-              </thead>
-              <tbody className="text-[13px] text-[#1d1c0d]">
+              </Thead>
+              <Tbody>
                 {!contracts || contracts.length === 0 ? (
-                  <tr><td colSpan={5} className="py-[32px] text-center text-[#737686]">No contracts found.</td></tr>
+                  <tr><Td colSpan={5} className="py-32 text-center text-text-muted">No contracts found.</Td></tr>
                 ) : (
                   contracts.map((c: Record<string, unknown>) => (
-                    <tr key={c.id as string} className="border-b border-[#ebecf0] hover:bg-[#e7e3ca] transition-colors">
-                      <td className="py-[8px] px-[12px] font-medium">
-                        <div className="flex items-center gap-[4px]">
-                          <FileText className="h-[14px] w-[14px] text-[#737686]" />
+                    <Tr key={c.id as string}>
+                      <Td className="font-medium">
+                        <div className="flex items-center gap-4">
+                          <FileText className="h-14 w-14 text-text-muted" />
                           {(c.position as string) || '—'}
                         </div>
-                      </td>
-                      <td className="py-[8px] px-[12px] text-right font-mono text-[#3062e1]">₹{Number(c.wage).toLocaleString()}</td>
-                      <td className="py-[8px] px-[12px]">{c.date_start as string}</td>
-                      <td className="py-[8px] px-[12px] text-[#737686]">{(c.date_end as string) || 'Ongoing'}</td>
-                      <td className="py-[8px] px-[12px]">
-                        <StatusBadge status={c.status as string} domain="contract" />
-                      </td>
-                    </tr>
+                      </Td>
+                      <Td className="text-right font-mono text-primary">₹{Number(c.wage).toLocaleString()}</Td>
+                      <Td>{c.date_start as string}</Td>
+                      <Td className="text-text-muted">{(c.date_end as string) || 'Ongoing'}</Td>
+                      <Td><StatusBadge status={c.status as string} domain="contract" /></Td>
+                    </Tr>
                   ))
                 )}
-              </tbody>
-            </table>
+              </Tbody>
+            </Table>
           )}
 
           {tab === 'attendance' && (
-            <table className="w-full text-left border-collapse min-w-[700px]">
-              <thead>
-                <tr className="bg-[#ebecf0] text-[#1d1c0d] text-[12px] font-semibold border-b border-[#dfe1e6]">
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">Check In</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">Check Out</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap text-right">Worked Hours</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">Status</th>
+            <Table>
+              <Thead>
+                <tr>
+                  <Th>Check In</Th>
+                  <Th>Check Out</Th>
+                  <Th className="text-right">Worked Hours</Th>
+                  <Th>Status</Th>
                 </tr>
-              </thead>
-              <tbody className="text-[13px] text-[#1d1c0d]">
+              </Thead>
+              <Tbody>
                 {!attendances || attendances.length === 0 ? (
-                  <tr><td colSpan={4} className="py-[32px] text-center text-[#737686]">No attendance records found.</td></tr>
+                  <tr><Td colSpan={4} className="py-32 text-center text-text-muted">No attendance records found.</Td></tr>
                 ) : (
                   attendances.map((a: Record<string, unknown>) => (
-                    <tr key={a.id as string} className="border-b border-[#ebecf0] hover:bg-[#e7e3ca] transition-colors">
-                      <td className="py-[8px] px-[12px]">
-                        <div className="flex items-center gap-[4px]">
-                          <Clock className="h-[14px] w-[14px] text-[#737686]" />
+                    <Tr key={a.id as string}>
+                      <Td>
+                        <div className="flex items-center gap-4">
+                          <Clock className="h-14 w-14 text-text-muted" />
                           {new Date(a.check_in as string).toLocaleString()}
                         </div>
-                      </td>
-                      <td className="py-[8px] px-[12px] text-[#737686]">{a.check_out ? new Date(a.check_out as string).toLocaleString() : '—'}</td>
-                      <td className="py-[8px] px-[12px] text-right font-mono">{(a.worked_hours as string) ?? '—'}</td>
-                      <td className="py-[8px] px-[12px]">
-                        <StatusBadge status={a.status as string} domain="attendance" />
-                      </td>
-                    </tr>
+                      </Td>
+                      <Td className="text-text-muted">{a.check_out ? new Date(a.check_out as string).toLocaleString() : '—'}</Td>
+                      <Td className="text-right font-mono">{(a.worked_hours as string) ?? '—'}</Td>
+                      <Td><StatusBadge status={a.status as string} domain="attendance" /></Td>
+                    </Tr>
                   ))
                 )}
-              </tbody>
-            </table>
+              </Tbody>
+            </Table>
           )}
 
           {tab === 'timeoff' && (
-            <table className="w-full text-left border-collapse min-w-[700px]">
-              <thead>
-                <tr className="bg-[#ebecf0] text-[#1d1c0d] text-[12px] font-semibold border-b border-[#dfe1e6]">
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">From Date</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">To Date</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap text-right">Duration (Days)</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">Status</th>
+            <Table>
+              <Thead>
+                <tr>
+                  <Th>From Date</Th>
+                  <Th>To Date</Th>
+                  <Th className="text-right">Duration (Days)</Th>
+                  <Th>Status</Th>
                 </tr>
-              </thead>
-              <tbody className="text-[13px] text-[#1d1c0d]">
+              </Thead>
+              <Tbody>
                 {!requests || requests.length === 0 ? (
-                  <tr><td colSpan={4} className="py-[32px] text-center text-[#737686]">No time off requests found.</td></tr>
+                  <tr><Td colSpan={4} className="py-32 text-center text-text-muted">No time off requests found.</Td></tr>
                 ) : (
                   requests.map((r: Record<string, unknown>) => (
-                    <tr key={r.id as string} className="border-b border-[#ebecf0] hover:bg-[#e7e3ca] transition-colors">
-                      <td className="py-[8px] px-[12px]">
-                         <div className="flex items-center gap-[4px]">
-                          <CalendarClock className="h-[14px] w-[14px] text-[#737686]" />
+                    <Tr key={r.id as string}>
+                      <Td>
+                        <div className="flex items-center gap-4">
+                          <CalendarClock className="h-14 w-14 text-text-muted" />
                           {r.date_from as string}
                         </div>
-                      </td>
-                      <td className="py-[8px] px-[12px] text-[#737686]">{r.date_to as string}</td>
-                      <td className="py-[8px] px-[12px] text-right font-mono">{r.duration as string}</td>
-                      <td className="py-[8px] px-[12px]">
-                        <StatusBadge status={r.status as string} domain="timeOffRequest" />
-                      </td>
-                    </tr>
+                      </Td>
+                      <Td className="text-text-muted">{r.date_to as string}</Td>
+                      <Td className="text-right font-mono">{r.duration as string}</Td>
+                      <Td><StatusBadge status={r.status as string} domain="timeOffRequest" /></Td>
+                    </Tr>
                   ))
                 )}
-              </tbody>
-            </table>
+              </Tbody>
+            </Table>
           )}
 
           {tab === 'allocations' && (
-            <table className="w-full text-left border-collapse min-w-[700px]">
-              <thead>
-                <tr className="bg-[#ebecf0] text-[#1d1c0d] text-[12px] font-semibold border-b border-[#dfe1e6]">
-                  <th className="py-[8px] px-[12px] whitespace-nowrap text-right">Allocated</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap text-right">Taken</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap text-right">Remaining</th>
-                  <th className="py-[8px] px-[12px] whitespace-nowrap">Status</th>
+            <Table>
+              <Thead>
+                <tr>
+                  <Th className="text-right">Allocated</Th>
+                  <Th className="text-right">Taken</Th>
+                  <Th className="text-right">Remaining</Th>
+                  <Th>Status</Th>
                 </tr>
-              </thead>
-              <tbody className="text-[13px] text-[#1d1c0d]">
+              </Thead>
+              <Tbody>
                 {!allocations || allocations.length === 0 ? (
-                  <tr><td colSpan={4} className="py-[32px] text-center text-[#737686]">No allocations found.</td></tr>
+                  <tr><Td colSpan={4} className="py-32 text-center text-text-muted">No allocations found.</Td></tr>
                 ) : (
                   allocations.map((a: Record<string, unknown>) => (
-                    <tr key={a.id as string} className="border-b border-[#ebecf0] hover:bg-[#e7e3ca] transition-colors">
-                      <td className="py-[8px] px-[12px] text-right font-mono">{a.allocated as string}</td>
-                      <td className="py-[8px] px-[12px] text-right font-mono text-[#737686]">{a.taken as string}</td>
-                      <td className="py-[8px] px-[12px] text-right font-mono font-bold text-[#3062e1]">{a.remaining as string}</td>
-                      <td className="py-[8px] px-[12px]">
-                        <StatusBadge status={a.status as string} domain="timeOffAllocation" />
-                      </td>
-                    </tr>
+                    <Tr key={a.id as string}>
+                      <Td className="text-right font-mono">{a.allocated as string}</Td>
+                      <Td className="text-right font-mono text-text-muted">{a.taken as string}</Td>
+                      <Td className="text-right font-mono font-bold text-primary">{a.remaining as string}</Td>
+                      <Td><StatusBadge status={a.status as string} domain="timeOffAllocation" /></Td>
+                    </Tr>
                   ))
                 )}
-              </tbody>
-            </table>
+              </Tbody>
+            </Table>
           )}
         </div>
-        
-        {/* Table Footer Actions */}
-        <div className="border-t border-[#dfe1e6] bg-[#ffffff] p-[16px] flex justify-between items-center mt-auto">
-          <span className="text-[11px] text-[#737686] font-medium">Viewing {tab} records</span>
+
+        <div className="mt-auto border-t border-border p-16 text-xs font-medium text-text-muted">
+          Viewing {tab} records
         </div>
       </div>
     </div>

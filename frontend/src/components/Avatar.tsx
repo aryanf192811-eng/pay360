@@ -21,11 +21,17 @@ const SIZES = {
   lg: { box: 'h-[56px] w-[56px]', icon: 'h-[28px] w-[28px]' },
 };
 
-export function Avatar({ seed, size = 'md', className }: { seed: string; size?: keyof typeof SIZES; className?: string }) {
+const TEXT_SIZES = { sm: 'text-xs', md: 'text-sm', lg: 'text-lg' };
+
+export function Avatar({ seed, size = 'md', initials, className }: { seed: string; size?: keyof typeof SIZES; initials?: string; className?: string }) {
   const { box, icon } = SIZES[size];
   return (
     <div className={cn('flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br shadow-tinted', box, gradientFor(seed), className)}>
-      <User className={cn(icon, 'text-white')} strokeWidth={2} />
+      {initials ? (
+        <span className={cn('font-semibold text-white', TEXT_SIZES[size])}>{initials}</span>
+      ) : (
+        <User className={cn(icon, 'text-white')} strokeWidth={2} />
+      )}
     </div>
   );
 }

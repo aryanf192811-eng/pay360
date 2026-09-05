@@ -58,7 +58,7 @@ export default {
         ring: "var(--primary)",
       },
       fontFamily: {
-        sans: ["Plus Jakarta Sans", "sans-serif"],
+        sans: ["Inter", "sans-serif"],
         mono: ["IBM Plex Mono", "monospace"],
       },
       fontSize: {

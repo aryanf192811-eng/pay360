@@ -13,23 +13,29 @@ Payroll software's core promise is *trustworthy arithmetic, presented calmly*. T
 leans cool and ink-like (like a financial ledger book) with one warm, unmistakable accent used
 only for primary actions — so it never gets confused with a status color.
 
+Revised after reviewing a teammate's (Naresh) independent design pass: adopted the real Odoo
+brand pair (aubergine purple + teal) in place of the original indigo/copper choice — genuinely
+distinctive, and more on-brand for an *Odoo* Hackathon build than an invented pair. Only the two
+identity tokens changed; the semantic colors and the "status colors stay standard-hued" rule
+below are unchanged.
+
 ### Color Tokens
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `--bg` | `#F7F7FB` | `#0E0F14` | page background |
+| `--bg` | `#F8FAFC` | `#0E0F14` | page background |
 | `--surface` | `#FFFFFF` | `#171922` | cards, tables, modals |
 | `--surface-raised` | `#FFFFFF` (shadow) | `#1E212C` | popovers, dropdowns |
-| `--border` | `#E4E4EE` | `#2A2D3A` | dividers, table borders |
-| `--text` | `#171922` | `#EDEDF4` | primary text |
-| `--text-muted` | `#63667A` | `#9497AC` | secondary text, labels |
-| `--primary` | `#2E3192` (Ledger Indigo) | `#6C70E0` | primary actions, active nav, links |
-| `--primary-hover` | `#24266F` | `#8285E8` | hover/pressed |
-| `--accent` | `#E0663D` (Warm Copper) | `#F0855F` | rare: a single hero CTA per screen, never repeated for status |
-| `--success` | `#1E8A5B` | `#3FBE87` | paid, approved, present |
-| `--warning` | `#B4790A` | `#E0A83A` | pending, late, review-needed |
-| `--danger` | `#C13B3B` | `#E86868` | refused, absent, blocking error |
-| `--info` | `#2E6FA3` | `#5FA8D8` | neutral informational badges |
+| `--border` | `#E2E8F0` | `#2A2D3A` | dividers, table borders |
+| `--text` | `#0F172A` | `#EDEDF4` | primary text |
+| `--text-muted` | `#64748B` | `#9497AC` | secondary text, labels |
+| `--primary` | `#714B67` (Odoo Purple) | `#6C70E0` | primary actions, active nav, links |
+| `--primary-hover` | `#5C3D54` | `#8285E8` | hover/pressed |
+| `--accent` | `#00A09D` (Odoo Teal) | `#F0855F` | rare: a single hero CTA per screen, never repeated for status |
+| `--success` | `#16A34A` | `#3FBE87` | paid, approved, present |
+| `--warning` | `#D97706` | `#E0A83A` | pending, late, review-needed |
+| `--danger` | `#DC2626` | `#E86868` | refused, absent, blocking error |
+| `--info` | `#2563EB` | `#5FA8D8` | neutral informational badges |
 
 Semantic colors (success/warning/danger) are intentionally standard-hued — status colors should
 be instantly legible, not stylized. The identity lives in `--primary`/`--accent`, not there.
