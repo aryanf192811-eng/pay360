@@ -57,6 +57,7 @@ export interface EligibleEmployee {
   department_id: string | null;
   employee_type: string;
   has_contract: boolean;
+  has_bank_details: boolean;
 }
 
 export async function draftPayrun(payload: { salary_structure_id: string; period_start: string; period_end: string }) {

@@ -34,7 +34,8 @@ async function listEligibleEmployees(periodStart, periodEnd) {
   const { rows } = await pool.query(
     `SELECT
        e.id, e.employee_code, e.first_name, e.last_name, e.department_id, e.employee_type,
-       (c.id IS NOT NULL) AS has_contract
+       (c.id IS NOT NULL) AS has_contract,
+       (e.bank_account_number IS NOT NULL AND e.bank_account_number <> '') AS has_bank_details
      FROM employees e
      LEFT JOIN contracts c
        ON c.employee_id = e.id

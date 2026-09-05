@@ -102,6 +102,26 @@ async function getDashboardData({ period_start, period_end, department_id, emplo
      GROUP BY warning_type ORDER BY count DESC`
   );
 
+  // Compliance score: % of this period's payslips with zero unresolved warnings against them.
+  // Real, computed from payroll_warnings/payslips — never a hardcoded "100%, Audit Passed" tile.
+  const { rows: complianceRows } = await pool.query(
+    `SELECT
+       COUNT(DISTINCT p.id) AS total,
+       COUNT(DISTINCT p.id) FILTER (
+         WHERE NOT EXISTS (
+           SELECT 1 FROM payroll_warnings w WHERE w.payslip_id = p.id AND w.resolved = false
+         )
+       ) AS clean
+     FROM payslips p
+     JOIN employees e ON e.id = p.employee_id
+     WHERE p.status IN ('computed', 'validated', 'paid') ${payslipWhere}`,
+    payslipParams
+  );
+  const complianceTotal = Number(complianceRows[0].total);
+  const compliance_score = complianceTotal > 0
+    ? Math.round((Number(complianceRows[0].clean) / complianceTotal) * 100)
+    : null;
+
   const pendingParams = [];
   let pendingWhere = `r.status = 'submitted'`;
   if (department_id) { pendingParams.push(department_id); pendingWhere += ` AND e.department_id = $${pendingParams.length}`; }
@@ -129,6 +149,7 @@ async function getDashboardData({ period_start, period_end, department_id, emplo
       average_salary: Math.round(Number(kpiRows[0].average_salary) * 100) / 100,
       approved_time_off_days: Number(timeOffRows[0].approved_days),
       attendance_health_pct,
+      compliance_score,
     },
     salary_cost_by_department: byDept.map((r) => ({ department: r.department, headcount: Number(r.headcount), total_net_cost: Number(r.total_net_cost) })),
     monthly_net_salary_trend: trend.map((r) => ({ month: r.month, total_net: Number(r.total_net) })),

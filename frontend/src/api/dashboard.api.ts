@@ -7,6 +7,7 @@ export interface DashboardData {
     average_salary: number;
     approved_time_off_days: number;
     attendance_health_pct: number;
+    compliance_score: number | null;
   };
   salary_cost_by_department: { department: string; headcount: number; total_net_cost: number }[];
   monthly_net_salary_trend: { month: string; total_net: number }[];
