@@ -12,6 +12,7 @@ import { EmployeeList } from './pages/EmployeeList';
 import { EmployeeDetail } from './pages/EmployeeDetail';
 import { EmployeeForm } from './pages/EmployeeForm';
 import { ContractList } from './pages/ContractList';
+import { WorkingSchedules } from './pages/WorkingSchedules';
 import { AttendanceList } from './pages/AttendanceList';
 import { TimeOffPage } from './pages/TimeOffPage';
 import { PayrollPage } from './pages/PayrollPage';
@@ -135,6 +136,14 @@ export default function App() {
               element={
                 <ProtectedRoute roles={HR_ROLES}>
                   <ContractList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/working-schedules"
+              element={
+                <ProtectedRoute roles={HR_ROLES}>
+                  <WorkingSchedules />
                 </ProtectedRoute>
               }
             />

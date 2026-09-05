@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Users, FileText, CalendarClock, Clock, Wallet, Settings, LogOut, Home, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, CalendarClock, Clock, Wallet, Settings, LogOut, Home, ShieldCheck, CalendarDays } from 'lucide-react';
 import { useAuthStore, ROLES, HR_ROLES, PAYROLL_ROLES } from '../store/auth.store';
 import { cn } from '../lib/utils';
 import { logout as apiLogout } from '../api/auth.api';
@@ -21,6 +21,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: PAYROLL_ROLES },
   { to: '/employees', label: 'Employees', icon: Users, roles: HR_ROLES },
   { to: '/contracts', label: 'Contracts', icon: FileText, roles: HR_ROLES },
+  { to: '/working-schedules', label: 'Working Schedules', icon: CalendarDays, roles: HR_ROLES },
   { to: '/attendance', label: 'Attendance', icon: Clock },
   { to: '/time-off', label: 'Time Off', icon: CalendarClock },
   { to: '/payroll', label: 'Payroll', icon: Wallet, roles: PAYROLL_ROLES },

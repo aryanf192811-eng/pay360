@@ -36,7 +36,17 @@ export async function listSchedules() {
   return data.data as WorkingSchedule[];
 }
 
+export async function getSchedule(id: string) {
+  const { data } = await apiClient.get(`/api/working-schedules/${id}`);
+  return data.data as WorkingSchedule;
+}
+
 export async function createSchedule(payload: { name: string; schedule_type: string; lines: ScheduleLine[] }) {
   const { data } = await apiClient.post('/api/working-schedules', payload);
+  return data.data as WorkingSchedule;
+}
+
+export async function updateSchedule(id: string, payload: { name?: string; schedule_type?: string; lines?: ScheduleLine[] }) {
+  const { data } = await apiClient.patch(`/api/working-schedules/${id}`, payload);
   return data.data as WorkingSchedule;
 }
