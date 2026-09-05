@@ -10,6 +10,92 @@ what's next.
 
 ---
 
+## 2026-09-05 (latest) — Fixed the flow gap, found a critical session-wide auth bug, shipped Prisma+ER artifacts
+
+**Context:** user flagged (correctly, sharply) that the frontend skipped the Landing→Auth→
+role-appropriate-home flow entirely, defaulted everyone to `/employees`, and the login screen
+was a generic centered card. Also flagged that RBAC "felt missing" — backend enforcement was
+real and tested, but the product journey never demonstrated it (employee role saw the same
+generic list HR sees). Was told to stop making ad-hoc live edits and plan properly first — did
+so via `EnterPlanMode`, wrote a plan, got it reviewed (external GPT review pasted into chat gave
+4 solid refinements), revised, got explicit approval, then executed.
+
+**What shipped:**
+- `homeFor(role)` — single shared function in `auth.store.ts` (`employee` → `/my-space`, else →
+  `/employees`) — replaces three previously-separate, could-silently-disagree copies of the same
+  role-routing logic in `Landing.tsx`/`Login.tsx`/`App.tsx`.
+- New `Landing.tsx` (real value-prop page, four real product pillars, CTA to Login) and a
+  rewritten `Login.tsx` (split-screen brand panel + form, not a generic centered card).
+- New `MySpace.tsx` — employee self-service home (today's attendance + check-in button, leave
+  balance, latest payslip, recent attendance, recent payslips linking to detail).
+- Route-level RBAC added for real (previously nav-only): `/employees`, `/employees/:id`,
+  `/contracts` → `HR_ROLES`; `/payroll`, `/payroll/payruns/:id`, `/salary-config`, `/dashboard`
+  → `PAYROLL_ROLES`; `/payroll/payslips/:id` → `employee` + `PAYROLL_ROLES` (employees view their
+  own via MySpace, ownership enforced server-side). `Layout.tsx` nav updated to match.
+- Backend: `employee` role can now access `/api/payslips` (list/detail/pdf), scoped to their own
+  records only (`assertOwnRecordOrPayroll` in `payslips.controller.js`) — the PS role table is
+  silent on this, judgment call made that self-service without seeing your own pay isn't real
+  self-service.
+
+**Critical bug found and fixed — read this before trusting any prior "employee-role RBAC
+verified" claim in this log for anything before this entry:** the JWT access token has, this
+entire session, only ever encoded `{ sub, role }` — `employee_id` was never included, despite
+`authenticate()`'s own docstring already claiming it set `req.user.employee_id`. Every
+self-ownership check built all session (employees, attendances, time-off, payslips) compares
+`req.user.employee_id === recordEmployeeId`, which was silently always `undefined === realId` →
+always `false`. **Every prior verification of "employee can see their own X" in this log was
+never actually tested with a properly employee_id-linked account** — every test used either an
+unlinked account (`regularjoe`, `employee_id: null`) or only checked the negative case (blocked
+from someone else's record, which still passes when comparing against `undefined`). Caught only
+now, building `MySpace.tsx`, when a genuinely linked account (`Rahul`, freshly linked via SQL
+since no prior test had done this) got `403` on his own payslip. Fixed at the source:
+`signAccessToken()` in `auth.service.js` now takes and signs `employee_id`, both call sites
+(`login`, `refresh`) pass it, `authenticate()`/`optionalAuthenticate()` in `middleware/auth.js`
+now populate `req.user.employee_id` from the token. Re-verified broadly post-fix: Rahul's own
+payslip/employee-record/attendance-list all now `200`; Frank (a different employee) still
+correctly `403` on Rahul's payslip — no regression on the negative-case protection.
+**Generalized lesson, applies to all future ownership-check work:** an acceptance test for a
+self-access check must use a real, properly-linked account and test the *positive* case — the
+negative case can pass by pure coincidence while the feature is completely broken.
+
+**Also fixed:** `frontend/tsconfig.app.json`'s `"ignoreDeprecations": "6.0"` was flagged as an
+error by the Antigravity IDE's bundled TypeScript language server. Verified via an actual build
+that the value is correct and required (removing it breaks compilation — TS 6.0.2 itself
+recommends exactly this value to silence a real `baseUrl` deprecation warning). The IDE's bundled
+TS is evidently older than the project's installed 6.0.2 and doesn't recognize "6.0" as valid —
+a cosmetic editor/tooling mismatch, not a real project bug. Left the correct value in place.
+
+**Part B — the two previously-outstanding artifact requests, both delivered:**
+- `backend/prisma/schema.prisma` — generated via `npx prisma@5 db pull` (note: `prisma@latest`
+  now resolves to a completely different "Prisma Developer Platform" CLI paradigm in this
+  timeline, not the classic schema.prisma workflow — had to explicitly pin `@5`) against the
+  live database. Strictly a documentation artifact: prominent "REFERENCE ONLY" header, no
+  `@prisma/client` dependency anywhere, never imported by the app. Genuinely useful side effect:
+  Prisma's own introspection output explicitly says it cannot represent the
+  `no_overlapping_active_contracts` exclusion constraint or most CHECK constraints — direct,
+  tool-reported evidence for the raw-SQL rationale already documented in `DB_GUIDE.md`, now
+  quoted there.
+- `docs/research/db-schema-diagram.html` — self-contained Excalidraw-style ER diagram, hand-drawn
+  look via a pure SVG `feTurbulence`/`feDisplacementMap` filter (no rough.js, no drawing library,
+  per an external review's correct simplification suggestion). Same entities/relationships as
+  DB_GUIDE.md's Mermaid diagram. Sent to the user directly via SendUserFile.
+
+**Playwright/Context7 MCP status:** user added both to `.mcp.json` and tried `/mcp` mid-session;
+confirmed via `ToolSearch` (twice, before and after `/mcp`) that neither is loaded in this
+session — MCP servers load at session start, and `/mcp` did not hot-reload them here. A real
+browser click-through remains unavailable until a session restart. All frontend verification
+this pass was a logical route-table trace (traced every role × every route by hand against the
+actual routing code) plus a clean `npm run build`, not a real click-through — stated plainly
+rather than implied.
+
+**What's next:** Part C (Tier 2 — "why did my salary change?" as the recommended next slice) is
+explicitly deferred per the user's "focus on baseline + flow" instruction — not started, needs a
+fresh go-ahead. T-004 (Postman/newman) still sits at `NEEDS_REVISION` with Antigravity. If a
+session restart happens before the next round, re-run `ToolSearch` for `browser_navigate` to
+confirm Playwright actually loaded before assuming it's available.
+
+---
+
 ## 2026-09-05 (much later) — Full Tier-0 backend push: 10 tasks built/reviewed in one session
 
 **Directive change:** user shifted from "route everything to Antigravity" to "do it yourself
