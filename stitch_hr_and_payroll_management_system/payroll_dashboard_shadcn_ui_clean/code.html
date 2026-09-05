@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-primary-container":"#7c839b","on-primary":"#ffffff","inverse-surface":"#213145","secondary":"#5a5f62","tertiary-fixed-dim":"#4edea3","on-surface":"#0b1c30","tertiary":"#000000","surface-bright":"#f8f9ff","tertiary-fixed":"#6ffbbe","on-tertiary-container":"#009668","on-tertiary":"#ffffff","primary-container":"#131b2e","secondary-container":"#dce0e4","surface-container":"#e5eeff","on-tertiary-fixed-variant":"#005236","on-primary-fixed-variant":"#3f465c","on-surface-variant":"#45464d","on-error":"#ffffff","on-secondary-fixed-variant":"#43474b","surface":"#f8f9ff","on-secondary":"#ffffff","error-container":"#ffdad6","inverse-on-surface":"#eaf1ff","on-tertiary-fixed":"#002113","on-secondary-fixed":"#171c1f","inverse-primary":"#bec6e0","tertiary-container":"#002113","outline":"#76777d","on-secondary-container":"#5e6367","surface-dim":"#cbdbf5","surface-container-lowest":"#ffffff","surface-container-highest":"#d3e4fe","on-error-container":"#93000a","on-primary-fixed":"#131b2e","primary-fixed":"#dae2fd","surface-container-low":"#eff4ff","surface-tint":"#565e74","secondary-fixed":"#dfe3e7","error":"#ba1a1a","surface-variant":"#d3e4fe","background":"#f8f9ff","on-background":"#0b1c30","primary":"#000000","outline-variant":"#c6c6cd","secondary-fixed-dim":"#c3c7cb","primary-fixed-dim":"#bec6e0","surface-container-high":"#dce9ff"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-sm":"0.5rem","space-xl":"2rem","margin-mobile":"1rem","gutter-desktop":"1.5rem","space-md":"1rem","space-lg":"1.5rem","margin-desktop":"2rem","gutter-mobile":"1rem","space-2xl":"3rem","unit":"0.25rem","space-xs":"0.25rem"},fontFamily:{"stat-lg":["Geist"],"headline-md":["Geist"],"caption-sm":["Geist"],"body-medium":["Geist"],"label-caps":["Geist"],"body-base":["Geist"],"headline-lg-mobile":["Geist"],"title-base":["Geist"],"body-bold":["Geist"],"display-lg":["Geist"],"headline-lg":["Geist"],"headline-sm":["Geist"]},fontSize:{"stat-lg":["28px",{lineHeight:"32px",letterSpacing:"-0.02em",fontWeight:"600"}],"headline-md":["24px",{lineHeight:"32px",letterSpacing:"-0.015em",fontWeight:"600"}],"caption-sm":["12px",{lineHeight:"16px",letterSpacing:"0",fontWeight:"400"}],"body-medium":["14px",{lineHeight:"20px",letterSpacing:"0",fontWeight:"500"}],"label-caps":["11px",{lineHeight:"14px",letterSpacing:"0.05em",fontWeight:"600"}],"body-base":["14px",{lineHeight:"20px",letterSpacing:"0",fontWeight:"400"}],"headline-lg-mobile":["24px",{lineHeight:"32px",letterSpacing:"-0.015em",fontWeight:"600"}],"title-base":["16px",{lineHeight:"24px",letterSpacing:"-0.005em",fontWeight:"600"}],"body-bold":["14px",{lineHeight:"20px",letterSpacing:"0",fontWeight:"600"}],"display-lg":["36px",{lineHeight:"40px",letterSpacing:"-0.025em",fontWeight:"700"}],"headline-lg":["30px",{lineHeight:"36px",letterSpacing:"-0.02em",fontWeight:"600"}],"headline-sm":["20px",{lineHeight:"28px",letterSpacing:"-0.01em",fontWeight:"600"}]}}}}</script></head><body class="bg-surface font-body-base text-body-base text-on-surface antialiased min-h-screen"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-lowest border-r border-outline-variant/50 z-50 flex flex-col justify-between"><div class="flex flex-col"><div class="h-14 px-space-md border-b border-outline-variant/40 flex items-center justify-between"><div class="flex items-center gap-space-sm overflow-hidden"><div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-body-bold text-body-medium flex-shrink-0">AI</div><div class="flex flex-col min-w-0 text-left"><div class="flex items-center gap-1 cursor-pointer group"><span class="font-body-medium text-body-medium text-on-surface truncate group-hover:text-primary transition-colors">Acme India Pvt. Ltd.</span><span class="material-symbols-outlined text-caption-sm text-on-surface-variant">expand_more</span></div><span class="font-caption-sm text-caption-sm text-on-surface-variant truncate">CIN: U72200MH2023PTC</span></div></div><button class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-title-base">unfold_more</span></button></div><div class="px-space-md pt-space-md pb-space-xs"><span class="font-label-caps text-label-caps uppercase tracking-wider text-outline">Operations & Payroll</span></div><nav class="px-space-sm space-y-1" data-active-classes="bg-surface-container text-on-surface font-body-medium rounded-md"><a aria-current="page" class="flex items-center gap-space-sm px-3 py-2 transition-all bg-surface-container text-on-surface font-body-medium rounded-md" data-path="dashboard" href="#"><span class="material-symbols-outlined text-title-base">dashboard</span>Dashboard</a><a class="flex items-center gap-space-sm px-3 py-2 rounded-md font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="employees" href="#"><span class="material-symbols-outlined text-title-base">group</span>Employees</a><a class="flex items-center gap-space-sm px-3 py-2 rounded-md font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="payruns-payroll" href="#"><span class="material-symbols-outlined text-title-base">payments</span>Payruns & Payroll</a><a class="flex items-center gap-space-sm px-3 py-2 rounded-md font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="time-off-attendance" href="#"><span class="material-symbols-outlined text-title-base">calendar_clock</span>Time Off & Attendance</a><a class="flex items-center gap-space-sm px-3 py-2 rounded-md font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="salary-rules-setup" href="#"><span class="material-symbols-outlined text-title-base">tune</span>Salary Rules & Setup</a><a class="flex items-center gap-space-sm px-3 py-2 rounded-md font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="statutory-compliance" href="#"><span class="material-symbols-outlined text-title-base">gavel</span>Statutory Compliance</a><a class="flex items-center gap-space-sm px-3 py-2 rounded-md font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="settings" href="#"><span class="material-symbols-outlined text-title-base">settings</span>Settings</a></nav></div><div class="p-space-sm border-t border-outline-variant/40 bg-surface-container-lowest"><div class="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30 flex flex-col gap-1.5"><div class="flex items-center justify-between"><span class="font-label-caps text-label-caps uppercase tracking-wide text-outline">Compliance Status</span><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-body-bold bg-tertiary-container text-on-tertiary-container">FY 24-25</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-on-tertiary-container animate-pulse"></span><span class="font-caption-sm text-caption-sm font-body-medium text-on-surface">EPFO & TDS Compliant</span></div><div class="text-[11px] text-on-surface-variant font-caption-sm">Challans reconciled: Oct 2024</div></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/40 z-40 px-space-lg flex items-center justify-between"><div class="flex items-center gap-space-md"><img alt="Brand logo. - Primary color: #0f172a
+- Font: hankenGrotesk
+- Mode: light
+- Roundness: rounded-md
+" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UWNjhQfDEQll8ZtCLhEfyTo0XM92HQDb_61tmfI5kOIYTFvyzDbb1GIqbLSiqYeiFXe_wMbXFKl0_y6U3UtKUqeMNRic4XVNOrNE7v2HvprgWqRl4-CzGoJ2o48uhyy6gpSR_N0IlOQBkVjq49ZyRgbTEgUOunKkwDdKFgtoReZ3mbnriek4ieufmnG-sv9SI8MKdodWgCRUOkiYmgo8RRwIFooZPeq6LTs1c3V9Il3Y23Wp8iDPnGkw"/><div class="h-4 w-[1px] bg-outline-variant/60"></div><div class="flex items-center gap-2 text-body-medium font-body-medium"><span class="text-on-surface-variant hover:text-on-surface cursor-pointer transition-colors">Acme Portal</span><span class="material-symbols-outlined text-caption-sm text-outline">chevron_right</span><span class="text-on-surface font-body-bold">Payroll Operations</span></div></div><div class="flex items-center gap-space-md"><div class="relative hidden sm:flex items-center"><span class="material-symbols-outlined absolute left-2.5 text-body-medium text-outline pointer-events-none">search</span><input class="h-8 w-64 rounded-md border border-outline-variant/60 bg-surface-container-lowest pl-8 pr-12 text-caption-sm font-body-base text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" placeholder="Search employees, tax rules, PAN..." type="text"/><div class="absolute right-2 pointer-events-none flex items-center"><kbd class="h-4 px-1 rounded border border-outline-variant bg-surface-container font-caption-sm text-[10px] text-on-surface-variant uppercase font-body-medium">⌘K</kbd></div></div><div class="flex items-center gap-1.5"><button class="relative h-8 w-8 rounded-md flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-title-base">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span></button><button class="h-8 w-8 rounded-md flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-title-base">help_outline</span></button></div><div class="h-4 w-[1px] bg-outline-variant/60"></div><div class="flex items-center gap-space-sm"><div class="flex flex-col text-right hidden md:block"><span class="font-body-bold text-body-medium text-on-surface leading-tight">Priya Sharma</span><span class="font-caption-sm text-caption-sm text-on-surface-variant leading-tight">HR Director</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant/60" src="https://lh3.googleusercontent.com/aida/AEtjO1XH7ANaxUxkun0Upg_7eppVlzT-0fIpTxVcKZyoiANT-_mW1wFMU5uO4Nle_YOHMJhkrxJKcdK6MkAocO-eI95xyuRAA36ZKjmoFT7dfzoNIvqk0_TcsuJT67m93hplSFzqqsesX4fp5ImDCYi1XnDaF7jSn8_Y-Lu_h9mimoDuNyrr9Ebp5h6RsfXg2QfFYI0Zqt3owa7XZEnGcnazJKPYB2AnGlkxwJImkbYcl0XOen_QdmJ97HquxQ"/></div></div></header><main class="w-full pt-14 px-space-lg py-space-lg bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Header with Telemetry & Actions -->
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-md mb-space-lg">
+<div class="space-y-1">
+<div class="flex items-center gap-space-sm">
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Payroll Overview</h1>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>
+          Live Cycle
+        </span>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant">
+        Live telemetry, active payrun cycle, and statutory compliance status for Acme India Pvt. Ltd.
+      </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Date Range Indicator -->
+<div class="h-9 px-3 rounded-lg bg-surface-container-lowest shadow-sm flex items-center gap-2 text-on-surface-variant font-body-medium text-caption-sm">
+<span class="material-symbols-outlined text-title-base text-outline">calendar_today</span>
+<span>Oct 1, 2024 – Oct 31, 2024</span>
+</div>
+<!-- Action Buttons -->
+<button class="h-9 px-3.5 rounded-lg bg-surface-container-lowest text-on-surface font-body-medium text-body-medium shadow-sm hover:bg-surface-container-low transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-title-base">download</span>
+<span>Export Report</span>
+</button>
+<button class="h-9 px-3.5 rounded-lg bg-surface-container-lowest text-on-surface font-body-medium text-body-medium shadow-sm hover:bg-surface-container-low transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-title-base">alt_route</span>
+<span>Run Off-Cycle</span>
+</button>
+<button class="h-9 px-4 rounded-lg bg-primary text-on-primary font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-title-base">add</span>
+<span>Process Regular Payrun</span>
+</button>
+</div>
+</div>
+<!-- Top Stats Grid (4 Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md mb-space-lg">
+<!-- Card 1: Total Payroll -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-caption-sm text-caption-sm uppercase tracking-wider text-outline">Total Monthly Payroll</span>
+<div class="font-stat-lg text-stat-lg text-on-surface mt-1 tracking-tight">₹3,95,50,000</div>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-title-base">currency_rupee</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-body-bold bg-surface-container text-on-surface">
+            +3.2%
+          </span>
+<span class="font-caption-sm text-caption-sm text-on-surface-variant">vs Sep 2024</span>
+</div>
+<!-- Inline Sparkline -->
+<svg class="w-20 h-6 text-on-surface" fill="none" viewbox="0 0 80 24">
+<path d="M2 18 L16 16 L30 19 L44 11 L58 13 L78 4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"></path>
+<circle class="fill-current" cx="78" cy="4" r="2.5"></circle>
+</svg>
+</div>
+</div>
+<!-- Card 2: Headcount -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-caption-sm text-caption-sm uppercase tracking-wider text-outline">Active Headcount</span>
+<div class="font-stat-lg text-stat-lg text-on-surface mt-1 tracking-tight">248 Personnel</div>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-title-base">badge</span>
+</div>
+</div>
+<div class="space-y-1 mt-space-md pt-space-xs">
+<div class="flex items-center justify-between font-caption-sm text-caption-sm text-on-surface-variant">
+<span>236 On-site</span>
+<span class="text-outline">•</span>
+<span>12 Remote</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] font-body-medium text-on-tertiary-container">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+<span>100% PAN & Aadhaar verified</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Pending Approvals -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-caption-sm text-caption-sm uppercase tracking-wider text-outline">Pending Approvals</span>
+<div class="font-stat-lg text-stat-lg text-on-surface mt-1 tracking-tight">14 Requests</div>
+</div>
+<div class="w-8 h-8 rounded-lg bg-secondary-container/40 flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-title-base">assignment_late</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs">
+<span class="font-caption-sm text-caption-sm text-on-surface-variant">8 Leaves • 6 Reimb. Claims</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-body-bold bg-secondary-container text-on-secondary-container">
+          Review needed
+        </span>
+</div>
+</div>
+<!-- Card 4: Bank CMS Cutoff -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-caption-sm text-caption-sm uppercase tracking-wider text-outline">RBI CMS Bank Cutoff</span>
+<div class="font-stat-lg text-stat-lg text-on-surface mt-1 tracking-tight">Oct 30, 16:30 IST</div>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-title-base">schedule</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs">
+<span class="inline-flex items-center gap-1 text-[11px] font-body-bold text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+          T-minus 22h 40m
+        </span>
+<span class="font-caption-sm text-caption-sm text-on-surface-variant font-body-medium">HDFC Corp Batch Ready</span>
+</div>
+</div>
+</div>
+<!-- Main Content Grid (8 cols / 4 cols) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Left Column (8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- 1. Active Payrun Stepper Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-space-sm pb-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-headline-sm">account_balance_wallet</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-title-base text-title-base text-on-surface">October 2024 Regular Payrun</span>
+<span class="font-caption-sm text-caption-sm text-on-surface-variant">(Cycle #10)</span>
+</div>
+<p class="font-caption-sm text-caption-sm text-on-surface-variant">Disbursement Target: 31 Oct 2024 • Net Est: ₹2,88,40,000</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-body-bold bg-surface-container text-on-surface">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+              Step 2 of 4 • In Progress
+            </span>
+</div>
+</div>
+<!-- 4-Step Stepper -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-2 pt-space-sm">
+<!-- Step 1: Completed -->
+<div class="p-3 rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Step 01</span>
+<span class="material-symbols-outlined text-caption-sm text-on-tertiary-container">check_circle</span>
+</div>
+<span class="font-body-medium text-caption-sm text-on-surface">Attendance Sync</span>
+<span class="font-caption-sm text-[11px] text-outline">248/248 Biometric LOP locked</span>
+</div>
+<!-- Step 2: Active -->
+<div class="p-3 rounded-lg bg-surface-container shadow-xs flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-on-surface font-body-bold">Step 02 • Active</span>
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+</div>
+<span class="font-body-bold text-caption-sm text-on-surface">Gross-to-Net Calc</span>
+<span class="font-caption-sm text-[11px] text-on-surface-variant">TDS & Slab Recalibration</span>
+</div>
+<!-- Step 3: Pending -->
+<div class="p-3 rounded-lg bg-surface-container-lowest opacity-70 flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-outline">Step 03</span>
+<span class="material-symbols-outlined text-caption-sm text-outline">radio_button_unchecked</span>
+</div>
+<span class="font-body-medium text-caption-sm text-on-surface">Exception Audit</span>
+<span class="font-caption-sm text-[11px] text-outline">3 flags awaiting signoff</span>
+</div>
+<!-- Step 4: Pending -->
+<div class="p-3 rounded-lg bg-surface-container-lowest opacity-70 flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-outline">Step 04</span>
+<span class="material-symbols-outlined text-caption-sm text-outline">radio_button_unchecked</span>
+</div>
+<span class="font-body-medium text-caption-sm text-on-surface">Bank CMS Release</span>
+<span class="font-caption-sm text-[11px] text-outline">HDFC Corp Host-to-Host</span>
+</div>
+</div>
+</div>
+<!-- 2. Payroll Cost Breakdown & Department Allocation -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-space-md gap-2">
+<div>
+<h2 class="font-title-base text-title-base text-on-surface">Payroll Allocation & Statutory Burden</h2>
+<p class="font-caption-sm text-caption-sm text-on-surface-variant">Net take-home versus statutory remittances for active cycle</p>
+</div>
+<!-- Segmented Tab Triggers -->
+<div class="inline-flex p-0.5 rounded-lg bg-surface-container-low font-body-medium text-caption-sm" id="breakdownTabs">
+<button class="px-3 py-1 rounded-md bg-surface-container-lowest text-on-surface shadow-xs transition-all" type="button">Overview</button>
+<button class="px-3 py-1 rounded-md text-on-surface-variant hover:text-on-surface transition-all" type="button">By Department</button>
+<button class="px-3 py-1 rounded-md text-on-surface-variant hover:text-on-surface transition-all" type="button">Statutory Share</button>
+</div>
+</div>
+<!-- Visual Segmented Progress Bar -->
+<div class="space-y-2 mb-space-md">
+<div class="flex items-center justify-between text-caption-sm font-body-medium">
+<span class="text-on-surface">Gross CTC Outflow: <strong class="text-on-surface">₹3,95,50,000</strong></span>
+<span class="text-outline">100% accounted</span>
+</div>
+<div class="h-3 w-full rounded-full bg-surface-container flex overflow-hidden">
+<!-- Net Take Home 72.9% -->
+<div class="bg-primary h-full transition-all" style="width: 72.9%;" title="Net Take Home: 72.9%"></div>
+<!-- TDS Sec 192: 17.8% -->
+<div class="bg-outline h-full transition-all" style="width: 17.8%;" title="TDS (Sec 192): 17.8%"></div>
+<!-- EPFO & ESIC: 9.3% -->
+<div class="bg-on-tertiary-container h-full transition-all" style="width: 9.3%;" title="EPFO & ESIC: 9.3%"></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 text-caption-sm">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded bg-primary flex-shrink-0"></span>
+<div>
+<span class="text-on-surface font-body-medium">Net Take-Home: ₹2.88 Cr</span>
+<div class="text-[11px] text-outline">72.9% of total run</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded bg-outline flex-shrink-0"></span>
+<div>
+<span class="text-on-surface font-body-medium">TDS Sec 192: ₹70.4 L</span>
+<div class="text-[11px] text-outline">17.8% direct tax withholding</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded bg-on-tertiary-container flex-shrink-0"></span>
+<div>
+<span class="text-on-surface font-body-medium">EPFO + ESIC: ₹36.7 L</span>
+<div class="text-[11px] text-outline">9.3% social security</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Department Table Breakdown -->
+<div class="rounded-lg bg-surface-container-low overflow-hidden">
+<table class="w-full text-left text-caption-sm">
+<thead>
+<tr class="bg-surface-container font-label-caps text-label-caps uppercase text-outline">
+<th class="px-4 py-2">Department</th>
+<th class="px-4 py-2 text-right">Headcount</th>
+<th class="px-4 py-2 text-right">Gross Outflow</th>
+<th class="px-4 py-2 text-right">Avg CTC</th>
+<th class="px-4 py-2 text-right">Compliance</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<tr class="hover:bg-surface-container-lowest/60 transition-colors">
+<td class="px-4 py-2.5 font-body-medium text-on-surface flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Engineering & Product
+                </td>
+<td class="px-4 py-2.5 text-right text-on-surface-variant font-mono">112</td>
+<td class="px-4 py-2.5 text-right font-body-bold text-on-surface font-mono">₹1,93,20,000</td>
+<td class="px-4 py-2.5 text-right text-on-surface-variant font-mono">₹1,72,500</td>
+<td class="px-4 py-2.5 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-body-bold bg-surface-container text-on-surface">Cleared</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest/60 transition-colors">
+<td class="px-4 py-2.5 font-body-medium text-on-surface flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                  Sales & Enterprise Growth
+                </td>
+<td class="px-4 py-2.5 text-right text-on-surface-variant font-mono">68</td>
+<td class="px-4 py-2.5 text-right font-body-bold text-on-surface font-mono">₹1,10,40,000</td>
+<td class="px-4 py-2.5 text-right text-on-surface-variant font-mono">₹1,62,350</td>
+<td class="px-4 py-2.5 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-body-bold bg-surface-container text-on-surface">Cleared</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest/60 transition-colors">
+<td class="px-4 py-2.5 font-body-medium text-on-surface flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>
+                  Operations & Support
+                </td>
+<td class="px-4 py-2.5 text-right text-on-surface-variant font-mono">44</td>
+<td class="px-4 py-2.5 text-right font-body-bold text-on-surface font-mono">₹59,00,000</td>
+<td class="px-4 py-2.5 text-right text-on-surface-variant font-mono">₹1,34,090</td>
+<td class="px-4 py-2.5 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-body-bold bg-secondary-container text-on-secondary-container">1 Flag</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest/60 transition-colors">
+<td class="px-4 py-2.5 font-body-medium text-on-surface flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+                  General & Administration
+                </td>
+<td class="px-4 py-2.5 text-right text-on-surface-variant font-mono">24</td>
+<td class="px-4 py-2.5 text-right font-body-bold text-on-surface font-mono">₹32,90,000</td>
+<td class="px-4 py-2.5 text-right text-on-surface-variant font-mono">₹1,37,080</td>
+<td class="px-4 py-2.5 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-body-bold bg-surface-container text-on-surface">Cleared</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- 3. Live Indian Compliance Audit Stream -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div>
+<h2 class="font-title-base text-title-base text-on-surface">Live Compliance Audit Stream</h2>
+<p class="font-caption-sm text-caption-sm text-on-surface-variant">Real-time ledger events recorded by the Indian statutory engine</p>
+</div>
+<button class="text-caption-sm font-body-medium text-on-surface hover:underline" type="button">View Ledger</button>
+</div>
+<div class="space-y-2">
+<!-- Audit Entry 1 -->
+<div class="p-3 rounded-lg bg-surface-container-low flex items-start justify-between gap-3">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-title-base text-on-tertiary-container mt-0.5">verified_user</span>
+<div>
+<div class="font-body-medium text-caption-sm text-on-surface">Biometric LOP Sync Automated</div>
+<div class="font-caption-sm text-[11px] text-on-surface-variant">248 employee punch-cards reconciled against biometric logs; 6 Loss Of Pay adjustments written.</div>
+</div>
+</div>
+<span class="font-caption-sm text-[11px] text-outline whitespace-nowrap">12m ago</span>
+</div>
+<!-- Audit Entry 2 -->
+<div class="p-3 rounded-lg bg-surface-container-low flex items-start justify-between gap-3">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-title-base text-on-surface mt-0.5">savings</span>
+<div>
+<div class="font-body-medium text-caption-sm text-on-surface">Performance Incentive Bonus Credited</div>
+<div class="font-caption-sm text-[11px] text-on-surface-variant">Rohan Verma (EMP-0419) credited ₹3,75,000 Q2 sales incentive; TDS recalculated under higher slab.</div>
+</div>
+</div>
+<span class="font-caption-sm text-[11px] text-outline whitespace-nowrap">48m ago</span>
+</div>
+<!-- Audit Entry 3 -->
+<div class="p-3 rounded-lg bg-surface-container-low flex items-start justify-between gap-3">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-title-base text-outline mt-0.5">account_balance</span>
+<div>
+<div class="font-body-medium text-caption-sm text-on-surface">Karnataka Professional Tax (PT) Table Updated</div>
+<div class="font-caption-sm text-[11px] text-on-surface-variant">Applied ₹200/month deduction standard rule for Bengaluru R&D centre personnel (142 members).</div>
+</div>
+</div>
+<span class="font-caption-sm text-[11px] text-outline whitespace-nowrap">2h ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Action Flags & Anomalies -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-2">
+<h2 class="font-title-base text-title-base text-on-surface">Anomalies</h2>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-[10px]">
+              3 Detected
+            </span>
+</div>
+<span class="font-caption-sm text-caption-sm text-outline">Action required</span>
+</div>
+<div class="space-y-space-sm">
+<!-- Anomaly Item 1 -->
+<div class="p-3 rounded-lg bg-surface-container-low space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] uppercase text-on-surface font-body-bold">Overtime Policy Exceeded</span>
+<span class="text-[11px] text-outline">Ops Depot</span>
+</div>
+<p class="font-caption-sm text-caption-sm text-on-surface-variant leading-snug">
+              2 supervisors clocked 46 OT hours, exceeding Maharashtra Shops & Est. Act weekly cap.
+            </p>
+<div class="flex items-center justify-end gap-3 pt-1">
+<button class="font-body-bold text-[11px] text-on-surface hover:underline" type="button">Dismiss</button>
+<button class="h-6 px-2.5 rounded bg-surface-container text-on-surface font-body-medium text-[11px] hover:bg-surface-container-high transition-colors" type="button">
+                Review OT
+              </button>
+</div>
+</div>
+<!-- Anomaly Item 2 -->
+<div class="p-3 rounded-lg bg-surface-container-low space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] uppercase text-on-surface font-body-bold">Prorated Mid-Month Joining</span>
+<span class="text-[11px] text-outline">Eng Lead</span>
+</div>
+<p class="font-caption-sm text-caption-sm text-on-surface-variant leading-snug">
+              Kavita Rao joined Oct 17. Calculated 15 days gross with partial EPF contribution threshold.
+            </p>
+<div class="flex items-center justify-end gap-3 pt-1">
+<button class="h-6 px-2.5 rounded bg-surface-container text-on-surface font-body-medium text-[11px] hover:bg-surface-container-high transition-colors" type="button">
+                Verify Breakup
+              </button>
+</div>
+</div>
+<!-- Anomaly Item 3 -->
+<div class="p-3 rounded-lg bg-surface-container-low space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] uppercase text-on-surface font-body-bold">Form 12BB Declaration Missing</span>
+<span class="text-[11px] text-outline">19 Staff</span>
+</div>
+<p class="font-caption-sm text-caption-sm text-on-surface-variant leading-snug">
+              19 employees opted for Old Regime without HRA / 80C proof submission. Default TDS kicks in.
+            </p>
+<div class="flex items-center justify-end gap-3 pt-1">
+<button class="h-6 px-2.5 rounded bg-primary text-on-primary font-body-medium text-[11px] hover:opacity-90 transition-opacity" type="button">
+                Send Reminders
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Statutory Remittances Schedule -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<h2 class="font-title-base text-title-base text-on-surface">Statutory Remittances</h2>
+<span class="font-caption-sm text-caption-sm text-outline">Q3 FY 24-25</span>
+</div>
+<div class="space-y-space-sm">
+<!-- Row 1: TDS -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low">
+<div class="space-y-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-body-medium text-caption-sm text-on-surface">TDS Sec 192</span>
+<span class="font-caption-sm text-[10px] px-1 rounded bg-surface-container text-on-surface-variant">Challan 281</span>
+</div>
+<div class="font-caption-sm text-[11px] text-outline">Due: Nov 07, 2024</div>
+</div>
+<div class="text-right space-y-0.5">
+<div class="font-body-bold text-caption-sm text-on-surface font-mono">₹45,15,000</div>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-body-bold bg-surface-container text-on-surface">
+                Ready
+              </span>
+</div>
+</div>
+<!-- Row 2: EPFO -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low">
+<div class="space-y-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-body-medium text-caption-sm text-on-surface">EPFO Monthly ECR</span>
+<span class="font-caption-sm text-[10px] px-1 rounded bg-surface-container text-on-surface-variant">Unified Portal</span>
+</div>
+<div class="font-caption-sm text-[11px] text-outline">Due: Nov 15, 2024</div>
+</div>
+<div class="text-right space-y-0.5">
+<div class="font-body-bold text-caption-sm text-on-surface font-mono">₹21,80,000</div>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-body-bold bg-surface-container text-on-surface">
+                Scheduled
+              </span>
+</div>
+</div>
+<!-- Row 3: ESIC & PT -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low">
+<div class="space-y-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-body-medium text-caption-sm text-on-surface">ESIC & Professional Tax</span>
+<span class="font-caption-sm text-[10px] px-1 rounded bg-surface-container text-on-surface-variant">State Dep</span>
+</div>
+<div class="font-caption-sm text-[11px] text-outline">Due: Nov 15, 2024</div>
+</div>
+<div class="text-right space-y-0.5">
+<div class="font-body-bold text-caption-sm text-on-surface font-mono">₹3,45,000</div>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-body-bold bg-surface-container text-on-surface">
+                Draft
+              </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Operations & Statutory Tools -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<h2 class="font-title-base text-title-base text-on-surface pb-space-sm">Operations Tools</h2>
+<div class="grid grid-cols-1 gap-2">
+<a class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors group" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-title-base text-on-surface">receipt_long</span>
+<span class="font-body-medium text-caption-sm text-on-surface">Download Tally / ERP Journal</span>
+</div>
+<span class="material-symbols-outlined text-caption-sm text-outline group-hover:text-on-surface transition-colors">arrow_forward</span>
+</a>
+<a class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors group" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-title-base text-on-surface">featured_seasonal_and_gifts</span>
+<span class="font-body-medium text-caption-sm text-on-surface">Diwali Festive Bonus Run</span>
+</div>
+<span class="material-symbols-outlined text-caption-sm text-outline group-hover:text-on-surface transition-colors">arrow_forward</span>
+</a>
+<a class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors group" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-title-base text-on-surface">description</span>
+<span class="font-body-medium text-caption-sm text-on-surface">Form 16 Part A & B Portal</span>
+</div>
+<span class="material-symbols-outlined text-caption-sm text-outline group-hover:text-on-surface transition-colors">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Micro-interaction for Segmented Tabs
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabContainer = document.getElementById('breakdownTabs');
+    if (!tabContainer) return;
+    const buttons = tabContainer.querySelectorAll('button');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => {
+          b.className = 'px-3 py-1 rounded-md text-on-surface-variant hover:text-on-surface transition-all';
+        });
+        btn.className = 'px-3 py-1 rounded-md bg-surface-container-lowest text-on-surface shadow-xs transition-all';
+      });
+    });
+  });
+</script></main></div></body></html>

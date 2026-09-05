@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "primary-container": "#766e9c", "tertiary-fixed-dim": "#cdbff4", "tertiary": "#605483", "on-tertiary-container": "#fffaff", "on-primary": "#ffffff", "on-background": "#1b1b20", "on-secondary-container": "#64636b", "surface-container": "#efedf4", "error-container": "#ffdad6", "surface-variant": "#e3e1e8", "primary": "#5d5682", "secondary-container": "#e4e1ea", "on-primary-fixed": "#1c153e", "error": "#ba1a1a", "on-tertiary": "#ffffff", "on-tertiary-fixed-variant": "#4b406d", "secondary-fixed": "#e4e1ea", "tertiary-container": "#796d9d", "on-error-container": "#93000a", "inverse-on-surface": "#f2f0f7", "on-secondary": "#ffffff", "outline": "#79767f", "on-primary-fixed-variant": "#48416c", "on-secondary-fixed": "#1b1b21", "background": "#faf8ff", "surface-container-lowest": "#ffffff", "surface-container-high": "#e9e7ee", "surface-container-highest": "#e3e1e8", "on-surface": "#1b1b20", "surface-dim": "#dbd9e0", "primary-fixed-dim": "#cac0f3", "inverse-primary": "#cac0f3", "surface": "#faf8ff", "inverse-surface": "#2f3035", "on-surface-variant": "#48454e", "surface-tint": "#605985", "on-primary-container": "#fffaff", "primary-fixed": "#e6deff", "tertiary-fixed": "#e8ddff", "secondary-fixed-dim": "#c8c5cd", "on-tertiary-fixed": "#1f133e", "on-secondary-fixed-variant": "#47464d", "outline-variant": "#c9c5cf", "surface-container-low": "#f5f3fa", "surface-bright": "#faf8ff", "on-error": "#ffffff", "secondary": "#5e5e65" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "space-xl": "2rem", "layout-margin-mobile": "1.25rem", "space-2xs": "0.25rem", "layout-margin-desktop": "4rem", "space-xs": "0.5rem", "gutter-desktop": "1.5rem", "container-max-width": "80rem", "space-lg": "1.5rem", "space-2xl": "3rem", "layout-margin-tablet": "2rem", "space-sm": "0.75rem", "space-md": "1rem", "space-4xl": "6rem", "gutter-mobile": "1rem", "space-3xl": "4.5rem" }, "fontFamily": { "label-md": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-xl": ["Plus Jakarta Sans"], "stat-metric": ["Plus Jakarta Sans"], "label-caps": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"] }, "fontSize": { "label-md": ["0.875rem", {"lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "500"}], "display-hero-mobile": ["2.75rem", {"lineHeight": "1.1", "letterSpacing": "-0.025em", "fontWeight": "800"}], "headline-sm": ["1.125rem", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}], "body-md": ["0.9375rem", {"lineHeight": "1.55", "letterSpacing": "0", "fontWeight": "400"}], "headline-lg": ["2rem", {"lineHeight": "1.25", "letterSpacing": "-0.015em", "fontWeight": "700"}], "headline-md": ["1.5rem", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}], "headline-xl": ["2.75rem", {"lineHeight": "1.15", "letterSpacing": "-0.02em", "fontWeight": "700"}], "stat-metric": ["3.25rem", {"lineHeight": "1", "letterSpacing": "-0.03em", "fontWeight": "700"}], "label-caps": ["0.6875rem", {"lineHeight": "1.2", "letterSpacing": "0.08em", "fontWeight": "700"}], "display-hero": ["4.5rem", {"lineHeight": "1.05", "letterSpacing": "-0.03em", "fontWeight": "800"}], "headline-xl-mobile": ["2rem", {"lineHeight": "1.2", "letterSpacing": "-0.015em", "fontWeight": "700"}], "body-sm": ["0.8125rem", {"lineHeight": "1.5", "letterSpacing": "0.005em", "fontWeight": "400"}], "body-lg": ["1.125rem", {"lineHeight": "1.6", "letterSpacing": "-0.005em", "fontWeight": "400"}] } } } };</script></head><body class="bg-background font-body-md text-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between py-space-lg px-space-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-sm"><img alt="Brand logo. - Primary color: #0f172a
+- Font: hankenGrotesk
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UWNjhQfDEQll8ZtCLhEfyTo0XM92HQDb_61tmfI5kOIYTFvyzDbb1GIqbLSiqYeiFXe_wMbXFKl0_y6U3UtKUqeMNRic4XVNOrNE7v2HvprgWqRl4-CzGoJ2o48uhyy6gpSR_N0IlOQBkVjq49ZyRgbTEgUOunKkwDdKFgtoReZ3mbnriek4ieufmnG-sv9SI8MKdodWgCRUOkiYmgo8RRwIFooZPeq6LTs1c3V9Il3Y23Wp8iDPnGkw"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">HRNest</span><span class="font-label-caps text-label-caps text-primary tracking-wider uppercase">Enterprise HR</span></div></div><nav class="flex flex-col gap-space-2xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold shadow-sm"><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full transition-all bg-primary-container text-on-primary-container font-semibold shadow-sm" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="employees" href="#"><span class="material-symbols-outlined text-[20px]">badge</span><span class="font-label-md text-label-md">Employees</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="payruns-and-payroll" href="#"><span class="material-symbols-outlined text-[20px]">payments</span><span class="font-label-md text-label-md">Payruns &amp; Payroll</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="time-off-and-attendance" href="#"><span class="material-symbols-outlined text-[20px]">calendar_today</span><span class="font-label-md text-label-md">Time Off &amp; Attendance</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="salary-rules-and-setup" href="#"><span class="material-symbols-outlined text-[20px]">tune</span><span class="font-label-md text-label-md">Salary Rules &amp; Setup</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="statutory-compliance" href="#"><span class="material-symbols-outlined text-[20px]">verified_user</span><span class="font-label-md text-label-md">Statutory Compliance</span></a></nav></div><div class="px-space-xs"><div class="bg-surface-container-lowest rounded-DEFAULT p-space-md shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex items-start gap-space-sm"><span class="material-symbols-outlined text-primary text-[20px] mt-0.5">shield</span><div class="flex flex-col gap-space-2xs"><span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Compliance Status</span><span class="font-body-sm text-body-sm text-on-surface font-semibold">EPFO &amp; TDS Compliant</span><span class="font-label-caps text-label-caps text-primary">FY 2024-25</span></div></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-space-xl flex items-center justify-between"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full cursor-pointer"><span class="material-symbols-outlined text-primary text-[18px]">corporate_fare</span><span class="font-label-md text-label-md text-on-surface font-medium">Acme India Pvt. Ltd. (Bengaluru HQ)</span><span class="material-symbols-outlined text-on-surface-variant text-[16px]">expand_more</span></div></div><div class="flex items-center gap-space-lg"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-space-md text-on-surface-variant text-[18px]">search</span><input class="w-72 bg-surface-container-low pl-10 pr-space-md py-space-xs rounded-full font-body-sm text-body-sm text-on-surface placeholder-on-surface-variant outline-none focus:bg-surface-container transition-colors" placeholder="Search employees, payroll, PAN..." type="text"/></div><div class="relative flex items-center"><button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span></button><span class="absolute top-1 right-1 w-2.5 h-2.5 bg-error rounded-full ring-2 ring-surface"></span></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1XH7ANaxUxkun0Upg_7eppVlzT-0fIpTxVcKZyoiANT-_mW1wFMU5uO4Nle_YOHMJhkrxJKcdK6MkAocO-eI95xyuRAA36ZKjmoFT7dfzoNIvqk0_TcsuJT67m93hplSFzqqsesX4fp5ImDCYi1XnDaF7jSn8_Y-Lu_h9mimoDuNyrr9Ebp5h6RsfXg2QfFYI0Zqt3owa7XZEnGcnazJKPYB2AnGlkxwJImkbYcl0XOen_QdmJ97HquxQ"/><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface font-medium leading-none">Priya Sharma</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">HR Director</span></div></div></div></header><main class="relative pt-16 w-full bg-background min-h-screen"><div class="flex flex-col w-full">
+<!-- Sub-Header Context Bar -->
+<div class="px-space-xl pt-space-lg pb-space-sm flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div>
+<div class="flex items-center gap-space-xs mb-space-2xs">
+<span class="font-label-caps text-label-caps uppercase tracking-widest text-primary font-bold">Executive Suite</span>
+<span class="text-outline-variant text-[10px]">•</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          Live Telemetry Active • Synced 12s ago
+        </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Workforce &amp; Payroll Telemetry</h1>
+</div>
+<div class="flex items-center gap-space-sm flex-wrap">
+<!-- Pay Cycle Selector -->
+<div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded-full shadow-[0_4px_16px_rgba(118,110,156,0.06)]">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_month</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">October 2024</span>
+<span class="px-space-xs py-0.5 bg-primary-fixed text-on-primary-fixed rounded-full font-label-caps text-label-caps font-bold uppercase tracking-wider">Active Run</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] cursor-pointer">arrow_drop_down</span>
+</div>
+<!-- Quick Action: Export / Download All ZIP -->
+<button class="flex items-center gap-space-xs bg-primary text-on-primary px-space-md py-space-xs rounded-full shadow-[0_8px_20px_-4px_rgba(93,86,130,0.3)] hover:opacity-95 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">folder_zip</span>
+<span class="font-label-md text-label-md font-medium">Download All ZIP</span>
+</button>
+</div>
+</div>
+<!-- Primary Metric Grid (5 KPIs) -->
+<div class="px-space-xl py-space-md grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-md">
+<!-- Card 1: Net Salary Paid -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-md shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex flex-col justify-between hover:translate-y-[-2px] transition-transform">
+<div class="flex items-start justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Total Net Salary Paid</span>
+<span class="p-1.5 rounded-full bg-primary-fixed text-on-primary-fixed">
+<span class="material-symbols-outlined text-[16px]">payments</span>
+</span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">₹2,88,76,500</span>
+</div>
+<span class="font-body-sm text-body-sm text-primary font-medium">₹2.88 Cr • 99.4% Disbursed</span>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t-0">
+<span class="inline-flex items-center gap-1 font-label-caps text-label-caps text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> +3.4% MoM
+        </span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Take-home 73.2%</span>
+</div>
+</div>
+<!-- Card 2: Payslips Generated -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-md shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex flex-col justify-between hover:translate-y-[-2px] transition-transform">
+<div class="flex items-start justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Payslips Generated</span>
+<span class="p-1.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span>
+</span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">248 / 248</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mt-1.5">
+<div class="bg-primary h-full rounded-full" style="width: 100%;"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-emerald-700 font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> 100% Delivered
+        </span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Zero Failures</span>
+</div>
+</div>
+<!-- Card 3: Average Monthly Salary -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-md shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex flex-col justify-between hover:translate-y-[-2px] transition-transform">
+<div class="flex items-start justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Average Salary</span>
+<span class="p-1.5 rounded-full bg-secondary-fixed text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[16px]">analytics</span>
+</span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">₹1,59,475</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ mo</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Annual CTC ₹19.1 LPA</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 font-label-caps text-label-caps text-primary bg-primary-fixed px-2 py-0.5 rounded-full font-bold">
+          Tech ₹22.5L
+        </span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">+4.8% Ind. Bmk</span>
+</div>
+</div>
+<!-- Card 4: Approved Time Off -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-md shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex flex-col justify-between hover:translate-y-[-2px] transition-transform">
+<div class="flex items-start justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Approved Time Off</span>
+<span class="p-1.5 rounded-full bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">event_available</span>
+</span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">84 Days</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">18 Staff Active on Leave</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-tertiary font-bold bg-tertiary-fixed px-2 py-0.5 rounded-full">
+          4 Pending Sign-off
+        </span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">₹4.2L Provision</span>
+</div>
+</div>
+<!-- Card 5: Attendance Health -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-md shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex flex-col justify-between hover:translate-y-[-2px] transition-transform">
+<div class="flex items-start justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Attendance Health</span>
+<span class="p-1.5 rounded-full bg-emerald-100 text-emerald-800">
+<span class="material-symbols-outlined text-[16px]">fingerprint</span>
+</span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">98.2%</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">236 / 241 Scheduled Today</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-bold">
+          218 Biometric
+        </span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">18 Geotagged</span>
+</div>
+</div>
+</div>
+<!-- Main Asymmetric Deep-Dive Grid -->
+<div class="px-space-xl py-space-sm grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- LEFT MAIN COLUMN: 8 Columns -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Module 1: High-Contrast Executive Dark Inset Section (Real-Time Payroll Breakdown) -->
+<div class="bg-inverse-surface text-inverse-on-surface rounded-lg p-space-xl shadow-[0_16px_36px_-6px_rgba(30,30,36,0.25)] relative overflow-hidden">
+<!-- Ambient subtle glow -->
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-primary-container opacity-20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm relative z-10 mb-space-lg">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-caps text-label-caps uppercase tracking-widest text-primary-fixed font-bold">Disbursement Architecture</span>
+<span class="px-2 py-0.5 rounded-full bg-white/10 text-white font-label-caps text-label-caps">CMS Direct v4.2</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-white font-bold tracking-tight mt-0.5">Real-Time Payroll &amp; Tax Levies</h2>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-label-caps text-label-caps font-semibold">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              Rail Ready
+            </span>
+</div>
+</div>
+<!-- 3-Pillar Breakdown Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md relative z-10 mb-space-lg">
+<div class="bg-white/5 backdrop-blur-md rounded-DEFAULT p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-slate-400">Gross CTC Outlay</span>
+<span class="material-symbols-outlined text-primary-fixed text-[18px]">account_balance</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-white font-bold">₹3,95,24,000</span>
+<span class="font-body-sm text-body-sm text-slate-400 mt-1">₹3.95 Cr Total Budget</span>
+</div>
+<div class="bg-white/5 backdrop-blur-md rounded-DEFAULT p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-slate-400">Statutory Levies &amp; TDS</span>
+<span class="material-symbols-outlined text-tertiary-fixed text-[18px]">account_balance_wallet</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-white font-bold">₹78,32,150</span>
+<span class="font-body-sm text-body-sm text-slate-400 mt-1">EPFO ₹28.1L • TDS u/s 192 ₹50.2L</span>
+</div>
+<div class="bg-primary/30 backdrop-blur-md rounded-DEFAULT p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-primary-fixed font-bold">Net Disbursable</span>
+<span class="material-symbols-outlined text-white text-[18px]">verified</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-white font-bold">₹2,88,76,500</span>
+<span class="font-body-sm text-body-sm text-primary-fixed font-medium mt-1">248 Bank Accounts Verified</span>
+</div>
+</div>
+<!-- Payment Rails & Release Action -->
+<div class="bg-white/5 backdrop-blur-md rounded-DEFAULT p-space-md flex flex-col md:flex-row items-center justify-between gap-space-md relative z-10">
+<div class="flex items-center gap-space-md flex-wrap w-full md:w-auto">
+<div class="flex items-center gap-space-xs">
+<span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[18px]">sync_alt</span>
+</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-white font-semibold">HDFC Corporate CMS</span>
+<span class="font-label-caps text-label-caps text-slate-400">Batch #OCT24-CMS-01 • Batch Active</span>
+</div>
+</div>
+<div class="h-6 w-px bg-white/10 hidden md:block"></div>
+<div class="flex items-center gap-space-xs">
+<span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-white font-semibold">ICICI Instant UPI</span>
+<span class="font-label-caps text-label-caps text-slate-400">12 Fallback accounts routed</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm w-full md:w-auto justify-end">
+<button class="px-space-md py-space-xs rounded-full bg-white/10 hover:bg-white/20 text-white font-label-md text-label-md transition-colors">
+              Hold Run
+            </button>
+<button class="px-space-md py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md font-semibold flex items-center gap-1.5 shadow-[0_4px_16px_rgba(202,192,243,0.3)] hover:opacity-95 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">lock_open</span>
+              Authorize Batch
+            </button>
+</div>
+</div>
+</div>
+<!-- Module 2: Attendance & Shift Health Distribution -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-lg shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)]">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-primary font-bold uppercase tracking-wider">Multi-Campus Geofencing</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Campus Attendance &amp; Terminal Telemetry</h3>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant font-bold">14/14 Biometric Scanners Active</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mb-space-md">
+<!-- Hub 1: Bengaluru HQ -->
+<div class="bg-surface-container-low rounded-DEFAULT p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Bengaluru HQ</span>
+<span class="font-label-caps text-label-caps px-2 py-0.5 bg-primary-fixed text-on-primary-fixed rounded-full font-bold">164 Staff</span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline justify-between mb-1">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">98.8%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">162 Present</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 98.8%;"></div>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">eSSL Matrix Bio-Gate: 100% Sync</span>
+</div>
+<!-- Hub 2: Mumbai Hub -->
+<div class="bg-surface-container-low rounded-DEFAULT p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Mumbai Hub (BKC)</span>
+<span class="font-label-caps text-label-caps px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed rounded-full font-bold">52 Staff</span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline justify-between mb-1">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">96.1%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">50 Present</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 96.1%;"></div>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Suprema FaceLite: 100% Sync</span>
+</div>
+<!-- Hub 3: Gurugram Office -->
+<div class="bg-surface-container-low rounded-DEFAULT p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Gurugram CyberCity</span>
+<span class="font-label-caps text-label-caps px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full font-bold">25 Staff</span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline justify-between mb-1">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">96.0%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">24 Present</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 96%;"></div>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Geofence Radar: 1 Regularized</span>
+</div>
+</div>
+<!-- Shift Regularization Alert Bar -->
+<div class="bg-surface-container rounded-DEFAULT p-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">info</span>
+<span class="font-body-sm text-body-sm text-on-surface">
+<strong class="font-semibold">Shift Regularization:</strong> 3 punch-out misses flagged for yesterday (Team Engineering). All manager-approved under standard grace window.
+            </span>
+</div>
+<button class="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold hover:underline">
+            View Log
+          </button>
+</div>
+</div>
+<!-- Module 3: Payslip Delivery & Employee Acknowledgement -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-lg shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)]">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs mb-space-md">
+<div>
+<span class="font-label-caps text-label-caps text-primary font-bold uppercase tracking-wider">Multi-Channel Dissemination</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Payslip &amp; Form 16 Transmission Status</h3>
+</div>
+<span class="font-label-caps text-label-caps text-emerald-700 bg-emerald-50 px-space-sm py-1 rounded-full font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">done_all</span> 97.2% Read Rate
+          </span>
+</div>
+<!-- Visual Distribution Bar -->
+<div class="flex flex-col gap-space-xs mb-space-md">
+<div class="h-3 w-full bg-surface-container rounded-full overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 82%;" title="Opened &amp; Downloaded (204)"></div>
+<div class="bg-tertiary-container h-full" style="width: 15%;" title="Delivered on WhatsApp (37)"></div>
+<div class="bg-secondary-fixed-dim h-full" style="width: 3%;" title="Pending Read (7)"></div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps">
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary"></span> 204 Downloaded via App</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-tertiary-container"></span> 37 Verified on WhatsApp</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span> 7 SMS / Portal Pending</span>
+</div>
+</div>
+<!-- Action / Details Table Preview -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="p-space-md bg-surface-container-low rounded-DEFAULT flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[24px]">chat</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface font-semibold block">WhatsApp Business API Rail</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Direct PDF delivery with OTP verification</span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps bg-surface-container px-2 py-1 rounded-full text-on-surface font-bold">248/248 Sent</span>
+</div>
+<div class="p-space-md bg-surface-container-low rounded-DEFAULT flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[24px]">description</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface font-semibold block">Form 16 Part B / IT Compute</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">TDS reconciliation matched with TRACES</span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps bg-emerald-50 text-emerald-800 px-2 py-1 rounded-full font-bold">Ready for Q2</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: 4 Columns (Compliance, Actions, Heatmap) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Module 4: Quick Actions & Compliance Rail -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-lg shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)]">
+<div class="flex items-center justify-between mb-space-md">
+<span class="font-label-caps text-label-caps text-primary font-bold uppercase tracking-wider">Statutory Clearance</span>
+<span class="p-1 rounded-full bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">gavel</span>
+</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-space-md">Compliance &amp; Filings</h3>
+<!-- Compliance List Items -->
+<div class="flex flex-col gap-space-xs mb-space-lg">
+<!-- Item 1: EPFO ECR -->
+<div class="p-space-sm rounded-DEFAULT bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</span>
+<div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface block">EPFO ECR File (Challan)</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">248 UANs Verified • ₹28,14,200</span>
+</div>
+</div>
+<button class="px-space-xs py-1 rounded-full bg-surface-container text-primary font-label-caps text-label-caps font-bold hover:bg-primary hover:text-on-primary transition-colors">
+              ECR .TXT
+            </button>
+</div>
+<!-- Item 2: Form 24Q TDS -->
+<div class="p-space-sm rounded-DEFAULT bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</span>
+<div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface block">Form 24Q (Q2 TDS)</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Section 192 • FVU validated</span>
+</div>
+</div>
+<button class="px-space-xs py-1 rounded-full bg-surface-container text-primary font-label-caps text-label-caps font-bold hover:bg-primary hover:text-on-primary transition-colors">
+              Prepare
+            </button>
+</div>
+<!-- Item 3: PT & ESIC -->
+<div class="p-space-sm rounded-DEFAULT bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">account_balance</span>
+</span>
+<div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface block">Karnataka &amp; MH PTax</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Monthly Ret. Due 20 Nov</span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold rounded-full">Auto-Computed</span>
+</div>
+</div>
+<!-- Quick Executive Buttons -->
+<div class="flex flex-col gap-space-xs">
+<button class="w-full py-space-xs px-space-md rounded-full bg-surface-container text-on-surface font-label-md text-label-md font-medium hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px]">broadcast_on_personal</span>
+            Broadcast Payslip Push to Slack
+          </button>
+<button class="w-full py-space-xs px-space-md rounded-full bg-surface-container text-on-surface font-label-md text-label-md font-medium hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px]">pending_actions</span>
+            Review 4 Pending Leave Requests
+          </button>
+</div>
+</div>
+<!-- Module 5: Time Off & Leave Calendar Heatmap -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-lg shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)]">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-primary font-bold uppercase tracking-wider">Leave Telemetry</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Upcoming Holidays &amp; Outages</h3>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">date_range</span>
+</div>
+<!-- Mini Calendar / List of Holiday Spans -->
+<div class="flex flex-col gap-space-sm mb-space-md">
+<!-- Holiday 1: Diwali Gov RH -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-DEFAULT bg-primary-fixed/30">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex flex-col items-center justify-center flex-shrink-0">
+<span class="font-label-caps text-label-caps font-bold uppercase leading-none">OCT</span>
+<span class="font-headline-sm text-headline-sm font-bold leading-none mt-0.5">31</span>
+</div>
+<div class="flex flex-col flex-grow">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Diwali (Deepavali)</span>
+<span class="font-label-caps text-label-caps px-2 py-0.5 bg-primary text-on-primary rounded-full font-bold">Public Holiday</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">All India Campuses • Office Closed</span>
+</div>
+</div>
+<!-- Holiday 2: Karnataka Rajyotsava -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-DEFAULT bg-surface-container-low">
+<div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex flex-col items-center justify-center flex-shrink-0">
+<span class="font-label-caps text-label-caps font-bold uppercase leading-none">NOV</span>
+<span class="font-headline-sm text-headline-sm font-bold leading-none mt-0.5">01</span>
+</div>
+<div class="flex flex-col flex-grow">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Kannada Rajyotsava</span>
+<span class="font-label-caps text-label-caps px-2 py-0.5 bg-surface-container-highest text-on-surface font-bold rounded-full">State RH</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Bengaluru HQ only • Long Weekend</span>
+</div>
+</div>
+</div>
+<!-- Overlap Warning Pill -->
+<div class="p-space-sm rounded-DEFAULT bg-error-container/50 flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-error text-[18px] mt-0.5">warning</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-error-container font-semibold">Critical Team Overlap (DevOps)</span>
+<span class="font-label-caps text-label-caps text-on-error-container">3 of 5 Site Reliability Engineers applied for Nov 4-5 bridge leave. Approval requires Director waiver.</span>
+</div>
+</div>
+</div>
+<!-- Module 6: HR Operations Team on Duty -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-space-lg shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)]">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-bold">Payroll Ops Guild</span>
+<span class="font-label-caps text-label-caps text-primary font-bold">Support 24/7</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Corporate headshot of an Indian male HR payroll manager wearing formal dark blazer with soft studio lighting and clean modern office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcS15VvLzVJMrRklhFBHOThwaNc8gD0dJkuEFytFr4ocHk0BTQATQF05x1qwu7nTuRB3zd0haicC7hKpQ-usc2fEnzAokQ2f0Iwq7T5sYkQd881CR2Yw5T_mRIuZbDOO8xdcCoZLzqEFKEKYQpk93pCFZRDmjHx2R1Wl-Uu_XrGUeMuQth1FRfaM_C2TFkRS77zITrXSZBgCb6LQujr-HVCdSTgZvRtO4Nb6CHvkjn7EQewSjoZTFw"/>
+<div class="flex flex-col flex-grow">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Rohan Kulkarni</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Senior Payroll Specialist • On-Duty</span>
+</div>
+<a class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]">call</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Global Footnote Bar -->
+<div class="px-space-xl py-space-md mb-space-lg flex flex-col md:flex-row items-center justify-between text-on-surface-variant gap-space-sm">
+<div class="flex items-center gap-space-xs font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[16px] text-primary">security</span>
+<span>Enterprise 256-bit Tokenized Session • RBI / UIDAI Masking Protocols Enforced</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">
+      Acme India Pvt. Ltd. • CIN: U72200KA2021PTC148920 • Reg. Office: Indiranagar, Bengaluru
+    </span>
+</div>
+</div></main></div></body></html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "error": "#ba1a1a", "surface-variant": "#d3e4fe", "on-secondary-fixed-variant": "#005049", "surface-container-high": "#dce9ff", "on-secondary-container": "#006f66", "surface-bright": "#f8f9ff", "primary": "#000000", "tertiary-container": "#111c2d", "surface-container": "#e5eeff", "surface-tint": "#565e74", "on-primary": "#ffffff", "on-primary-fixed": "#131b2e", "tertiary-fixed-dim": "#bcc7de", "outline-variant": "#c6c6cd", "on-tertiary": "#ffffff", "on-primary-fixed-variant": "#3f465c", "on-tertiary-fixed": "#111c2d", "on-error-container": "#93000a", "inverse-surface": "#213145", "surface-container-highest": "#d3e4fe", "surface": "#f8f9ff", "on-tertiary-fixed-variant": "#3c475a", "on-error": "#ffffff", "on-background": "#0b1c30", "secondary": "#006a61", "on-surface": "#0b1c30", "primary-container": "#131b2e", "surface-dim": "#cbdbf5", "outline": "#76777d", "secondary-fixed-dim": "#6bd8cb", "on-primary-container": "#7c839b", "inverse-primary": "#bec6e0", "secondary-fixed": "#89f5e7", "primary-fixed-dim": "#bec6e0", "background": "#f8f9ff", "on-tertiary-container": "#79849a", "tertiary": "#000000", "on-secondary": "#ffffff", "inverse-on-surface": "#eaf1ff", "surface-container-lowest": "#ffffff", "on-surface-variant": "#45464d", "tertiary-fixed": "#d8e3fb", "surface-container-low": "#eff4ff", "primary-fixed": "#dae2fd", "error-container": "#ffdad6", "secondary-container": "#86f2e4", "on-secondary-fixed": "#00201d" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-base": "1rem", "gutter-mobile": "0.75rem", "space-lg": "1.25rem", "space-md": "0.75rem", "safe-bottom-action": "5.5rem", "space-2xs": "0.125rem", "space-xl": "1.5rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "space-2xl": "2rem", "space-xs": "0.25rem" }, "fontFamily": { "headline-sm": ["Hanken Grotesk"], "body-md": ["Hanken Grotesk"], "metric-lg": ["Hanken Grotesk"], "metric-md": ["Hanken Grotesk"], "label-md": ["Hanken Grotesk"], "headline-lg": ["Hanken Grotesk"], "body-lg": ["Hanken Grotesk"], "body-sm": ["Hanken Grotesk"], "label-sm": ["Hanken Grotesk"], "display-lg": ["Hanken Grotesk"], "label-lg": ["Hanken Grotesk"], "headline-md": ["Hanken Grotesk"] }, "fontSize": { "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "metric-lg": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "metric-md": ["20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.005em", "fontWeight": "400" }], "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "700" }], "display-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "700" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }] } } } }</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="p-space-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Brand logo. - Primary color: #0f172a
+- Font: hankenGrotesk
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UWNjhQfDEQll8ZtCLhEfyTo0XM92HQDb_61tmfI5kOIYTFvyzDbb1GIqbLSiqYeiFXe_wMbXFKl0_y6U3UtKUqeMNRic4XVNOrNE7v2HvprgWqRl4-CzGoJ2o48uhyy6gpSR_N0IlOQBkVjq49ZyRgbTEgUOunKkwDdKFgtoReZ3mbnriek4ieufmnG-sv9SI8MKdodWgCRUOkiYmgo8RRwIFooZPeq6LTs1c3V9Il3Y23Wp8iDPnGkw"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface leading-none">ApexPay</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mt-space-2xs">Enterprise HR</span></div></div></div><div class="px-space-lg pb-space-sm"><button class="w-full flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors text-left" type="button"><div class="flex items-center gap-space-sm overflow-hidden"><div class="w-7 h-7 rounded-md bg-primary-container text-on-primary flex items-center justify-center font-label-md text-label-md shrink-0">AC</div><div class="truncate"><p class="font-label-lg text-label-lg text-on-surface truncate leading-tight">Acme Corp Global</p><p class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Production • US-East</p></div></div><span class="material-symbols-outlined text-on-surface-variant text-base shrink-0">unfold_more</span></button></div><div class="px-space-lg py-space-xs"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-space-sm text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-8 pr-space-sm py-1.5 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container transition-all" placeholder="Jump to module..." type="text"/><kbd class="absolute right-space-sm font-label-sm text-label-sm text-on-surface-variant bg-surface-container-lowest px-1 py-0.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.05)]">/</kbd></div></div><div class="px-space-lg pt-space-md pb-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Operations</span></div><nav class="flex-1 px-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary rounded-lg font-bold"><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span>Dashboard</a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2 transition-colors bg-primary-container text-on-primary rounded-lg font-bold" data-path="employees" href="#"><span class="material-symbols-outlined text-lg">badge</span>Employees</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="payruns" href="#"><span class="material-symbols-outlined text-lg">payments</span>Payruns &amp; Payroll</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="time-off-attendance" href="#"><span class="material-symbols-outlined text-lg">calendar_today</span>Time Off &amp; Attendance</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="salary-rules" href="#"><span class="material-symbols-outlined text-lg">account_balance</span>Salary Rules &amp; Setup</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="reports-analytics" href="#"><span class="material-symbols-outlined text-lg">bar_chart</span>Reports &amp; Analytics</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="settings-compliance" href="#"><span class="material-symbols-outlined text-lg">verified_user</span>Settings &amp; Compliance</a></nav><div class="p-space-md bg-surface-container-lowest mt-auto"><div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-2.5 h-2.5 rounded-full bg-secondary shrink-0"></div><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface font-semibold">Statutory Engine</span><span class="font-label-sm text-label-sm text-on-surface-variant">v4.18 Synchronized</span></div></div><button class="text-on-surface-variant hover:text-on-surface flex items-center" type="button"><span class="material-symbols-outlined text-base">help</span></button></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl z-40 flex items-center justify-between px-space-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-lg flex-1 max-w-xl"><div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md"><span class="font-semibold text-on-surface">Payroll Center</span><span class="material-symbols-outlined text-sm">chevron_right</span><span>Cycle 24B</span><div class="ml-space-sm px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>Active Run</div></div><div class="relative flex-1 hidden md:block"><span class="material-symbols-outlined absolute left-space-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-8 pr-12 py-1.5 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container transition-all" placeholder="Search employees, tax slips, transactions..." type="text"/><kbd class="absolute right-space-sm top-1/2 -translate-y-1/2 font-label-sm text-label-sm text-on-surface-variant bg-surface-container-lowest px-1.5 py-0.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.05)]">⌘K</kbd></div></div><div class="flex items-center gap-space-md shrink-0"><div class="flex items-center gap-space-xs"><button class="flex items-center gap-1 px-space-md py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md" type="button"><span class="material-symbols-outlined text-base">person_add</span><span class="hidden sm:inline">New Hire</span></button><button class="flex items-center gap-1 px-space-md py-1.5 rounded-lg bg-secondary text-on-secondary hover:bg-secondary/90 transition-colors font-label-md text-label-md shadow-sm" type="button"><span class="material-symbols-outlined text-base">play_circle</span><span>Run Payrun</span></button></div><div class="h-6 w-[1px] bg-surface-container-highest mx-space-2xs"></div><button class="relative p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" type="button"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-1.5 right-1.5 w-4 h-4 bg-error text-on-error rounded-full font-label-sm text-label-sm flex items-center justify-center">4</span></button><div class="flex items-center gap-space-sm pl-space-xs"><div class="text-right hidden lg:block"><p class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Sarah Jenkins</p><p class="font-label-sm text-label-sm text-on-surface-variant leading-tight">HR Director</p></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-container-highest" src="https://lh3.googleusercontent.com/aida/AEtjO1XH7ANaxUxkun0Upg_7eppVlzT-0fIpTxVcKZyoiANT-_mW1wFMU5uO4Nle_YOHMJhkrxJKcdK6MkAocO-eI95xyuRAA36ZKjmoFT7dfzoNIvqk0_TcsuJT67m93hplSFzqqsesX4fp5ImDCYi1XnDaF7jSn8_Y-Lu_h9mimoDuNyrr9Ebp5h6RsfXg2QfFYI0Zqt3owa7XZEnGcnazJKPYB2AnGlkxwJImkbYcl0XOen_QdmJ97HquxQ"/></div></div></header><main class="w-full pt-16 bg-surface flex-1 px-space-xl py-space-xl"><div class="flex flex-col w-full space-y-space-xl">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-col space-y-space-xs">
+<div class="flex items-center gap-space-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Employee Master Directory</h1>
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-1.5 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+          248 Active Personnel
+        </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Centralized personnel records, statutory tax profiles, working schedules, and real-time compensation structures.</p>
+</div>
+<div class="flex items-center gap-space-sm flex-wrap shrink-0">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-lg text-label-lg shadow-sm flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-lg text-on-surface-variant">file_download</span>
+<span>Export CSV / XLSX</span>
+</button>
+<button class="px-space-md py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container transition-colors font-label-lg text-label-lg shadow-sm flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-lg text-on-surface-variant">tune</span>
+<span>Batch Actions</span>
+</button>
+<button class="px-space-lg py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-all font-label-lg text-label-lg shadow-md flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-lg">person_add</span>
+<span>Add Employee</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-space-md">
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="space-y-space-2xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Tax Compliance</span>
+<div class="font-metric-lg text-metric-lg text-on-surface font-bold">98.4%</div>
+<p class="font-body-sm text-body-sm text-secondary font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span>
+          +1.2% from last cycle
+        </p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-2xl">policy</span>
+</div>
+</div>
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="space-y-space-2xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Average Base</span>
+<div class="font-metric-lg text-metric-lg text-on-surface font-bold">$112,400</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Per annum benchmark</p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+</div>
+</div>
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="space-y-space-2xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Retention Rate</span>
+<div class="font-metric-lg text-metric-lg text-on-surface font-bold">96.0%</div>
+<p class="font-body-sm text-body-sm text-secondary font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+          Annual annualized
+        </p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-2xl">handshake</span>
+</div>
+</div>
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="space-y-space-2xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Pending Slips</span>
+<div class="font-metric-lg text-metric-lg text-error font-bold">3 Files</div>
+<p class="font-body-sm text-body-sm text-error font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">error</span>
+          Requires HR action
+        </p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-error-container text-on-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">pending_actions</span>
+</div>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm flex-1 max-w-lg">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+<input class="w-full pl-10 pr-space-md py-2 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container transition-all" placeholder="Search by name, ID (#EMP), or role..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<div class="flex items-center p-1 rounded-lg bg-surface-container-low">
+<button class="px-3 py-1.5 rounded-md font-label-md text-label-md bg-surface-container-lowest text-on-surface font-semibold shadow-xs" type="button">All (248)</button>
+<button class="px-3 py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" type="button">Full-time (210)</button>
+<button class="px-3 py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" type="button">Contractor (26)</button>
+<button class="px-3 py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" type="button">Intern (12)</button>
+</div>
+<div class="relative">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-1.5 hover:bg-surface-container transition-colors" type="button">
+<span>Department: <strong>All</strong></span>
+<span class="material-symbols-outlined text-base text-on-surface-variant">keyboard_arrow_down</span>
+</button>
+</div>
+<div class="relative">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-1.5 hover:bg-surface-container transition-colors" type="button">
+<span>Status: <strong>Active</strong></span>
+<span class="material-symbols-outlined text-base text-on-surface-variant">keyboard_arrow_down</span>
+</button>
+</div>
+<button class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Clear Filters" type="button">
+<span class="material-symbols-outlined text-lg">filter_alt_off</span>
+</button>
+</div>
+</div>
+<div class="rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden flex flex-col">
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-3.5 pl-space-lg pr-space-xs w-10">
+<input class="w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer" type="checkbox"/>
+</th>
+<th class="py-3.5 px-space-md">Employee &amp; Identification</th>
+<th class="py-3.5 px-space-md">Department &amp; Title</th>
+<th class="py-3.5 px-space-md">Schedule / Type</th>
+<th class="py-3.5 px-space-md">Compensation Base</th>
+<th class="py-3.5 px-space-md">Tax &amp; Statutory</th>
+<th class="py-3.5 px-space-md">Status</th>
+<th class="py-3.5 pl-space-md pr-space-lg text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 font-body-md text-body-md">
+<tr class="hover:bg-surface-container-low/60 transition-colors group">
+<td class="py-3.5 pl-space-lg pr-space-xs">
+<input class="w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover" data-alt="Marcus Vance enterprise portrait, mid-thirties male leader wearing a tailored navy blazer in a modern architectural office with soft daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPxbBB4CryXtIq_67QdQEPPIIUoqNhDZ6kI22nVS5Vh3EoFYbzWay01Uuc9VoGxRuvYmevgJC8Dioo-ew5wIxG7K4b_g4S6eOVzKTtfogP4RE3hVKQopjGrh_aJsy_X2cbDPCxcOUGm4cldde86NROIyilGsGq3iQ1Z8DAJmjGf6bU3bm2VUe28bLztqkFuzv86zOfuxUgbYAQhsHxBa2u677xDNbx9ZFkSj9lHWYskgcaIBzgM8BP"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight font-semibold">Marcus Vance</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">#EMP-1042</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Lead Systems Architect</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Core Infrastructure • L6</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Full-Time (40h/wk)</span>
+<span class="font-body-sm text-body-sm text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Hybrid (NYC Hub)
+                </span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold font-mono">$185,000<span class="text-on-surface-variant font-normal text-xs"> /yr</span></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tier A Exemption</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> W-4 Verified
+                </span>
+<span class="p-1 rounded bg-surface-container-high text-on-surface-variant" title="Direct Deposit Set">
+<span class="material-symbols-outlined text-xs block">payments</span>
+</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Active
+              </span>
+</td>
+<td class="py-3.5 pl-space-md pr-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="More Options" type="button">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="bg-surface-container-low/20 hover:bg-surface-container-low/60 transition-colors group">
+<td class="py-3.5 pl-space-lg pr-space-xs">
+<input class="w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover" data-alt="Elena Rostova senior corporate executive portrait, blonde woman in stylish charcoal turtleneck against warm textured minimalist studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxI9rJWe7Ik050RUNhQv3cq3Hc63eCRr2gt0X7fg69tIUYnT_l6XRN0dtLyr_5jGjsM2Aoj5PTWgo7SeFOU3q5JbzpSlJkc0qzYdjDh8AmGGMZPPbwGTOZSdKJZYOmuj3UyKvYG4SQ72MKEcnDwmxm18o6o4r_ZS7NGylcqjpOUGaQNYuZIMeGlN7YSoRYA9aSoOttf_OiyhJWcClNMLN8u56kZ0juzSBktSCup-VSMz35PbhUOGd6"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight font-semibold">Elena Rostova</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">#EMP-1088</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Staff Product Designer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Design Systems • L5</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Full-Time (40h/wk)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Remote (US-West)
+                </span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold font-mono">$152,000<span class="text-on-surface-variant font-normal text-xs"> /yr</span></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Standard Direct</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> W-4 Verified
+                </span>
+<span class="p-1 rounded bg-surface-container-high text-on-surface-variant" title="Direct Deposit Set">
+<span class="material-symbols-outlined text-xs block">payments</span>
+</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Active
+              </span>
+</td>
+<td class="py-3.5 pl-space-md pr-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="More Options" type="button">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors group">
+<td class="py-3.5 pl-space-lg pr-space-xs">
+<input class="w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover" data-alt="David Chen professional headshot, Asian male software developer in glasses and slate grey apparel, modern corporate atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZVSfS04tN9WiJonX9St1q74rK3QrRAyKjF3O1ZjZCIoF6N8vX0s9IiCz-uSr6DKlStv4_5ufc3Vv2J0xgJDHnzOYvzF9KqrempXbm3Vb7pU320hYpvSR1xQhRbYCjmIT2onjXF6ggUUUaVGiKd-jyT_uCwDT4rwxjouFXUVHJPtE67o2-Vyp5HemLYjIGqA-QngiHurzpCdJ5r7jbNmv_EdoutzUtxnY6rDtLDlIB9jRn1uloF7S4"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight font-semibold">David Chen</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">#EMP-0941</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Senior DevOps Engineer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Cloud Reliability • L4</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Full-Time (40h/wk)</span>
+<span class="font-body-sm text-body-sm text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Onsite (Austin)
+                </span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold font-mono">$138,000<span class="text-on-surface-variant font-normal text-xs"> /yr</span></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Annual Review Q3</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-error">warning</span> I-9 Renewal
+                </span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> On Vacation
+              </span>
+</td>
+<td class="py-3.5 pl-space-md pr-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="More Options" type="button">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="bg-surface-container-low/20 hover:bg-surface-container-low/60 transition-colors group">
+<td class="py-3.5 pl-space-lg pr-space-xs">
+<input class="w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center font-bold">AP</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight font-semibold">Aisha Patel</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">#EMP-1205</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Financial Planning Analyst</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Corporate Finance • L3</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Full-Time (40h/wk)</span>
+<span class="font-body-sm text-body-sm text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Hybrid (Chicago)
+                </span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold font-mono">$108,000<span class="text-on-surface-variant font-normal text-xs"> /yr</span></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Direct Deposit</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> W-4 Verified
+                </span>
+<span class="p-1 rounded bg-surface-container-high text-on-surface-variant" title="Direct Deposit Set">
+<span class="material-symbols-outlined text-xs block">payments</span>
+</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Active
+              </span>
+</td>
+<td class="py-3.5 pl-space-md pr-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="More Options" type="button">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors group">
+<td class="py-3.5 pl-space-lg pr-space-xs">
+<input class="w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center font-bold">RM</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight font-semibold">Robert Martinez</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">#EMP-0812</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Talent Acquisition Lead</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">People Ops • L4</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Contractor (1099)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Remote (Global)
+                </span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold font-mono">$75.00<span class="text-on-surface-variant font-normal text-xs"> /hr</span></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Bi-Weekly Invoiced</span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">error</span> W-9 Expired
+                </span>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Pending Review
+              </span>
+</td>
+<td class="py-3.5 pl-space-md pr-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="More Options" type="button">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-space-md bg-surface-container-low/40 flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md text-on-surface-variant font-body-sm text-body-sm">
+<span>Showing <strong>1–5</strong> of <strong>248</strong> personnel records</span>
+<div class="flex items-center gap-1">
+<span>Rows:</span>
+<select class="bg-surface-container-lowest text-on-surface rounded-md px-2 py-1 font-label-sm text-label-sm focus:outline-none shadow-xs">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded-md bg-surface-container-lowest text-on-surface-variant hover:text-on-surface disabled:opacity-40 shadow-xs" disabled="" type="button">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-md bg-primary-container text-on-primary font-label-md text-label-md font-bold shadow-xs" type="button">1</button>
+<button class="w-8 h-8 rounded-md bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md transition-colors shadow-xs" type="button">2</button>
+<button class="w-8 h-8 rounded-md bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md transition-colors shadow-xs" type="button">3</button>
+<span class="px-1 text-on-surface-variant font-label-md">...</span>
+<button class="w-8 h-8 rounded-md bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md transition-colors shadow-xs" type="button">25</button>
+<button class="p-1.5 rounded-md bg-surface-container-lowest text-on-surface-variant hover:text-on-surface shadow-xs" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg">
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Department Breakdown</span>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">pie_chart</span>
+</div>
+<div class="space-y-space-sm">
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface font-medium">Engineering</span>
+<span class="text-on-surface-variant font-mono">112 (45%)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-low overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 45%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface font-medium">Sales &amp; Marketing</span>
+<span class="text-on-surface-variant font-mono">64 (26%)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-low overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 26%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface font-medium">Product &amp; Design</span>
+<span class="text-on-surface-variant font-mono">42 (17%)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-low overflow-hidden">
+<div class="bg-surface-tint h-full rounded-full" style="width: 17%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface font-medium">Operations &amp; Finance</span>
+<span class="text-on-surface-variant font-mono">30 (12%)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-low overflow-hidden">
+<div class="bg-outline h-full rounded-full" style="width: 12%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Compensation Banding</span>
+<span class="material-symbols-outlined text-secondary text-lg">insights</span>
+</div>
+<div class="h-28 flex items-end justify-between gap-2 px-space-xs pt-4">
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full bg-surface-container-high rounded-t-sm" style="height: 35%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">L1-L2</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full bg-surface-container-high rounded-t-sm" style="height: 60%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">L3</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full bg-secondary rounded-t-sm" style="height: 90%;"></div>
+<span class="font-label-sm text-label-sm font-semibold text-secondary">L4</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full bg-primary-container rounded-t-sm" style="height: 75%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">L5</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full bg-surface-container-highest rounded-t-sm" style="height: 40%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">L6+</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Highest median concentration resides in Band L4 engineering roles ($130k - $155k range).</p>
+</div>
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Immediate Action Deck</span>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold">Priority</span>
+</div>
+<div class="space-y-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-error text-lg mt-0.5">notification_important</span>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface font-semibold">Robert Martinez: W-9 Stale</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Mandatory update before run cycle 24B close.</p>
+</div>
+<button class="text-secondary font-label-sm text-label-sm font-semibold hover:underline" type="button">Ping</button>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-lg mt-0.5">history_edu</span>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface font-semibold">2 Contractor Extensions</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Statements of Work expiring within 14 calendar days.</p>
+</div>
+<button class="text-secondary font-label-sm text-label-sm font-semibold hover:underline" type="button">Review</button>
+</div>
+</div>
+<button class="w-full mt-space-md py-2 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md font-semibold text-center" type="button">
+        Open Compliance Inbox (4)
+      </button>
+</div>
+</div>
+</div></main></div></body></html>

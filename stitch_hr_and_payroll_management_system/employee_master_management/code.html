@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;font-family:'Hanken Grotesk',sans-serif;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'surface-bright': '#f8f9ff', 'surface-container-low': '#eff4ff', 'surface-variant': '#d3e4fe', 'primary-fixed-dim': '#bec6e0', 'secondary-container': '#86f2e4', 'tertiary-container': '#111c2d', 'secondary': '#006a61', 'primary': '#000000', 'primary-container': '#131b2e', 'on-primary-fixed': '#131b2e', 'tertiary-fixed-dim': '#bcc7de', 'outline-variant': '#c6c6cd', 'on-secondary': '#ffffff', 'error': '#ba1a1a', 'secondary-fixed-dim': '#6bd8cb', 'on-error-container': '#93000a', 'on-primary-fixed-variant': '#3f465c', 'on-tertiary-container': '#79849a', 'inverse-surface': '#213145', 'surface-dim': '#cbdbf5', 'on-primary': '#ffffff', 'surface': '#f8f9ff', 'surface-container-high': '#dce9ff', 'on-secondary-container': '#006f66', 'on-error': '#ffffff', 'on-tertiary-fixed-variant': '#3c475a', 'on-background': '#0b1c30', 'surface-container': '#e5eeff', 'on-secondary-fixed-variant': '#005049', 'inverse-primary': '#bec6e0', 'secondary-fixed': '#89f5e7', 'outline': '#76777d', 'surface-container-highest': '#d3e4fe', 'tertiary': '#000000', 'on-tertiary': '#ffffff', 'on-surface': '#0b1c30', 'on-primary-container': '#7c839b', 'inverse-on-surface': '#eaf1ff', 'surface-tint': '#565e74', 'tertiary-fixed': '#d8e3fb', 'on-surface-variant': '#45464d', 'surface-container-lowest': '#ffffff', 'primary-fixed': '#dae2fd', 'on-secondary-fixed': '#00201d', 'error-container': '#ffdad6', 'background': '#f8f9ff', 'on-tertiary-fixed': '#111c2d' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'space-xl': '1.5rem', 'space-sm': '0.5rem', 'margin-mobile': '1rem', 'space-2xs': '0.125rem', 'space-xs': '0.25rem', 'space-base': '1rem', 'safe-bottom-action': '5.5rem', 'gutter-mobile': '0.75rem', 'space-lg': '1.25rem', 'space-md': '0.75rem', 'space-2xl': '2rem' }, fontFamily: { 'metric-lg': ['Hanken Grotesk'], 'headline-sm': ['Hanken Grotesk'], 'metric-md': ['Hanken Grotesk'], 'body-sm': ['Hanken Grotesk'], 'display-lg': ['Hanken Grotesk'], 'body-lg': ['Hanken Grotesk'], 'body-md': ['Hanken Grotesk'], 'headline-md': ['Hanken Grotesk'], 'label-md': ['Hanken Grotesk'], 'label-sm': ['Hanken Grotesk'], 'label-lg': ['Hanken Grotesk'], 'headline-lg': ['Hanken Grotesk'] }, fontSize: { 'metric-lg': ['28px', { lineHeight: '32px', letterSpacing: '-0.03em', fontWeight: '700' }], 'headline-sm': ['18px', { lineHeight: '24px', letterSpacing: '-0.01em', fontWeight: '600' }], 'metric-md': ['20px', { lineHeight: '24px', letterSpacing: '-0.02em', fontWeight: '700' }], 'body-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.005em', fontWeight: '400' }], 'display-lg': ['32px', { lineHeight: '38px', letterSpacing: '-0.025em', fontWeight: '700' }], 'body-lg': ['16px', { lineHeight: '24px', letterSpacing: '-0.005em', fontWeight: '400' }], 'body-md': ['14px', { lineHeight: '20px', letterSpacing: '0em', fontWeight: '400' }], 'headline-md': ['20px', { lineHeight: '26px', letterSpacing: '-0.015em', fontWeight: '600' }], 'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.02em', fontWeight: '600' }], 'label-sm': ['10px', { lineHeight: '12px', letterSpacing: '0.05em', fontWeight: '700' }], 'label-lg': ['14px', { lineHeight: '18px', letterSpacing: '0.01em', fontWeight: '600' }], 'headline-lg': ['24px', { lineHeight: '30px', letterSpacing: '-0.02em', fontWeight: '700' }] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="PayPulse HR Logo" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1W4hEk1ACJc4wYk1AcUW_C3WJg5Ra50Z-aGLvvPG1mbjsVAZ3BIgzzhLEMwZHtLtcp5YqHrqm8jidKJTn5OvzbGYY7Oc8sDbwetNKJK9G77qFB_m5XbBTfPc7K2QUjAC26wntxGw7hqAWegF1Pq5r_SfrencIzle22g6Fwj6RX-GgKLQP2w9khLXoHvyXuzisRikkmXSX5AqgHZDFdcEWAtlbksjGJlSmVwmL1f3qCyaMkTrmqmDtjmRA"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-label-md text-label-md text-on-surface truncate">Acme Corp</span><span class="material-symbols-outlined text-outline text-[16px]">unfold_more</span></div><span class="font-body-sm text-body-sm text-on-surface-variant truncate">Global • Employees</span></div></div><div class="flex items-center gap-space-xs shrink-0"><button aria-label="Notifications" class="w-11 h-11 relative flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error ring-2 ring-surface"></span></button><button aria-label="Admin Profile" class="w-11 h-11 flex items-center justify-center p-0.5 rounded-full hover:bg-surface-container-low transition-colors"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH42WOR1BN4fz5kaOQW8ztNJ2P6Pu9IJnuLgNvRfbqTEjJNUeXZmC-Sq17mwCYIneH3x4KGwX9L2hpwFdeZFUG1A7gQ12UiOE89NoUQKCqLe1qiGEC5xTvUVL2QdDWIlDQuRofbUPucP86QRB1IP5NrF0bzPkOBr9uJbgKa1sj_7mE5_u3c8ceY9LFOXEqZs2D6nSbNvfWOsmM4t0TtwOsIbj-eLwuvpY_6hhSIgk8lp36cdBssMlh"/></button></div></div></header><main class="flex flex-col relative w-full pt-16 pb-safe-bottom-action bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Interactive Toast / Delight Notification -->
+<div class="fixed top-20 left-4 right-4 z-40 transition-all duration-300 transform -translate-y-16 opacity-0 pointer-events-none flex items-center gap-space-sm p-space-sm rounded-xl bg-primary-container text-on-primary-fixed shadow-xl" id="toast-delight">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-primary text-left">Quick Action Synced</span>
+<span class="font-body-sm text-body-sm text-on-primary-container text-left truncate" id="toast-message">Profile data updated instantly.</span>
+</div>
+</div>
+<!-- Top Hero Metric & Compliance Banner -->
+<div class="px-margin-mobile pt-space-base pb-space-sm">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest shadow-sm p-space-base flex flex-col gap-space-sm">
+<div class="absolute -right-6 -bottom-6 w-32 h-32 bg-secondary-container/20 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Payroll Ready</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-secondary text-[14px]">shield</span>
+<span class="font-label-sm text-label-sm text-on-surface">SOC-2 Audited</span>
+</div>
+</div>
+<div class="flex items-end justify-between gap-space-sm">
+<div class="flex flex-col">
+<span class="font-metric-lg text-metric-lg text-on-surface">248 <span class="font-headline-sm text-headline-sm text-on-surface-variant font-normal">Team Members</span></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">task_alt</span>
+            100% Tax Profiles &amp; I-9 Compliant
+          </span>
+</div>
+<div class="shrink-0 flex items-center -space-x-2">
+<img class="w-7 h-7 rounded-full object-cover shadow-sm" data-alt="Corporate headshot of an executive woman in navy blazer smiling warmly in a bright modern tech office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk7V8r_KJq5hDRdA4JtLXsIZxvYI00-aSxQScWBYrOT9xKFUX91MnhIJMSEQC5mYNsStWMFjU2TGK7XmDjmpCuuyP3-w6_3mVuJQBk0Qp3mPgGq7ClYNKESvTKYsgpojIvBSQbW_YHDr2bbGlHF9r8j3aBgUqCHKJRmbnVfDZmR4RuzUdBJS7al-z9-JAb51RPxSmOB09jxe4S4YOfcm_dfDNUwtZZMVRRbqvSxfPv5pt92wLZvRc3"/>
+<img class="w-7 h-7 rounded-full object-cover shadow-sm" data-alt="Creative Asian male team lead with minimal glasses in natural daytime office lighting with warm friendly gaze" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIBTOrhS4uVzwSPUUfWHox56c1AWcVwuJjoa9ByS0NTkJ2ptpJrILmDQdOucbr2zBuCHRQ0ifluff0kCEvCJwijZV6O22Bga7QJFK_FigckxIoVYVKlRIoGKLjpq12P3hkfXed1IZf-faWT7rt2BQIKPLPnmZgywfmNtsUjo_ZHT1mn3o5F6GAbffi0tyIE-HfmetEZ1HIH0Uq_0ICSQxuLngj_C2GJHfM3l7NyzVUpPvrzGNgYB1k"/>
+<img class="w-7 h-7 rounded-full object-cover shadow-sm" data-alt="Confident African female software engineer wearing casual emerald crewneck in contemporary collaborative workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJYknKnn4N2ncuYRXTiWPzKGbUJfuzzMddA7y7FI5Ds7kZrwRK2F699A7cT-SmTaHv737Jsj3oF3GffUqRo4pY3DP3ofE0zV8lna0o3j5yIIYFZuEedpLSaDLkZXDq1NIkXqA1cwAld_OMOoSxHq-4hiRU7Ula_mtPtT6cqL7IhmuJogCRqCavP_v0AUpw3liWkBJlvYcDIimWo4CzrfhdfOqNmzYUN94i-wjHEveNZYeXan3lUgun"/>
+<div class="w-7 h-7 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm flex items-center justify-center shadow-sm">
+            +245
+          </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Action & Search Controls (Sticky Container) -->
+<div class="sticky top-16 z-30 bg-surface/95 backdrop-blur-md px-margin-mobile pt-space-xs pb-space-sm shadow-sm flex flex-col gap-space-sm">
+<!-- Action Row: Add Employee CTA + Global Search Field -->
+<div class="flex items-center gap-space-sm">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px] pointer-events-none">search</span>
+<input class="w-full h-11 pl-10 pr-9 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md placeholder:text-outline focus:outline-none shadow-sm transition-all" id="search-input" placeholder="Search by name, role, ID, or tag..." type="text"/>
+<button class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center text-[14px]" id="clear-search">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<button class="h-11 px-space-base rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center gap-space-xs shadow-md active:scale-95 transition-transform shrink-0" id="btn-add-employee">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>Add</span>
+</button>
+</div>
+<!-- Filter Segment Tabs / Chips -->
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-0.5 -mx-margin-mobile px-margin-mobile">
+<button class="filter-chip active flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md shrink-0 shadow-sm transition-all" data-filter="all">
+<span>All</span>
+<span class="bg-surface/20 px-1.5 py-0.2 text-[11px] rounded-full">248</span>
+</button>
+<button class="filter-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shrink-0 shadow-sm transition-all" data-filter="fulltime">
+<span>Full-Time</span>
+<span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.2 text-[11px] rounded-full">210</span>
+</button>
+<button class="filter-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shrink-0 shadow-sm transition-all" data-filter="contractors">
+<span>Contractors</span>
+<span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.2 text-[11px] rounded-full">26</span>
+</button>
+<button class="filter-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shrink-0 shadow-sm transition-all" data-filter="leave">
+<span>On Leave</span>
+<span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.2 text-[11px] rounded-full">12</span>
+</button>
+</div>
+</div>
+<!-- Employee Directory List -->
+<div class="flex flex-col gap-space-sm px-margin-mobile pt-space-xs pb-space-2xl">
+<!-- CARD 1: Marcus Vance -->
+<div class="employee-card relative bg-surface-container-lowest rounded-xl p-space-base shadow-sm hover:shadow-md transition-shadow flex flex-col gap-space-md" data-dept="Engineering" data-id="EMP-1042" data-name="Marcus Vance" data-status="fulltime">
+<!-- Card Header: Profile + Primary Info -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Portrait of Marcus Vance, a focused senior African-American engineer with short trimmed beard wearing an olive casual shirt against warm studio light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBklSzfrM6nI7fKLhtXDkYrkAzEZwwQCTTY0XT4m1etaX67fnlfIo_E3FHqTU79i2-N3W6iTXztruZrQe_d23xpKRMVXe1mJgsA0YxqqyagTAl209v4YHyN4iJlmdM9a8c9MT3SoiZGnV5dLyCJr9WwRkEhZNw0vu6IiyR5_Q4mvtnJjW7qcgIH7Hk0BO0IR4b6sxWds449OXCJjRd3EJJis2pKB32wwYhFvuy7VPBsy6dQhksRW-Ng"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-secondary border-2 border-surface-container-lowest" title="Active on payroll"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Marcus Vance</span>
+<span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded font-label-sm text-[10px]">EMP-1042</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant truncate">Senior Software Engineer</span>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-secondary text-[14px]">terminal</span>
+<span class="font-label-md text-label-md text-secondary">Engineering</span>
+</div>
+</div>
+</div>
+<!-- Options Menu Trigger -->
+<button aria-label="Employee Options" class="menu-btn w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-low text-outline transition-colors shrink-0">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<!-- Financial & Tier Metadata Strip -->
+<div class="bg-surface-container-low rounded-lg p-space-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Annual Base</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">$145,000<span class="text-body-sm font-normal text-on-surface-variant">/yr</span></span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tier</span>
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded-full text-on-surface font-label-sm text-label-sm shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            Full-Time
+          </span>
+</div>
+</div>
+<!-- Quick Action Micro-Bar -->
+<div class="flex items-center justify-between pt-space-2xs">
+<div class="flex items-center gap-space-xs">
+<a aria-label="Call Marcus Vance" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" href="tel:+1555019283">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</a>
+<a aria-label="Email Marcus Vance" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" href="mailto:m.vance@acme.corp">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+</a>
+<button aria-label="Download Compensation Sheet" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" onclick="showToast('Marcus Vance: Pay Slip exported')">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</button>
+</div>
+<button class="flex items-center gap-1 text-secondary font-label-md text-label-md hover:opacity-80 py-1" onclick="openDetailsModal('Marcus Vance', 'Senior Software Engineer', 'Engineering', 'EMP-1042', '$145,000')">
+<span>View Profile</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- CARD 2: Elena Rostova (On Leave) -->
+<div class="employee-card relative bg-surface-container-lowest rounded-xl p-space-base shadow-sm hover:shadow-md transition-shadow flex flex-col gap-space-md" data-dept="Design" data-id="EMP-1088" data-name="Elena Rostova" data-status="leave">
+<!-- Card Header -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Close-up portrait of Elena Rostova, a European woman product designer with a sleek bob haircut and artistic tortoise-shell glasses smiling softly in a brightly lit studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6HhnkF9qlSVrScdVtpsp7kdZ9TwLA209I4bMs51-DIh4xRIRn88zn9nb180De98ISRgxL8hGLX9tlu5iW8BGzvApc-zS42GyspoJXOXbIpK-6sj1HNyvvBrW358QO0_G0-JOvAkW2YRtzQL5zbL8znaomG_BBImrQAjNeSrJEf4HU6Zbr7Z7iXxLQjNELaZt5i93yjko7yx6wi7KTRB7o_qZ-47M0XMtdF7ZbUG6PJ1i9iOsO0xan"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-error border-2 border-surface-container-lowest" title="On Leave"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Elena Rostova</span>
+<span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded font-label-sm text-[10px]">EMP-1088</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant truncate">Product Designer</span>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-secondary text-[14px]">palette</span>
+<span class="font-label-md text-label-md text-secondary">Design Dept</span>
+</div>
+</div>
+</div>
+<!-- Options Menu Trigger -->
+<button aria-label="Employee Options" class="menu-btn w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-low text-outline transition-colors shrink-0">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<!-- Financial & Leave Banner -->
+<div class="bg-surface-container-low rounded-lg p-space-sm flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-outline text-[18px]">flight_takeoff</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Current Status</span>
+<span class="font-label-md text-label-md text-on-surface">Annual Leave (Returns Oct 24)</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Disbursement</span>
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded-full text-secondary font-label-sm text-label-sm shadow-xs">
+<span class="material-symbols-outlined text-[12px]">verified</span>
+            Verified
+          </span>
+</div>
+</div>
+<!-- Quick Action Micro-Bar -->
+<div class="flex items-center justify-between pt-space-2xs">
+<div class="flex items-center gap-space-xs">
+<a aria-label="Call Elena Rostova" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" href="tel:+1555029481">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</a>
+<a aria-label="Email Elena Rostova" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" href="mailto:e.rostova@acme.corp">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+</a>
+<button aria-label="Leave Schedule" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" onclick="showToast('Leave request schedule opened')">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+</button>
+</div>
+<button class="flex items-center gap-1 text-secondary font-label-md text-label-md hover:opacity-80 py-1" onclick="openDetailsModal('Elena Rostova', 'Product Designer', 'Design', 'EMP-1088', 'Direct Deposit Verified')">
+<span>View Profile</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- CARD 3: David Chen -->
+<div class="employee-card relative bg-surface-container-lowest rounded-xl p-space-base shadow-sm hover:shadow-md transition-shadow flex flex-col gap-space-md" data-dept="Finance" data-id="EMP-0941" data-name="David Chen" data-status="fulltime">
+<!-- Card Header -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Professional studio headshot of David Chen, an Asian male financial analyst in sharp white collared shirt with crisp natural corporate lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC54jIwraG-S_CKjOy6Fl90WtNIKhOwn6mF7zuJqrUd0bKlNlLDxzmt7XWS6zfP-EpSUpGx278-41eXvPtddNxgAUVX5LbyZz-VMTrkG0eTHrgAbplpZTsnsVNQkDUzEvBfzCrqtvoO7XAqCEqoDkdfIR1-9C_8A73hjcz-4NsakAm7OXVZZ9xHllj2KScyMOkevRzbXQf5idbL5oO1wPPbCLB-Y4ExgfXJ-Zx7xeXNwOOMVBf_dzKd"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-secondary border-2 border-surface-container-lowest" title="Active"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">David Chen</span>
+<span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded font-label-sm text-[10px]">EMP-0941</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant truncate">Financial Analyst</span>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-secondary text-[14px]">finance_chip</span>
+<span class="font-label-md text-label-md text-secondary">Finance Dept</span>
+</div>
+</div>
+</div>
+<!-- Options Menu Trigger -->
+<button aria-label="Employee Options" class="menu-btn w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-low text-outline transition-colors shrink-0">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<!-- Financial Data Strip -->
+<div class="bg-surface-container-low rounded-lg p-space-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Annual Base</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">$110,000<span class="text-body-sm font-normal text-on-surface-variant">/yr</span></span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Payroll Status</span>
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded-full text-secondary font-label-sm text-label-sm shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            Active Run
+          </span>
+</div>
+</div>
+<!-- Quick Action Micro-Bar -->
+<div class="flex items-center justify-between pt-space-2xs">
+<div class="flex items-center gap-space-xs">
+<a aria-label="Call David Chen" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" href="tel:+1555038192">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</a>
+<a aria-label="Email David Chen" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" href="mailto:d.chen@acme.corp">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+</a>
+<button aria-label="Audit Tax Form" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" onclick="showToast('David Chen: Tax filings verified')">
+<span class="material-symbols-outlined text-[18px]">approval</span>
+</button>
+</div>
+<button class="flex items-center gap-1 text-secondary font-label-md text-label-md hover:opacity-80 py-1" onclick="openDetailsModal('David Chen', 'Financial Analyst', 'Finance', 'EMP-0941', '$110,000')">
+<span>View Profile</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- CARD 4: Aisha Patel -->
+<div class="employee-card relative bg-surface-container-lowest rounded-xl p-space-base shadow-sm hover:shadow-md transition-shadow flex flex-col gap-space-md" data-dept="People Ops" data-id="EMP-1205" data-name="Aisha Patel" data-status="fulltime">
+<!-- Card Header -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Professional corporate headshot of Aisha Patel, an Indian woman HR specialist with a warm welcoming smile wearing an elegant teal top with soft ambient daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB70l5zqzrpcfQOKWbUZS1gCfXdBjJ6hqhwe9OugyQievqnkTIo8iHux5DfbsAXwsuDyxsRcXz_VLSWhte9rnkP9WcMMAGoRV2YhIgXxyWwX_HV_-9etH3_RptQUvm2dH0gAj9u0UP96heY0yefqvz0Vg0MKK6Swk6fU6MfMWywR2_ragkvsMLahLHLTkbeELk1v9k5qbPfeJ92qzE69p42Wz8XNw4FrFq884ggkJGvaVi7gwrM74c"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-secondary border-2 border-surface-container-lowest" title="Active"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Aisha Patel</span>
+<span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded font-label-sm text-[10px]">EMP-1205</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant truncate">HR Specialist</span>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-secondary text-[14px]">diversity_3</span>
+<span class="font-label-md text-label-md text-secondary">People Ops</span>
+</div>
+</div>
+</div>
+<!-- Options Menu Trigger -->
+<button aria-label="Employee Options" class="menu-btn w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-low text-outline transition-colors shrink-0">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<!-- Financial / Status Banner -->
+<div class="bg-surface-container-low rounded-lg p-space-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Compensation Band</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Band L4 <span class="text-body-sm font-normal text-on-surface-variant">• Compliant</span></span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Work Schedule</span>
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded-full text-on-surface font-label-sm text-label-sm shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            Full-Time Hybrid
+          </span>
+</div>
+</div>
+<!-- Quick Action Micro-Bar -->
+<div class="flex items-center justify-between pt-space-2xs">
+<div class="flex items-center gap-space-xs">
+<a aria-label="Call Aisha Patel" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" href="tel:+1555047712">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</a>
+<a aria-label="Email Aisha Patel" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" href="mailto:a.patel@acme.corp">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+</a>
+<button aria-label="Compliance Records" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors" onclick="showToast('Onboarding docs verified for Aisha Patel')">
+<span class="material-symbols-outlined text-[18px]">badge</span>
+</button>
+</div>
+<button class="flex items-center gap-1 text-secondary font-label-md text-label-md hover:opacity-80 py-1" onclick="openDetailsModal('Aisha Patel', 'HR Specialist', 'People Ops', 'EMP-1205', 'Standard Band L4')">
+<span>View Profile</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Playful Filter Empty State (Hidden by default) -->
+<div class="hidden flex flex-col items-center justify-center py-12 px-space-md text-center bg-surface-container-lowest rounded-xl shadow-sm" id="empty-state">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-space-sm text-outline">
+<span class="material-symbols-outlined text-[32px]">group_off</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">No matching team members</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 max-w-xs">
+        We checked across all 248 records but couldn't find anyone matching that query.
+      </p>
+<button class="mt-space-md px-space-base py-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md shadow-sm" id="btn-reset-filters">
+        Reset Search
+      </button>
+</div>
+</div>
+<!-- Bottom Sheet / Action Drawer for Three-Dot Menu -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-end" id="action-drawer">
+<div class="w-full bg-surface-container-lowest rounded-t-2xl p-space-base shadow-2xl transform translate-y-full transition-transform duration-300 flex flex-col gap-space-sm" id="action-drawer-content">
+<div class="w-10 h-1 rounded-full bg-outline-variant self-center mb-1"></div>
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface" id="drawer-employee-name">Marcus Vance</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="drawer-employee-role">Senior Software Engineer • EMP-1042</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" id="close-drawer">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<button class="drawer-action-btn w-full p-space-sm rounded-xl hover:bg-surface-container-low flex items-center gap-space-md text-left transition-colors" data-action="Form &amp; Contract">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]">description</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-lg text-label-lg text-on-surface">View Form &amp; Employment Contract</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Legal signed agreements, NDA, &amp; W-4</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+</button>
+<button class="drawer-action-btn w-full p-space-sm rounded-xl hover:bg-surface-container-low flex items-center gap-space-md text-left transition-colors" data-action="Salary Structure">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]">account_balance</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-lg text-label-lg text-on-surface">Salary Structure &amp; Benefits</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pay rates, health 401(k), equity vesting</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+</button>
+<button class="drawer-action-btn w-full p-space-sm rounded-xl hover:bg-surface-container-low flex items-center gap-space-md text-left transition-colors" data-action="Attendance History">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]">history</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-lg text-label-lg text-on-surface">Attendance &amp; Leave Records</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Logged hours, PTO balances, timesheets</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+</button>
+</div>
+<div class="pt-space-xs">
+<button class="w-full h-12 rounded-xl bg-surface-container text-on-surface font-label-lg text-label-lg flex items-center justify-center active:scale-98 transition-transform" id="drawer-cancel-btn">
+          Dismiss
+        </button>
+</div>
+</div>
+</div>
+<!-- Micro Modal for Add Employee Quick Flow -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-margin-mobile" id="add-modal">
+<div class="w-full max-w-sm bg-surface-container-lowest rounded-2xl p-space-base shadow-2xl flex flex-col gap-space-md transform scale-95 transition-transform duration-200">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">New Employee</span>
+</div>
+<button class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" id="close-add-modal">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Full Legal Name</label>
+<input class="w-full h-11 px-space-sm rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-secondary/50" id="new-name" placeholder="e.g. Maya Lin" type="text"/>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Department</label>
+<select class="w-full h-11 px-space-sm rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none" id="new-dept">
+<option>Engineering</option>
+<option>Product &amp; Design</option>
+<option>Finance</option>
+<option>People Ops</option>
+<option>Customer Operations</option>
+</select>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Employment Type</label>
+<div class="grid grid-cols-2 gap-space-xs">
+<button class="emp-type-chip active py-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md text-center" type="button">Full-Time</button>
+<button class="emp-type-chip py-2 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md text-center" type="button">Contractor</button>
+</div>
+</div>
+</div>
+<div class="flex gap-space-xs pt-space-xs">
+<button class="flex-1 h-11 rounded-xl bg-surface-container text-on-surface font-label-md text-label-md" id="btn-cancel-add">Cancel</button>
+<button class="flex-1 h-11 rounded-xl bg-primary text-on-primary font-label-md text-label-md shadow-md" id="btn-save-employee">Create Profile</button>
+</div>
+</div>
+</div>
+<script>
+    // Client-side micro-interactions
+    const searchInput = document.getElementById('search-input');
+    const clearSearch = document.getElementById('clear-search');
+    const filterChips = document.querySelectorAll('.filter-chip');
+    const employeeCards = document.querySelectorAll('.employee-card');
+    const emptyState = document.getElementById('empty-state');
+    const toast = document.getElementById('toast-delight');
+    const toastMsg = document.getElementById('toast-message');
+
+    // Drawer elements
+    const actionDrawer = document.getElementById('action-drawer');
+    const actionDrawerContent = document.getElementById('action-drawer-content');
+    const drawerEmpName = document.getElementById('drawer-employee-name');
+    const drawerEmpRole = document.getElementById('drawer-employee-role');
+    const closeDrawerBtn = document.getElementById('close-drawer');
+    const drawerCancelBtn = document.getElementById('drawer-cancel-btn');
+    const drawerActionBtns = document.querySelectorAll('.drawer-action-btn');
+
+    // Add Modal elements
+    const addModal = document.getElementById('add-modal');
+    const btnAddEmployee = document.getElementById('btn-add-employee');
+    const closeAddModal = document.getElementById('close-add-modal');
+    const btnCancelAdd = document.getElementById('btn-cancel-add');
+    const btnSaveEmployee = document.getElementById('btn-save-employee');
+    const newNameInput = document.getElementById('new-name');
+
+    let currentFilter = 'all';
+
+    function showToast(message) {
+      if (!toast) return;
+      toastMsg.innerText = message;
+      toast.classList.remove('-translate-y-16', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      
+      setTimeout(() => {
+        toast.classList.add('-translate-y-16', 'opacity-0', 'pointer-events-none');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+
+    // Filter Logic
+    function applyFilters() {
+      const query = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      employeeCards.forEach(card => {
+        const name = card.getAttribute('data-name').toLowerCase();
+        const dept = card.getAttribute('data-dept').toLowerCase();
+        const id = card.getAttribute('data-id').toLowerCase();
+        const status = card.getAttribute('data-status');
+
+        const matchesQuery = !query || name.includes(query) || dept.includes(query) || id.includes(query);
+        let matchesStatus = true;
+
+        if (currentFilter === 'fulltime') {
+          matchesStatus = (status === 'fulltime');
+        } else if (currentFilter === 'contractors') {
+          matchesStatus = (status === 'contractor');
+        } else if (currentFilter === 'leave') {
+          matchesStatus = (status === 'leave');
+        }
+
+        if (matchesQuery && matchesStatus) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+
+      if (query.length > 0) {
+        clearSearch.classList.remove('hidden');
+      } else {
+        clearSearch.classList.add('hidden');
+      }
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+
+    clearSearch.addEventListener('click', () => {
+      searchInput.value = '';
+      applyFilters();
+      searchInput.focus();
+    });
+
+    document.getElementById('btn-reset-filters')?.addEventListener('click', () => {
+      searchInput.value = '';
+      currentFilter = 'all';
+      filterChips.forEach(c => {
+        c.classList.remove('bg-primary', 'text-on-primary');
+        c.classList.add('bg-surface-container-lowest', 'text-on-surface');
+      });
+      filterChips[0].classList.add('bg-primary', 'text-on-primary');
+      filterChips[0].classList.remove('bg-surface-container-lowest', 'text-on-surface');
+      applyFilters();
+    });
+
+    filterChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        filterChips.forEach(c => {
+          c.classList.remove('bg-primary', 'text-on-primary');
+          c.classList.add('bg-surface-container-lowest', 'text-on-surface');
+        });
+        chip.classList.remove('bg-surface-container-lowest', 'text-on-surface');
+        chip.classList.add('bg-primary', 'text-on-primary');
+        currentFilter = chip.getAttribute('data-filter');
+        applyFilters();
+      });
+    });
+
+    // Drawer Open / Close
+    function openDrawer(name, role, id) {
+      drawerEmpName.innerText = name;
+      drawerEmpRole.innerText = role + ' • ' + id;
+      actionDrawer.classList.remove('opacity-0', 'pointer-events-none');
+      actionDrawerContent.classList.remove('translate-y-full');
+    }
+
+    function closeDrawer() {
+      actionDrawer.classList.add('opacity-0', 'pointer-events-none');
+      actionDrawerContent.classList.add('translate-y-full');
+    }
+
+    document.querySelectorAll('.menu-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = btn.closest('.employee-card');
+        const name = card.getAttribute('data-name');
+        const dept = card.getAttribute('data-dept');
+        const id = card.getAttribute('data-id');
+        openDrawer(name, dept, id);
+      });
+    });
+
+    closeDrawerBtn.addEventListener('click', closeDrawer);
+    drawerCancelBtn.addEventListener('click', closeDrawer);
+    actionDrawer.addEventListener('click', (e) => {
+      if (e.target === actionDrawer) closeDrawer();
+    });
+
+    drawerActionBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const action = btn.getAttribute('data-action');
+        const name = drawerEmpName.innerText;
+        closeDrawer();
+        showToast(action + ' opened for ' + name);
+      });
+    });
+
+    // Add Employee Modal
+    btnAddEmployee.addEventListener('click', () => {
+      addModal.classList.remove('opacity-0', 'pointer-events-none');
+      addModal.querySelector('div').classList.remove('scale-95');
+      newNameInput.focus();
+    });
+
+    function closeAdd() {
+      addModal.classList.add('opacity-0', 'pointer-events-none');
+      addModal.querySelector('div').classList.add('scale-95');
+      newNameInput.value = '';
+    }
+
+    closeAddModal.addEventListener('click', closeAdd);
+    btnCancelAdd.addEventListener('click', closeAdd);
+    addModal.addEventListener('click', (e) => {
+      if (e.target === addModal) closeAdd();
+    });
+
+    btnSaveEmployee.addEventListener('click', () => {
+      const name = newNameInput.value.trim() || 'New Employee';
+      closeAdd();
+      showToast('Welcome onboard! ' + name + ' created.');
+    });
+
+    // Simple profile preview click
+    window.openDetailsModal = function(name, role, dept, id, comp) {
+      showToast('Opening ' + name + '\'s dossier (' + id + ')');
+    };
+  </script>
+</div></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_16px_rgba(0,0,0,0.05)]" data-active-classes="text-secondary font-label-md"><div class="h-16 px-margin-mobile flex items-center justify-around"><a class="flex flex-col items-center justify-center min-w-[56px] h-11 text-on-surface-variant transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[24px]">query_stats</span><span class="font-label-sm text-label-sm mt-space-2xs">Dashboard</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] h-11 transition-colors text-secondary font-label-md" data-path="employees" href="#"><span class="material-symbols-outlined text-[24px]">group</span><span class="font-label-sm text-label-sm mt-space-2xs">Employees</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-11 text-on-surface-variant transition-colors" data-path="payruns" href="#"><span class="material-symbols-outlined text-[24px]">payments</span><span class="font-label-sm text-label-sm mt-space-2xs">Payruns</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-11 text-on-surface-variant relative transition-colors" data-path="approvals" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">fact_check</span><span class="absolute -top-1 -right-2.5 bg-error text-on-error font-label-sm text-[9px] px-1 py-0.5 rounded-full leading-none font-bold">4</span></div><span class="font-label-sm text-label-sm mt-space-2xs">Approvals</span></a></div></nav></body></html>

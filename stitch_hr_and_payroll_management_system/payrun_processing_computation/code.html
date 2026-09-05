@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;font-family:'Hanken Grotesk',sans-serif;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'surface-bright': '#f8f9ff', 'surface-container-low': '#eff4ff', 'surface-variant': '#d3e4fe', 'primary-fixed-dim': '#bec6e0', 'secondary-container': '#86f2e4', 'tertiary-container': '#111c2d', 'secondary': '#006a61', 'primary': '#000000', 'primary-container': '#131b2e', 'on-primary-fixed': '#131b2e', 'tertiary-fixed-dim': '#bcc7de', 'outline-variant': '#c6c6cd', 'on-secondary': '#ffffff', 'error': '#ba1a1a', 'secondary-fixed-dim': '#6bd8cb', 'on-error-container': '#93000a', 'on-primary-fixed-variant': '#3f465c', 'on-tertiary-container': '#79849a', 'inverse-surface': '#213145', 'surface-dim': '#cbdbf5', 'on-primary': '#ffffff', 'surface': '#f8f9ff', 'surface-container-high': '#dce9ff', 'on-secondary-container': '#006f66', 'on-error': '#ffffff', 'on-tertiary-fixed-variant': '#3c475a', 'on-background': '#0b1c30', 'surface-container': '#e5eeff', 'on-secondary-fixed-variant': '#005049', 'inverse-primary': '#bec6e0', 'secondary-fixed': '#89f5e7', 'outline': '#76777d', 'surface-container-highest': '#d3e4fe', 'tertiary': '#000000', 'on-tertiary': '#ffffff', 'on-surface': '#0b1c30', 'on-primary-container': '#7c839b', 'inverse-on-surface': '#eaf1ff', 'surface-tint': '#565e74', 'tertiary-fixed': '#d8e3fb', 'on-surface-variant': '#45464d', 'surface-container-lowest': '#ffffff', 'primary-fixed': '#dae2fd', 'on-secondary-fixed': '#00201d', 'error-container': '#ffdad6', 'background': '#f8f9ff', 'on-tertiary-fixed': '#111c2d' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'space-xl': '1.5rem', 'space-sm': '0.5rem', 'margin-mobile': '1rem', 'space-2xs': '0.125rem', 'space-xs': '0.25rem', 'space-base': '1rem', 'safe-bottom-action': '5.5rem', 'gutter-mobile': '0.75rem', 'space-lg': '1.25rem', 'space-md': '0.75rem', 'space-2xl': '2rem' }, fontFamily: { 'metric-lg': ['Hanken Grotesk'], 'headline-sm': ['Hanken Grotesk'], 'metric-md': ['Hanken Grotesk'], 'body-sm': ['Hanken Grotesk'], 'display-lg': ['Hanken Grotesk'], 'body-lg': ['Hanken Grotesk'], 'body-md': ['Hanken Grotesk'], 'headline-md': ['Hanken Grotesk'], 'label-md': ['Hanken Grotesk'], 'label-sm': ['Hanken Grotesk'], 'label-lg': ['Hanken Grotesk'], 'headline-lg': ['Hanken Grotesk'] }, fontSize: { 'metric-lg': ['28px', { lineHeight: '32px', letterSpacing: '-0.03em', fontWeight: '700' }], 'headline-sm': ['18px', { lineHeight: '24px', letterSpacing: '-0.01em', fontWeight: '600' }], 'metric-md': ['20px', { lineHeight: '24px', letterSpacing: '-0.02em', fontWeight: '700' }], 'body-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.005em', fontWeight: '400' }], 'display-lg': ['32px', { lineHeight: '38px', letterSpacing: '-0.025em', fontWeight: '700' }], 'body-lg': ['16px', { lineHeight: '24px', letterSpacing: '-0.005em', fontWeight: '400' }], 'body-md': ['14px', { lineHeight: '20px', letterSpacing: '0em', fontWeight: '400' }], 'headline-md': ['20px', { lineHeight: '26px', letterSpacing: '-0.015em', fontWeight: '600' }], 'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.02em', fontWeight: '600' }], 'label-sm': ['10px', { lineHeight: '12px', letterSpacing: '0.05em', fontWeight: '700' }], 'label-lg': ['14px', { lineHeight: '18px', letterSpacing: '0.01em', fontWeight: '600' }], 'headline-lg': ['24px', { lineHeight: '30px', letterSpacing: '-0.02em', fontWeight: '700' }] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="PayPulse HR Logo" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1W4hEk1ACJc4wYk1AcUW_C3WJg5Ra50Z-aGLvvPG1mbjsVAZ3BIgzzhLEMwZHtLtcp5YqHrqm8jidKJTn5OvzbGYY7Oc8sDbwetNKJK9G77qFB_m5XbBTfPc7K2QUjAC26wntxGw7hqAWegF1Pq5r_SfrencIzle22g6Fwj6RX-GgKLQP2w9khLXoHvyXuzisRikkmXSX5AqgHZDFdcEWAtlbksjGJlSmVwmL1f3qCyaMkTrmqmDtjmRA"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-label-md text-label-md text-on-surface truncate">Acme Corp</span><span class="material-symbols-outlined text-outline text-[16px]">unfold_more</span></div><span class="font-body-sm text-body-sm text-on-surface-variant truncate">Global • Payruns</span></div></div><div class="flex items-center gap-space-xs shrink-0"><button aria-label="Notifications" class="w-11 h-11 relative flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error ring-2 ring-surface"></span></button><button aria-label="Admin Profile" class="w-11 h-11 flex items-center justify-center p-0.5 rounded-full hover:bg-surface-container-low transition-colors"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH42WOR1BN4fz5kaOQW8ztNJ2P6Pu9IJnuLgNvRfbqTEjJNUeXZmC-Sq17mwCYIneH3x4KGwX9L2hpwFdeZFUG1A7gQ12UiOE89NoUQKCqLe1qiGEC5xTvUVL2QdDWIlDQuRofbUPucP86QRB1IP5NrF0bzPkOBr9uJbgKa1sj_7mE5_u3c8ceY9LFOXEqZs2D6nSbNvfWOsmM4t0TtwOsIbj-eLwuvpY_6hhSIgk8lp36cdBssMlh"/></button></div></div></header><main class="flex flex-col relative w-full pt-16 pb-safe-bottom-action bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Cycle Header Banner -->
+<div class="px-margin-mobile pt-space-md pb-space-sm">
+<div class="flex items-center justify-between gap-space-xs mb-space-2xs">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-secondary text-[20px] shrink-0" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<h1 class="font-headline-sm text-headline-sm text-on-surface truncate">October 2024 Regular Payrun</h1>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container shrink-0">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="font-label-sm text-label-sm">Draft • Computing</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Cycle #10 • Scheduled for Oct 31, 2024 (EOD Execution)</p>
+</div>
+<!-- Wizard Horizontal Stepper Card -->
+<div class="px-margin-mobile mb-space-md">
+<div class="bg-surface-container-lowest rounded-xl p-space-base shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-on-surface">Payroll Execution Flow</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">Step 2 of 4</span>
+</div>
+<!-- Steps Flow -->
+<div class="grid grid-cols-4 gap-space-xs relative">
+<!-- Step 1 (Completed) -->
+<div class="flex flex-col items-center text-center group cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mb-1 transition-transform group-active:scale-95 shadow-xs">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold truncate w-full">Hours Sync</span>
+<span class="font-body-sm text-[10px] text-secondary">Verified</span>
+</div>
+<!-- Step 2 (Active) -->
+<div class="flex flex-col items-center text-center group cursor-pointer relative">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center mb-1 transition-transform group-active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-[18px] animate-spin">sync</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-bold truncate w-full">Compute</span>
+<span class="font-body-sm text-[10px] text-secondary font-bold">In Progress</span>
+</div>
+<!-- Step 3 (Next) -->
+<div class="flex flex-col items-center text-center opacity-70">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate w-full">Exceptions</span>
+<span class="font-body-sm text-[10px] text-outline">Queued</span>
+</div>
+<!-- Step 4 (Pending) -->
+<div class="flex flex-col items-center text-center opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container text-outline flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline truncate w-full">Finalize</span>
+<span class="font-body-sm text-[10px] text-outline">Pending</span>
+</div>
+</div>
+<!-- Micro Progress Bar -->
+<div class="w-full bg-surface-container-high rounded-full h-1.5 mt-space-md overflow-hidden">
+<div class="bg-secondary h-full rounded-full transition-all duration-700" style="width: 50%;"></div>
+</div>
+</div>
+</div>
+<!-- Primary Computation & Ledger Summary Card -->
+<div class="px-margin-mobile mb-space-md">
+<div class="bg-surface-container-lowest rounded-xl p-space-base shadow-sm">
+<!-- High-level net payout header with sparkline chart -->
+<div class="flex items-start justify-between pb-space-sm">
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Computed Net Payout</span>
+<div class="font-metric-lg text-metric-lg text-on-surface tracking-tight mt-space-2xs">$358,120.00</div>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-secondary text-[14px]">trending_up</span>
+<span class="font-label-sm text-label-sm text-secondary">+1.8% vs Sep Cycle</span>
+</div>
+</div>
+<!-- Mini Sparkline SVG -->
+<div class="w-20 h-11 flex items-end">
+<svg class="w-full h-9 overflow-visible" fill="none" viewbox="0 0 80 32">
+<path d="M0 24 Q 20 28, 35 16 T 65 10 T 80 4" fill="none" stroke="#006a61" stroke-linecap="round" stroke-width="2.5"></path>
+<path d="M0 24 Q 20 28, 35 16 T 65 10 T 80 4 L 80 32 L 0 32 Z" fill="url(#sparkline-grad)" opacity="0.18"></path>
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="sparkline-grad" x1="0" x2="0" y1="0" y2="32">
+<stop stop-color="#006a61"></stop>
+<stop offset="1" stop-color="#86f2e4" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<circle class="fill-secondary" cx="80" cy="4" r="3.5"></circle>
+</svg>
+</div>
+</div>
+<!-- Employee Headcount Badge -->
+<div class="flex items-center justify-between bg-surface-container-low rounded-lg px-space-md py-space-xs mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">badge</span>
+<span class="font-label-md text-label-md text-on-surface">Target Roster</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-secondary font-bold">248 of 248 Enrolled</span>
+<span class="material-symbols-outlined text-secondary text-[16px]">check_circle</span>
+</div>
+</div>
+<!-- Financial Calculation Itemized Breakdown -->
+<div class="space-y-space-sm pt-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-body-md text-body-md text-on-surface-variant truncate">Gross Company Earnings</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface shrink-0">$482,950.00</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span class="font-body-md text-body-md text-on-surface-variant truncate">Pre-Tax (401k, HSA, Medical)</span>
+</div>
+<span class="font-label-lg text-label-lg text-error shrink-0">-$31,420.00</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-body-md text-body-md text-on-surface-variant truncate">Taxes (Federal, State, FICA)</span>
+</div>
+<span class="font-label-lg text-label-lg text-error shrink-0">-$89,450.00</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+<span class="font-body-md text-body-md text-on-surface-variant truncate">Post-Tax Deductions &amp; Roth</span>
+</div>
+<span class="font-label-lg text-label-lg text-error shrink-0">-$3,960.00</span>
+</div>
+</div>
+<!-- Visual Distribution Multi-Segment Bar -->
+<div class="mt-space-md pt-space-sm">
+<div class="w-full h-3 rounded-full bg-surface-container flex overflow-hidden gap-0.5 p-0.5">
+<div class="bg-secondary h-full rounded-l-full transition-all duration-500" style="width: 74%;" title="Net Pay"></div>
+<div class="bg-error h-full transition-all duration-500" style="width: 18%;" title="Taxes"></div>
+<div class="bg-outline h-full transition-all duration-500" style="width: 6%;" title="Pre-tax"></div>
+<div class="bg-tertiary h-full rounded-r-full transition-all duration-500" style="width: 2%;" title="Post-tax"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] text-on-surface-variant mt-1.5 px-0.5 font-label-sm">
+<span>Net: 74%</span>
+<span>Taxes: 18%</span>
+<span>Benefits &amp; Deductions: 8%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Exceptions & Anomaly Alerts Section -->
+<div class="px-margin-mobile mb-space-lg">
+<div class="flex items-center justify-between mb-space-xs">
+<h2 class="font-label-lg text-label-lg text-on-surface">Attention Flags &amp; Anomalies</h2>
+<span class="font-label-sm text-label-sm text-error bg-error-container px-2 py-0.5 rounded-full font-bold">2 Actionable</span>
+</div>
+<div class="space-y-space-sm">
+<!-- Overtime Flagged Box (Warning) -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-start gap-space-md cursor-pointer active:bg-surface-container-low transition-colors" id="anomaly-overtime-card">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1">
+<span class="font-label-md text-label-md text-on-surface truncate">Overtime Spike Trigger</span>
+<span class="material-symbols-outlined text-outline text-[16px]">arrow_forward_ios</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">2 Overtime hours flags detected exceeding 18hr threshold (Dept: Logistics &amp; Field Ops).</p>
+<div class="flex items-center gap-space-xs mt-2">
+<span class="font-label-sm text-[10px] bg-error-container text-on-error-container px-2 py-0.5 rounded-md font-semibold">Review Needed</span>
+<span class="font-body-sm text-[11px] text-secondary font-semibold">Tap to inspect profiles</span>
+</div>
+</div>
+</div>
+<!-- New Hire Calculation (Info/Delight Callout) -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface truncate">Prorated Onboarding Pay</span>
+<span class="font-label-sm text-[10px] text-secondary bg-surface-container-low px-1.5 py-0.5 rounded">New Hire</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">1 New hire first prorated paycheck computed for <strong class="text-on-surface">Marcus Vance</strong> (Joined Oct 14).</p>
+<div class="flex items-center gap-space-sm mt-2">
+<div class="flex items-center gap-1 text-[11px] font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-secondary">verified_user</span>
+              14 business days calculated correctly
+            </div>
+</div>
+</div>
+</div>
+<!-- Automated Compliance Sync Banner -->
+<div class="bg-surface-container-low p-space-sm rounded-xl flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0">assured_workload</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Federal tax table v2024.4 synced</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary shrink-0">Up to date</span>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Quick Action Deck -->
+<div class="fixed bottom-16 inset-x-0 z-40 px-margin-mobile pb-space-sm pointer-events-none">
+<div class="max-w-md mx-auto pointer-events-auto bg-surface/90 backdrop-blur-xl p-space-sm rounded-2xl shadow-xl flex items-center gap-space-sm">
+<!-- Recompute Secondary Button with micro-interaction state -->
+<button class="h-12 px-space-md rounded-xl bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 active:scale-95 transition-all" id="recompute-btn" type="button">
+<span class="material-symbols-outlined text-[18px]" id="recompute-icon">autorenew</span>
+<span class="hidden sm:inline" id="recompute-text">Recalculate</span>
+</button>
+<!-- Continue to Review Primary CTA Button -->
+<button class="h-12 flex-1 rounded-xl bg-secondary text-on-secondary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all hover:bg-opacity-95" id="continue-cta" type="button">
+<span>Continue to Review</span>
+<span class="bg-surface-container-lowest/20 text-on-secondary text-[11px] font-label-sm px-2 py-0.5 rounded-full font-bold">248/248</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Interactive Logic for Delightful Feedback -->
+<script>
+    (function() {
+      const recomputeBtn = document.getElementById('recompute-btn');
+      const recomputeIcon = document.getElementById('recompute-icon');
+      const continueBtn = document.getElementById('continue-cta');
+      const anomalyCard = document.getElementById('anomaly-overtime-card');
+
+      if (recomputeBtn && recomputeIcon) {
+        recomputeBtn.addEventListener('click', function() {
+          recomputeIcon.classList.add('animate-spin');
+          recomputeBtn.disabled = true;
+          recomputeBtn.classList.add('opacity-75');
+
+          setTimeout(function() {
+            recomputeIcon.classList.remove('animate-spin');
+            recomputeBtn.disabled = false;
+            recomputeBtn.classList.remove('opacity-75');
+            
+            // Subtle feedback toast creation
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 inset-x-6 z-50 bg-secondary text-on-secondary py-2.5 px-4 rounded-xl shadow-lg flex items-center justify-between text-label-md transition-all duration-300 transform translate-y-0';
+            toast.innerHTML = '<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">check_circle</span>Salaries recomputed cleanly!</span><span class="font-body-sm text-[11px]">0.4s</span>';
+            document.body.appendChild(toast);
+
+            setTimeout(function() {
+              toast.style.opacity = '0';
+              setTimeout(function() { toast.remove(); }, 300);
+            }, 2500);
+          }, 900);
+        });
+      }
+
+      if (anomalyCard) {
+        anomalyCard.addEventListener('click', function() {
+          anomalyCard.classList.add('bg-surface-container-high');
+          setTimeout(function() {
+            anomalyCard.classList.remove('bg-surface-container-high');
+          }, 200);
+        });
+      }
+
+      if (continueBtn) {
+        continueBtn.addEventListener('click', function() {
+          continueBtn.classList.add('scale-95');
+          setTimeout(function() {
+            continueBtn.classList.remove('scale-95');
+          }, 150);
+        });
+      }
+    })();
+  </script>
+</div></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_16px_rgba(0,0,0,0.05)]" data-active-classes="text-secondary font-label-md"><div class="h-16 px-margin-mobile flex items-center justify-around"><a class="flex flex-col items-center justify-center min-w-[56px] h-11 text-on-surface-variant transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[24px]">query_stats</span><span class="font-label-sm text-label-sm mt-space-2xs">Dashboard</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-11 text-on-surface-variant transition-colors" data-path="employees" href="#"><span class="material-symbols-outlined text-[24px]">group</span><span class="font-label-sm text-label-sm mt-space-2xs">Employees</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] h-11 transition-colors text-secondary font-label-md" data-path="payruns" href="#"><span class="material-symbols-outlined text-[24px]">payments</span><span class="font-label-sm text-label-sm mt-space-2xs">Payruns</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-11 text-on-surface-variant relative transition-colors" data-path="approvals" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">fact_check</span><span class="absolute -top-1 -right-2.5 bg-error text-on-error font-label-sm text-[9px] px-1 py-0.5 rounded-full leading-none font-bold">4</span></div><span class="font-label-sm text-label-sm mt-space-2xs">Approvals</span></a></div></nav></body></html>

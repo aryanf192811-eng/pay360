@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }
+@keyframes live-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.15); } }
+.animate-live-dot { animation: live-pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+@keyframes flash-highlight { 0% { background-color: rgba(137, 245, 231, 0.35); } 100% { background-color: transparent; } }
+.flash-update { animation: flash-highlight 1.2s ease-out; }
+.tooltip-card { transition: opacity 0.15s ease, transform 0.15s ease; }
+</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "error": "#ba1a1a", "surface-variant": "#d3e4fe", "on-secondary-fixed-variant": "#005049", "surface-container-high": "#dce9ff", "on-secondary-container": "#006f66", "surface-bright": "#f8f9ff", "primary": "#000000", "tertiary-container": "#111c2d", "surface-container": "#e5eeff", "surface-tint": "#565e74", "on-primary": "#ffffff", "on-primary-fixed": "#131b2e", "tertiary-fixed-dim": "#bcc7de", "outline-variant": "#c6c6cd", "on-tertiary": "#ffffff", "on-primary-fixed-variant": "#3f465c", "on-tertiary-fixed": "#111c2d", "on-error-container": "#93000a", "inverse-surface": "#213145", "surface-container-highest": "#d3e4fe", "surface": "#f8f9ff", "on-tertiary-fixed-variant": "#3c475a", "on-error": "#ffffff", "on-background": "#0b1c30", "secondary": "#006a61", "on-surface": "#0b1c30", "primary-container": "#131b2e", "surface-dim": "#cbdbf5", "outline": "#76777d", "secondary-fixed-dim": "#6bd8cb", "on-primary-container": "#7c839b", "inverse-primary": "#bec6e0", "secondary-fixed": "#89f5e7", "primary-fixed-dim": "#bec6e0", "background": "#f8f9ff", "on-tertiary-container": "#79849a", "tertiary": "#000000", "on-secondary": "#ffffff", "inverse-on-surface": "#eaf1ff", "surface-container-lowest": "#ffffff", "on-surface-variant": "#45464d", "tertiary-fixed": "#d8e3fb", "surface-container-low": "#eff4ff", "primary-fixed": "#dae2fd", "error-container": "#ffdad6", "secondary-container": "#86f2e4", "on-secondary-fixed": "#00201d" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-base": "1rem", "gutter-mobile": "0.75rem", "space-lg": "1.25rem", "space-md": "0.75rem", "safe-bottom-action": "5.5rem", "space-2xs": "0.125rem", "space-xl": "1.5rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "space-2xl": "2rem", "space-xs": "0.25rem" }, "fontFamily": { "headline-sm": ["Hanken Grotesk"], "body-md": ["Hanken Grotesk"], "metric-lg": ["Hanken Grotesk"], "metric-md": ["Hanken Grotesk"], "label-md": ["Hanken Grotesk"], "headline-lg": ["Hanken Grotesk"], "body-lg": ["Hanken Grotesk"], "body-sm": ["Hanken Grotesk"], "label-sm": ["Hanken Grotesk"], "display-lg": ["Hanken Grotesk"], "label-lg": ["Hanken Grotesk"], "headline-md": ["Hanken Grotesk"] }, "fontSize": { "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "metric-lg": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "metric-md": ["20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.005em", "fontWeight": "400" }], "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "700" }], "display-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "700" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }] } } } }</script></head><body class="bg-surface font-body-md text-on-surface antialiased relative selection:bg-secondary-container"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="p-space-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Brand logo." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UWNjhQfDEQll8ZtCLhEfyTo0XM92HQDb_61tmfI5kOIYTFvyzDbb1GIqbLSiqYeiFXe_wMbXFKl0_y6U3UtKUqeMNRic4XVNOrNE7v2HvprgWqRl4-CzGoJ2o48uhyy6gpSR_N0IlOQBkVjq49ZyRgbTEgUOunKkwDdKFgtoReZ3mbnriek4ieufmnG-sv9SI8MKdodWgCRUOkiYmgo8RRwIFooZPeq6LTs1c3V9Il3Y23Wp8iDPnGkw"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface leading-none">ApexPay</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mt-space-2xs">India Enterprise HR</span></div></div></div><div class="px-space-lg pb-space-sm"><button class="w-full flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors text-left" type="button"><div class="flex items-center gap-space-sm overflow-hidden"><div class="w-7 h-7 rounded-md bg-primary-container text-on-primary flex items-center justify-center font-label-md text-label-md shrink-0">AC</div><div class="truncate"><p class="font-label-lg text-label-lg text-on-surface truncate leading-tight">Acme Corp India Pvt. Ltd.</p><p class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Bengaluru HQ • PAN/TAN Active</p></div></div><span class="material-symbols-outlined text-on-surface-variant text-base shrink-0">unfold_more</span></button></div><div class="px-space-lg py-space-xs"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-space-sm text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-8 pr-space-sm py-1.5 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container transition-all" placeholder="Search PAN, UAN, Form 16, payslips..." type="text"/><kbd class="absolute right-space-sm font-label-sm text-label-sm text-on-surface-variant bg-surface-container-lowest px-1 py-0.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.05)]">/</kbd></div></div><div class="px-space-lg pt-space-md pb-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Payroll &amp; Compliance</span></div><nav class="flex-1 px-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary rounded-lg font-bold"><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2 transition-colors bg-primary-container text-on-primary rounded-lg font-bold" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span>Dashboard</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="employees" href="#"><span class="material-symbols-outlined text-lg">badge</span>Employees (PAN / UAN)</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="payruns" href="#"><span class="material-symbols-outlined text-lg">payments</span>Payruns &amp; Salary Disbursal</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="time-off-attendance" href="#"><span class="material-symbols-outlined text-lg">calendar_today</span>Attendance &amp; Leave Encashment</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="salary-rules" href="#"><span class="material-symbols-outlined text-lg">account_balance</span>CTC Structure &amp; PF Rules</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="reports-analytics" href="#"><span class="material-symbols-outlined text-lg">bar_chart</span>Form 24Q &amp; TDS Analytics</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="settings-compliance" href="#"><span class="material-symbols-outlined text-lg">verified_user</span>EPFO, ESIC &amp; PT Compliance</a></nav><div class="p-space-md bg-surface-container-lowest mt-auto"><div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="relative flex h-2.5 w-2.5 items-center justify-center shrink-0"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span></div><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface font-semibold">Statutory Engine</span><span class="font-label-sm text-label-sm text-on-surface-variant">EPFO &amp; IT Dept FY24-25</span></div></div><button class="text-on-surface-variant hover:text-on-surface flex items-center" type="button"><span class="material-symbols-outlined text-base">help</span></button></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl z-40 flex items-center justify-between px-space-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-lg flex-1 max-w-xl"><div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md"><span class="font-semibold text-on-surface">India Payroll Center</span><span class="material-symbols-outlined text-sm">chevron_right</span><span>October 2024 Cycle</span><div class="ml-space-sm px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-1.5 shadow-sm"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span></span>Active Run</div></div><div class="relative flex-1 hidden md:block"><span class="material-symbols-outlined absolute left-space-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-8 pr-12 py-1.5 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container transition-all" placeholder="Search employee code, PAN, Form 16, NEFT..." type="text"/><kbd class="absolute right-space-sm top-1/2 -translate-y-1/2 font-label-sm text-label-sm text-on-surface-variant bg-surface-container-lowest px-1.5 py-0.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.05)]">⌘K</kbd></div></div><div class="flex items-center gap-space-md shrink-0"><div class="flex items-center gap-space-xs"><button class="flex items-center gap-1 px-space-md py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md" onclick="triggerQuickAction('New Hire Onboarding (India)')" type="button"><span class="material-symbols-outlined text-base">person_add</span><span class="hidden sm:inline">New Hire</span></button><button class="flex items-center gap-1 px-space-md py-1.5 rounded-lg bg-secondary text-on-secondary hover:bg-secondary/90 transition-colors font-label-md text-label-md shadow-sm" onclick="triggerQuickAction('Payrun Execution Engine')" type="button"><span class="material-symbols-outlined text-base">play_circle</span><span>Run Payrun</span></button></div><div class="h-6 w-[1px] bg-surface-container-highest mx-space-2xs"></div><button class="relative p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" onclick="showLiveToast('Notification inbox refreshed - 4 statutory actions pending (TDS / EPFO / PT)')" type="button"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-1.5 right-1.5 w-4 h-4 bg-error text-on-error rounded-full font-label-sm text-label-sm flex items-center justify-center animate-pulse" id="notif-badge">4</span></button><div class="flex items-center gap-space-sm pl-space-xs"><div class="text-right hidden lg:block"><p class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Priya Sharma</p><p class="font-label-sm text-label-sm text-on-surface-variant leading-tight">HR Director • India Ops</p></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-container-highest" src="https://lh3.googleusercontent.com/aida/AEtjO1XH7ANaxUxkun0Upg_7eppVlzT-0fIpTxVcKZyoiANT-_mW1wFMU5uO4Nle_YOHMJhkrxJKcdK6MkAocO-eI95xyuRAA36ZKjmoFT7dfzoNIvqk0_TcsuJT67m93hplSFzqqsesX4fp5ImDCYi1XnDaF7jSn8_Y-Lu_h9mimoDuNyrr9Ebp5h6RsfXg2QfFYI0Zqt3owa7XZEnGcnazJKPYB2AnGlkxwJImkbYcl0XOen_QdmJ97HquxQ"/></div></div></header><main class="w-full pt-16 bg-surface flex-1 px-space-xl py-space-xl"><div class="flex flex-col w-full">
+<div class="flex flex-col gap-space-xl">
+<!-- Top Bar: Header, Controls & Dynamic Status -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div>
+<div class="flex items-center gap-space-xs mb-space-2xs flex-wrap">
+<span class="font-label-sm text-label-sm tracking-wider uppercase text-secondary font-bold">Total Compensation Ops • India</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-on-surface px-2 py-0.5 rounded-full bg-secondary-container/70 border border-secondary/20 flex items-center gap-1.5 font-semibold shadow-xs">
+<span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary animate-live-dot"></span></span>
+            LIVE TELEMETRY (EPFO &amp; BANK SYNCED)
+          </span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">• Next sync in <span class="font-bold text-on-surface font-mono" id="sync-countdown">14s</span></span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight">Executive Payroll &amp; Workforce Overview</h1>
+</div>
+<!-- Control Toolbar -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Interactive Date Selector Dropdown -->
+<div class="relative">
+<select class="cursor-pointer appearance-none flex items-center gap-space-xs pl-8 pr-8 py-1.5 rounded-lg bg-surface-container-lowest shadow-sm text-on-surface font-label-md text-label-md border-0 focus:ring-1 focus:ring-secondary" id="cycle-select" onchange="handleCycleChange(this.value)">
+<option value="current">Oct 1 - Oct 31, 2024 (Monthly Salary Batch)</option>
+<option value="prev">Sep 1 - Sep 30, 2024 (September Settlement)</option>
+<option value="q2">Q2 FY 24-25 Consolidated Rollup</option>
+</select>
+<span class="material-symbols-outlined text-base text-on-surface-variant absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">calendar_month</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none">arrow_drop_down</span>
+</div>
+<!-- Interactive Currency Switcher -->
+<div class="relative">
+<select class="cursor-pointer appearance-none flex items-center gap-space-xs pl-8 pr-7 py-1.5 rounded-lg bg-surface-container-lowest shadow-sm text-on-surface font-label-md text-label-md border-0 focus:ring-1 focus:ring-secondary" id="currency-select" onchange="handleCurrencyChange(this.value)">
+<option selected="" value="INR">INR (₹)</option>
+<option value="USD">USD ($)</option>
+<option value="EUR">EUR (€)</option>
+<option value="GBP">GBP (£)</option>
+</select>
+<span class="material-symbols-outlined text-base text-on-surface-variant absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">currency_rupee</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">expand_more</span>
+</div>
+<!-- Live Telemetry Status & Manual Resync -->
+<button class="flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shadow-xs active:scale-95" id="btn-manual-sync" onclick="triggerManualSync()" title="Click to force live refresh" type="button">
+<span class="material-symbols-outlined text-base text-secondary" id="sync-icon">sync</span>
+<span class="font-label-sm text-label-sm font-semibold" id="last-sync-text">Live • 0s ago</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high text-on-surface shadow-sm transition-colors active:scale-95" onclick="showLiveToast('Exporting executive Indian payroll dossier (Form 16 / 24Q / Bank NACH sheet)...')" title="Export executive dossier" type="button">
+<span class="material-symbols-outlined text-base">file_download</span>
+</button>
+</div>
+</div>
+<!-- 4-Column Hero Metric Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Metric 1: Total Commitment -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between transition-all duration-300 hover:shadow-md border border-transparent hover:border-surface-container-highest" id="card-commitment">
+<div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Payroll Commitment</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" title="Live dynamic payroll accumulator"></span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-xs">trending_up</span>+3.2%
+            </span>
+</div>
+<div class="mt-space-sm flex items-baseline gap-space-xs">
+<span class="font-metric-lg text-metric-lg text-on-surface tracking-tight" id="val-total-commitment">₹3,95,50,000</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="commitment-period">/ month (₹3.95 Cr)</span>
+</div>
+</div>
+<!-- Sparkline Visualization -->
+<div class="mt-space-md">
+<div class="h-10 w-full flex items-end">
+<svg class="w-full h-full text-secondary transition-all" fill="none" id="hero-sparkline" preserveaspectratio="none" viewbox="0 0 100 32">
+<path d="M0 26 L12 24 L24 28 L36 18 L48 20 L60 12 L72 14 L84 6 L100 2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<path d="M0 26 L12 24 L24 28 L36 18 L48 20 L60 12 L72 14 L84 6 L100 2 L100 32 L0 32 Z" fill="currentColor" opacity="0.08"></path>
+</svg>
+</div>
+<div class="mt-space-sm">
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-1">
+<span id="budget-cap-label">Budget Cap (₹4,20,00,000)</span>
+<span class="font-semibold text-on-surface" id="budget-cap-pct">94.2%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-secondary transition-all duration-700" id="budget-progress-bar" style="width: 94.2%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Metric 2: Active Headcount -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between transition-all duration-300 hover:shadow-md border border-transparent hover:border-surface-container-highest" id="card-headcount">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Active Headcount</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-0.5" id="net-hires-badge">
+              +6 net hires
+            </span>
+</div>
+<div class="mt-space-sm flex items-baseline gap-space-xs">
+<span class="font-metric-lg text-metric-lg text-on-surface tracking-tight" id="val-headcount">248</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">FTE / Retainers</span>
+<span class="ml-1 text-xs px-1.5 py-0.5 rounded bg-surface-container-high text-secondary font-mono font-semibold" id="headcount-live-status">231 punched-in</span>
+</div>
+</div>
+<div class="mt-space-md p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-lg">verified</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold leading-tight">100% PAN &amp; Aadhaar Verified</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant leading-tight">UAN linked • EPFO Parity Active</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-base">check_circle</span>
+</div>
+</div>
+<!-- Metric 3: Pending Approvals -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between transition-all duration-300 hover:shadow-md border border-transparent hover:border-surface-container-highest">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Pending Approvals</span>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold" id="queue-status-badge">
+              Action Required
+            </span>
+</div>
+<div class="mt-space-sm flex items-baseline gap-space-xs">
+<span class="font-metric-lg text-metric-lg text-on-surface tracking-tight" id="val-pending-count">14</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">items in queue</span>
+</div>
+</div>
+<div class="mt-space-md space-y-space-xs">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span id="label-timeoff-pending">8 Leave &amp; Attendance</span>
+<span class="font-semibold text-on-surface" id="label-expense-pending">6 IT Proof &amp; Claims</span>
+</div>
+<button class="w-full py-2 rounded-lg bg-primary-container text-on-primary hover:bg-inverse-surface transition-all font-label-md text-label-md flex items-center justify-center gap-1 active:scale-95 shadow-sm" onclick="openBatchQueueModal()" type="button">
+<span class="material-symbols-outlined text-base">rule</span>
+            Batch Review Queue
+          </button>
+</div>
+</div>
+<!-- Metric 4: Disbursement Cutoff -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between transition-all duration-300 hover:shadow-md border border-transparent hover:border-surface-container-highest">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">NEFT / RTGS / IMPS Cutoff</span>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-xs text-secondary animate-spin" style="animation-duration: 8s;">timer</span>
+<span id="countdown-badge">RBI Mandate Window</span>
+</div>
+</div>
+<div class="mt-space-sm flex flex-col">
+<span class="font-metric-md text-metric-md text-on-surface tracking-tight">Oct 30 • 16:30 IST</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">HDFC Bank Corporate Batch Gate</span>
+</div>
+</div>
+<div class="mt-space-md">
+<div class="flex items-center justify-between font-label-sm text-label-sm mb-1 text-on-surface-variant">
+<span>NACH Mandate Submission Gate</span>
+<span class="font-bold text-secondary font-mono" id="batch-timer-countdown">70h 42m 18s</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-secondary transition-all duration-500" style="width: 68.4%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content: Asymmetric 2-Column Split (2/3 Left, 1/3 Right) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- Left Column (8 cols): Payrun Engine & Core Analytics -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- Active Cycle Banner Card -->
+<div class="bg-surface-container-lowest p-space-xl rounded-xl shadow-md flex flex-col gap-space-lg relative overflow-hidden border border-surface-container-high/60">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-secondary text-on-secondary flex items-center justify-center font-headline-md text-headline-md shadow-sm">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<h2 class="font-headline-md text-headline-md text-on-surface" id="banner-cycle-title">October 2024 Regular Payrun</h2>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-high font-label-sm text-label-sm text-on-surface-variant font-semibold">#CYCLE-IND-2410</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="banner-cycle-desc">Monthly salary disbursement &amp; statutory dues covering Oct 1 - Oct 31, 2024</p>
+</div>
+</div>
+<div class="text-right sm:border-l border-surface-container-highest sm:pl-space-md">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Estimated Net Salary Disbursal</span>
+<p class="font-headline-lg text-headline-lg text-secondary font-bold tracking-tight" id="banner-net-payout">₹2,88,40,000.00</p>
+</div>
+</div>
+<!-- Stepper Process Tracker -->
+<div class="p-space-md rounded-xl bg-surface-container-low">
+<div class="grid grid-cols-1 sm:grid-cols-4 gap-space-sm relative">
+<!-- Step 1: Completed -->
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-sm font-bold">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">1. Biometric &amp; LOP</span>
+<span class="font-label-sm text-label-sm text-secondary truncate">Sync Complete</span>
+</div>
+</div>
+<!-- Step 2: In Progress -->
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-sm animate-spin">refresh</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">2. Statutory Compute</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate font-mono">In Progress (86%)</span>
+</div>
+</div>
+<!-- Step 3: Warning / Exceptions -->
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-sm font-bold">priority_high</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">3. Tax Exceptions</span>
+<span class="font-label-sm text-label-sm text-error font-semibold truncate" id="exceptions-stepper-text">2 Flags Pending</span>
+</div>
+</div>
+<!-- Step 4: Finalize -->
+<div class="flex items-center gap-space-xs opacity-60">
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center shrink-0">
+<span class="font-label-sm text-label-sm font-bold">4</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">4. Bank Disbursal</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Awaiting Gate</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Banner Actions -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-xs">
+<div class="flex items-center gap-space-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-base text-secondary">lock</span>
+<span class="font-label-sm text-label-sm">Audited against Income Tax Act Sec 192, EPFO (12%) &amp; ESIC 2024</span>
+</div>
+<div class="flex items-center gap-space-sm w-full sm:w-auto">
+<button class="flex-1 sm:flex-none px-space-lg py-2.5 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors active:scale-95" onclick="showLiveToast('Exporting bank salary text file (HDFC CMS / ICICI Corporate): 248 records...')" type="button">
+                Bank CMS Export
+              </button>
+<button class="flex-1 sm:flex-none px-space-xl py-2.5 rounded-lg bg-secondary text-on-secondary hover:bg-secondary/90 font-label-md text-label-md font-bold shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95" onclick="triggerPayrunCompute()" type="button">
+<span class="material-symbols-outlined text-base" id="compute-btn-icon">play_arrow</span>
+<span id="compute-btn-text">Review &amp; Disburse Payrun</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Payroll Cost Allocation Breakdown with Interactive Tabs -->
+<div class="bg-surface-container-lowest p-space-xl rounded-xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">CTC &amp; Payroll Cost Allocation Breakdown</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Real-time breakdown of Net Take-Home, TDS, PF, ESIC &amp; Employer Gratuity / NPS Contributions</p>
+</div>
+<!-- Interactive Filter Tabs -->
+<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg self-start sm:self-auto">
+<button class="px-space-sm py-1 rounded bg-surface-container-lowest font-label-sm text-label-sm text-on-surface shadow-xs font-semibold transition-all" id="tab-gross" onclick="switchAllocationTab('gross')" type="button">Total Gross CTC</button>
+<button class="px-space-sm py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" id="tab-net" onclick="switchAllocationTab('net')" type="button">Net Take-Home</button>
+<button class="px-space-sm py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" id="tab-burden" onclick="switchAllocationTab('burden')" type="button">Statutory Burden (PF/ESIC/Gratuity)</button>
+</div>
+</div>
+<!-- Stacked Bar Visual -->
+<div>
+<div class="h-5 w-full rounded-full overflow-hidden flex bg-surface-container" id="stacked-allocation-bar">
+<div class="h-full bg-secondary transition-all duration-500 hover:brightness-110 cursor-pointer" id="bar-seg-net" style="width: 72.9%;" title="Net Salary: ₹2,88,40,000 (72.9%)"></div>
+<div class="h-full bg-primary-container transition-all duration-500 hover:brightness-110 cursor-pointer" id="bar-seg-tax" style="width: 17.8%;" title="TDS (Section 192) &amp; PT: ₹70,40,000 (17.8%)"></div>
+<div class="h-full bg-secondary-fixed-dim transition-all duration-500 hover:brightness-110 cursor-pointer" id="bar-seg-benefits" style="width: 9.3%;" title="PF, ESIC, Gratuity &amp; NPS: ₹36,70,000 (9.3%)"></div>
+</div>
+<!-- Dynamic Legend with Metrics -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md mt-space-md">
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col transition-all hover:bg-surface-container cursor-default" id="legend-card-1">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="leg-title-1">Net Take-Home Disbursal</span>
+</div>
+<span class="font-metric-md text-metric-md text-on-surface" id="leg-val-1">₹2,88,40,000</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="leg-sub-1">72.9% of total monthly spend</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col transition-all hover:bg-surface-container cursor-default" id="legend-card-2">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="leg-title-2">TDS (Sec 192) &amp; Professional Tax</span>
+</div>
+<span class="font-metric-md text-metric-md text-on-surface" id="leg-val-2">₹70,40,000</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="leg-sub-2">17.8% of total monthly spend</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col transition-all hover:bg-surface-container cursor-default" id="legend-card-3">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-fixed-dim"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="leg-title-3">EPFO (PF), ESIC, Gratuity &amp; NPS</span>
+</div>
+<span class="font-metric-md text-metric-md text-on-surface" id="leg-val-3">₹36,70,000</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="leg-sub-3">9.3% statutory contributions</span>
+</div>
+</div>
+</div>
+<!-- Department Distribution Preview with Interactive Micro-States -->
+<div class="pt-space-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<h4 class="font-label-md text-label-md text-on-surface font-semibold">Expenditure by Operational Department</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Hover row for employee avg</span>
+</div>
+<div class="space-y-space-sm">
+<!-- Dept 1 -->
+<div class="group p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" title="Avg: ₹1,72,500 per employee/month">
+<div class="flex justify-between font-body-sm text-body-sm mb-1">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+                    Engineering &amp; Product Infrastructure (112 employees)
+                    <span class="opacity-0 group-hover:opacity-100 text-xs text-secondary font-mono font-semibold transition-opacity bg-secondary-container/40 px-1.5 py-0.2 rounded">~₹1.72L/fte</span>
+</span>
+<span class="font-semibold text-on-surface" id="dept-eng-cost">₹1,93,20,000 <span class="text-on-surface-variant font-normal">(48.9%)</span></span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary group-hover:bg-primary/80 transition-all duration-500" style="width: 48.9%;"></div>
+</div>
+</div>
+<!-- Dept 2 -->
+<div class="group p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" title="Avg: ₹1,72,300 per employee/month">
+<div class="flex justify-between font-body-sm text-body-sm mb-1">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+                    Sales &amp; Enterprise Accounts (64 employees)
+                    <span class="opacity-0 group-hover:opacity-100 text-xs text-secondary font-mono font-semibold transition-opacity bg-secondary-container/40 px-1.5 py-0.2 rounded">~₹1.72L/fte</span>
+</span>
+<span class="font-semibold text-on-surface" id="dept-sales-cost">₹1,10,30,000 <span class="text-on-surface-variant font-normal">(27.9%)</span></span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary group-hover:bg-secondary/80 transition-all duration-500" style="width: 27.9%;"></div>
+</div>
+</div>
+<!-- Dept 3 -->
+<div class="group p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" title="Avg: ₹1,22,900 per employee/month">
+<div class="flex justify-between font-body-sm text-body-sm mb-1">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+                    Operations &amp; Logistics (48 employees)
+                    <span class="opacity-0 group-hover:opacity-100 text-xs text-secondary font-mono font-semibold transition-opacity bg-secondary-container/40 px-1.5 py-0.2 rounded">~₹1.23L/fte</span>
+</span>
+<span class="font-semibold text-on-surface" id="dept-ops-cost">₹59,00,000 <span class="text-on-surface-variant font-normal">(14.9%)</span></span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-outline group-hover:bg-outline/80 transition-all duration-500" style="width: 14.9%;"></div>
+</div>
+</div>
+<!-- Dept 4 -->
+<div class="group p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" title="Avg: ₹1,37,500 per employee/month">
+<div class="flex justify-between font-body-sm text-body-sm mb-1">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+                    General Administration &amp; Legal (24 employees)
+                    <span class="opacity-0 group-hover:opacity-100 text-xs text-secondary font-mono font-semibold transition-opacity bg-secondary-container/40 px-1.5 py-0.2 rounded">~₹1.37L/fte</span>
+</span>
+<span class="font-semibold text-on-surface" id="dept-admin-cost">₹33,00,000 <span class="text-on-surface-variant font-normal">(8.3%)</span></span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-outline-variant group-hover:bg-outline-variant/80 transition-all duration-500" style="width: 8.3%;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Audit & Telemetry Stream with Real-Time Event Pusher -->
+<div class="bg-surface-container-lowest p-space-xl rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Live Audit &amp; Indian Statutory Stream</h3>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span id="events-synced-count">19,840 events synced</span>
+</span>
+</div>
+<button class="font-label-sm text-label-sm text-secondary font-semibold cursor-pointer hover:underline flex items-center gap-1" onclick="showLiveToast('Exporting EPFO ECR and TDS Chksum compliance ledger...')" type="button">
+<span>View Full Log</span>
+<span class="material-symbols-outlined text-xs">open_in_new</span>
+</button>
+</div>
+<div class="space-y-space-md" id="audit-timeline-container">
+<!-- New dynamic items will be prepended here -->
+<div class="flex items-start gap-space-md transition-all duration-500" id="audit-item-1">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 mt-0.5 text-on-surface">
+<span class="material-symbols-outlined text-base text-secondary">sync_alt</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<p class="font-label-lg text-label-lg text-on-surface font-semibold truncate">Biometric Attendance lock triggered for October Payrun</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono" id="audit-time-1">Just now</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Automated biometric sync reconciled Loss of Pay (LOP) days across Bengaluru, Mumbai and Gurugram centers.</p>
+</div>
+</div>
+<div class="flex items-start gap-space-md transition-all duration-500" id="audit-item-2">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 mt-0.5 text-on-surface">
+<span class="material-symbols-outlined text-base">edit_note</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<p class="font-label-lg text-label-lg text-on-surface font-semibold truncate">Performance incentive tagged: Rohan Verma (₹3,75,000)</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Yesterday, 16:40 PM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Authorized by Priya Sharma (HR Director). TDS deduction calculated under Sec 192 (New Tax Regime).</p>
+</div>
+</div>
+<div class="flex items-start gap-space-md transition-all duration-500" id="audit-item-3">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 mt-0.5 text-on-surface">
+<span class="material-symbols-outlined text-base text-secondary">verified_user</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<p class="font-label-lg text-label-lg text-on-surface font-semibold truncate">State Professional Tax Table 2024-25 Loaded</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Oct 24, 11:20 AM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Automated rate update for Karnataka PT slab (₹200/mo) &amp; Maharashtra PT statutory deduction rules.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (4 cols): Action Items, Remittances & Quick Tools -->
+<div class="lg:col-span-4 flex flex-col gap-space-xl">
+<!-- Action Flags & Anomaly Center with Interactive Filters -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-error text-lg animate-bounce" style="animation-duration: 2.5s;">warning</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Action Flags &amp; Anomalies</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold" id="active-flags-counter">3 Detected</span>
+</div>
+<!-- Severity / Category Filter Tabs -->
+<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg">
+<button class="flex-1 py-1 rounded bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-semibold shadow-xs text-center transition-all" id="flag-tab-all" onclick="filterFlags('all')">All (<span id="count-all">3</span>)</button>
+<button class="flex-1 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm text-center transition-all" id="flag-tab-critical" onclick="filterFlags('critical')">Critical (1)</button>
+<button class="flex-1 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm text-center transition-all" id="flag-tab-compliance" onclick="filterFlags('compliance')">Compliance (2)</button>
+</div>
+<div class="flex flex-col gap-space-sm" id="anomalies-list">
+<!-- Flag 1 (Critical) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-space-2xs transition-all duration-300 border border-transparent hover:border-error/30 anomaly-item" data-category="critical" id="flag-card-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> Overtime &amp; LOP Spike
+                </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Logistics &amp; Ops</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">2 shift supervisors exceeded overtime caps under Factories Act. Departmental sign-off needed.</p>
+<div class="flex items-center justify-end gap-space-sm mt-space-2xs">
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" onclick="dismissFlag('flag-card-1', 'Overtime Spike')" type="button">Dismiss</button>
+<button class="font-label-sm text-label-sm text-secondary font-semibold hover:underline flex items-center gap-0.5 cursor-pointer" id="btn-action-1" onclick="resolveFlag('flag-card-1', 'btn-action-1', 'Attendance Approved ✓')" type="button">Review Attendance</button>
+</div>
+</div>
+<!-- Flag 2 (Compliance) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-space-2xs transition-all duration-300 border border-transparent hover:border-secondary/30 anomaly-item" data-category="compliance" id="flag-card-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary">calculate</span> Prorated Salary (New Joiner)
+                </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">New Hire</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">Rohan Verma onboarded Oct 21. Net compensation prorated for 9 working days with EPF opt-in.</p>
+<div class="flex items-center justify-end gap-space-sm mt-space-2xs">
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" onclick="dismissFlag('flag-card-2', 'Prorated Salary')" type="button">Dismiss</button>
+<button class="font-label-sm text-label-sm text-secondary font-semibold hover:underline flex items-center gap-0.5 cursor-pointer" id="btn-action-2" onclick="resolveFlag('flag-card-2', 'btn-action-2', 'CTC Proration Verified ✓')" type="button">Verify CTC Formula</button>
+</div>
+</div>
+<!-- Flag 3 (Compliance) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-space-2xs transition-all duration-300 border border-transparent hover:border-secondary/30 anomaly-item" data-category="compliance" id="flag-card-3">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">badge</span> Form 12BB &amp; PAN Linkage
+                </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">TDS &amp; IT Act</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">3 employees relocated across Karnataka &amp; Maharashtra; updated HRA receipts &amp; PT declaration needed.</p>
+<div class="flex items-center justify-end gap-space-sm mt-space-2xs">
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" onclick="dismissFlag('flag-card-3', 'Form 12BB Proof')" type="button">Dismiss</button>
+<button class="font-label-sm text-label-sm text-secondary font-semibold hover:underline flex items-center gap-0.5 cursor-pointer" id="btn-action-3" onclick="resolveFlag('flag-card-3', 'btn-action-3', 'WhatsApp/Email Nudge Sent ✓')" type="button">Send Nudge</button>
+</div>
+</div>
+<div class="hidden p-space-md text-center text-on-surface-variant font-body-sm rounded-lg bg-surface-container-low" id="flags-empty-state">
+<span class="material-symbols-outlined text-secondary text-2xl mb-1">task_alt</span>
+<p class="font-semibold text-on-surface">All statutory items verified</p>
+<p class="text-xs">No active compliance anomalies detected for October cycle.</p>
+</div>
+</div>
+</div>
+<!-- Upcoming Statutory Remittances -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Indian Statutory Remittances</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Q3 FY24-25 Compliance</span>
+</div>
+<div class="space-y-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer" onclick="showLiveToast('TDS Challan 281 generated for NSDL / Protean e-payment.')">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center font-label-sm text-label-sm text-on-surface font-bold">
+                  TDS
+                </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">TDS Sec 192 (Challan 281)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="remit-irs-due">Due Nov 07 • ₹45,15,000</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">Ready</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer" onclick="showLiveToast('EPFO Unified Portal ECR file generated and pre-validated.')">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center font-label-sm text-label-sm text-on-surface font-bold">
+                  EPF
+                </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">EPFO (PF &amp; EPS ECR)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="remit-ca-due">Due Nov 15 • ₹21,80,000</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-semibold">Scheduled</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer" onclick="showLiveToast('ESIC &amp; Karnataka / Maharashtra PT challan batch prepared.')">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center font-label-sm text-label-sm text-on-surface font-bold">
+                  ESI
+                </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">ESIC &amp; State PT Challans</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="remit-ny-due">Due Nov 15 • ₹3,45,000</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-semibold">Scheduled</span>
+</div>
+</div>
+</div>
+<!-- Quick Administrative Launchers with interactive dialogs -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Administrative Tools</h3>
+<div class="grid grid-cols-1 gap-space-xs">
+<button class="w-full p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex items-center justify-between text-left active:scale-[0.99] group" onclick="openOffCycleModal()" type="button">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-lg group-hover:scale-110 transition-transform">bolt</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Run Off-Cycle / Bonus Payrun</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Diwali bonuses, F&amp;F settlement, travel claims</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform text-base">arrow_forward</span>
+</button>
+<button class="w-full p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex items-center justify-between text-left active:scale-[0.99] group" onclick="triggerQuickAction('New Employee Rapid Onboarding (India)')" type="button">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-on-surface text-lg group-hover:scale-110 transition-transform">person_add</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Onboard New Indian Employee</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Setup Bank IFSC, Aadhaar, PAN, UAN &amp; Form 12BB</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform text-base">arrow_forward</span>
+</button>
+<button class="w-full p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex items-center justify-between text-left active:scale-[0.99] group" onclick="downloadGLJournal()" type="button">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-on-surface text-lg group-hover:scale-110 transition-transform">receipt_long</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Download ERP / Tally Prime Journal</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Export SAP, Oracle &amp; Tally formatted CSV with cost centers</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform text-base">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- System Security & Vault Badge -->
+<div class="p-space-md rounded-xl bg-surface-container flex items-center gap-space-md border border-surface-container-highest/60">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-xl text-secondary-fixed">shield</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold leading-tight">RBI Digital Banking &amp; ISO 27001 Certified</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">End-to-end 256-bit encrypted HDFC &amp; ICICI CMS corporate gateway</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></main></div>
+<!-- Interactive Live Toast Notification Bubble -->
+<div class="fixed bottom-6 right-6 z-50 flex items-center gap-space-sm px-space-md py-3 rounded-xl bg-primary text-on-primary shadow-xl opacity-0 pointer-events-none transition-all duration-300 transform translate-y-3" id="live-toast">
+<span class="material-symbols-outlined text-secondary-fixed text-lg" id="toast-icon">check_circle</span>
+<span class="font-label-md text-label-md" id="toast-message">Telemetry Synced</span>
+</div>
+<!-- Interactive Modal Dialog Simulation: Batch Review Queue -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs opacity-0 pointer-events-none transition-opacity duration-200" id="queue-modal">
+<div class="bg-surface-container-lowest w-full max-w-lg rounded-2xl shadow-2xl p-space-xl m-4 flex flex-col gap-space-md transform scale-95 transition-transform duration-200" id="queue-modal-box">
+<div class="flex items-center justify-between border-b border-surface-container pb-space-sm">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-base">rule</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Batch Review Queue</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">14 Pending Items • October Cycle</p>
+</div>
+</div>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container" onclick="closeBatchQueueModal()" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="space-y-space-xs max-h-60 overflow-y-auto">
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Ananya Iyer (Engineering)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Earned Leave (EL): Oct 28-30 (3 days)</span>
+</div>
+<button class="px-3 py-1 rounded-md bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold hover:bg-secondary/90 transition-colors" onclick="approveQueueItem(this)" type="button">Approve</button>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Vikram Malhotra (Sales Ops)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Client Travel &amp; Fuel Claim (₹69,500)</span>
+</div>
+<button class="px-3 py-1 rounded-md bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold hover:bg-secondary/90 transition-colors" onclick="approveQueueItem(this)" type="button">Approve</button>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Kavita Nair (Product)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Internet &amp; WFH Allowance (₹20,500)</span>
+</div>
+<button class="px-3 py-1 rounded-md bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold hover:bg-secondary/90 transition-colors" onclick="approveQueueItem(this)" type="button">Approve</button>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-xs border-t border-surface-container">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface font-label-md text-label-md" onclick="closeBatchQueueModal()" type="button">Close</button>
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary hover:bg-inverse-surface font-label-md text-label-md font-semibold" onclick="approveAllQueueItems()" type="button">Approve All (14)</button>
+</div>
+</div>
+</div>
+<!-- Interactive Modal Dialog Simulation: Off-Cycle Payrun -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs opacity-0 pointer-events-none transition-opacity duration-200" id="offcycle-modal">
+<div class="bg-surface-container-lowest w-full max-w-md rounded-2xl shadow-2xl p-space-xl m-4 flex flex-col gap-space-md transform scale-95 transition-transform duration-200" id="offcycle-modal-box">
+<div class="flex items-center justify-between border-b border-surface-container pb-space-sm">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-secondary text-on-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-base">bolt</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Initiate Off-Cycle Payrun (India)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Same-Day RTGS / IMPS Corporate Batch</p>
+</div>
+</div>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container" onclick="closeOffCycleModal()" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="space-y-space-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Payrun Purpose</label>
+<select class="w-full px-3 py-2 rounded-lg bg-surface-container-low text-on-surface font-body-sm border-0 focus:ring-1 focus:ring-secondary">
+<option>Diwali Festive Bonus / Spot Incentive</option>
+<option>Full &amp; Final Settlement (Gratuity &amp; Leave Encashment)</option>
+<option>Prior Month LOP Reversal &amp; Arrears</option>
+</select>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Disbursement Value Date</label>
+<input class="w-full px-3 py-2 rounded-lg bg-surface-container-low text-on-surface font-body-sm border-0 focus:ring-1 focus:ring-secondary" type="date" value="2024-10-25"/>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-secondary/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base">info</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">HDFC / ICICI Corporate CMS cutoff for same-day RTGS is 16:30 IST.</span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-xs border-t border-surface-container">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface font-label-md text-label-md" onclick="closeOffCycleModal()" type="button">Cancel</button>
+<button class="px-space-md py-2 rounded-lg bg-secondary text-on-secondary hover:bg-secondary/90 font-label-md text-label-md font-bold shadow-sm" onclick="confirmOffCycleRun()" type="button">Initialize Batch</button>
+</div>
+</div>
+</div>
+<script>
+// State Store for Live Control Center
+let syncSecondsRemaining = 14;
+let eventsCount = 19840;
+let currentCurrency = 'INR';
+let currencyMultiplier = 1.0;
+let currencySymbol = '₹';
+let toastTimer = null;
+
+// Format numbers according to Indian Numbering System (Lakhs and Crores)
+function formatIndianCurrency(num) {
+  num = Math.round(num);
+  let str = num.toString();
+  let lastThree = str.substring(str.length - 3);
+  let otherNumbers = str.substring(0, str.length - 3);
+  if (otherNumbers !== '') {
+    lastThree = ',' + lastThree;
+  }
+  let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+  return currencySymbol + res;
+}
+
+// Real-time Event Stream Catalog localized for India
+const liveEventStream = [
+  { title: "Biometric Punch Synced: Ananya Iyer (Design)", desc: "Bio-terminal sync completed from Bengaluru Whitefield Facility", icon: "fingerprint" },
+  { title: "RBI NACH Mandate Batch Pre-flight Hash Verified", desc: "HDFC Corporate CMS channel 021000021 handshake completed", icon: "verified" },
+  { title: "Karnataka PT & Overtime threshold check passed", desc: "Operations shift overtime verified compliant under Karnataka Shops & Commercial Est. Act", icon: "check_circle" },
+  { title: "Bank IFSC & Account updated", desc: "Encrypted ICICI Salary account mandate verified for Vikram Malhotra", icon: "account_balance" },
+  { title: "EPFO Monthly ECR Contribution computed", desc: "Automated PF 12% + EPS 8.33% employer split synchronized (₹1,51,800.00)", icon: "savings" }
+];
+let eventStreamIdx = 0;
+
+// Initialize Live Timers
+document.addEventListener('DOMContentLoaded', () => {
+  // Sync Countdown Loop (every second)
+  setInterval(() => {
+    syncSecondsRemaining--;
+    if (syncSecondsRemaining <= 0) {
+      syncSecondsRemaining = 15;
+      triggerManualSync(true);
+    }
+    const cdElem = document.getElementById('sync-countdown');
+    if (cdElem) cdElem.innerText = syncSecondsRemaining + 's';
+  }, 1000);
+
+  // Live Batch Cutoff Clock (ticks seconds down realistically)
+  let cutoffSeconds = (70 * 3600) + (42 * 60) + 18;
+  setInterval(() => {
+    cutoffSeconds--;
+    if (cutoffSeconds < 0) cutoffSeconds = 72 * 3600;
+    const h = Math.floor(cutoffSeconds / 3600);
+    const m = Math.floor((cutoffSeconds % 3600) / 60);
+    const s = cutoffSeconds % 60;
+    const bElem = document.getElementById('batch-timer-countdown');
+    if (bElem) {
+      bElem.innerText = `${h}h ${m < 10 ? '0' : ''}${m}m ${s < 10 ? '0' : ''}${s}s`;
+    }
+  }, 1000);
+
+  // Dynamic Headcount Pulse (Simulates active floor attendance)
+  setInterval(() => {
+    const badge = document.getElementById('headcount-live-status');
+    if (badge) {
+      const liveCount = 230 + Math.floor(Math.random() * 4);
+      badge.innerText = `${liveCount} punched-in`;
+      badge.classList.add('flash-update');
+      setTimeout(() => badge.classList.remove('flash-update'), 1200);
+    }
+  }, 9000);
+
+  // Push new Live Audit Events periodically
+  setInterval(() => {
+    pushLiveAuditEvent();
+  }, 12000);
+});
+
+// Toast System
+function showLiveToast(message, icon = "check_circle") {
+  const toast = document.getElementById('live-toast');
+  const msgElem = document.getElementById('toast-message');
+  const iconElem = document.getElementById('toast-icon');
+  if (!toast || !msgElem) return;
+
+  msgElem.innerText = message;
+  if (iconElem) iconElem.innerText = icon;
+
+  toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+  toast.classList.add('opacity-100', 'translate-y-0');
+
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('opacity-100', 'translate-y-0');
+    toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+  }, 3200);
+}
+
+// Manual or Automated Telemetry Sync
+function triggerManualSync(isAutomated = false) {
+  const syncIcon = document.getElementById('sync-icon');
+  const syncText = document.getElementById('last-sync-text');
+  if (syncIcon) syncIcon.classList.add('animate-spin');
+
+  setTimeout(() => {
+    if (syncIcon) syncIcon.classList.remove('animate-spin');
+    if (syncText) {
+      const now = new Date();
+      syncText.innerText = `Live • ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+    }
+    syncSecondsRemaining = 15;
+    eventsCount += Math.floor(Math.random() * 8) + 3;
+    const evElem = document.getElementById('events-synced-count');
+    if (evElem) evElem.innerText = `${eventsCount.toLocaleString('en-IN')} events synced`;
+
+    if (!isAutomated) {
+      showLiveToast('Statutory EPFO & RBI NACH Telemetry re-synchronized successfully');
+    }
+  }, 650);
+}
+
+// Push New Event to Audit Stream
+function pushLiveAuditEvent() {
+  const container = document.getElementById('audit-timeline-container');
+  if (!container) return;
+
+  const evData = liveEventStream[eventStreamIdx % liveEventStream.length];
+  eventStreamIdx++;
+
+  const item = document.createElement('div');
+  item.className = "flex items-start gap-space-md transition-all duration-500 flash-update";
+  item.innerHTML = `
+    <div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 mt-0.5">
+      <span class="material-symbols-outlined text-base">${evData.icon}</span>
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center justify-between">
+        <p class="font-label-lg text-label-lg text-on-surface font-semibold truncate">${evData.title}</p>
+        <span class="font-label-sm text-label-sm text-secondary font-mono font-bold">Just now</span>
+      </div>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">${evData.desc}</p>
+    </div>
+  `;
+
+  container.insertBefore(item, container.firstChild);
+  if (container.children.length > 5) {
+    container.removeChild(container.lastChild);
+  }
+}
+
+// Currency Switcher
+function handleCurrencyChange(curr) {
+  currentCurrency = curr;
+  if (curr === 'INR') {
+    currencyMultiplier = 1.0;
+    currencySymbol = '₹';
+  } else if (curr === 'USD') {
+    currencyMultiplier = 0.012;
+    currencySymbol = '$';
+  } else if (curr === 'EUR') {
+    currencyMultiplier = 0.011;
+    currencySymbol = '€';
+  } else if (curr === 'GBP') {
+    currencyMultiplier = 0.0095;
+    currencySymbol = '£';
+  }
+  updateDisplayedCurrencyValues();
+  showLiveToast(`Currency view updated to ${curr}`);
+}
+
+function updateDisplayedCurrencyValues() {
+  const fmt = (baseInr) => {
+    if (currentCurrency === 'INR') {
+      return formatIndianCurrency(baseInr);
+    }
+    return currencySymbol + Math.round(baseInr * currencyMultiplier).toLocaleString();
+  };
+
+  const cCommit = document.getElementById('val-total-commitment');
+  if (cCommit) cCommit.innerText = fmt(39550000);
+
+  const cNet = document.getElementById('banner-net-payout');
+  if (cNet) cNet.innerText = fmt(28840000) + '.00';
+
+  const l1 = document.getElementById('leg-val-1');
+  if (l1) l1.innerText = fmt(28840000);
+
+  const l2 = document.getElementById('leg-val-2');
+  if (l2) l2.innerText = fmt(7040000);
+
+  const l3 = document.getElementById('leg-val-3');
+  if (l3) l3.innerText = fmt(3670000);
+
+  const d1 = document.getElementById('dept-eng-cost');
+  if (d1) d1.innerHTML = `${fmt(19320000)} <span class="text-on-surface-variant font-normal">(48.9%)</span>`;
+
+  const d2 = document.getElementById('dept-sales-cost');
+  if (d2) d2.innerHTML = `${fmt(11030000)} <span class="text-on-surface-variant font-normal">(27.9%)</span>`;
+
+  const d3 = document.getElementById('dept-ops-cost');
+  if (d3) d3.innerHTML = `${fmt(5900000)} <span class="text-on-surface-variant font-normal">(14.9%)</span>`;
+
+  const d4 = document.getElementById('dept-admin-cost');
+  if (d4) d4.innerHTML = `${fmt(3300000)} <span class="text-on-surface-variant font-normal">(8.3%)</span>`;
+}
+
+// Cycle / Date Range Switcher
+function handleCycleChange(cycle) {
+  const title = document.getElementById('banner-cycle-title');
+  const desc = document.getElementById('banner-cycle-desc');
+  const commitment = document.getElementById('val-total-commitment');
+  const net = document.getElementById('banner-net-payout');
+  const budgetCap = document.getElementById('budget-cap-pct');
+  const budgetBar = document.getElementById('budget-progress-bar');
+  const budgetLabel = document.getElementById('budget-cap-label');
+
+  if (cycle === 'current') {
+    if (title) title.innerText = 'October 2024 Regular Payrun';
+    if (desc) desc.innerText = 'Monthly salary disbursement & statutory dues covering Oct 1 - Oct 31, 2024';
+    if (commitment) commitment.innerText = formatIndianCurrency(39550000);
+    if (net) net.innerText = formatIndianCurrency(28840000) + '.00';
+    if (budgetCap) budgetCap.innerText = '94.2%';
+    if (budgetBar) budgetBar.style.width = '94.2%';
+    if (budgetLabel) budgetLabel.innerText = 'Budget Cap (₹4,20,00,000)';
+    showLiveToast('Switched to October 2024 (Current Active Run)');
+  } else if (cycle === 'prev') {
+    if (title) title.innerText = 'September 2024 Payrun Finalized';
+    if (desc) desc.innerText = 'Settled and reconciled Indian payroll batch covering Sep 1 - Sep 30, 2024';
+    if (commitment) commitment.innerText = formatIndianCurrency(38820000);
+    if (net) net.innerText = formatIndianCurrency(28310000) + '.00';
+    if (budgetCap) budgetCap.innerText = '92.4%';
+    if (budgetBar) budgetBar.style.width = '92.4%';
+    if (budgetLabel) budgetLabel.innerText = 'Budget Cap (₹4,20,00,000)';
+    showLiveToast('Viewing historical records: September 2024');
+  } else if (cycle === 'q2') {
+    if (title) title.innerText = 'Q2 FY 24-25 Consolidated Rollup';
+    if (desc) desc.innerText = 'Aggregate Indian financial ledger across July, August, and September 2024';
+    if (commitment) commitment.innerText = formatIndianCurrency(116460000);
+    if (net) net.innerText = formatIndianCurrency(84930000) + '.00';
+    if (budgetCap) budgetCap.innerText = '92.8%';
+    if (budgetBar) budgetBar.style.width = '92.8%';
+    if (budgetLabel) budgetLabel.innerText = 'Quarterly Target (₹12,50,00,000)';
+    showLiveToast('Loaded Q2 FY 24-25 Enterprise Rollup');
+  }
+}
+
+// Cost Allocation Tabs Switching
+function switchAllocationTab(mode) {
+  const tabGross = document.getElementById('tab-gross');
+  const tabNet = document.getElementById('tab-net');
+  const tabBurden = document.getElementById('tab-burden');
+
+  const bSegNet = document.getElementById('bar-seg-net');
+  const bSegTax = document.getElementById('bar-seg-tax');
+  const bSegBenefits = document.getElementById('bar-seg-benefits');
+
+  const lTitle1 = document.getElementById('leg-title-1');
+  const lVal1 = document.getElementById('leg-val-1');
+  const lSub1 = document.getElementById('leg-sub-1');
+
+  const lTitle2 = document.getElementById('leg-title-2');
+  const lVal2 = document.getElementById('leg-val-2');
+  const lSub2 = document.getElementById('leg-sub-2');
+
+  const lTitle3 = document.getElementById('leg-title-3');
+  const lVal3 = document.getElementById('leg-val-3');
+  const lSub3 = document.getElementById('leg-sub-3');
+
+  // Reset Tab styles
+  [tabGross, tabNet, tabBurden].forEach(btn => {
+    btn.className = "px-space-sm py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all";
+  });
+
+  const activeClasses = "px-space-sm py-1 rounded bg-surface-container-lowest font-label-sm text-label-sm text-on-surface shadow-xs font-semibold transition-all";
+
+  if (mode === 'gross') {
+    tabGross.className = activeClasses;
+    bSegNet.style.width = '72.9%';
+    bSegTax.style.width = '17.8%';
+    bSegBenefits.style.width = '9.3%';
+
+    lTitle1.innerText = "Net Take-Home Disbursal";
+    lVal1.innerText = "₹2,88,40,000";
+    lSub1.innerText = "72.9% of total monthly spend";
+
+    lTitle2.innerText = "TDS (Sec 192) & Professional Tax";
+    lVal2.innerText = "₹70,40,000";
+    lSub2.innerText = "17.8% of total monthly spend";
+
+    lTitle3.innerText = "EPFO (PF), ESIC, Gratuity & NPS";
+    lVal3.innerText = "₹36,70,000";
+    lSub3.innerText = "9.3% statutory contributions";
+  } else if (mode === 'net') {
+    tabNet.className = activeClasses;
+    bSegNet.style.width = '89.5%';
+    bSegTax.style.width = '6.5%';
+    bSegBenefits.style.width = '4.0%';
+
+    lTitle1.innerText = "Direct HDFC & ICICI CMS Bank Credits";
+    lVal1.innerText = "₹2,58,10,000";
+    lSub1.innerText = "89.5% of net salary disbursal";
+
+    lTitle2.innerText = "Reimbursements & Claims Credit";
+    lVal2.innerText = "₹18,75,000";
+    lSub2.innerText = "6.5% of net salary disbursal";
+
+    lTitle3.innerText = "F&F Settled Settlements";
+    lVal3.innerText = "₹11,55,000";
+    lSub3.innerText = "4.0% of net salary disbursal";
+  } else if (mode === 'burden') {
+    tabBurden.className = activeClasses;
+    bSegNet.style.width = '55.2%';
+    bSegTax.style.width = '24.8%';
+    bSegBenefits.style.width = '20.0%';
+
+    lTitle1.innerText = "Employer PF (12% EPF + EPS)";
+    lVal1.innerText = "₹20,25,000";
+    lSub1.innerText = "55.2% of statutory burden";
+
+    lTitle2.innerText = "Statutory Gratuity Reserve (4.81%)";
+    lVal2.innerText = "₹9,10,000";
+    lSub2.innerText = "24.8% of statutory burden";
+
+    lTitle3.innerText = "ESIC (3.25%) & Group Medical";
+    lVal3.innerText = "₹7,35,000";
+    lSub3.innerText = "20.0% of statutory burden";
+  }
+}
+
+// Action Flags Filters
+function filterFlags(category) {
+  const allBtn = document.getElementById('flag-tab-all');
+  const critBtn = document.getElementById('flag-tab-critical');
+  const compBtn = document.getElementById('flag-tab-compliance');
+
+  const baseClass = "flex-1 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm text-center transition-all";
+  const activeClass = "flex-1 py-1 rounded bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-semibold shadow-xs text-center transition-all";
+
+  allBtn.className = baseClass;
+  critBtn.className = baseClass;
+  compBtn.className = baseClass;
+
+  if (category === 'all') allBtn.className = activeClass;
+  if (category === 'critical') critBtn.className = activeClass;
+  if (category === 'compliance') compBtn.className = activeClass;
+
+  const items = document.querySelectorAll('.anomaly-item');
+  let visibleCount = 0;
+  items.forEach(item => {
+    if (category === 'all' || item.getAttribute('data-category') === category) {
+      item.classList.remove('hidden');
+      visibleCount++;
+    } else {
+      item.classList.add('hidden');
+    }
+  });
+
+  const emptyState = document.getElementById('flags-empty-state');
+  if (emptyState) {
+    if (visibleCount === 0) emptyState.classList.remove('hidden');
+    else emptyState.classList.add('hidden');
+  }
+}
+
+// Flag Actions: Resolve / Nudge / Approve
+function resolveFlag(cardId, btnId, successLabel) {
+  const btn = document.getElementById(btnId);
+  const card = document.getElementById(cardId);
+  if (!btn || !card) return;
+
+  btn.innerHTML = `<span class="material-symbols-outlined text-xs">done</span> ${successLabel}`;
+  btn.className = "font-label-sm text-label-sm text-secondary font-bold flex items-center gap-0.5 cursor-default";
+  card.classList.add('bg-secondary-container/20', 'border-secondary/30');
+
+  showLiveToast(`Action confirmed: ${successLabel}`);
+
+  setTimeout(() => {
+    dismissFlag(cardId, successLabel, true);
+  }, 1400);
+}
+
+function dismissFlag(cardId, flagName, isResolved = false) {
+  const card = document.getElementById(cardId);
+  if (!card) return;
+
+  card.style.opacity = '0';
+  card.style.transform = 'translateX(20px)';
+  setTimeout(() => {
+    card.remove();
+    updateFlagsBadgeCount();
+    showLiveToast(isResolved ? `${flagName} cleared from queue` : `Anomaly dismissed: ${flagName}`);
+  }, 300);
+}
+
+function updateFlagsBadgeCount() {
+  const remaining = document.querySelectorAll('.anomaly-item').length;
+  const badge = document.getElementById('active-flags-counter');
+  const countAll = document.getElementById('count-all');
+  const stepperExceptions = document.getElementById('exceptions-stepper-text');
+
+  if (badge) badge.innerText = `${remaining} Detected`;
+  if (countAll) countAll.innerText = remaining;
+  if (stepperExceptions) stepperExceptions.innerText = remaining > 0 ? `${remaining} Flags Pending` : 'All Cleared ✓';
+
+  if (remaining === 0) {
+    const emptyState = document.getElementById('flags-empty-state');
+    if (emptyState) emptyState.classList.remove('hidden');
+  }
+}
+
+// Interactive Payrun Compute Trigger
+function triggerPayrunCompute() {
+  const icon = document.getElementById('compute-btn-icon');
+  const text = document.getElementById('compute-btn-text');
+  if (!icon || !text) return;
+
+  icon.innerText = 'sync';
+  icon.classList.add('animate-spin');
+  text.innerText = 'Computing TDS & PF (248 Employees)...';
+
+  setTimeout(() => {
+    icon.classList.remove('animate-spin');
+    icon.innerText = 'verified';
+    text.innerText = 'Statutory Stage 2 Computed 100%';
+    showLiveToast('Payrun October batch pre-computation complete. Ready for HDFC / ICICI bank authorization.');
+  }, 1100);
+}
+
+// Modal Handlers: Batch Review Queue
+function openBatchQueueModal() {
+  const modal = document.getElementById('queue-modal');
+  const box = document.getElementById('queue-modal-box');
+  if (!modal || !box) return;
+
+  modal.classList.remove('opacity-0', 'pointer-events-none');
+  modal.classList.add('opacity-100');
+  box.classList.remove('scale-95');
+  box.classList.add('scale-100');
+}
+
+function closeBatchQueueModal() {
+  const modal = document.getElementById('queue-modal');
+  const box = document.getElementById('queue-modal-box');
+  if (!modal || !box) return;
+
+  modal.classList.remove('opacity-100');
+  modal.classList.add('opacity-0', 'pointer-events-none');
+  box.classList.remove('scale-100');
+  box.classList.add('scale-95');
+}
+
+function approveQueueItem(btn) {
+  btn.innerText = "Approved ✓";
+  btn.className = "px-3 py-1 rounded-md bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold";
+  btn.disabled = true;
+  showLiveToast('Queue item approved and synced with general ledger');
+  decrementQueueCounter();
+}
+
+function approveAllQueueItems() {
+  closeBatchQueueModal();
+  const counter = document.getElementById('val-pending-count');
+  if (counter) counter.innerText = '0';
+  const badge = document.getElementById('queue-status-badge');
+  if (badge) {
+    badge.innerText = 'Queue Cleared';
+    badge.className = 'px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold';
+  }
+  showLiveToast('All 14 batch pending queue items approved!');
+}
+
+function decrementQueueCounter() {
+  const counter = document.getElementById('val-pending-count');
+  if (!counter) return;
+  let count = parseInt(counter.innerText, 10);
+  if (count > 0) {
+    count--;
+    counter.innerText = count;
+  }
+}
+
+// Modal Handlers: Off Cycle Payrun
+function openOffCycleModal() {
+  const modal = document.getElementById('offcycle-modal');
+  const box = document.getElementById('offcycle-modal-box');
+  if (!modal || !box) return;
+
+  modal.classList.remove('opacity-0', 'pointer-events-none');
+  modal.classList.add('opacity-100');
+  box.classList.remove('scale-95');
+  box.classList.add('scale-100');
+}
+
+function closeOffCycleModal() {
+  const modal = document.getElementById('offcycle-modal');
+  const box = document.getElementById('offcycle-modal-box');
+  if (!modal || !box) return;
+
+  modal.classList.remove('opacity-100');
+  modal.classList.add('opacity-0', 'pointer-events-none');
+  box.classList.remove('scale-100');
+  box.classList.add('scale-95');
+}
+
+function confirmOffCycleRun() {
+  closeOffCycleModal();
+  showLiveToast('Off-cycle payrun batch initialized. Dispatched to HDFC / ICICI corporate portal.');
+}
+
+// Quick Launcher helpers
+function triggerQuickAction(actionName) {
+  showLiveToast(`Opening launcher: ${actionName}`);
+}
+
+function downloadGLJournal() {
+  showLiveToast('Tally / ERP GL Journal Entry generated: ERP-India-Cycle-24B-Rollup.csv downloaded');
+}
+</script>
+</body></html>

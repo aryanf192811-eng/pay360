@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "error": "#ba1a1a", "surface-variant": "#d3e4fe", "on-secondary-fixed-variant": "#005049", "surface-container-high": "#dce9ff", "on-secondary-container": "#006f66", "surface-bright": "#f8f9ff", "primary": "#000000", "tertiary-container": "#111c2d", "surface-container": "#e5eeff", "surface-tint": "#565e74", "on-primary": "#ffffff", "on-primary-fixed": "#131b2e", "tertiary-fixed-dim": "#bcc7de", "outline-variant": "#c6c6cd", "on-tertiary": "#ffffff", "on-primary-fixed-variant": "#3f465c", "on-tertiary-fixed": "#111c2d", "on-error-container": "#93000a", "inverse-surface": "#213145", "surface-container-highest": "#d3e4fe", "surface": "#f8f9ff", "on-tertiary-fixed-variant": "#3c475a", "on-error": "#ffffff", "on-background": "#0b1c30", "secondary": "#006a61", "on-surface": "#0b1c30", "primary-container": "#131b2e", "surface-dim": "#cbdbf5", "outline": "#76777d", "secondary-fixed-dim": "#6bd8cb", "on-primary-container": "#7c839b", "inverse-primary": "#bec6e0", "secondary-fixed": "#89f5e7", "primary-fixed-dim": "#bec6e0", "background": "#f8f9ff", "on-tertiary-container": "#79849a", "tertiary": "#000000", "on-secondary": "#ffffff", "inverse-on-surface": "#eaf1ff", "surface-container-lowest": "#ffffff", "on-surface-variant": "#45464d", "tertiary-fixed": "#d8e3fb", "surface-container-low": "#eff4ff", "primary-fixed": "#dae2fd", "error-container": "#ffdad6", "secondary-container": "#86f2e4", "on-secondary-fixed": "#00201d" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-base": "1rem", "gutter-mobile": "0.75rem", "space-lg": "1.25rem", "space-md": "0.75rem", "safe-bottom-action": "5.5rem", "space-2xs": "0.125rem", "space-xl": "1.5rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "space-2xl": "2rem", "space-xs": "0.25rem" }, "fontFamily": { "headline-sm": ["Hanken Grotesk"], "body-md": ["Hanken Grotesk"], "metric-lg": ["Hanken Grotesk"], "metric-md": ["Hanken Grotesk"], "label-md": ["Hanken Grotesk"], "headline-lg": ["Hanken Grotesk"], "body-lg": ["Hanken Grotesk"], "body-sm": ["Hanken Grotesk"], "label-sm": ["Hanken Grotesk"], "display-lg": ["Hanken Grotesk"], "label-lg": ["Hanken Grotesk"], "headline-md": ["Hanken Grotesk"] }, "fontSize": { "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "metric-lg": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "metric-md": ["20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.005em", "fontWeight": "400" }], "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "700" }], "display-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "700" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }] } } } }</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="p-space-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Brand logo. - Primary color: #0f172a
+- Font: hankenGrotesk
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UWNjhQfDEQll8ZtCLhEfyTo0XM92HQDb_61tmfI5kOIYTFvyzDbb1GIqbLSiqYeiFXe_wMbXFKl0_y6U3UtKUqeMNRic4XVNOrNE7v2HvprgWqRl4-CzGoJ2o48uhyy6gpSR_N0IlOQBkVjq49ZyRgbTEgUOunKkwDdKFgtoReZ3mbnriek4ieufmnG-sv9SI8MKdodWgCRUOkiYmgo8RRwIFooZPeq6LTs1c3V9Il3Y23Wp8iDPnGkw"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface leading-none">ApexPay</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mt-space-2xs">Enterprise HR</span></div></div></div><div class="px-space-lg pb-space-sm"><button class="w-full flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors text-left" type="button"><div class="flex items-center gap-space-sm overflow-hidden"><div class="w-7 h-7 rounded-md bg-primary-container text-on-primary flex items-center justify-center font-label-md text-label-md shrink-0">AC</div><div class="truncate"><p class="font-label-lg text-label-lg text-on-surface truncate leading-tight">Acme Corp Global</p><p class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Production • US-East</p></div></div><span class="material-symbols-outlined text-on-surface-variant text-base shrink-0">unfold_more</span></button></div><div class="px-space-lg py-space-xs"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-space-sm text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-8 pr-space-sm py-1.5 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container transition-all" placeholder="Jump to module..." type="text"/><kbd class="absolute right-space-sm font-label-sm text-label-sm text-on-surface-variant bg-surface-container-lowest px-1 py-0.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.05)]">/</kbd></div></div><div class="px-space-lg pt-space-md pb-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Operations</span></div><nav class="flex-1 px-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary rounded-lg font-bold"><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span>Dashboard</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="employees" href="#"><span class="material-symbols-outlined text-lg">badge</span>Employees</a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2 transition-colors bg-primary-container text-on-primary rounded-lg font-bold" data-path="payruns" href="#"><span class="material-symbols-outlined text-lg">payments</span>Payruns &amp; Payroll</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="time-off-attendance" href="#"><span class="material-symbols-outlined text-lg">calendar_today</span>Time Off &amp; Attendance</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="salary-rules" href="#"><span class="material-symbols-outlined text-lg">account_balance</span>Salary Rules &amp; Setup</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="reports-analytics" href="#"><span class="material-symbols-outlined text-lg">bar_chart</span>Reports &amp; Analytics</a><a class="flex items-center gap-space-sm px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="settings-compliance" href="#"><span class="material-symbols-outlined text-lg">verified_user</span>Settings &amp; Compliance</a></nav><div class="p-space-md bg-surface-container-lowest mt-auto"><div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-2.5 h-2.5 rounded-full bg-secondary shrink-0"></div><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface font-semibold">Statutory Engine</span><span class="font-label-sm text-label-sm text-on-surface-variant">v4.18 Synchronized</span></div></div><button class="text-on-surface-variant hover:text-on-surface flex items-center" type="button"><span class="material-symbols-outlined text-base">help</span></button></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl z-40 flex items-center justify-between px-space-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-lg flex-1 max-w-xl"><div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md"><span class="font-semibold text-on-surface">Payroll Center</span><span class="material-symbols-outlined text-sm">chevron_right</span><span>Cycle 24B</span><div class="ml-space-sm px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>Active Run</div></div><div class="relative flex-1 hidden md:block"><span class="material-symbols-outlined absolute left-space-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-8 pr-12 py-1.5 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-container transition-all" placeholder="Search employees, tax slips, transactions..." type="text"/><kbd class="absolute right-space-sm top-1/2 -translate-y-1/2 font-label-sm text-label-sm text-on-surface-variant bg-surface-container-lowest px-1.5 py-0.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.05)]">⌘K</kbd></div></div><div class="flex items-center gap-space-md shrink-0"><div class="flex items-center gap-space-xs"><button class="flex items-center gap-1 px-space-md py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md" type="button"><span class="material-symbols-outlined text-base">person_add</span><span class="hidden sm:inline">New Hire</span></button><button class="flex items-center gap-1 px-space-md py-1.5 rounded-lg bg-secondary text-on-secondary hover:bg-secondary/90 transition-colors font-label-md text-label-md shadow-sm" type="button"><span class="material-symbols-outlined text-base">play_circle</span><span>Run Payrun</span></button></div><div class="h-6 w-[1px] bg-surface-container-highest mx-space-2xs"></div><button class="relative p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" type="button"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-1.5 right-1.5 w-4 h-4 bg-error text-on-error rounded-full font-label-sm text-label-sm flex items-center justify-center">4</span></button><div class="flex items-center gap-space-sm pl-space-xs"><div class="text-right hidden lg:block"><p class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Sarah Jenkins</p><p class="font-label-sm text-label-sm text-on-surface-variant leading-tight">HR Director</p></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-container-highest" src="https://lh3.googleusercontent.com/aida/AEtjO1XH7ANaxUxkun0Upg_7eppVlzT-0fIpTxVcKZyoiANT-_mW1wFMU5uO4Nle_YOHMJhkrxJKcdK6MkAocO-eI95xyuRAA36ZKjmoFT7dfzoNIvqk0_TcsuJT67m93hplSFzqqsesX4fp5ImDCYi1XnDaF7jSn8_Y-Lu_h9mimoDuNyrr9Ebp5h6RsfXg2QfFYI0Zqt3owa7XZEnGcnazJKPYB2AnGlkxwJImkbYcl0XOen_QdmJ97HquxQ"/></div></div></header><main class="w-full pt-16 bg-surface flex-1 px-space-xl py-space-xl"><div class="flex flex-col w-full">
+<!-- Breadcrumbs & Context Header -->
+<div class="flex flex-col gap-space-sm mb-space-lg">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
+<span class="hover:text-on-surface cursor-pointer transition-colors">Payruns</span>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+<span class="hover:text-on-surface cursor-pointer transition-colors">2024 Cycles</span>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+<span class="text-on-surface font-semibold">October Regular Payrun</span>
+</div>
+<div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-space-md">
+<div class="flex flex-col gap-space-2xs">
+<div class="flex flex-wrap items-center gap-space-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">October 2024 Regular Payrun (Cycle #10)</h1>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            Draft • Computing
+          </span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+            US-Entity Corp 01
+          </span>
+</div>
+<p class="flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">schedule</span>
+          Execution Timeline: <span class="text-on-surface font-semibold">Scheduled for Oct 31, 2024 (EOD Execution)</span> • Cut-off in 4h 18m
+        </p>
+</div>
+<!-- Action Cluster -->
+<div class="flex flex-wrap items-center gap-space-sm shrink-0">
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container-low transition-colors font-label-md text-label-md" type="button">
+<span class="material-symbols-outlined text-base text-secondary">sync</span>
+          Re-calculate All
+        </button>
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container-low transition-colors font-label-md text-label-md" type="button">
+<span class="material-symbols-outlined text-base">download</span>
+          Export Pre-tax Register
+        </button>
+<button class="flex items-center gap-2 px-space-lg py-2.5 rounded-lg bg-primary-container text-on-primary hover:bg-inverse-surface transition-all shadow-md font-label-lg text-label-lg" type="button">
+<span>Continue to Final Review (248/248)</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Stepper Pipeline Bar -->
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-xl">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Step 1 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low/60">
+<div class="w-8 h-8 rounded-lg bg-secondary text-on-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-base">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Step 1 • Completed</span>
+<span class="font-label-lg text-label-lg text-on-surface truncate">Attendance &amp; Hours Sync</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Verified 248 / 248 records</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-high/80">
+<div class="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-base animate-spin">progress_activity</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold uppercase tracking-wider">Step 2 • Active</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold truncate">Gross-to-Net Engine</span>
+<span class="font-body-sm text-body-sm text-on-surface">Synchronizing v4.18 rules</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-error-container/40">
+<div class="w-8 h-8 rounded-lg bg-error text-on-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-base">notification_important</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-error font-semibold uppercase tracking-wider">Step 3 • Action Needed</span>
+<span class="font-label-lg text-label-lg text-on-surface truncate">Exceptions &amp; Anomalies</span>
+<span class="font-body-sm text-body-sm text-error">2 flags require sign-off</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low/30 opacity-70">
+<div class="w-8 h-8 rounded-lg bg-surface-container text-outline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-base">lock</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Step 4 • Locked</span>
+<span class="font-label-lg text-label-lg text-outline truncate">Approval &amp; Disbursement</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Dual-custody release</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Desktop Split View (60% Main Pane / 40% Side Pane) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- LEFT MAIN PANE (7 cols out of 12 ~ 58-60%) -->
+<div class="lg:col-span-7 flex flex-col gap-space-xl">
+<!-- Computation Waterfall Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-xl">account_balance_wallet</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Computation Waterfall</h2>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm bg-surface-container-low px-2.5 py-1 rounded-full">
+<span>Formula: Statutory US-Standard (rev. 2024.10)</span>
+</div>
+</div>
+<!-- Metric Showcase Grid -->
+<div class="grid grid-cols-1 md:grid-cols-5 gap-space-sm p-space-md rounded-xl bg-surface-container-low/70">
+<!-- Gross -->
+<div class="flex flex-col justify-between p-space-sm bg-surface-container-lowest rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">1. Gross Earnings</span>
+<div class="mt-space-xs">
+<span class="font-metric-md text-metric-md text-on-surface">$482,950</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">248 Personnel</span>
+</div>
+</div>
+<!-- Pre-Tax Deductions -->
+<div class="flex flex-col justify-between p-space-sm bg-surface-container-lowest rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">2. Pre-Tax Ded.</span>
+<div class="mt-space-xs">
+<span class="font-metric-md text-metric-md text-error">-$31,420</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">401k &amp; HSA</span>
+</div>
+</div>
+<!-- Statutory Taxes -->
+<div class="flex flex-col justify-between p-space-sm bg-surface-container-lowest rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">3. Stat. Taxes</span>
+<div class="mt-space-xs">
+<span class="font-metric-md text-metric-md text-error">-$89,450</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">FICA + SDI + Fed</span>
+</div>
+</div>
+<!-- Post-Tax Deductions -->
+<div class="flex flex-col justify-between p-space-sm bg-surface-container-lowest rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">4. Post-Tax Ded.</span>
+<div class="mt-space-xs">
+<span class="font-metric-md text-metric-md text-error">-$3,960</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Garnishments</span>
+</div>
+</div>
+<!-- Net Payout Total (Emphasized) -->
+<div class="flex flex-col justify-between p-space-sm bg-secondary-container text-on-secondary-fixed-variant rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Net Payout</span>
+<div class="mt-space-xs">
+<span class="font-metric-md text-metric-md font-bold">$358,120</span>
+<span class="font-body-sm text-body-sm opacity-90 block">Disbursable</span>
+</div>
+</div>
+</div>
+<!-- Inline Visual Distribution Chart -->
+<div class="mt-space-md pt-space-sm">
+<div class="flex justify-between items-center text-label-sm font-label-sm mb-1 text-on-surface-variant">
+<span>Gross Disbursement Breakdown</span>
+<span>74.1% Net Payout Ratio</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="bg-secondary h-full" style="width: 74.1%" title="Net Payout: $358,120"></div>
+<div class="bg-error/80 h-full" style="width: 18.5%" title="Statutory Taxes: $89,450"></div>
+<div class="bg-tertiary-fixed-dim h-full" style="width: 6.5%" title="Pre-Tax Deductions: $31,420"></div>
+<div class="bg-outline h-full" style="width: 0.9%" title="Post-Tax Deductions: $3,960"></div>
+</div>
+<div class="flex flex-wrap gap-space-md mt-space-sm text-label-sm font-label-sm text-on-surface-variant">
+<span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-secondary"></span>Net Payout ($358.1k)</span>
+<span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-error/80"></span>Statutory Taxes ($89.4k)</span>
+<span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-tertiary-fixed-dim"></span>Pre-Tax Deductions ($31.4k)</span>
+<span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-outline"></span>Post-Tax ($3.9k)</span>
+</div>
+</div>
+</div>
+<!-- Detailed Pay Run Ledger Table -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-on-surface text-xl">receipt_long</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Employee Compensation Ledger</h3>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm">248 Entries</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="pl-7 pr-space-sm py-1 rounded-md bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none w-44" placeholder="Filter employee..." type="text"/>
+</div>
+<button class="p-1.5 rounded-md bg-surface-container-low hover:bg-surface-container text-on-surface-variant" type="button">
+<span class="material-symbols-outlined text-base">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm text-on-surface">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="p-space-sm rounded-l-lg">Employee</th>
+<th class="p-space-sm">Hours (Reg/OT)</th>
+<th class="p-space-sm text-right">Gross Pay</th>
+<th class="p-space-sm text-right">Taxes</th>
+<th class="p-space-sm text-right">Deductions</th>
+<th class="p-space-sm text-right">Net Payout</th>
+<th class="p-space-sm rounded-r-lg text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Row 1: Elena Rostova (Overtime flag match) -->
+<tr class="hover:bg-surface-container-low/50 transition-colors group">
+<td class="p-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="Corporate headshot of Elena Rostova, Senior Operations Specialist with confident posture, soft studio natural lighting, wearing a navy blazer against a neutral warm gray backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgrKk6XPhj0z8tHNKOAR1W2U5ERCjmUyLshShVVGcMQXoTMZvANrXbaQ1I8_Zrdg5t87LQLM4AGMFVCUsZ1HFEM2S0LhwEZ45XECBbH5ph-wi7nZCjuPfFpEs4ykivARh4ziMXv9OQSBgp4Z2t4iOBrzOKjuclXf_5PeDk0XQ2DjkPRUF3uTkIjj7M2KKGGeBu2CwfBO4qVBvDyBaC9CA9xIZSiya_fwtWT15JeH991Hp-iepRaa2n"/>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Elena Rostova</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Lead Logistics • #EMP-1042</span>
+</div>
+</div>
+</td>
+<td class="p-space-sm">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">160h / <span class="text-error font-semibold">22.5h OT</span></span>
+<span class="font-label-sm text-label-sm text-error flex items-center gap-0.5">
+<span class="material-symbols-outlined text-xs">warning</span> Flagged: High OT
+                    </span>
+</div>
+</td>
+<td class="p-space-sm text-right font-label-md text-label-md text-on-surface">$6,412.50</td>
+<td class="p-space-sm text-right text-error font-body-sm text-body-sm">-$1,346.62</td>
+<td class="p-space-sm text-right text-on-surface-variant font-body-sm text-body-sm">-$420.00</td>
+<td class="p-space-sm text-right font-label-md text-label-md text-on-surface font-semibold">$4,645.88</td>
+<td class="p-space-sm text-center">
+<span class="inline-flex px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+                    Review
+                  </span>
+</td>
+</tr>
+<!-- Row 2: Marcus Vance (Prorated) -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="p-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="Professional portrait of Marcus Vance, software architect smiling gently, wearing high quality charcoal turtleneck with bright background, modern fintech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdPmCgcHEfmPNRD90G5yBxk6CcX--y8gY-8XZ71_4W9IVZLaQVpojNw9LqOwSAcqkRwiFf9JID0JGd1nMyRSQ4eRjHJDFeZYRCQL6xCrU0S1bkrvfUKID2trMclX6Gmn2UdLdztL8cvPq16tfoWeIqvAIcHgRnPmJJ78PYHObp0P8gM3uxc0l3IgS7mTvrYA7s6HJbW6KmRNfCssSP70rCupOh9t4RLUgr_ZMyUt-_6MVbr3H7tHCn"/>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Marcus Vance</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Staff Backend • #EMP-1390</span>
+</div>
+</div>
+</td>
+<td class="p-space-sm">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">112h / 0h OT</span>
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-xs">calendar_today</span> Prorated (Oct 14)
+                    </span>
+</div>
+</td>
+<td class="p-space-sm text-right font-label-md text-label-md text-on-surface">$7,850.00</td>
+<td class="p-space-sm text-right text-error font-body-sm text-body-sm">-$1,727.00</td>
+<td class="p-space-sm text-right text-on-surface-variant font-body-sm text-body-sm">-$550.00</td>
+<td class="p-space-sm text-right font-label-md text-label-md text-on-surface font-semibold">$5,573.00</td>
+<td class="p-space-sm text-center">
+<span class="inline-flex px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">
+                    Computed
+                  </span>
+</td>
+</tr>
+<!-- Row 3: Liam Chen -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="p-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center">
+                      LC
+                    </div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Liam Chen</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Field Ops Specialist • #EMP-0988</span>
+</div>
+</div>
+</td>
+<td class="p-space-sm">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">160h / <span class="text-error font-semibold">19.0h OT</span></span>
+<span class="font-label-sm text-label-sm text-error flex items-center gap-0.5">
+<span class="material-symbols-outlined text-xs">warning</span> Flagged: High OT
+                    </span>
+</div>
+</td>
+<td class="p-space-sm text-right font-label-md text-label-md text-on-surface">$5,410.00</td>
+<td class="p-space-sm text-right text-error font-body-sm text-body-sm">-$1,109.05</td>
+<td class="p-space-sm text-right text-on-surface-variant font-body-sm text-body-sm">-$280.00</td>
+<td class="p-space-sm text-right font-label-md text-label-md text-on-surface font-semibold">$4,020.95</td>
+<td class="p-space-sm text-center">
+<span class="inline-flex px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+                    Review
+                  </span>
+</td>
+</tr>
+<!-- Row 4: Aisha Diallo -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="p-space-sm">
+<div class="flex items-center gap-space-sm">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="Portrait of Aisha Diallo, VP of Product, smiling warmly with sharp corporate office daylight behind her, wearing minimalist dark green silk shirt, ultra crisp detailing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu7ve4DUEdYSNg10t7G9w1U3pgpcKWkgktBaqE1yuZ9Br_3UsMPPSFwi3mBPqysay4i3kkwcMcZmEvM7TnMVpznKzjBVMYXNem0zA7GiUTJdGGZnBdQGVkW4gAf5n7WlqJc8MCLdyAKJy1LnpAxSwDYbv4sKcV1Xz77g0t0EtZ7K9LB7iSvTe-M3fdZNtR_GLH8Xim17s47Gc-IXdbNcalc_iXCkiaY_qwL5axVeTqKm64-EzyzG5Q"/>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Aisha Diallo</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">VP Product • #EMP-0312</span>
+</div>
+</div>
+</td>
+<td class="p-space-sm">
+<span class="font-label-md text-label-md text-on-surface">160h / 0h OT</span>
+</td>
+<td class="p-space-sm text-right font-label-md text-label-md text-on-surface">$14,166.67</td>
+<td class="p-space-sm text-right text-error font-body-sm text-body-sm">-$3,966.67</td>
+<td class="p-space-sm text-right text-on-surface-variant font-body-sm text-body-sm">-$1,025.00</td>
+<td class="p-space-sm text-right font-label-md text-label-md text-on-surface font-semibold">$9,175.00</td>
+<td class="p-space-sm text-center">
+<span class="inline-flex px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+                    Verified
+                  </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-sm text-on-surface-variant font-body-sm text-body-sm">
+<span>Showing 4 of 248 calculated records</span>
+<div class="flex items-center gap-space-xs">
+<button class="px-2.5 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface text-label-sm font-label-sm" type="button">Previous</button>
+<span class="px-2 font-label-sm text-label-sm font-semibold text-on-surface">Page 1 of 62</span>
+<button class="px-2.5 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface text-label-sm font-label-sm" type="button">Next</button>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT SIDE PANE (5 cols out of 12 ~ 40-42%) -->
+<div class="lg:col-span-5 flex flex-col gap-space-xl">
+<!-- Attention Flags & Anomaly Resolution -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-error text-xl">warning</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Action Required: Anomaly Queue</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold">
+            2 Unresolved
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
+          Statutory calculation algorithms flagged deviations from the standard baseline policy. Resolve or sign-off before unfreezing Step 4.
+        </p>
+<!-- Anomaly 1: Overtime Spike -->
+<div class="p-space-md rounded-lg bg-surface-container-low mb-space-md">
+<div class="flex items-start justify-between gap-space-sm mb-space-xs">
+<div class="flex items-center gap-1.5 text-error font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>Overtime Threshold Exceeded (&gt;18h)</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 bg-error text-on-error rounded-full">High Priority</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface mb-space-sm">
+            2 staff members logged overtime beyond the weekly 18h maximum: <strong>Elena Rostova (22.5h)</strong> &amp; <strong>Liam Chen (19.0h)</strong> in Logistics &amp; Field Ops.
+          </p>
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="px-space-sm py-1.5 rounded-md bg-surface-container-lowest hover:bg-surface-container-high text-on-surface text-label-sm font-label-sm shadow-sm transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-xs">visibility</span>
+              Inspect Timesheets
+            </button>
+<button class="px-space-sm py-1.5 rounded-md bg-secondary text-on-secondary hover:bg-secondary/90 text-label-sm font-label-sm shadow-sm transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+              Approve Differential ($1,290.40)
+            </button>
+</div>
+</div>
+<!-- Anomaly 2: Prorated Onboarding Pay -->
+<div class="p-space-md rounded-lg bg-surface-container-low mb-space-md">
+<div class="flex items-start justify-between gap-space-sm mb-space-xs">
+<div class="flex items-center gap-1.5 text-secondary font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-sm">person_pin</span>
+<span>Mid-Cycle Onboarding Proration</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 bg-surface-container-high text-on-surface-variant rounded-full">Audited</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface mb-space-xs">
+<strong>Marcus Vance</strong> joined October 14, 2024. Compensation is computed for exactly <strong>14 business days (112 billable hours)</strong> at base salary rate.
+          </p>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>Prorated Gross: <span class="font-semibold text-on-surface">$7,850.00</span></span>
+<span class="text-secondary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-xs">verified</span> Rule Applied
+            </span>
+</div>
+</div>
+<!-- Anomaly 3: Missing Direct Deposit routing fallback warning -->
+<div class="p-space-md rounded-lg bg-surface-container-low">
+<div class="flex items-start justify-between gap-space-sm mb-space-xs">
+<div class="flex items-center gap-1.5 text-on-surface font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-sm text-outline">credit_card_off</span>
+<span>Disbursement Fallback Warning</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 bg-surface-container text-on-surface-variant rounded-full">1 Contractor</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface mb-space-sm">
+            Contractor <strong>Julian Rossi</strong> (#CTR-041) has not re-authenticated Wells Fargo routing micro-deposits. System routing to physical printable check fallback.
+          </p>
+<button class="text-secondary hover:underline font-label-sm text-label-sm flex items-center gap-1" type="button">
+<span>Send SMS Re-verification Link</span>
+<span class="material-symbols-outlined text-xs">arrow_outward</span>
+</button>
+</div>
+</div>
+<!-- Disbursement Rail Breakdown Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-xl">hub</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Disbursement Rail Allocation</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cycle 24B</span>
+</div>
+<div class="space-y-space-md mt-space-sm">
+<!-- Rail 1: Fedwire ACH Batch -->
+<div class="p-space-sm rounded-lg bg-surface-container-low">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-base">account_balance</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Fedwire NACHA Batch</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-bold">$341,200.00</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>239 Standard Direct Deposits</span>
+<span>Clearing: Oct 31, 09:00 EST</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 95.3%"></div>
+</div>
+</div>
+<!-- Rail 2: Instant RTP -->
+<div class="p-space-sm rounded-lg bg-surface-container-low">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-base">bolt</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Instant Direct (RTP / FedNow)</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-bold">$12,870.00</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>8 On-Demand Early Withdrawals</span>
+<span>Instant Clearing</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 3.6%"></div>
+</div>
+</div>
+<!-- Rail 3: Check fallback -->
+<div class="p-space-sm rounded-lg bg-surface-container-low">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-outline text-base">mail</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Physical Check Courier</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-bold">$4,050.00</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>1 Exception Check (Julian Rossi)</span>
+<span>FedEx Priority Overnight</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-outline h-full rounded-full" style="width: 1.1%"></div>
+</div>
+</div>
+</div>
+<!-- Compliance & Security Seal -->
+<div class="mt-space-md p-space-sm rounded-lg bg-secondary-container/50 flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-on-secondary-container text-xl shrink-0">verified_user</span>
+<p class="font-body-sm text-body-sm text-on-secondary-container">
+            Treasury account <strong>JPMorgan Chase (**4821)</strong> pre-authorized for <strong>$358,120.00</strong> release with multi-sig hardware token required.
+          </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Simple micro-interaction for ledger search filter feedback
+  const searchInput = document.querySelector('input[placeholder="Filter employee..."]');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const rows = document.querySelectorAll('tbody tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+  }
+</script></main></div></body></html>

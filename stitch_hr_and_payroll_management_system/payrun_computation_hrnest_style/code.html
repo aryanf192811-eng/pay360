@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "primary-container": "#766e9c", "tertiary-fixed-dim": "#cdbff4", "tertiary": "#605483", "on-tertiary-container": "#fffaff", "on-primary": "#ffffff", "on-background": "#1b1b20", "on-secondary-container": "#64636b", "surface-container": "#efedf4", "error-container": "#ffdad6", "surface-variant": "#e3e1e8", "primary": "#5d5682", "secondary-container": "#e4e1ea", "on-primary-fixed": "#1c153e", "error": "#ba1a1a", "on-tertiary": "#ffffff", "on-tertiary-fixed-variant": "#4b406d", "secondary-fixed": "#e4e1ea", "tertiary-container": "#796d9d", "on-error-container": "#93000a", "inverse-on-surface": "#f2f0f7", "on-secondary": "#ffffff", "outline": "#79767f", "on-primary-fixed-variant": "#48416c", "on-secondary-fixed": "#1b1b21", "background": "#faf8ff", "surface-container-lowest": "#ffffff", "surface-container-high": "#e9e7ee", "surface-container-highest": "#e3e1e8", "on-surface": "#1b1b20", "surface-dim": "#dbd9e0", "primary-fixed-dim": "#cac0f3", "inverse-primary": "#cac0f3", "surface": "#faf8ff", "inverse-surface": "#2f3035", "on-surface-variant": "#48454e", "surface-tint": "#605985", "on-primary-container": "#fffaff", "primary-fixed": "#e6deff", "tertiary-fixed": "#e8ddff", "secondary-fixed-dim": "#c8c5cd", "on-tertiary-fixed": "#1f133e", "on-secondary-fixed-variant": "#47464d", "outline-variant": "#c9c5cf", "surface-container-low": "#f5f3fa", "surface-bright": "#faf8ff", "on-error": "#ffffff", "secondary": "#5e5e65" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "space-xl": "2rem", "layout-margin-mobile": "1.25rem", "space-2xs": "0.25rem", "layout-margin-desktop": "4rem", "space-xs": "0.5rem", "gutter-desktop": "1.5rem", "container-max-width": "80rem", "space-lg": "1.5rem", "space-2xl": "3rem", "layout-margin-tablet": "2rem", "space-sm": "0.75rem", "space-md": "1rem", "space-4xl": "6rem", "gutter-mobile": "1rem", "space-3xl": "4.5rem" }, "fontFamily": { "label-md": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-xl": ["Plus Jakarta Sans"], "stat-metric": ["Plus Jakarta Sans"], "label-caps": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"] }, "fontSize": { "label-md": ["0.875rem", {"lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "500"}], "display-hero-mobile": ["2.75rem", {"lineHeight": "1.1", "letterSpacing": "-0.025em", "fontWeight": "800"}], "headline-sm": ["1.125rem", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}], "body-md": ["0.9375rem", {"lineHeight": "1.55", "letterSpacing": "0", "fontWeight": "400"}], "headline-lg": ["2rem", {"lineHeight": "1.25", "letterSpacing": "-0.015em", "fontWeight": "700"}], "headline-md": ["1.5rem", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}], "headline-xl": ["2.75rem", {"lineHeight": "1.15", "letterSpacing": "-0.02em", "fontWeight": "700"}], "stat-metric": ["3.25rem", {"lineHeight": "1", "letterSpacing": "-0.03em", "fontWeight": "700"}], "label-caps": ["0.6875rem", {"lineHeight": "1.2", "letterSpacing": "0.08em", "fontWeight": "700"}], "display-hero": ["4.5rem", {"lineHeight": "1.05", "letterSpacing": "-0.03em", "fontWeight": "800"}], "headline-xl-mobile": ["2rem", {"lineHeight": "1.2", "letterSpacing": "-0.015em", "fontWeight": "700"}], "body-sm": ["0.8125rem", {"lineHeight": "1.5", "letterSpacing": "0.005em", "fontWeight": "400"}], "body-lg": ["1.125rem", {"lineHeight": "1.6", "letterSpacing": "-0.005em", "fontWeight": "400"}] } } } };</script></head><body class="bg-background font-body-md text-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between py-space-lg px-space-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-sm"><img alt="Brand logo. - Primary color: #0f172a
+- Font: hankenGrotesk
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UWNjhQfDEQll8ZtCLhEfyTo0XM92HQDb_61tmfI5kOIYTFvyzDbb1GIqbLSiqYeiFXe_wMbXFKl0_y6U3UtKUqeMNRic4XVNOrNE7v2HvprgWqRl4-CzGoJ2o48uhyy6gpSR_N0IlOQBkVjq49ZyRgbTEgUOunKkwDdKFgtoReZ3mbnriek4ieufmnG-sv9SI8MKdodWgCRUOkiYmgo8RRwIFooZPeq6LTs1c3V9Il3Y23Wp8iDPnGkw"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">HRNest</span><span class="font-label-caps text-label-caps text-primary tracking-wider uppercase">Enterprise HR</span></div></div><nav class="flex flex-col gap-space-2xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="employees" href="#"><span class="material-symbols-outlined text-[20px]">badge</span><span class="font-label-md text-label-md">Employees</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="payruns-and-payroll" href="#"><span class="material-symbols-outlined text-[20px]">payments</span><span class="font-label-md text-label-md">Payruns &amp; Payroll</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="time-off-and-attendance" href="#"><span class="material-symbols-outlined text-[20px]">calendar_today</span><span class="font-label-md text-label-md">Time Off &amp; Attendance</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="salary-rules-and-setup" href="#"><span class="material-symbols-outlined text-[20px]">tune</span><span class="font-label-md text-label-md">Salary Rules &amp; Setup</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" data-path="statutory-compliance" href="#"><span class="material-symbols-outlined text-[20px]">verified_user</span><span class="font-label-md text-label-md">Statutory Compliance</span></a></nav></div><div class="px-space-xs"><div class="bg-surface-container-lowest rounded-DEFAULT p-space-md shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex items-start gap-space-sm"><span class="material-symbols-outlined text-primary text-[20px] mt-0.5">shield</span><div class="flex flex-col gap-space-2xs"><span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Compliance Status</span><span class="font-body-sm text-body-sm text-on-surface font-semibold">EPFO &amp; TDS Compliant</span><span class="font-label-caps text-label-caps text-primary">FY 2024-25</span></div></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-space-xl flex items-center justify-between"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full cursor-pointer"><span class="material-symbols-outlined text-primary text-[18px]">corporate_fare</span><span class="font-label-md text-label-md text-on-surface font-medium">Acme India Pvt. Ltd. (Bengaluru HQ)</span><span class="material-symbols-outlined text-on-surface-variant text-[16px]">expand_more</span></div></div><div class="flex items-center gap-space-lg"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-space-md text-on-surface-variant text-[18px]">search</span><input class="w-72 bg-surface-container-low pl-10 pr-space-md py-space-xs rounded-full font-body-sm text-body-sm text-on-surface placeholder-on-surface-variant outline-none focus:bg-surface-container transition-colors" placeholder="Search employees, payroll, PAN..." type="text"/></div><div class="relative flex items-center"><button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span></button><span class="absolute top-1 right-1 w-2.5 h-2.5 bg-error rounded-full ring-2 ring-surface"></span></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1XH7ANaxUxkun0Upg_7eppVlzT-0fIpTxVcKZyoiANT-_mW1wFMU5uO4Nle_YOHMJhkrxJKcdK6MkAocO-eI95xyuRAA36ZKjmoFT7dfzoNIvqk0_TcsuJT67m93hplSFzqqsesX4fp5ImDCYi1XnDaF7jSn8_Y-Lu_h9mimoDuNyrr9Ebp5h6RsfXg2QfFYI0Zqt3owa7XZEnGcnazJKPYB2AnGlkxwJImkbYcl0XOen_QdmJ97HquxQ"/><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface font-medium leading-none">Priya Sharma</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">HR Director</span></div></div></div></header><main class="relative pt-16 w-full bg-background min-h-screen"><div class="flex flex-col w-full">
+<div class="p-space-lg lg:p-space-xl flex flex-col gap-space-xl max-w-[80rem] mx-auto w-full">
+<!-- Top Action Bar & Cycle Title -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-primary bg-secondary-container px-3 py-1 rounded-full">
+            FY 2024-25 • Payroll Run
+          </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-caps font-label-caps bg-amber-100 text-amber-900">
+<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+            Draft • Computing
+          </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+            Scheduled cut-off: 31 Oct, 18:00 IST
+          </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+          October 2024 Regular Payrun (Cycle #10)
+        </h1>
+</div>
+<div class="flex items-center gap-space-xs sm:gap-space-sm flex-wrap">
+<button class="flex items-center gap-space-xs px-4 py-2.5 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface transition-all font-label-md text-label-md" id="btn-recalc">
+<span class="material-symbols-outlined text-[18px] text-primary" id="recalc-icon">sync</span>
+<span>Recalculate All</span>
+</button>
+<button class="flex items-center gap-space-xs px-4 py-2.5 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface transition-all font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px] text-secondary">file_download</span>
+<span>Export Register</span>
+</button>
+<button class="flex items-center gap-space-sm pl-5 pr-2 py-2 rounded-full bg-[#1e1e24] text-white hover:bg-[#2d2c36] shadow-[0_12px_32px_-6px_rgba(30,30,36,0.2)] transition-all group font-label-md text-label-md">
+<span>Continue to Final Review (248/248)</span>
+<span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+<span class="material-symbols-outlined text-[18px] text-white">arrow_forward</span>
+</span>
+</button>
+</div>
+</div>
+<!-- Payrun Stepper in Rounded-2xl Container -->
+<div class="bg-surface-container-lowest rounded-lg p-space-lg shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)]">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Step 1: Complete -->
+<div class="relative p-space-md rounded-DEFAULT bg-surface-container-low flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-primary font-bold">01 / STAGE</span>
+<span class="w-7 h-7 rounded-full bg-primary/15 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Attendance &amp; Hours</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">248 biometric logs synced • 100% verified</span>
+<div class="mt-2 flex items-center gap-1 text-primary text-label-caps font-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            Synced 28 Oct, 09:14 AM
+          </div>
+</div>
+<!-- Step 2: Active -->
+<div class="relative p-space-md rounded-DEFAULT bg-primary-fixed/40 ring-1 ring-primary/30 flex flex-col gap-space-xs shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-primary font-bold">02 / ACTIVE</span>
+<span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center animate-spin">
+<span class="material-symbols-outlined text-[18px]">autorenew</span>
+</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Gross-to-Net Engine</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Automated TDS &amp; 194J calculations live</span>
+<div class="mt-2 flex items-center gap-1.5">
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-1.5 rounded-full w-4/5 animate-pulse"></div>
+</div>
+<span class="font-label-caps text-label-caps text-primary font-bold">88%</span>
+</div>
+</div>
+<!-- Step 3: Review Required -->
+<div class="relative p-space-md rounded-DEFAULT bg-amber-50/70 flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-amber-800 font-bold">03 / ATTENTION</span>
+<span class="w-7 h-7 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Exceptions &amp; Anomalies</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">2 critical flags require managerial sign-off</span>
+<div class="mt-2 flex items-center gap-1 text-amber-800 text-label-caps font-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+            Action pending
+          </div>
+</div>
+<!-- Step 4: Locked -->
+<div class="relative p-space-md rounded-DEFAULT bg-surface-container-low opacity-60 flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant font-bold">04 / UPCOMING</span>
+<span class="w-7 h-7 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Bank CMS Disbursement</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Dual-signatory OTP release via HDFC &amp; ICICI</span>
+<div class="mt-2 flex items-center gap-1 text-on-surface-variant text-label-caps font-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
+            Awaiting Step 3
+          </div>
+</div>
+</div>
+</div>
+<!-- Deep Charcoal Feature Section (HRNest Dark Container Capsule) -->
+<div class="relative bg-[#1e1e24] text-white rounded-xl p-space-lg lg:p-space-2xl overflow-hidden shadow-[0_20px_48px_-12px_rgba(30,30,36,0.35)]">
+<!-- Ambient Glow Blobs -->
+<div class="absolute -right-20 -top-20 w-80 h-80 bg-[#766e9c]/25 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -left-16 -bottom-16 w-72 h-72 bg-[#605483]/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-space-xl">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-2xs max-w-xl">
+<div class="flex items-center gap-space-xs">
+<span class="px-3 py-1 rounded-full bg-white/10 text-white/90 text-label-caps font-label-caps uppercase tracking-wider">
+                COMPUTATION SUMMARY
+              </span>
+<span class="text-white/40 text-body-sm">•</span>
+<span class="text-white/60 font-body-sm text-body-sm">All values INR (‎₹)</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl tracking-tight text-white mt-1">
+              Active Liquidity &amp; Payout Pool
+            </h2>
+<p class="font-body-md text-body-md text-white/70">
+              Aggregated across 248 on-roll professionals and 14 retained consultants for the October payroll window.
+            </p>
+</div>
+<div class="flex items-center gap-space-sm bg-white/5 backdrop-blur-md p-2 rounded-full border border-white/10">
+<span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping ml-2"></span>
+<span class="font-label-md text-label-md text-white/90 pr-3">Real-time Tax Engine: v3.4.1 Active</span>
+</div>
+</div>
+<!-- 4 Glowing Pill/Card Stat Blocks -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Card 1 -->
+<div class="bg-[#26242e] hover:bg-[#312e3b] transition-colors rounded-lg p-space-lg flex flex-col justify-between gap-space-md relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-white/60 uppercase tracking-wider">01 / GROSS COST</span>
+<span class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+</span>
+</div>
+<div>
+<div class="font-stat-metric text-stat-metric text-white tracking-tight leading-none">
+                ₹3.95<span class="text-headline-md font-headline-md text-white/70 font-normal"> Cr</span>
+</div>
+<p class="font-body-sm text-body-sm text-white/60 mt-2">Exact: ₹3,95,50,000</p>
+</div>
+<div class="pt-2 border-t border-white/10 flex items-center justify-between text-label-caps font-label-caps text-white/70">
+<span>+4.2% MoM (New Hires)</span>
+<span class="material-symbols-outlined text-[16px] text-emerald-400">trending_up</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-[#26242e] hover:bg-[#312e3b] transition-colors rounded-lg p-space-lg flex flex-col justify-between gap-space-md relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-white/60 uppercase tracking-wider">02 / PRE-TAX BENEFITS</span>
+<span class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">health_and_safety</span>
+</span>
+</div>
+<div>
+<div class="font-stat-metric text-stat-metric text-white tracking-tight leading-none">
+                ₹28.4<span class="text-headline-md font-headline-md text-white/70 font-normal"> L</span>
+</div>
+<p class="font-body-sm text-body-sm text-white/60 mt-2">NPS, Food, Fuel Allowances</p>
+</div>
+<div class="pt-2 border-t border-white/10 flex items-center justify-between text-label-caps font-label-caps text-white/70">
+<span>88 Claimants opted in</span>
+<span class="material-symbols-outlined text-[16px] text-primary-fixed-dim">verified</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-[#26242e] hover:bg-[#312e3b] transition-colors rounded-lg p-space-lg flex flex-col justify-between gap-space-md relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-white/60 uppercase tracking-wider">03 / STATUTORY TAXES</span>
+<span class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">account_balance</span>
+</span>
+</div>
+<div>
+<div class="font-stat-metric text-stat-metric text-white tracking-tight leading-none">
+                ₹72.8<span class="text-headline-md font-headline-md text-white/70 font-normal"> L</span>
+</div>
+<p class="font-body-sm text-body-sm text-white/60 mt-2">TDS u/s 192 + EPFO + ESIC</p>
+</div>
+<div class="pt-2 border-t border-white/10 flex items-center justify-between text-label-caps font-label-caps text-white/70">
+<span>Challan Due: Nov 07</span>
+<span class="material-symbols-outlined text-[16px] text-amber-400">schedule</span>
+</div>
+</div>
+<!-- Card 4 (Highlighted Disbursable Net) -->
+<div class="bg-gradient-to-br from-[#3b3450] to-[#26242e] ring-1 ring-white/20 rounded-lg p-space-lg flex flex-col justify-between gap-space-md relative overflow-hidden group shadow-lg">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-tertiary-fixed uppercase tracking-wider">04 / DISBURSABLE NET</span>
+<span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</span>
+</div>
+<div>
+<div class="font-stat-metric text-stat-metric text-white tracking-tight leading-none">
+                ₹2.88<span class="text-headline-md font-headline-md text-white/80 font-normal"> Cr</span>
+</div>
+<p class="font-body-sm text-body-sm text-white/70 mt-2">Total Net Take-home Payout</p>
+</div>
+<div class="pt-2 border-t border-white/10 flex items-center justify-between text-label-caps font-label-caps text-emerald-300">
+<span>100% Fund Matched</span>
+<span class="material-symbols-outlined text-[16px] text-emerald-300">task_alt</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Workspace Split: Ledger (Left 8 Cols) & Right Operational Rail (Right 4 Cols) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- Left 8 Columns: Employee Compensation Ledger -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Ledger Enclosure Card (Rounded-3xl Style) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg lg:p-space-xl shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex flex-col gap-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Line Item Audit</span>
+<span class="text-on-surface-variant">•</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Live Payout Ledger</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight mt-1">
+                Employee Compensation Ledger
+              </h3>
+</div>
+<!-- Ledger Filter Pill Buttons -->
+<div class="flex items-center gap-1.5 bg-surface-container-low p-1.5 rounded-full self-start">
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm">All (248)</button>
+<button class="px-3.5 py-1.5 rounded-full hover:bg-surface-container text-on-surface-variant font-label-md text-label-md">Exceptions (2)</button>
+<button class="px-3.5 py-1.5 rounded-full hover:bg-surface-container text-on-surface-variant font-label-md text-label-md">Contractors (14)</button>
+</div>
+</div>
+<!-- Responsive Table Wrapper -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[680px]">
+<thead>
+<tr class="bg-surface-container-low/70 rounded-full font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">
+<th class="py-3 px-4 rounded-l-full">Employee Name &amp; ID</th>
+<th class="py-3 px-3">Work Hours / OT</th>
+<th class="py-3 px-3 text-right">Gross Pay</th>
+<th class="py-3 px-3 text-right">TDS (U/S 192)</th>
+<th class="py-3 px-3 text-right">PF &amp; ESIC</th>
+<th class="py-3 px-3 text-right">Net Payout</th>
+<th class="py-3 px-4 text-center rounded-r-full">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container text-body-sm font-body-sm text-on-surface">
+<!-- Row 1: Ananya Iyer -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 px-4 flex items-center gap-space-sm">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Professional studio portrait of an Indian woman in modern lilac blouse smiling softly against a light grey background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0hotb63pwC-W-Dmk4rNqsLgZ85n6zcqW98tyZvD0iV1LneFnc3-y9KJjR7Azi6S9OYZyQXm0tVB1ZZ4wswle6v0T4uewdTWCC9mU4flYCT3znNU7DFM4Kbfexr2v6fZqi7UTGjZ7QgqmxUKJfJX9-pLYven195fkCPV2MkKq2xJ6SGKO9VNaEB7oQvYOWf-rgJEPlFMzKCH3vJrnwfTQ_C0XW4S9vNzyAos9TbX3DLN_FeIYp-zAw"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Ananya Iyer</span>
+<span class="text-body-sm text-on-surface-variant">EMP-4091 • VP Engineering</span>
+</div>
+</td>
+<td class="py-4 px-3">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">176 hrs</span>
+<span class="text-label-caps text-label-caps text-primary">0 hrs OT (Exempt)</span>
+</div>
+</td>
+<td class="py-4 px-3 text-right font-medium text-on-surface">
+                    ₹4,85,000
+                  </td>
+<td class="py-4 px-3 text-right text-error font-medium">
+                    -₹1,12,400
+                  </td>
+<td class="py-4 px-3 text-right text-on-surface-variant">
+                    -₹21,600
+                  </td>
+<td class="py-4 px-3 text-right">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">₹3,51,000</span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-primary hover:text-white transition-colors flex items-center justify-center mx-auto text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Rohan Verma (Flagged OT Spike) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors bg-amber-50/40">
+<td class="py-4 px-4 flex items-center gap-space-sm">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Portrait photo of a young Indian male software developer in smart casual navy blazer in modern corporate office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1bjsKk4w4wQazjjCBmU-RiawyNR68BtvOAHj0FGMOtAOdXOsK8-x7xvFXaccjiPkF6fg-DnTtmsrbKqz8hWZlIMXIzBzKkJD6aM4UHNu9aN0az1thH5MvBqxt_WtFxAjZDmF4SG5XeIM1R_pTfJY4LaGjQohKCzKkra0u7uB-vOIHRg2Fo6mTWUHmp0Hpj30JMi9y8PteWJMIRPzwzzRyX7onBF-OX95plJSDF7uUHeBk7O90glF7"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface">Rohan Verma</span>
+<span class="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 font-label-caps text-label-caps">Flagged</span>
+</div>
+<span class="text-body-sm text-on-surface-variant">EMP-8219 • Sr. DevOps Lead</span>
+</div>
+</td>
+<td class="py-4 px-3">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">198 hrs</span>
+<span class="text-label-caps text-label-caps text-amber-700 font-bold">+22 hrs OT Spike</span>
+</div>
+</td>
+<td class="py-4 px-3 text-right font-medium text-on-surface">
+                    ₹2,65,000
+                  </td>
+<td class="py-4 px-3 text-right text-error font-medium">
+                    -₹48,200
+                  </td>
+<td class="py-4 px-3 text-right text-on-surface-variant">
+                    -₹18,000
+                  </td>
+<td class="py-4 px-3 text-right">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">₹1,98,800</span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-8 h-8 rounded-full bg-amber-200 text-amber-900 hover:bg-amber-300 transition-colors flex items-center justify-center mx-auto" title="Review OT Spike">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Vikram Malhotra (Prorated Joining) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors bg-purple-50/30">
+<td class="py-4 px-4 flex items-center gap-space-sm">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Professional photograph of a mature Indian male corporate executive with glasses in modern sunlit office interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcxIrUdpdG1iyUv6SasF18jDk_A3_EWBVqHigofQ8W3Noi_PvlnP7wIv4tyd8KO10lDrDzXT2r3Dyi-jOhSQGgB5rhUHX90Aj8OgXZIEGsrUHD1yGEqVjG7TfRSaoVuKtL3Kqmt5mq8KJfex7Fg9awU9dsiKrdlsHBtOnM8uyDI3XN5AewLiiMslWS8HsapjB6Odm32It_hEVbmiuUmujM38NF6rjL9Y9h70i4fV-hir4KAs0cRsvc"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface">Vikram Malhotra</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-caps text-label-caps">Prorated</span>
+</div>
+<span class="text-body-sm text-on-surface-variant">EMP-9034 • Product Director (Joined Oct 14)</span>
+</div>
+</td>
+<td class="py-4 px-3">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">112 hrs</span>
+<span class="text-label-caps text-label-caps text-primary">14 Days Active</span>
+</div>
+</td>
+<td class="py-4 px-3 text-right font-medium text-on-surface">
+                    ₹2,18,000
+                  </td>
+<td class="py-4 px-3 text-right text-error font-medium">
+                    -₹34,800
+                  </td>
+<td class="py-4 px-3 text-right text-on-surface-variant">
+                    -₹12,400
+                  </td>
+<td class="py-4 px-3 text-right">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">₹1,70,800</span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-primary hover:text-white transition-colors flex items-center justify-center mx-auto text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Aisha Patel -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 px-4 flex items-center gap-space-sm">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Warm portrait of an Indian female designer with stylish hair wearing warm neutral tone blazer looking at camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb_4ec4P3W3Z08Mc35ewSdCad-7PzeqVt3zvBiZgFMrWVe1jMkXCZUHm1vgxYBaOlsBC1589jztpum-CoIYLKpGgKrNpkfb7EL4Ncxv5RZsTkhmmBJOmbcjeuuAlbpku7ZfHzBFevEAGgBsdE1WirKzAO61ntKrkFOlvbGLrFWvXINUb3LY2EhZQcdon1ryxXGHEwQ5qUHhwYk3zPs6krE_RzXi1fwRuOqdh_64Ob2S3aRcVnesF8D"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Aisha Patel</span>
+<span class="text-body-sm text-on-surface-variant">EMP-6542 • Principal UI Architect</span>
+</div>
+</td>
+<td class="py-4 px-3">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">176 hrs</span>
+<span class="text-label-caps text-label-caps text-on-surface-variant">Standard cycle</span>
+</div>
+</td>
+<td class="py-4 px-3 text-right font-medium text-on-surface">
+                    ₹3,10,000
+                  </td>
+<td class="py-4 px-3 text-right text-error font-medium">
+                    -₹62,000
+                  </td>
+<td class="py-4 px-3 text-right text-on-surface-variant">
+                    -₹15,500
+                  </td>
+<td class="py-4 px-3 text-right">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">₹2,32,500</span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-primary hover:text-white transition-colors flex items-center justify-center mx-auto text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Bottom Ledger Pagination & Filter Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm pt-space-md border-t border-surface-container">
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+              Showing <strong>4</strong> of <strong>248</strong> computed records
+            </span>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<span class="px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-caps text-label-caps font-bold">1</span>
+<button class="px-3 py-1 rounded-full hover:bg-surface-container text-on-surface-variant font-label-caps text-label-caps">2</button>
+<button class="px-3 py-1 rounded-full hover:bg-surface-container text-on-surface-variant font-label-caps text-label-caps">3</button>
+<span class="text-on-surface-variant text-label-caps font-label-caps">...</span>
+<button class="px-3 py-1 rounded-full hover:bg-surface-container text-on-surface-variant font-label-caps text-label-caps">62</button>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Inline Visual Chart Module: Statutory Split Breakdown -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex flex-col md:flex-row items-center justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs max-w-sm">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">TAXATION &amp; LEVY COMPOSITION</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Statutory Deductions Split</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Auto-partitioned into respective Central Government &amp; State Treasury challan queues.
+            </p>
+</div>
+<div class="flex items-center gap-space-lg w-full md:w-auto">
+<!-- Inline SVG Donut Chart -->
+<div class="relative w-28 h-28 flex items-center justify-center shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<!-- Circle background -->
+<path class="text-surface-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4.5"></path>
+<!-- TDS Slice (64%) -->
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="64, 100" stroke-width="4.5"></path>
+<!-- PF Slice (24%) -->
+<path class="text-tertiary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="24, 100" stroke-dashoffset="-64" stroke-width="4.5"></path>
+<!-- ESIC / PT Slice (12%) -->
+<path class="text-secondary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="12, 100" stroke-dashoffset="-88" stroke-width="4.5"></path>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface leading-none">₹72.8L</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Taxes</span>
+</div>
+</div>
+<!-- Legend -->
+<div class="flex flex-col gap-2 font-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary shrink-0"></span>
+<span class="text-on-surface font-medium">TDS Sec 192 (64%)</span>
+<span class="text-on-surface-variant text-label-caps font-label-caps ml-auto">₹46.6L</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-tertiary shrink-0"></span>
+<span class="text-on-surface font-medium">EPFO • Form 3A (24%)</span>
+<span class="text-on-surface-variant text-label-caps font-label-caps ml-auto">₹17.5L</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary shrink-0"></span>
+<span class="text-on-surface font-medium">ESIC &amp; PT (12%)</span>
+<span class="text-on-surface-variant text-label-caps font-label-caps ml-auto">₹8.7L</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right 4 Columns: Exception Queue & Disbursement Rail Allocation -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Exception Queue Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-8 h-8 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">rule</span>
+</span>
+<div class="flex flex-col">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Exception Queue</h4>
+<span class="font-label-caps text-label-caps text-amber-900 font-bold uppercase">2 Items Pending Review</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container font-label-caps text-label-caps text-on-surface-variant">Step 3 of 4</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            These calculations deviate significantly from standard baseline thresholds. Resolve prior to final CMS routing.
+          </p>
+<!-- Exception 1 -->
+<div class="p-space-md rounded-DEFAULT bg-amber-50/70 flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-amber-900 font-bold">ANOMALY #01 • OT SPIKE</span>
+<span class="text-label-caps text-label-caps bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full font-bold">+22 Hours</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Rohan Verma (EMP-8219)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Overtime exceeds 15% threshold for DevOps on-call shift during AWS migration incident.
+            </p>
+<div class="flex items-center gap-2 mt-2">
+<button class="px-3 py-1.5 rounded-full bg-amber-900 text-white font-label-caps text-label-caps font-bold hover:bg-black transition-colors">
+                Approve &amp; Pay OT
+              </button>
+<button class="px-3 py-1.5 rounded-full bg-amber-200 hover:bg-amber-300 text-amber-900 font-label-caps text-label-caps font-bold transition-colors">
+                Override to Comp-Off
+              </button>
+</div>
+</div>
+<!-- Exception 2 -->
+<div class="p-space-md rounded-DEFAULT bg-surface-container-low flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-primary font-bold">ANOMALY #02 • MID-MONTH JOINING</span>
+<span class="text-label-caps text-label-caps bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-bold">14 Days</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Vikram Malhotra (EMP-9034)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Joined October 14th. Prorated basic pay calculated across 18 remaining calendar days.
+            </p>
+<div class="flex items-center gap-2 mt-2">
+<button class="px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-caps text-label-caps font-bold hover:bg-primary/90 transition-colors">
+                Confirm Proration
+              </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label-caps text-label-caps font-bold hover:bg-surface-variant transition-colors">
+                Inspect Offer CTC
+              </button>
+</div>
+</div>
+</div>
+<!-- Disbursement Rail Allocation Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-[0_8px_24px_-4px_rgba(118,110,156,0.08)] flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">GATEWAY ARCHITECTURE</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Disbursement Rail Allocation</h4>
+</div>
+<span class="material-symbols-outlined text-primary text-[22px]">account_tree</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Targeting corporate Treasury endpoints for instant automated multi-rail credit.
+          </p>
+<div class="flex flex-col gap-space-sm mt-1">
+<!-- Rail 1 -->
+<div class="p-space-sm rounded-DEFAULT bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">account_balance</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">HDFC / ICICI CMS</span>
+<span class="text-label-caps text-label-caps text-on-surface-variant">NEFT / RTGS Corporate Rail</span>
+</div>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹2.74 Cr</span>
+<span class="text-label-caps text-label-caps text-primary">239 Employees</span>
+</div>
+</div>
+<!-- Rail 2 -->
+<div class="p-space-sm rounded-DEFAULT bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">flash_on</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">UPI / IMPS Gateway</span>
+<span class="text-label-caps text-label-caps text-on-surface-variant">Early Wage Access &amp; Stips</span>
+</div>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹10.55 L</span>
+<span class="text-label-caps text-label-caps text-tertiary">7 Interns / EWA</span>
+</div>
+</div>
+<!-- Rail 3 -->
+<div class="p-space-sm rounded-DEFAULT bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-secondary/15 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Banker's Cheque</span>
+<span class="text-label-caps text-label-caps text-on-surface-variant">Special Legal Escrow / F&amp;F</span>
+</div>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹3.25 L</span>
+<span class="text-label-caps text-label-caps text-secondary">2 Separations</span>
+</div>
+</div>
+</div>
+<!-- Compliance Affirmation Notice -->
+<div class="mt-2 p-space-sm rounded-DEFAULT bg-surface-container flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">verified_user</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">
+              Pre-validation active: 248 bank IFSC and PAN matching passed NPCI validator check.
+            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Micro-interaction script -->
+<script>
+    (function() {
+      const recalcBtn = document.getElementById('btn-recalc');
+      const recalcIcon = document.getElementById('recalc-icon');
+      if (recalcBtn && recalcIcon) {
+        recalcBtn.addEventListener('click', function() {
+          recalcIcon.classList.add('animate-spin');
+          recalcBtn.setAttribute('disabled', 'true');
+          recalcBtn.classList.add('opacity-70');
+          setTimeout(function() {
+            recalcIcon.classList.remove('animate-spin');
+            recalcBtn.removeAttribute('disabled');
+            recalcBtn.classList.remove('opacity-70');
+          }, 1200);
+        });
+      }
+    })();
+  </script>
+</div></main></div></body></html>
