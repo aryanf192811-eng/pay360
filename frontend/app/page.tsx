@@ -6,7 +6,7 @@ import { TopBar } from "@/components/navigation/top-bar";
 import { HubHeader } from "@/components/employee-hub/hub-header";
 import { EmployeeCard } from "@/components/employee-hub/employee-card";
 import { EmployeeList } from "@/components/employee-hub/employee-list";
-import { EmployeeDrawer } from "@/components/employee-hub/employee-drawer";
+import { EmployeeForm } from "@/components/employee-hub/employee-form";
 import { AddEmployeeDialog } from "@/components/employee-hub/add-employee-dialog";
 import { ContractsHub } from "@/components/contracts/contracts-hub";
 import { AttendanceHub } from "@/components/attendance/attendance-hub";
@@ -19,11 +19,12 @@ import { PayrunWizardDialog } from "@/components/payroll/payrun-wizard-dialog";
 import { PayslipModal } from "@/components/payroll/payslip-modal";
 import { LoginDialog } from "@/components/auth/login-dialog";
 import { EnterpriseFooter } from "@/components/footer/enterprise-footer";
-import { Users, Plus } from "lucide-react";
+import { Clock, FileText, Calendar, Building, Briefcase, MapPin, Mail, UserCheck, Phone, Users, Plus } from "lucide-react";
 
 function MainContent() {
   const {
     employees,
+    selectedEmployee,
     viewMode,
     activeFilter,
     searchQuery,
@@ -67,7 +68,9 @@ function MainContent() {
           <HubHeader />
 
           <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
-            {filteredEmployees.length === 0 ? (
+            {selectedEmployee ? (
+              <EmployeeForm employee={selectedEmployee} />
+            ) : filteredEmployees.length === 0 ? (
               <div className="text-center py-16 bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-8 shadow-xs">
                 <Users className="w-12 h-12 text-slate-300 mx-auto mb-3" />
                 <h3 className="text-base font-bold text-slate-800">No employees found</h3>
@@ -139,7 +142,6 @@ function MainContent() {
       <EnterpriseFooter />
 
       {/* Global Interactive Modals & Slide-Overs */}
-      <EmployeeDrawer />
       <AddEmployeeDialog />
       <PayrunWizardDialog />
       <PayslipModal />

@@ -1,193 +1,182 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  FileText,
-  Search,
-  CheckCircle2,
-} from "lucide-react";
 import { useStore } from "@/lib/store-context";
+import { Search } from "lucide-react";
+import { Contract } from "@/lib/mock-data";
 import { formatINR } from "@/lib/utils";
 
 export function ContractsHub() {
-  const { contracts, employees, setSelectedEmployee } = useStore();
-  const [contractFilter, setContractFilter] = useState<string>("All");
-  const [contractSearch, setContractSearch] = useState<string>("");
+  const { contracts } = useStore();
+  const [selectedContract, setSelectedContract] = useState<Contract | "NEW" | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredContracts = contracts.filter((c) => {
-    const matchesFilter =
-      contractFilter === "All" ||
-      (contractFilter === "Active" && c.status === "Active") ||
-      c.department === contractFilter;
+  const filteredContracts = contracts.filter((c) =>
+    c.employeeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    c.id.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-    const matchesSearch =
-      c.employeeName.toLowerCase().includes(contractSearch.toLowerCase()) ||
-      c.id.toLowerCase().includes(contractSearch.toLowerCase()) ||
-      c.title.toLowerCase().includes(contractSearch.toLowerCase());
+  if (selectedContract) {
+    const isNew = selectedContract === "NEW";
+    const req = isNew ? null : selectedContract;
 
-    return matchesFilter && matchesSearch;
-  });
-
-  return (
-    <div className="space-y-5 pb-10">
-      {/* Contracts Header */}
-      <div className="bg-white border-b border-slate-200 px-6 py-4 shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-extrabold text-[#0F172A]">
-                Contracts Management Hub
-              </h1>
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#714B67]/10 text-[#714B67]">
-                {contracts.length} Total Contracts
-              </span>
-            </div>
-            <p className="text-xs text-slate-500 mt-1">
-              Maintain historical and active employment terms governing payroll period computation
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="relative min-w-[260px]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search contract, employee, ID..."
-                value={contractSearch}
-                onChange={(e) => setContractSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#714B67] text-slate-900"
-              />
-            </div>
-          </div>
+    return (
+      <div className="flex-1 p-6 md:p-8 bg-white h-full flex flex-col">
+        <div className="mb-8">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight mb-2">
+            Contract / {req ? req.id : "New"}
+          </h1>
+          <p className="text-sm font-medium text-slate-500">
+            Form view of one contract
+          </p>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="mt-4 flex items-center gap-2 overflow-x-auto">
-          {["All", "Active", "Engineering", "Product", "Human Resources", "Sales"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setContractFilter(tab)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-                contractFilter === tab
-                  ? "bg-[#714B67] text-white shadow-xs"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
+        <div className="flex items-center gap-3 mb-8 pb-6 border-b border-slate-100">
+          <button 
+            onClick={() => setSelectedContract(null)}
+            className="px-6 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-lg shadow-sm transition-colors"
+          >
+            Back to List
+          </button>
+        </div>
+
+        <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+          {/* Left Column */}
+          <div className="space-y-6">
+            <div className="flex items-center">
+              <label className="w-1/3 text-sm font-bold text-slate-600">Employee</label>
+              <div className="w-2/3">
+                <input type="text" readOnly value={req ? req.employeeName : ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <label className="w-1/3 text-sm font-bold text-slate-600">Start Date</label>
+              <div className="w-2/3">
+                <input type="text" readOnly value={req ? req.startDate : ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <label className="w-1/3 text-sm font-bold text-slate-600">End Date</label>
+              <div className="w-2/3">
+                <input type="text" readOnly value={req ? (req.endDate || "-") : ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <label className="w-1/3 text-sm font-bold text-slate-600">Status</label>
+              <div className="w-2/3">
+                <input type="text" readOnly value={req ? (req.status === "Active" ? "Running" : "Expired") : "Running"} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-6">
+            <div className="flex items-center">
+              <label className="w-1/3 text-sm font-bold text-slate-600">Department</label>
+              <div className="w-2/3">
+                <input type="text" readOnly value={req ? req.department : ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <label className="w-1/3 text-sm font-bold text-slate-600">Job Position</label>
+              <div className="w-2/3">
+                <input type="text" readOnly value={req ? req.title : ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <label className="w-1/3 text-sm font-bold text-slate-600">Wage</label>
+              <div className="w-2/3">
+                <input type="text" readOnly value={req ? formatINR(req.wage) : ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <label className="w-1/3 text-sm font-bold text-slate-600">Working Schedule</label>
+              <div className="w-2/3">
+                <input type="text" readOnly value={req ? req.workingSchedule : ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
+              </div>
+            </div>
+          </div>
+
+          {/* Full Width Salary Structure / Notes */}
+          <div className="md:col-span-2 mt-4 bg-slate-50 border border-slate-200 rounded-xl p-6 relative">
+            <label className="block text-sm font-bold text-slate-700 mb-3">Salary Structure / Notes</label>
+            <p className="text-slate-800 font-medium whitespace-pre-wrap min-h-[80px]">
+              {req ? ((req as any).salaryStructure || "Structure Type: Employee Salary\nThis running contract is the source for payroll calculation in the active period.") : ""}
+            </p>
+            <p className="text-xs text-slate-500 absolute bottom-4 left-6 italic">
+              Useful note: for the problem statement, one employee should not have multiple Running contracts for the same period.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // List View
+  return (
+    <div className="flex-1 p-6 md:p-8 bg-white h-full flex flex-col">
+      <div className="mb-6">
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight mb-2">Contracts</h1>
+        <p className="text-sm font-medium text-slate-500">
+          List view of employee contracts
+        </p>
+      </div>
+
+      <div className="flex items-center gap-3 mb-8">
+        <button 
+          onClick={() => setSelectedContract("NEW")}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-bold shadow-sm transition-colors uppercase text-sm tracking-wider"
+        >
+          New
+        </button>
+        <div className="relative w-72">
+          <input
+            type="text"
+            placeholder="Search contracts..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 text-slate-900 text-sm rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm"
+          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
         </div>
       </div>
 
-      {/* Contracts Table */}
-      <div className="px-6">
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50/90 border-b border-slate-200 text-slate-600 uppercase tracking-wider font-bold text-xs">
-                <tr>
-                  <th className="py-3.5 px-5">Contract Reference</th>
-                  <th className="py-3.5 px-5">Employee</th>
-                  <th className="py-3.5 px-5">Department</th>
-                  <th className="py-3.5 px-5 text-right">Monthly Wage (CTC)</th>
-                  <th className="py-3.5 px-5">Salary Structure</th>
-                  <th className="py-3.5 px-5">Start Date</th>
-                  <th className="py-3.5 px-5">Working Schedule</th>
-                  <th className="py-3.5 px-5">Status</th>
-                  <th className="py-3.5 px-5 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredContracts.map((c) => {
-                  const emp = employees.find((e) => e.id === c.employeeId);
-
-                  return (
-                    <tr
-                      key={c.id}
-                      onClick={() => {
-                        if (emp) setSelectedEmployee(emp);
-                      }}
-                      className="hover:bg-slate-50 transition-colors cursor-pointer group"
-                    >
-                      {/* Contract ID */}
-                      <td className="py-3.5 px-5 font-mono font-bold text-[#714B67]">
-                        <div className="flex items-center gap-2">
-                          <FileText className="w-4 h-4 text-slate-400 group-hover:text-[#714B67]" />
-                          <span>{c.id}</span>
-                        </div>
-                      </td>
-
-                      {/* Employee Name */}
-                      <td className="py-3.5 px-5">
-                        <div className="flex items-center gap-3">
-                          {emp && (
-                            <img
-                              src={emp.avatar}
-                              alt={c.employeeName}
-                              className="w-8 h-8 rounded-full object-cover border border-slate-200"
-                            />
-                          )}
-                          <div>
-                            <div className="font-bold text-base text-[#0F172A] group-hover:text-[#714B67]">
-                              {c.employeeName}
-                            </div>
-                            <div className="text-xs text-slate-500 font-mono">{c.employeeId}</div>
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Department */}
-                      <td className="py-3.5 px-5 font-medium text-slate-800">{c.department}</td>
-
-                      {/* Wage */}
-                      <td className="py-3.5 px-5 text-right font-black text-base text-slate-900">
-                        {formatINR(c.wage)}
-                        <span className="text-xs font-normal text-slate-400 ml-1">/mo</span>
-                      </td>
-
-                      {/* Salary Structure */}
-                      <td className="py-3.5 px-5">
-                        <span className="px-2.5 py-1 rounded-md bg-purple-50 text-purple-800 border border-purple-200 text-xs font-semibold">
-                          {c.structure}
-                        </span>
-                      </td>
-
-                      {/* Start Date */}
-                      <td className="py-3.5 px-5 text-slate-700 text-xs font-mono">{c.startDate}</td>
-
-                      {/* Working Schedule */}
-                      <td className="py-3.5 px-5 text-slate-600 text-xs">
-                        <span className="truncate block max-w-[160px]" title={c.workingSchedule}>
-                          {c.workingSchedule}
-                        </span>
-                      </td>
-
-                      {/* Status */}
-                      <td className="py-3.5 px-5">
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
-                          <span>Active Period</span>
-                        </span>
-                      </td>
-
-                      {/* Action */}
-                      <td className="py-3.5 px-5 text-right">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (emp) setSelectedEmployee(emp);
-                          }}
-                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-[#714B67] hover:text-white text-slate-800 text-xs font-bold transition-colors"
-                        >
-                          View Form
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+      <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <table className="w-full text-left text-sm whitespace-nowrap">
+          <thead className="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th className="px-6 py-4 font-bold text-slate-600">Contract</th>
+              <th className="px-6 py-4 font-bold text-slate-600">Employee</th>
+              <th className="px-6 py-4 font-bold text-slate-600">Start</th>
+              <th className="px-6 py-4 font-bold text-slate-600">End</th>
+              <th className="px-6 py-4 font-bold text-slate-600">Wage / Month</th>
+              <th className="px-6 py-4 font-bold text-slate-600">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100 bg-white">
+            {filteredContracts.map((c) => (
+              <tr 
+                key={c.id} 
+                onClick={() => setSelectedContract(c)}
+                className="hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                <td className="px-6 py-4 font-medium text-slate-900">{c.id}</td>
+                <td className="px-6 py-4 font-bold text-slate-900">{c.employeeName}</td>
+                <td className="px-6 py-4 font-medium text-slate-700">{c.startDate}</td>
+                <td className="px-6 py-4 font-medium text-slate-700">{c.endDate || "-"}</td>
+                <td className="px-6 py-4 font-medium text-slate-800">{formatINR(c.wage)}</td>
+                <td className="px-6 py-4">
+                  <span className={`font-bold ${c.status === "Active" ? "text-emerald-600" : "text-rose-600"}`}>
+                    {c.status === "Active" ? "Running" : "Expired"}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        
+        <div className="p-4 bg-slate-50 border-t border-slate-200 text-xs font-medium text-slate-500 italic">
+          Useful note: retain contract history, but make the active Running contract obvious because payroll depends on it.
         </div>
       </div>
     </div>

@@ -55,17 +55,12 @@ export function TopBar() {
 
   return (
     <nav className="bg-white w-full border-b border-slate-200 px-6 h-16 flex items-center justify-between shadow-sm z-30 select-none">
-      {/* Left: Bold Brand Mark */}
+      {/* Left: Brand Logo */}
       <div
         className="flex items-center gap-2 cursor-pointer h-full"
         onClick={() => setActiveNavTab("Employees")}
       >
-        <div className="bg-[#714B67] text-white p-1.5 rounded-md flex items-center justify-center shrink-0">
-          <ShieldCheck className="w-4 h-4" />
-        </div>
-        <div className="font-bold text-base text-slate-900 tracking-tight">
-          PeoplePay360
-        </div>
+        <img src="/logo.png" alt="PeoplePay360" className="h-8 md:h-10 object-contain drop-shadow-sm" />
       </div>
 
       {/* Center Navigation: Flat Text Links with Bottom Border (Excalidraw style) */}
