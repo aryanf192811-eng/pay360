@@ -5,14 +5,8 @@ import { Wallet, Plus } from 'lucide-react';
 import { listPayruns, draftPayrun, createPayrun, type EligibleEmployee } from '../api/payroll.api';
 import { listSalaryStructures } from '../api/salary.api';
 import { StatusBadge } from '../components/StatusBadge';
-import { EmptyState } from '../components/EmptyState';
 import { WizardStepper } from '../components/WizardStepper';
 import { TableSkeleton } from '../components/ui/skeleton';
-import { Table, Thead, Tbody, Tr, Th, Td } from '../components/ui/table';
-import { Button } from '../components/ui/button';
-import { Input, Label, Select } from '../components/ui/input';
-import { Card, CardContent, CardHeader } from '../components/ui/card';
-
 export function PayrollPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -64,135 +58,157 @@ export function PayrollPage() {
   }
 
   return (
-    <div className="space-y-24">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-text">Payroll</h1>
-          <p className="text-sm text-text-muted">Two-step payrun creation: define scope, then select employees.</p>
-        </div>
+    <div className="flex-1 w-full max-w-[1440px] mx-auto px-[16px] md:px-[24px] py-[24px] flex flex-col gap-[12px]">
+      
+      {/* Page Header */}
+      <div className="flex justify-between items-center mb-[8px]">
+        <h1 className="text-[28px] font-bold text-[#172b4d] tracking-tight">Payroll Overview</h1>
         {!showWizard && (
-          <Button onClick={() => setShowWizard(true)}>
-            <Plus className="h-16 w-16" /> New Payrun
-          </Button>
+          <button 
+            onClick={() => setShowWizard(true)}
+            className="bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors flex items-center gap-[4px]"
+          >
+            <Plus className="h-[16px] w-[16px]" /> Run Payroll
+          </button>
         )}
       </div>
 
-      {showWizard && (
-        <Card>
-          <CardHeader>
+      {showWizard ? (
+        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm overflow-hidden mb-[24px]">
+          <div className="p-[24px] border-b border-[#ebecf0]">
             <WizardStepper steps={['Scope & Period', 'Select Employees']} currentStep={step} />
-          </CardHeader>
-          <CardContent>
+          </div>
+          <div className="p-[24px]">
             {step === 1 && (
               <form
-                className="grid grid-cols-2 gap-16"
+                className="grid grid-cols-2 gap-[16px]"
                 onSubmit={(e) => {
                   e.preventDefault();
                   draftMut.mutate();
                 }}
               >
-                <div className="col-span-2 space-y-4">
-                  <Label>Payrun Name</Label>
-                  <Input required value={scope.name} onChange={(e) => setScope({ ...scope, name: e.target.value })} placeholder="e.g. January 2026 Payroll" />
+                <div className="col-span-2 flex flex-col gap-[8px]">
+                  <label className="text-[12px] font-semibold text-[#172b4d]">Payrun Name</label>
+                  <input required value={scope.name} onChange={(e) => setScope({ ...scope, name: e.target.value })} placeholder="e.g. January 2026 Payroll" className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:ring-[#3062e1] focus:outline-none w-full" />
                 </div>
-                <div className="space-y-4">
-                  <Label>Salary Structure</Label>
-                  <Select required value={scope.salary_structure_id} onChange={(e) => setScope({ ...scope, salary_structure_id: e.target.value })}>
+                <div className="flex flex-col gap-[8px]">
+                  <label className="text-[12px] font-semibold text-[#172b4d]">Salary Structure</label>
+                  <select required value={scope.salary_structure_id} onChange={(e) => setScope({ ...scope, salary_structure_id: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:ring-[#3062e1] focus:outline-none w-full">
                     <option value="">Select structure…</option>
                     {structures?.map((s) => (
                       <option key={s.id} value={s.id}>{s.name}</option>
                     ))}
-                  </Select>
+                  </select>
                 </div>
                 <div />
-                <div className="space-y-4">
-                  <Label>Period Start</Label>
-                  <Input type="date" required value={scope.period_start} onChange={(e) => setScope({ ...scope, period_start: e.target.value })} />
+                <div className="flex flex-col gap-[8px]">
+                  <label className="text-[12px] font-semibold text-[#172b4d]">Period Start</label>
+                  <input type="date" required value={scope.period_start} onChange={(e) => setScope({ ...scope, period_start: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:ring-[#3062e1] focus:outline-none w-full" />
                 </div>
-                <div className="space-y-4">
-                  <Label>Period End</Label>
-                  <Input type="date" required value={scope.period_end} onChange={(e) => setScope({ ...scope, period_end: e.target.value })} />
+                <div className="flex flex-col gap-[8px]">
+                  <label className="text-[12px] font-semibold text-[#172b4d]">Period End</label>
+                  <input type="date" required value={scope.period_end} onChange={(e) => setScope({ ...scope, period_end: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:ring-[#3062e1] focus:outline-none w-full" />
                 </div>
-                {error && <div className="col-span-2 rounded-md bg-[color-mix(in_srgb,var(--danger)_10%,transparent)] px-12 py-8 text-sm text-danger">{error}</div>}
-                <div className="col-span-2 flex justify-end gap-8">
-                  <Button type="button" variant="secondary" onClick={resetWizard}>Cancel</Button>
-                  <Button type="submit" disabled={draftMut.isPending}>{draftMut.isPending ? 'Loading…' : 'Continue'}</Button>
+                {error && <div className="col-span-2 rounded bg-[#ffebe6] px-[12px] py-[8px] text-[13px] text-[#de350b] font-medium border border-[#ffdad6]">{error}</div>}
+                <div className="col-span-2 flex justify-end gap-[8px] mt-[16px]">
+                  <button type="button" onClick={resetWizard} className="px-[16px] py-[8px] border border-[#dfe1e6] rounded text-[12px] font-semibold text-[#172b4d] hover:bg-[#f4f5f7] transition-colors bg-[#fefefe]">Cancel</button>
+                  <button type="submit" disabled={draftMut.isPending} className="bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors disabled:opacity-50">
+                    {draftMut.isPending ? 'Loading…' : 'Continue'}
+                  </button>
                 </div>
               </form>
             )}
 
             {step === 2 && (
-              <div className="space-y-16">
-                <div className="text-sm text-text-muted">
-                  {selectedIds.size} of {eligible.length} employees selected — a live, real eligibility list (not a hardcoded roster).
+              <div className="flex flex-col gap-[16px]">
+                <div className="text-[13px] text-[#434654] font-medium">
+                  {selectedIds.size} of {eligible.length} employees selected
                 </div>
-                <Table>
-                  <Thead>
-                    <tr>
-                      <Th></Th>
-                      <Th>Employee</Th>
-                      <Th>Code</Th>
-                      <Th>Type</Th>
-                      <Th>Has Applicable Contract</Th>
-                    </tr>
-                  </Thead>
-                  <Tbody>
-                    {eligible.map((e) => (
-                      <Tr key={e.id} className="cursor-pointer" onClick={() => toggleSelect(e.id)}>
-                        <Td>
-                          <input type="checkbox" checked={selectedIds.has(e.id)} onChange={() => toggleSelect(e.id)} className="h-16 w-16" />
-                        </Td>
-                        <Td className="font-medium">{e.first_name} {e.last_name}</Td>
-                        <Td className="font-mono text-xs">{e.employee_code}</Td>
-                        <Td className="capitalize">{e.employee_type.replace('_', ' ')}</Td>
-                        <Td>{e.has_contract ? <span className="text-success">✓ Yes</span> : <span className="text-warning">⚠ No contract</span>}</Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-                {error && <div className="rounded-md bg-[color-mix(in_srgb,var(--danger)_10%,transparent)] px-12 py-8 text-sm text-danger">{error}</div>}
-                <div className="flex justify-between">
-                  <Button variant="secondary" onClick={() => setStep(1)}>Back</Button>
-                  <div className="flex gap-8">
-                    <Button variant="secondary" onClick={resetWizard}>Cancel</Button>
-                    <Button onClick={() => createMut.mutate()} disabled={selectedIds.size === 0 || createMut.isPending}>
+                <div className="border border-[#dfe1e6] rounded-[6px] overflow-hidden">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-[#f4f5f7] border-b border-[#dfe1e6]">
+                        <th className="py-[8px] px-[12px] w-[40px]"></th>
+                        <th className="py-[8px] px-[12px] text-[12px] font-semibold text-[#434654] uppercase tracking-wider">Employee</th>
+                        <th className="py-[8px] px-[12px] text-[12px] font-semibold text-[#434654] uppercase tracking-wider">Code</th>
+                        <th className="py-[8px] px-[12px] text-[12px] font-semibold text-[#434654] uppercase tracking-wider">Type</th>
+                        <th className="py-[8px] px-[12px] text-[12px] font-semibold text-[#434654] uppercase tracking-wider">Has Applicable Contract</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-[13px] text-[#172b4d]">
+                      {eligible.map((e) => (
+                        <tr key={e.id} className="border-b border-[#ebecf0] hover:bg-[#f4f5f7] cursor-pointer transition-colors" onClick={() => toggleSelect(e.id)}>
+                          <td className="py-[8px] px-[12px]">
+                            <input type="checkbox" checked={selectedIds.has(e.id)} onChange={() => toggleSelect(e.id)} className="h-[16px] w-[16px] rounded border-[#dfe1e6] text-[#3062e1] focus:ring-[#3062e1]" />
+                          </td>
+                          <td className="py-[8px] px-[12px] font-medium">{e.first_name} {e.last_name}</td>
+                          <td className="py-[8px] px-[12px] font-mono text-[12px] text-[#434654]">{e.employee_code}</td>
+                          <td className="py-[8px] px-[12px] capitalize">{e.employee_type.replace('_', ' ')}</td>
+                          <td className="py-[8px] px-[12px]">{e.has_contract ? <span className="text-[#006644] font-semibold">✓ Yes</span> : <span className="text-[#ff991f] font-semibold">⚠ No contract</span>}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {error && <div className="rounded bg-[#ffebe6] px-[12px] py-[8px] text-[13px] text-[#de350b] font-medium border border-[#ffdad6]">{error}</div>}
+                <div className="flex justify-between mt-[8px]">
+                  <button type="button" onClick={() => setStep(1)} className="px-[16px] py-[8px] border border-[#dfe1e6] rounded text-[12px] font-semibold text-[#172b4d] hover:bg-[#f4f5f7] transition-colors bg-[#fefefe]">Back</button>
+                  <div className="flex gap-[8px]">
+                    <button type="button" onClick={resetWizard} className="px-[16px] py-[8px] border border-[#dfe1e6] rounded text-[12px] font-semibold text-[#172b4d] hover:bg-[#f4f5f7] transition-colors bg-[#fefefe]">Cancel</button>
+                    <button onClick={() => createMut.mutate()} disabled={selectedIds.size === 0 || createMut.isPending} className="bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors disabled:opacity-50">
                       {createMut.isPending ? 'Creating…' : 'Create Payrun'}
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </div>
             )}
-          </CardContent>
-        </Card>
-      )}
-
-      {isLoading ? (
-        <TableSkeleton />
-      ) : !payruns || payruns.length === 0 ? (
-        <EmptyState icon={Wallet} title="No payruns yet" description="Create a payrun to compute payslips for a period." />
+          </div>
+        </div>
       ) : (
-        <Table>
-          <Thead>
-            <tr>
-              <Th>Name</Th>
-              <Th>Period</Th>
-              <Th>Payslips</Th>
-              <Th>Status</Th>
-              <Th></Th>
-            </tr>
-          </Thead>
-          <Tbody>
-            {payruns.map((p) => (
-              <Tr key={p.id} className="cursor-pointer" onClick={() => navigate(`/payroll/payruns/${p.id}`)}>
-                <Td className="font-medium">{p.name}</Td>
-                <Td>{p.period_start} → {p.period_end}</Td>
-                <Td className="font-mono">{p.payslip_count}</Td>
-                <Td><StatusBadge status={p.status} domain="payrun" /></Td>
-                <Td><Button size="sm" variant="ghost">Open →</Button></Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+        <>
+          {/* Payruns Data Table */}
+          <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] flex flex-col overflow-hidden shadow-sm">
+            <div className="p-[16px] border-b border-[#ebecf0] flex justify-between items-center bg-[#ffffff]">
+              <h2 className="font-semibold text-[18px] text-[#172b4d]">Payrun History</h2>
+            </div>
+            <div className="overflow-x-auto w-full">
+              {isLoading ? (
+                <TableSkeleton />
+              ) : !payruns || payruns.length === 0 ? (
+                <div className="py-[48px] flex flex-col items-center justify-center text-[#434654]">
+                  <Wallet className="h-[32px] w-[32px] mb-[16px] opacity-50" />
+                  <p className="text-[14px] font-medium">No payruns yet</p>
+                  <p className="text-[12px] mt-[4px]">Create a payrun to compute payslips for a period.</p>
+                </div>
+              ) : (
+                <table className="w-full text-left border-collapse min-w-[800px]">
+                  <thead>
+                    <tr className="bg-[#f4f5f7] border-b border-[#dfe1e6]">
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Name</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Period</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Payslips</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Status</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="font-medium text-[13px] text-[#172b4d]">
+                    {payruns.map((p) => (
+                      <tr key={p.id} className="border-b border-[#ebecf0] hover:bg-[#f4f5f7] transition-colors cursor-pointer group" onClick={() => navigate(`/payroll/payruns/${p.id}`)}>
+                        <td className="py-[12px] px-[12px]">{p.name}</td>
+                        <td className="py-[12px] px-[12px] text-[#434654] font-normal">{p.period_start} → {p.period_end}</td>
+                        <td className="py-[12px] px-[12px] font-mono text-[#434654]">{p.payslip_count}</td>
+                        <td className="py-[12px] px-[12px]"><StatusBadge status={p.status} domain="payrun" /></td>
+                        <td className="py-[12px] px-[12px] text-right">
+                           <span className="text-[#3062e1] opacity-0 group-hover:opacity-100 transition-opacity">Review →</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

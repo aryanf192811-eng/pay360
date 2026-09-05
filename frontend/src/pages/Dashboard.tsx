@@ -1,16 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Wallet, FileCheck, TrendingUp, CalendarClock, Activity, ArrowUpRight, Building2 } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 import { getDashboard } from '../api/dashboard.api';
 import { listDepartments } from '../api/reference.api';
-import { KpiCard } from '../components/KpiCard';
 import { AiAssistantCard } from '../components/AiAssistantCard';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { CardSkeleton } from '../components/ui/skeleton';
 import { Select, Input } from '../components/ui/input';
-import { Badge } from '../components/ui/badge';
-
-const DEPT_ACCENTS = ['bg-primary', 'bg-accent', 'bg-warning', 'bg-info', 'bg-danger'];
 
 const WARNING_LABEL: Record<string, string> = {
   contract_missing: 'Missing Contract',
@@ -22,6 +18,7 @@ const WARNING_LABEL: Record<string, string> = {
 const EMPLOYEE_TYPES = ['full_time', 'part_time', 'contract'];
 
 export function Dashboard() {
+  const navigate = useNavigate();
   const [departmentId, setDepartmentId] = useState('');
   const [employeeType, setEmployeeType] = useState('');
   const [periodStart, setPeriodStart] = useState('');
@@ -44,178 +41,216 @@ export function Dashboard() {
   const maxTrend = Math.max(...data.monthly_net_salary_trend.map((t) => t.total_net), 1);
 
   return (
-    <div className="space-y-24">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-text">Payroll Dashboard</h1>
-          <p className="text-sm text-text-muted">Live data aggregated across Employees, Contracts, Payroll, Attendance, and Time Off.</p>
-        </div>
-        <div className="flex flex-wrap items-end gap-8">
-          <Input type="date" value={periodStart} onChange={(e) => setPeriodStart(e.target.value)} className="w-[160px]" title="Period start" />
-          <Input type="date" value={periodEnd} onChange={(e) => setPeriodEnd(e.target.value)} className="w-[160px]" title="Period end" />
-          <Select value={employeeType} onChange={(e) => setEmployeeType(e.target.value)} className="w-[160px]">
-            <option value="">All Employee Types</option>
+    <div className="flex-1 w-full max-w-[1440px] mx-auto px-6 py-6 flex flex-col gap-4">
+      {/* Page Header */}
+      <div className="flex justify-between items-center mb-2">
+        <h1 className="text-2xl font-bold text-[#172b4d]">Payroll Overview</h1>
+        <div className="flex flex-wrap items-end gap-[16px]">
+          <Input type="date" value={periodStart} onChange={(e) => setPeriodStart(e.target.value)} className="w-[140px] h-[36px] text-sm border-[#dfe1e6]" title="Period start" />
+          <Input type="date" value={periodEnd} onChange={(e) => setPeriodEnd(e.target.value)} className="w-[140px] h-[36px] text-sm border-[#dfe1e6]" title="Period end" />
+          <Select value={employeeType} onChange={(e) => setEmployeeType(e.target.value)} className="w-[140px] h-[36px] text-sm border-[#dfe1e6]">
+            <option value="">All Types</option>
             {EMPLOYEE_TYPES.map((t) => (
               <option key={t} value={t}>{t.replace('_', ' ')}</option>
             ))}
           </Select>
-          <Select value={departmentId} onChange={(e) => setDepartmentId(e.target.value)} className="w-[200px]">
-            <option value="">All Departments</option>
+          <Select value={departmentId} onChange={(e) => setDepartmentId(e.target.value)} className="w-[160px] h-[36px] text-sm border-[#dfe1e6]">
+            <option value="">All Depts</option>
             {departments?.map((d) => (
               <option key={d.id} value={d.id}>{d.name}</option>
             ))}
           </Select>
+          <button onClick={() => navigate('/payroll')} className="bg-[#3062e1] hover:bg-[#2552cc] text-white font-semibold text-xs px-[16px] py-2 rounded transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-[#e6f0ff] h-[36px] flex items-center">
+            Run Payroll
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
-        <Card dark className="relative overflow-hidden lg:col-span-5">
-          <div className="absolute -right-[100px] -top-[100px] h-[200px] w-[200px] rounded-full bg-white/5" />
-          <div className="absolute -right-8 top-32 h-[120px] w-[120px] rounded-full bg-accent/20" />
-          <CardContent className="relative pt-24">
-            <div className="flex items-center justify-between">
-              <div className="text-xs font-semibold uppercase tracking-wide text-surface-dark-foreground/60">Total Net Paid</div>
-              <div className="flex h-[36px] w-[36px] items-center justify-center rounded-md bg-gradient-to-br from-accent to-accent/70 shadow-tinted">
-                <Wallet className="h-[18px] w-[18px] text-white" />
-              </div>
-            </div>
-            <div className="mt-16 font-mono text-4xl font-bold tabular-nums text-white">₹{data.kpis.total_net_paid.toLocaleString()}</div>
-            <div className="mt-16 flex items-center gap-8 text-xs text-surface-dark-foreground/70">
-              <FileCheck className="h-[14px] w-[14px] text-accent" />
-              {data.kpis.payslips_generated} payslips generated this period
-            </div>
-          </CardContent>
-        </Card>
+      {/* Top KPI Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[16px]">
+        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] p-[16px] flex flex-col gap-2">
+          <span className="font-semibold text-[12px] text-[#5e6c84] uppercase tracking-wider">Total Net Paid</span>
+          <span className="font-bold text-[32px] leading-tight text-[#172b4d]">₹{data.kpis.total_net_paid.toLocaleString()}</span>
+          <div className="flex items-center gap-1 text-[#5e6c84]">
+            <span className="text-[12px]">Aggregated across all payslips</span>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-2 gap-16 lg:col-span-7">
-          <KpiCard icon={TrendingUp} label="Average Salary" value={`₹${data.kpis.average_salary.toLocaleString()}`} />
-          <KpiCard icon={CalendarClock} label="Approved Time Off" value={`${data.kpis.approved_time_off_days} days`} tone="success" />
-          <KpiCard icon={FileCheck} label="Payslips Generated" value={String(data.kpis.payslips_generated)} tone="default" />
-          <KpiCard
-            icon={Activity}
-            label="Attendance Health"
-            value={`${data.kpis.attendance_health_pct}%`}
-            tone={data.kpis.attendance_health_pct >= 90 ? 'success' : data.kpis.attendance_health_pct >= 70 ? 'warning' : 'danger'}
-          />
+        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] p-[16px] flex flex-col gap-2">
+          <span className="font-semibold text-[12px] text-[#5e6c84] uppercase tracking-wider">Payslips Generated</span>
+          <span className="font-bold text-[32px] leading-tight text-[#172b4d]">{data.kpis.payslips_generated}</span>
+          <div className="flex items-center gap-1 text-[#5e6c84]">
+            <span className="text-[12px]">For the current period selection</span>
+          </div>
+        </div>
+
+        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] p-[16px] flex flex-col gap-2">
+          <span className="font-semibold text-[12px] text-[#5e6c84] uppercase tracking-wider">Average Salary</span>
+          <span className="font-bold text-[32px] leading-tight text-[#172b4d]">₹{data.kpis.average_salary.toLocaleString()}</span>
+          <div className="flex items-center gap-1 text-[#5e6c84]">
+            <span className="text-[12px]">Stable across selection</span>
+          </div>
+        </div>
+
+        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] p-[16px] flex flex-col gap-2">
+          <span className="font-semibold text-[12px] text-[#5e6c84] uppercase tracking-wider">Approved Time Off</span>
+          <span className="font-bold text-[32px] leading-tight text-[#172b4d]">{data.kpis.approved_time_off_days}<span className="text-xl ml-1">days</span></span>
+          <div className="flex items-center gap-1 text-[#de350b]">
+            <span className="text-[12px] font-medium">Potential impact on processing</span>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-12">
-        <Card className="lg:col-span-7">
-          <CardHeader><CardTitle>Salary Cost by Department</CardTitle></CardHeader>
-          <CardContent className="space-y-16">
+      {/* Middle Row: Chart & Alerts */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-[16px] mt-2">
+        {/* Chart Area */}
+        <div className="lg:col-span-8 bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] flex flex-col">
+          <div className="p-[16px] border-b border-[#ebecf0] flex justify-between items-center">
+            <h2 className="font-semibold text-[16px] text-[#172b4d]">Salary Cost by Department</h2>
+          </div>
+          <div className="p-[16px] flex-1 h-[280px] relative overflow-y-auto">
             {data.salary_cost_by_department.length === 0 ? (
-              <div className="py-24 text-center text-sm text-text-muted">No paid payslips yet for this filter.</div>
+              <div className="py-24 text-center text-sm text-[#5e6c84]">No paid payslips yet for this filter.</div>
             ) : (
-              data.salary_cost_by_department.map((d, i) => (
-                <div key={d.department} className="space-y-8">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="flex items-center gap-8 font-semibold text-text">
-                      <Building2 className={`h-[14px] w-[14px] ${DEPT_ACCENTS[i % DEPT_ACCENTS.length].replace('bg-', 'text-')}`} />
-                      {d.department}
-                    </span>
-                    <span className="font-mono text-text-muted">₹{d.total_net_cost.toLocaleString()} · {d.headcount} paid</span>
+              <div className="space-y-4">
+                {data.salary_cost_by_department.map((d) => (
+                  <div key={d.department} className="space-y-2">
+                    <div className="flex items-center justify-between text-[12px]">
+                      <span className="flex items-center gap-2 font-semibold text-[#172b4d]">
+                        {d.department}
+                      </span>
+                      <span className="font-mono text-[#5e6c84]">₹{d.total_net_cost.toLocaleString()} · {d.headcount} paid</span>
+                    </div>
+                    <div className="h-[16px] w-full rounded-[2px] bg-[#ebecf0]">
+                      <div
+                        className={`h-[16px] rounded-[2px] bg-[#3062e1] transition-all`}
+                        style={{ width: `${Math.max((d.total_net_cost / maxDeptCost) * 100, 2)}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="h-10 w-full rounded-full bg-bg">
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Alerts Area */}
+        <div className="lg:col-span-4 bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] flex flex-col">
+          <div className="p-[16px] border-b border-[#ebecf0] flex justify-between items-center">
+            <h2 className="font-semibold text-[16px] text-[#172b4d]">Pending Alerts</h2>
+            <span className="bg-[#ffebe6] text-[#bf2600] font-semibold text-[11px] px-2 py-0.5 rounded">{data.payroll_alerts.length} New</span>
+          </div>
+          <div className="flex flex-col flex-1 overflow-y-auto max-h-[280px]">
+            {data.payroll_alerts.length === 0 ? (
+              <div className="p-[16px] text-sm text-[#5e6c84]">No open alerts.</div>
+            ) : (
+              data.payroll_alerts.map((a) => (
+                <div key={a.warning_type} className="p-[16px] border-b border-[#ebecf0] hover:bg-[#f4f5f7] transition-colors flex gap-3 items-start cursor-pointer group">
+                  <div className="flex flex-col gap-1">
+                    <span className="font-medium text-[13px] text-[#172b4d]">{WARNING_LABEL[a.warning_type] || a.warning_type}</span>
+                    <span className="text-[12px] text-[#5e6c84]">Count: {a.count} occurrences in current processing period.</span>
+                    <span className="text-[12px] text-[#3062e1] mt-1 font-medium">Review Details →</span>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Monthly Net Salary Trend */}
+      <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] flex flex-col mt-2">
+        <div className="p-[16px] border-b border-[#ebecf0] flex justify-between items-center">
+          <h2 className="font-semibold text-[16px] text-[#172b4d]">Monthly Net Salary Trend</h2>
+        </div>
+        <div className="p-[16px]">
+          {data.monthly_net_salary_trend.length === 0 ? (
+            <div className="py-24 text-center text-sm text-[#5e6c84]">No historical payroll data yet.</div>
+          ) : (
+            <div className="space-y-4">
+              {data.monthly_net_salary_trend.map((t) => (
+                <div key={t.month} className="space-y-2">
+                  <div className="flex items-center justify-between text-[12px]">
+                    <span className="font-semibold text-[#172b4d]">{t.month}</span>
+                    <span className="font-mono text-[#5e6c84]">₹{t.total_net.toLocaleString()}</span>
+                  </div>
+                  <div className="h-[16px] w-full rounded-[2px] bg-[#ebecf0]">
                     <div
-                      className={`h-10 rounded-full ${DEPT_ACCENTS[i % DEPT_ACCENTS.length]} shadow-tinted transition-all`}
-                      style={{ width: `${Math.max((d.total_net_cost / maxDeptCost) * 100, 6)}%` }}
+                      className="h-[16px] rounded-[2px] bg-[#3062e1] transition-all"
+                      style={{ width: `${Math.max((t.total_net / maxTrend) * 100, 2)}%` }}
                     />
                   </div>
                 </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="lg:col-span-5">
-          <CardHeader><CardTitle>Monthly Net Salary Trend</CardTitle></CardHeader>
-          <CardContent>
-            {data.monthly_net_salary_trend.length === 0 ? (
-              <div className="py-24 text-center text-sm text-text-muted">No historical payroll data yet.</div>
-            ) : (
-              <div className="h-[160px] px-4">
-                {(() => {
-                  const trend = data.monthly_net_salary_trend;
-                  const single = trend.length === 1;
-                  // Percentage-based positions so marker dots (plain HTML, not SVG) never get
-                  // squished by the SVG's preserveAspectRatio="none" line/area underneath them.
-                  const points = trend.map((t, i) => ({
-                    xPct: single ? 50 : (i / (trend.length - 1)) * 100,
-                    yPct: 100 - Math.max((t.total_net / maxTrend) * 100, 3),
-                    t,
-                  }));
-                  const svgPoints = single
-                    ? [{ ...points[0], xPct: 0 }, { ...points[0], xPct: 100 }] // flat reference line
-                    : points;
-                  const path = svgPoints.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.xPct} ${p.yPct}`).join(' ');
-                  const area = `${path} L 100 100 L 0 100 Z`;
-                  return (
-                    <div className="h-full overflow-hidden">
-                      <div className="relative h-[128px] w-full overflow-hidden">
-                        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
-                          <path d={area} fill="color-mix(in srgb, var(--primary) 12%, transparent)" stroke="none" />
-                          <path d={path} fill="none" stroke="var(--primary)" strokeWidth="2" vectorEffect="non-scaling-stroke" />
-                        </svg>
-                        {points.map((p, i) => (
-                          <div
-                            key={i}
-                            title={`₹${p.t.total_net.toLocaleString()}`}
-                            className="absolute h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-tinted"
-                            style={{ left: `${p.xPct}%`, top: `${p.yPct}%` }}
-                          />
-                        ))}
-                      </div>
-                      <div className="mt-8 flex justify-between text-xs text-text-muted">
-                        {trend.map((t) => (
-                          <span key={t.month} title={`₹${t.total_net.toLocaleString()}`}>{t.month}</span>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-16 lg:grid-cols-3">
-        <Card>
-          <CardHeader><CardTitle>Payroll Alerts</CardTitle></CardHeader>
-          <CardContent className="space-y-8">
-            {data.payroll_alerts.length === 0 ? (
-              <div className="text-sm text-text-muted">No open alerts.</div>
-            ) : (
-              data.payroll_alerts.map((a) => (
-                <div key={a.warning_type} className="flex items-center justify-between rounded-md bg-[color-mix(in_srgb,var(--warning)_8%,transparent)] px-12 py-8 text-sm">
-                  <span className="text-text">{WARNING_LABEL[a.warning_type] || a.warning_type}</span>
-                  <Badge tone="warning">{a.count}</Badge>
+      {/* Bottom Row: Attendance & Time Off */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-[16px] mt-2">
+        <div className="lg:col-span-8 bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] flex flex-col overflow-hidden">
+          <div className="p-[16px] border-b border-[#ebecf0] flex justify-between items-center">
+            <h2 className="font-semibold text-[16px] text-[#172b4d]">Attendance Health (Current Period)</h2>
+          </div>
+          <div className="p-[16px] flex flex-wrap gap-[16px] text-sm">
+             <div className="flex gap-2">
+               <span className="text-[#5e6c84]">Present:</span><span className="font-semibold text-[#006644]">{data.attendance_overview.present}</span>
+             </div>
+             <div className="flex gap-2">
+               <span className="text-[#5e6c84]">Late:</span><span className="font-semibold text-[#ff8b00]">{data.attendance_overview.late}</span>
+             </div>
+             <div className="flex gap-2">
+               <span className="text-[#5e6c84]">Absent:</span><span className="font-semibold text-[#bf2600]">{data.attendance_overview.absent}</span>
+             </div>
+             <div className="flex gap-2">
+               <span className="text-[#5e6c84]">Overtime:</span><span className="font-semibold text-[#3062e1]">{data.attendance_overview.overtime}</span>
+             </div>
+             <div className="flex gap-2">
+               <span className="text-[#5e6c84]">Missing Checkouts:</span><span className="font-semibold text-[#172b4d]">{data.attendance_overview.missing_checkouts}</span>
+             </div>
+             <div className="flex gap-2">
+               <span className="text-[#5e6c84]">Manual Edits:</span><span className="font-semibold text-[#172b4d]">{data.attendance_overview.manual_edits}</span>
+             </div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-4 bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] flex flex-col overflow-hidden">
+          <div className="p-[16px] border-b border-[#ebecf0] flex justify-between items-center">
+            <h2 className="font-semibold text-[16px] text-[#172b4d]">Time Off Overview</h2>
+          </div>
+          <div className="p-[16px] flex flex-col gap-2 text-sm">
+            <div className="flex justify-between">
+              <span className="text-[#5e6c84]">Approved Days</span><span className="font-semibold text-[#006644]">{data.time_off_overview.approved_days}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[#5e6c84]">Pending Requests</span><span className="font-semibold text-[#ff8b00]">{data.time_off_overview.pending_requests}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Department Overview */}
+      <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] flex flex-col mt-2">
+        <div className="p-[16px] border-b border-[#ebecf0] flex justify-between items-center">
+          <h2 className="font-semibold text-[16px] text-[#172b4d]">Department Overview</h2>
+        </div>
+        <div className="p-[16px] grid grid-cols-1 gap-[16px] sm:grid-cols-2 lg:grid-cols-3">
+          {data.department_overview.map((d) => (
+            <div key={d.department} className="flex items-center gap-3 rounded-[6px] border border-[#dfe1e6] p-[16px]">
+              <div className="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-[6px] bg-[#3062e1] text-white">
+                <Building2 className="h-[18px] w-[18px]" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[13px] font-semibold text-[#172b4d]">{d.department}</div>
+                <div className="mt-1 flex items-center justify-between text-[12px] text-[#5e6c84]">
+                  <span>{d.headcount} employees</span>
+                  <span className="font-mono font-semibold text-[#172b4d]">₹{d.total_salary.toLocaleString()}</span>
                 </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader><CardTitle>Attendance Overview</CardTitle></CardHeader>
-          <CardContent className="grid grid-cols-2 gap-8 text-sm">
-            <div className="flex justify-between"><span className="text-text-muted">Present</span><span className="font-mono font-semibold text-success">{data.attendance_overview.present}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Late</span><span className="font-mono font-semibold text-warning">{data.attendance_overview.late}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Absent</span><span className="font-mono font-semibold text-danger">{data.attendance_overview.absent}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Overtime</span><span className="font-mono font-semibold text-info">{data.attendance_overview.overtime}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Missing Checkouts</span><span className="font-mono font-semibold text-text">{data.attendance_overview.missing_checkouts}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Manual Edits</span><span className="font-mono font-semibold text-text">{data.attendance_overview.manual_edits}</span></div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader><CardTitle>Time Off Overview</CardTitle></CardHeader>
-          <CardContent className="space-y-8 text-sm">
-            <div className="flex justify-between"><span className="text-text-muted">Approved Days</span><span className="font-mono font-semibold text-success">{data.time_off_overview.approved_days}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Pending Requests</span><span className="font-mono font-semibold text-warning">{data.time_off_overview.pending_requests}</span></div>
-          </CardContent>
-        </Card>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <AiAssistantCard
@@ -226,28 +261,6 @@ export function Dashboard() {
           employee_type: employeeType || undefined,
         }}
       />
-
-      <Card>
-        <CardHeader><CardTitle>Department Overview</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
-          {data.department_overview.map((d, i) => (
-            <div key={d.department} className="flex items-center gap-12 rounded-md border border-border p-16 transition-shadow hover:shadow-tinted">
-              <div className={`flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-md text-white ${DEPT_ACCENTS[i % DEPT_ACCENTS.length]}`}>
-                <Building2 className="h-[18px] w-[18px]" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="text-sm font-semibold text-text">{d.department}</div>
-                <div className="mt-4 flex items-center justify-between text-xs text-text-muted">
-                  <span>{d.headcount} employees</span>
-                  <span className="flex items-center gap-4 font-mono font-semibold text-text">
-                    ₹{d.total_salary.toLocaleString()} <ArrowUpRight className="h-12 w-12 text-success" />
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
     </div>
   );
 }
