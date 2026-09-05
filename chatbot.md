@@ -300,8 +300,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
     compute against. See below.
 
 ### T-007 — Time Off: Types CRUD + Allocations/Requests CRUD + live balance service
-- Status: QUEUED
-- Owner: unclaimed
+- Status: VERIFIED
+- Owner: Supervisor
 - Files allowed: `backend/src/services/timeOff.service.js`, `backend/src/controllers/timeOffTypes.controller.js`, `backend/src/controllers/timeOffAllocations.controller.js`, `backend/src/controllers/timeOffRequests.controller.js`, `backend/src/routes/timeOffTypes.routes.js`, `backend/src/routes/timeOffAllocations.routes.js`, `backend/src/routes/timeOffRequests.routes.js`. May uncomment its own three `app.js` route-mount stubs per the standing carve-out — nothing else in `app.js`.
 - Spec: This task owns the full Time Off surface end-to-end (Types CRUD is small reference data,
   grouped here rather than as a separate task/round-trip). Routes needed (API_GUIDE.md):
@@ -324,7 +324,30 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   each sequentially — first approves (200), second is rejected (409, "exceeds remaining balance
   by 1 day" or equivalent). `GET` the allocation and confirm `remaining` reflects only the
   approved request, computed live (change the DB row directly and re-GET to prove it's not cached).
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED** (concurrency correctness on leave balances —
+  same high-blast-radius reasoning as T-006). Built `timeOff.service.js` (`getAllocationBalance`,
+  `approveRequest`, `refuseRequest`, `approveAllocation`) plus all three controllers/routes.
+  - Allocation of 5 days created, draft by default; approving a request against a **draft**
+    (not-yet-approved) allocation correctly `409`s first — allocations require their own approval
+    before use (PS §A4), enforced, not just documented ✅
+  - Allocation approved → first 3-day request approves (`200`) → `GET` shows `taken: 3.00,
+    remaining: 2.00`, computed live via the SUM query, not cached ✅
+  - Second 3-day request (only 2 remaining) → `409 "...exceed the allocation by 1.00 unit(s)
+    (remaining: 2)"` — exact acceptance-check scenario, passes ✅
+  - **Beyond the original check — genuine concurrency stress test, not just sequential calls:**
+    fired two real concurrent `approve` requests (`curl ... & curl ... & wait`) against the same
+    allocation, each individually within the remaining balance but together exceeding it
+    (remaining 2, two requests of 1.2 each). Result: exactly one succeeded (`200`), the other
+    correctly recomputed the balance post-commit and rejected (`409`, remaining had dropped to
+    0.8). This is the actual property T-007 exists to guarantee — the `SELECT ... FOR UPDATE` row
+    lock on the allocation genuinely serializes concurrent approvers rather than both reading a
+    stale balance and both passing. Final `taken: 4.20` confirms no over-allocation occurred ✅
+  - RBAC: `employee`-role token → `403` on approve/refuse ✅; querying another employee's
+    `employee_id` as an `employee` role is silently ignored in favor of the caller's own
+    `employee_id` (returns their own empty list rather than leaking someone else's data) ✅
+  - Minor fix during verification: a floating-point display artifact in the shortfall error
+    message (`remaining: 0.7999999999999998`) — cosmetic only, the underlying numeric comparison
+    was always correct; fixed with `.toFixed(2)` on the displayed value.
 
 ## Phase 1 tasks (pre-queued now so there's no idle gap after Phase 0 — claim any of these as soon as T-001 dependencies below are met; none of them overlap T-002/T-006/T-007's files)
 
