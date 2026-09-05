@@ -35,6 +35,8 @@ interface StoreContextType {
   setCurrentCompany: (company: string) => void;
   isAuthOpen: boolean;
   setIsAuthOpen: (open: boolean) => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (v: boolean) => void;
 
   employees: Employee[];
   contracts: Contract[];
@@ -89,6 +91,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [currentRole, setCurrentRole] = useState<UserRole>("Admin");
   const [currentCompany, setCurrentCompany] = useState<string>("PeoplePay360 Corp (IN) - Gandhinagar HQ");
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const [employees, setEmployees] = useState<Employee[]>(INITIAL_EMPLOYEES);
   const [contracts, setContracts] = useState<Contract[]>(INITIAL_CONTRACTS);
@@ -330,6 +333,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         setCurrentCompany,
         isAuthOpen,
         setIsAuthOpen,
+        isAuthenticated,
+        setIsAuthenticated,
         employees,
         contracts,
         attendance,

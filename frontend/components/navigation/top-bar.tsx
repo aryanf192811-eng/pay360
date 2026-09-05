@@ -42,12 +42,14 @@ export function TopBar() {
     { key: "Dashboard", label: "Dashboard" },
     { key: "Employees", label: "Employees" },
     { key: "Contracts", label: "Contracts" },
+    { key: "Attendance", label: "Attendance" },
     { key: "Time Off", label: "Time Off" },
-    { key: "Payroll", label: "Payroll Wizard" },
+    { key: "Payroll", label: "Payroll" },
+    { key: "Reports", label: "Reports" },
   ];
 
   // Map "Reports" or default to "Dashboard"
-  const isDashboardActive = activeNavTab === "Dashboard" || activeNavTab === "Reports";
+  const isDashboardActive = activeNavTab === "Dashboard";
 
   return (
     <nav className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-2xl shadow-sm px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4 mb-6 z-30 transition-all select-none">

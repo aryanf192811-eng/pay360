@@ -9,7 +9,7 @@ import { EmployeeList } from "@/components/employee-hub/employee-list";
 import { EmployeeDrawer } from "@/components/employee-hub/employee-drawer";
 import { AddEmployeeDialog } from "@/components/employee-hub/add-employee-dialog";
 import { ContractsHub } from "@/components/contracts/contracts-hub";
-import { SchedulesHub } from "@/components/schedules/schedules-hub";
+import { AttendanceHub } from "@/components/attendance/attendance-hub";
 import { TimeOffHub } from "@/components/timeoff/timeoff-hub";
 import { PayrunEngine } from "@/components/payroll/payrun-engine";
 import { ExecutiveDashboard } from "@/components/dashboard/executive-dashboard";
@@ -28,6 +28,7 @@ function MainContent() {
     searchQuery,
     activeNavTab,
     setIsAddEmployeeOpen,
+    isAuthenticated,
   } = useStore();
 
   // Filter employees based on activeFilter and searchQuery
@@ -48,18 +49,23 @@ function MainContent() {
     return matchesFilter && matchesSearch;
   });
 
+  // Auth Gate: block the whole app until user logs in (Excalidraw flow block 0)
+  if (!isAuthenticated) {
+    return <LoginDialog />;
+  }
+
   return (
     <div className="flex-1 flex flex-col min-h-screen">
       <TopBar />
 
-      {/* Module 0: Executive Bento Dashboard (Like Reference Image Layout) */}
-      {(activeNavTab === "Dashboard" || activeNavTab === "Reports") && (
+      {/* Module 0: Bento Dashboard (Landing Home — PDF §B9 operational home) */}
+      {activeNavTab === "Dashboard" && (
         <main className="flex-1 w-full">
           <BentoDashboard />
         </main>
       )}
 
-      {/* Module 1: Employees Hub (Screen 1) */}
+      {/* Module 1: Employees Hub — PDF §B1, B2 */}
       {activeNavTab === "Employees" && (
         <div className="flex-1 flex flex-col">
           <HubHeader />
@@ -93,31 +99,38 @@ function MainContent() {
         </div>
       )}
 
-      {/* Module 2: Contracts Management Hub (Screen 2) */}
+      {/* Module 2: Contracts Management Hub — PDF §A2 */}
       {activeNavTab === "Contracts" && (
         <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <ContractsHub />
         </main>
       )}
 
-      {/* Module 3: Working Schedules Hub (NEW - Section A3) */}
-      {(activeNavTab === "Working Schedules" || activeNavTab === "Attendance") && (
+      {/* Module 3: Attendance — PDF §A3 Working Schedules + §B3 Attendance List/Form */}
+      {activeNavTab === "Attendance" && (
         <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
-          <SchedulesHub />
+          <AttendanceHub />
         </main>
       )}
 
-      {/* Module 4: Time Off & Leave Approvals Hub (NEW - Section A4 & B4) */}
+      {/* Module 4: Time Off & Leave Approvals — PDF §A4 + §B4 */}
       {activeNavTab === "Time Off" && (
         <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <TimeOffHub />
         </main>
       )}
 
-      {/* Module 5: Payrun Engine Pipeline (NEW - Section B5, B6 & B7) */}
-      {(activeNavTab === "Payroll" || activeNavTab === "Payroll Wizard") && (
+      {/* Module 5: Payrun Engine Pipeline — PDF §B5 B6 B7 B8 */}
+      {activeNavTab === "Payroll" && (
         <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <PayrunEngine />
+        </main>
+      )}
+
+      {/* Module 6: Payroll Dashboard — PDF §B9 Reports */}
+      {activeNavTab === "Reports" && (
+        <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
+          <ExecutiveDashboard />
         </main>
       )}
 
@@ -129,6 +142,7 @@ function MainContent() {
       <AddEmployeeDialog />
       <PayrunWizardDialog />
       <PayslipModal />
+      {/* LoginDialog used for role-switch when already authenticated */}
       <LoginDialog />
     </div>
   );

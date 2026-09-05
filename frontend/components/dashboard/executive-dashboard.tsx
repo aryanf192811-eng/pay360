@@ -35,7 +35,7 @@ export function ExecutiveDashboard() {
 
   const [selectedPeriod, setSelectedPeriod] = useState("September 2026");
 
-  // Department Breakdown (Excalidraw Section 5 & Prompt specification)
+  // Department Breakdown (PDF B9: "Charts plot Salary Cost by Department")
   const deptBreakdown = [
     { name: "Engineering", amount: 445000, percentage: 53.7, color: "bg-[#714B67]", text: "text-[#714B67]" },
     { name: "Sales", amount: 205000, percentage: 24.7, color: "bg-[#00A09D]", text: "text-[#00A09D]" },
@@ -43,7 +43,17 @@ export function ExecutiveDashboard() {
     { name: "Human Resources", amount: 133000, percentage: 16.0, color: "bg-indigo-500", text: "text-indigo-700" },
   ];
 
-  // Attendance & Leave Distribution (Prompt specification)
+  // Monthly Net Salary Trends (PDF B9: "Monthly Net Salary Trends using historical data")
+  const monthlyTrends = [
+    { month: "Apr", net: 750000, height: "62%" },
+    { month: "May", net: 762000, height: "63%" },
+    { month: "Jun", net: 780000, height: "65%" },
+    { month: "Jul", net: 795000, height: "66%" },
+    { month: "Aug", net: 810000, height: "67%" },
+    { month: "Sep", net: 828000, height: "69%", current: true },
+  ];
+
+  // Attendance & Leave Distribution (PDF B9: "Attendance and Time Off overviews")
   const attendanceMetrics = [
     { label: "Present", value: "92%", color: "bg-emerald-500", count: "168 logged shifts", barWidth: "92%" },
     { label: "Late Check-ins", value: "4%", color: "bg-amber-500", count: "7 events recorded", barWidth: "4%" },
@@ -87,7 +97,7 @@ export function ExecutiveDashboard() {
         </div>
       </div>
 
-      {/* 2. Hero KPI Cards Row (4 Glass Cards with Icons) */}
+      {/* 2. Hero KPI Cards — PDF B9: "KPI cards display key metrics like Total Net Salary Paid, Payslips Generated, Average Salary, Approved Time Off, and Attendance Health" */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Total Net Disbursed */}
         <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
@@ -110,18 +120,18 @@ export function ExecutiveDashboard() {
           </div>
         </div>
 
-        {/* KPI 2: Active Payroll Headcount */}
+        {/* KPI 2: Payslips Generated — PDF B9 explicitly names this */}
         <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs uppercase tracking-wider font-bold text-slate-500">
-              Active Payroll Headcount
+              Payslips Generated
             </span>
             <div className="p-2 rounded-xl bg-purple-50 text-[#714B67]">
-              <Users className="w-4 h-4" />
+              <FileText className="w-4 h-4" />
             </div>
           </div>
           <div className="my-2">
-            <div className="text-2xl sm:text-3xl font-black text-[#714B67]">8 Employees</div>
+            <div className="text-2xl sm:text-3xl font-black text-[#714B67]">8 Payslips</div>
           </div>
           <div className="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
             <span className="text-amber-700 font-bold">1 On Leave</span>
@@ -130,11 +140,11 @@ export function ExecutiveDashboard() {
           </div>
         </div>
 
-        {/* KPI 3: Average Monthly Wage */}
+        {/* KPI 3: Average Salary — PDF B9 */}
         <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs uppercase tracking-wider font-bold text-slate-500">
-              Average Monthly Wage
+              Average Salary
             </span>
             <div className="p-2 rounded-xl bg-teal-50 text-[#00A09D]">
               <DollarSign className="w-4 h-4" />
@@ -149,7 +159,7 @@ export function ExecutiveDashboard() {
           </div>
         </div>
 
-        {/* KPI 4: Attendance Health */}
+        {/* KPI 4: Attendance Health — PDF B9 */}
         <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs uppercase tracking-wider font-bold text-slate-500">
@@ -169,7 +179,49 @@ export function ExecutiveDashboard() {
         </div>
       </div>
 
-      {/* 3. Interactive Analytics Grid (Two Columns as requested) */}
+      {/* 3. Monthly Net Salary Trends — PDF B9: "Charts plot Monthly Net Salary Trends using historical data" */}
+      <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-6 shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-5">
+          <div>
+            <h3 className="text-base font-bold text-slate-900">Monthly Net Salary Trends</h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              6-month net salary disbursement history • April – September 2026
+            </p>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+            <TrendingUp className="w-3.5 h-3.5" />
+            <span>+10.4% since April</span>
+          </div>
+        </div>
+
+        <div className="flex items-end justify-between gap-3 h-40 px-2">
+          {monthlyTrends.map((m) => (
+            <div key={m.month} className="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+              <span className="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                ₹{(m.net / 100000).toFixed(2)}L
+              </span>
+              <div
+                className={`w-full rounded-xl shadow-xs transition-all group-hover:brightness-110 ${
+                  m.current
+                    ? "bg-[#714B67] shadow-[#714B67]/20 shadow-md"
+                    : "bg-slate-200 group-hover:bg-[#714B67]/60"
+                }`}
+                style={{ height: m.height }}
+              />
+              <div className="text-center">
+                <span className={`text-xs font-bold block ${m.current ? "text-[#714B67]" : "text-slate-600"}`}>
+                  {m.month}
+                </span>
+                {m.current && (
+                  <span className="text-[9px] text-[#00A09D] font-bold">Current</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Interactive Analytics Grid (PDF B9: "Charts plot Salary Cost by Department") */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Card: Department Payroll Expenditure */}
         <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-6 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
