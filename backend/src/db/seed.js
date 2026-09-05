@@ -59,8 +59,8 @@ async function seed() {
           );
         }
       } else {
-        // Mon-Wed 09:00 - 13:00, 0m break
-        for (let i = 1; i <= 3; i++) {
+        // Mon-Fri 09:00 - 13:00, 0m break = 4h x 5 = 20h, matching the schedule's own name
+        for (let i = 1; i <= 5; i++) {
           await client.query(
             `INSERT INTO schedule_lines (schedule_id, day_of_week, start_time, end_time, break_minutes)
              VALUES ($1, $2, '09:00', '13:00', 0)`,

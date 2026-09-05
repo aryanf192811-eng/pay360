@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { ChevronDown, LogOut, Building2 } from 'lucide-react';
-import { useAuthStore, ROLES, HR_ROLES, PAYROLL_ROLES } from '../store/auth.store';
+import { useAuthStore, ROLES, HR_ROLES, PAYROLL_ROLES, homeFor } from '../store/auth.store';
 import { cn } from '../lib/utils';
 import { logout as apiLogout } from '../api/auth.api';
 import { Avatar } from './Avatar';
@@ -127,7 +127,7 @@ export function Layout() {
     <div className="min-h-screen">
       <header className="sticky top-0 z-30 flex h-64 items-center justify-between border-b border-border bg-surface/95 px-24 backdrop-blur-md lg:px-32">
         <div className="flex items-center gap-32">
-          <NavLink to={user?.role === ROLES.EMPLOYEE ? '/my-space' : '/dashboard'} className="flex items-center gap-8">
+          <NavLink to={homeFor(user?.role)} className="flex items-center gap-8">
             <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gradient-to-br from-primary to-accent font-mono text-xs font-bold text-white shadow-tinted">
               P
             </div>
