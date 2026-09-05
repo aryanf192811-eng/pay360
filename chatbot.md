@@ -184,17 +184,33 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - `npm run build` passes successfully without TypeScript errors.
   - Commit: `7d781e5 feat: frontend scaffold — Vite+TS, Tailwind, shadcn, router, auth store (T-003)`
 
-### T-004 — Postman collection + environment skeleton
+### T-004 — Postman: real requests + tests for every LIVE route (Auth, Payroll, Time Off)
 - Status: QUEUED
 - Owner: unclaimed
 - Files allowed: `backend/postman/collection.json`, `backend/postman/environment.json`
-- Spec: one collection with a folder per domain from API_GUIDE.md's route list (Auth,
-  Departments, Employees, Contracts, Schedules, Attendance, Time Off, Salary, Payroll,
-  Dashboard) — folders may be empty until routes ship, but the structure exists now.
-  Environment has `baseUrl` and `accessToken` variables; login request's test script writes the
-  returned token into `accessToken` automatically.
-- Acceptance check: import both files into Postman without error; running the (empty) Auth
-  folder's login request against a running backend populates `{{accessToken}}`.
+- Spec: Auth, Payroll (Payruns+Payslips), and Time Off (Types/Allocations/Requests) routes are
+  now live and VERIFIED (T-002, T-006, T-007) — this task fills in **real requests with real
+  Postman test scripts** for those three folders now, not placeholders. (Employees/Contracts/
+  Departments/Schedules/Salary folders stay empty until T-008/009/010/011 land — don't guess
+  their shapes.) For every request: a `pm.test(...)` asserting the status code and the
+  `response wrapper shape` from API_GUIDE.md (`success`/`data` or `success`/`error`). Specifically:
+  - **Auth folder:** Register → Login (test script writes `accessToken` from
+    `pm.response.json().data.accessToken` into the environment) → Me → Refresh → Logout.
+  - **Payroll folder:** Draft → Create → Compute → Validate → Mark Paid, chained via environment
+    variables (`payrunId` written by Create's test script, reused by the rest) — mirrors the exact
+    flow verified in T-006's Result/Notes above, so it's testing something already known-correct,
+    not guessing a new scenario.
+  - **Time Off folder:** Create Type → Create Allocation → Approve Allocation → Create Request →
+    Approve Request → (a second request that intentionally over-allocates, asserting `409`) —
+    mirrors T-007's verified scenario above.
+  Then run the whole thing with `newman` (`npx newman run backend/postman/collection.json -e
+  backend/postman/environment.json`) against the live local backend and paste the pass/fail
+  summary into Result/Notes — an import that "looks right" in the Postman GUI is not the
+  acceptance check, a clean `newman` run is.
+- Acceptance check: `npx newman run backend/postman/collection.json -e backend/postman/environment.json`
+  exits `0` with all requests passing, run against `backend/` started fresh (`npm run dev`) with
+  an empty-ish dev DB (or accept pre-existing T-006/T-007 test fixtures — either is fine, just
+  state which in Result/Notes).
 - Result/Notes: —
 
 ### T-005 — Seed data script (departments, schedules, a handful of employees)
