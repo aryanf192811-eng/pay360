@@ -45,7 +45,7 @@ export function PayrunDetail() {
   return (
     <div className="space-y-24">
       <button onClick={() => navigate('/payroll')} className="flex items-center gap-4 text-sm text-text-muted hover:text-text">
-        <ArrowLeft className="h-14 w-14" /> Back to Payroll
+        <ArrowLeft className="h-[14px] w-[14px]" /> Back to Payroll
       </button>
 
       <Card>

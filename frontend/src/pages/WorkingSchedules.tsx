@@ -124,7 +124,7 @@ export function WorkingSchedules() {
                 <div className="flex items-center justify-between">
                   <Label>Weekly Pattern</Label>
                   <Button type="button" size="sm" variant="secondary" onClick={addLine}>
-                    <Plus className="h-14 w-14" /> Add Day
+                    <Plus className="h-[14px] w-[14px]" /> Add Day
                   </Button>
                 </div>
                 <div className="space-y-8">
@@ -151,7 +151,7 @@ export function WorkingSchedules() {
                         <Input type="number" min={0} value={line.break_minutes} onChange={(e) => updateLine(idx, { break_minutes: Number(e.target.value) })} />
                       </div>
                       <Button type="button" size="sm" variant="ghost" onClick={() => removeLine(idx)} disabled={lines.length === 1}>
-                        <Trash2 className="h-14 w-14 text-danger" />
+                        <Trash2 className="h-[14px] w-[14px] text-danger" />
                       </Button>
                     </div>
                   ))}

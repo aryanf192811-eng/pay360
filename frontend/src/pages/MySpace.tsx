@@ -75,11 +75,11 @@ export function MySpace() {
         <Card>
           <CardContent className="pt-16">
             <div className="flex items-center gap-8 text-xs font-medium uppercase tracking-wide text-text-muted">
-              <Clock className="h-14 w-14" /> Today
+              <Clock className="h-[14px] w-[14px]" /> Today
             </div>
             <div className="mt-8 text-lg font-semibold text-text">{openEntry ? 'Checked In' : 'Not checked in'}</div>
             <Button size="sm" className="mt-12 w-full" variant={openEntry ? 'secondary' : 'primary'} onClick={() => checkMutation.mutate()}>
-              <LogIn className="h-14 w-14" /> {openEntry ? 'Check Out' : 'Check In'}
+              <LogIn className="h-[14px] w-[14px]" /> {openEntry ? 'Check Out' : 'Check In'}
             </Button>
           </CardContent>
         </Card>
@@ -87,7 +87,7 @@ export function MySpace() {
         <Card className="cursor-pointer" onClick={() => navigate('/time-off')}>
           <CardContent className="pt-16">
             <div className="flex items-center gap-8 text-xs font-medium uppercase tracking-wide text-text-muted">
-              <CalendarClock className="h-14 w-14" /> Leave Balance
+              <CalendarClock className="h-[14px] w-[14px]" /> Leave Balance
             </div>
             <div className="mt-8 font-mono text-2xl font-bold text-text">{totalRemaining}</div>
             <div className="text-xs text-text-muted">days remaining across all types</div>
@@ -97,7 +97,7 @@ export function MySpace() {
         <Card>
           <CardContent className="pt-16">
             <div className="flex items-center gap-8 text-xs font-medium uppercase tracking-wide text-text-muted">
-              <Wallet className="h-14 w-14" /> Latest Payslip
+              <Wallet className="h-[14px] w-[14px]" /> Latest Payslip
             </div>
             {latestPayslip ? (
               <>

@@ -11,6 +11,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from '../components/ui/table';
 import { Select } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { cn } from '../lib/utils';
+import { Avatar, gradientFor } from '../components/Avatar';
 
 export function EmployeeList() {
   const [view, setView] = useState<'kanban' | 'list'>('kanban');
@@ -75,23 +76,23 @@ export function EmployeeList() {
             <button
               key={e.id}
               onClick={() => navigate(`/employees/${e.id}`)}
-              className="rounded-lg border border-border bg-surface p-16 text-left shadow-sm transition-shadow hover:shadow-md"
+              className="group overflow-hidden rounded-lg border border-border bg-surface text-left shadow-tinted transition-all hover:-translate-y-2 hover:shadow-tinted-lg"
             >
-              <div className="flex items-center justify-between">
-                <div className="flex h-40 w-40 items-center justify-center rounded-full bg-primary font-mono text-sm font-semibold text-white">
-                  {e.first_name[0]}
-                  {e.last_name[0]}
+              <div className={cn('h-4 w-full bg-gradient-to-r', gradientFor(e.department_name || e.employee_code))} />
+              <div className="p-16">
+                <div className="flex items-center justify-between">
+                  <Avatar seed={e.department_name || e.employee_code} />
+                  <StatusBadge status={e.status} domain="employee" />
                 </div>
-                <StatusBadge status={e.status} domain="employee" />
-              </div>
-              <div className="mt-12 text-sm font-semibold text-text">
-                {e.first_name} {e.last_name}
-              </div>
-              <div className="font-mono text-xs text-text-muted">{e.employee_code}</div>
-              <div className="mt-8 text-xs text-text-muted">{e.department_name || 'No department'}</div>
-              <div className="mt-12 flex gap-16 border-t border-border pt-8 text-xs text-text-muted">
-                <span>{e.contract_count ?? 0} contracts</span>
-                <span>{e.pending_time_off_count ?? 0} pending leave</span>
+                <div className="mt-12 text-sm font-semibold text-text">
+                  {e.first_name} {e.last_name}
+                </div>
+                <div className="font-mono text-xs text-text-muted">{e.employee_code}</div>
+                <div className="mt-8 text-xs text-text-muted">{e.department_name || 'No department'}</div>
+                <div className="mt-12 flex gap-16 border-t border-border pt-8 text-xs text-text-muted">
+                  <span>{e.contract_count ?? 0} contracts</span>
+                  <span>{e.pending_time_off_count ?? 0} pending leave</span>
+                </div>
               </div>
             </button>
           ))}

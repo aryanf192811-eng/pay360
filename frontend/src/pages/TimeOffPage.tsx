@@ -214,8 +214,8 @@ export function TimeOffPage() {
                       <Td>
                         {r.status === 'submitted' && (
                           <div className="flex gap-4">
-                            <Button size="sm" variant="secondary" onClick={() => approveReqMut.mutate(r.id)}><Check className="h-14 w-14 text-success" /></Button>
-                            <Button size="sm" variant="secondary" onClick={() => refuseReqMut.mutate(r.id)}><X className="h-14 w-14 text-danger" /></Button>
+                            <Button size="sm" variant="secondary" onClick={() => approveReqMut.mutate(r.id)}><Check className="h-[14px] w-[14px] text-success" /></Button>
+                            <Button size="sm" variant="secondary" onClick={() => refuseReqMut.mutate(r.id)}><X className="h-[14px] w-[14px] text-danger" /></Button>
                           </div>
                         )}
                       </Td>

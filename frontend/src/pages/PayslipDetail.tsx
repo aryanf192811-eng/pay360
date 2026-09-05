@@ -33,7 +33,7 @@ export function PayslipDetail() {
   return (
     <div className="space-y-24">
       <button onClick={() => navigate(-1)} className="flex items-center gap-4 text-sm text-text-muted hover:text-text">
-        <ArrowLeft className="h-14 w-14" /> Back
+        <ArrowLeft className="h-[14px] w-[14px]" /> Back
       </button>
 
       <Card>
@@ -57,7 +57,7 @@ export function PayslipDetail() {
           <div className="flex items-center gap-12">
             <StatusBadge status={payslip.status} domain="payslip" />
             <a href={payslipPdfUrl(payslip.id, baseURL)} target="_blank" rel="noreferrer">
-              <Button variant="secondary" size="sm"><Printer className="h-14 w-14" /> Print Payslip</Button>
+              <Button variant="secondary" size="sm"><Printer className="h-[14px] w-[14px]" /> Print Payslip</Button>
             </a>
           </div>
         </CardContent>

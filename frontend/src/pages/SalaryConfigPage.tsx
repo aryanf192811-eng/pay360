@@ -73,7 +73,7 @@ export function SalaryConfigPage() {
             <CardTitle>Structures</CardTitle>
             {canWrite && (
               <Button size="sm" variant="ghost" onClick={() => setShowStructForm((v) => !v)}>
-                <Plus className="h-14 w-14" />
+                <Plus className="h-[14px] w-[14px]" />
               </Button>
             )}
           </CardHeader>
@@ -110,7 +110,7 @@ export function SalaryConfigPage() {
             <CardTitle>{structureDetail ? `${structureDetail.name} — Rules` : 'Select a structure'}</CardTitle>
             {canWrite && structureDetail && (
               <Button size="sm" onClick={() => setShowRuleForm((v) => !v)}>
-                <Plus className="h-14 w-14" /> Rule
+                <Plus className="h-[14px] w-[14px]" /> Rule
               </Button>
             )}
           </CardHeader>

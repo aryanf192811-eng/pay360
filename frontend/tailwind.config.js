@@ -20,14 +20,20 @@ export default {
         bg: "var(--bg)",
         surface: "var(--surface)",
         "surface-raised": "var(--surface-raised)",
+        "surface-dark": "var(--surface-dark)",
+        "surface-dark-foreground": "var(--surface-dark-foreground)",
         border: "var(--border)",
         text: "var(--text)",
         "text-muted": "var(--text-muted)",
         primary: {
           DEFAULT: "var(--primary)",
           hover: "var(--primary-hover)",
+          light: "var(--primary-light)",
         },
-        accent: "var(--accent)",
+        accent: {
+          DEFAULT: "var(--accent)",
+          light: "var(--accent-light)",
+        },
         success: "var(--success)",
         warning: "var(--warning)",
         danger: "var(--danger)",
@@ -52,7 +58,7 @@ export default {
         ring: "var(--primary)",
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["Plus Jakarta Sans", "sans-serif"],
         mono: ["IBM Plex Mono", "monospace"],
       },
       fontSize: {
@@ -75,9 +81,10 @@ export default {
         64: "64px",
       },
       borderRadius: {
-        lg: "16px",
-        md: "12px",
-        sm: "8px",
+        xl: "24px",
+        lg: "20px",
+        md: "16px",
+        sm: "10px",
         full: "9999px",
       },
       boxShadow: {

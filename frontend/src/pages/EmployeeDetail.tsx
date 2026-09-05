@@ -12,6 +12,7 @@ import {
 import { StatusBadge } from '../components/StatusBadge';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
+import { Avatar } from '../components/Avatar';
 import { Table, Thead, Tbody, Tr, Th, Td } from '../components/ui/table';
 import { CardSkeleton } from '../components/ui/skeleton';
 import { cn } from '../lib/utils';
@@ -41,16 +42,13 @@ export function EmployeeDetail() {
   return (
     <div className="space-y-24">
       <button onClick={() => navigate('/employees')} className="flex items-center gap-4 text-sm text-text-muted hover:text-text">
-        <ArrowLeft className="h-14 w-14" /> Back to Employees
+        <ArrowLeft className="h-[14px] w-[14px]" /> Back to Employees
       </button>
 
       <Card>
         <CardContent className="flex items-center justify-between pt-24">
           <div className="flex items-center gap-16">
-            <div className="flex h-56 w-56 items-center justify-center rounded-full bg-primary font-mono text-lg font-semibold text-white">
-              {employee.first_name[0]}
-              {employee.last_name[0]}
-            </div>
+            <Avatar seed={(employee as Record<string, unknown>).department_name as string || employee.employee_code} size="lg" />
             <div>
               <div className="text-xl font-bold text-text">
                 {employee.first_name} {employee.last_name}
@@ -74,7 +72,7 @@ export function EmployeeDetail() {
           <div className="flex items-center gap-12">
             <StatusBadge status={employee.status} domain="employee" />
             <Button size="sm" variant="secondary" onClick={() => navigate(`/employees/${id}/edit`)}>
-              <Pencil className="h-14 w-14" /> Edit
+              <Pencil className="h-[14px] w-[14px]" /> Edit
             </Button>
           </div>
         </CardContent>

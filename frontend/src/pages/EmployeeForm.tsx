@@ -98,7 +98,7 @@ export function EmployeeForm() {
         onClick={() => navigate(isEdit ? `/employees/${id}` : '/employees')}
         className="flex items-center gap-4 text-sm text-text-muted hover:text-text"
       >
-        <ArrowLeft className="h-14 w-14" /> Back
+        <ArrowLeft className="h-[14px] w-[14px]" /> Back
       </button>
 
       <Card>

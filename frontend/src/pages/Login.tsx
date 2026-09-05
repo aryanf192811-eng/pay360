@@ -29,69 +29,67 @@ export function Login() {
       'Login failed');
 
   return (
-    <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2 bg-[#fefefe] font-sans selection:bg-[#3062e1]/30">
-      {/* Premium Image Panel */}
-      <div className="relative hidden flex-col justify-between overflow-hidden bg-[#faf6dc] lg:flex border-r border-[#c5c7c7]/30">
+    <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2 bg-surface font-sans selection:bg-primary/30">
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-bg lg:flex border-r border-border">
         <div className="absolute inset-0 p-32 pb-0">
-          <img 
-            src="/images/hero.jpg" 
-            alt="Dashboard Layout" 
-            className="w-full h-full rounded-t-[24px] object-cover shadow-2xl shadow-[#454134]/20 border-t border-l border-r border-[#c5c7c7]/30"
+          <img
+            src="/images/hero.jpg"
+            alt="Dashboard Layout"
+            className="w-full h-full rounded-t-lg object-cover shadow-lg border-t border-l border-r border-border"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#faf6dc] via-[#faf6dc]/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/60 to-transparent" />
 
-        <Link to="/" className="relative z-10 flex items-center gap-8 text-sm font-bold text-[#454134] hover:text-[#3062e1] transition-colors p-32">
+        <Link to="/" className="relative z-10 flex items-center gap-8 text-sm font-bold text-text hover:text-primary transition-colors p-32">
           <ArrowLeft className="h-16 w-16" /> Back to overview
         </Link>
 
         <div className="relative z-10 p-48 pt-0">
-          <div className="inline-flex items-center justify-center rounded-lg bg-[#3062e1] p-16 shadow-md mb-24">
-            <Wallet className="h-32 w-32 text-[#fefefe]" />
+          <div className="inline-flex items-center justify-center rounded-lg bg-primary p-16 shadow-md mb-24">
+            <Wallet className="h-32 w-32 text-white" />
           </div>
-          <h1 className="text-4xl font-bold leading-[1.1] text-[#454134] tracking-tight">
+          <h1 className="text-4xl font-bold leading-[1.1] text-text tracking-tight">
             The source of truth.
           </h1>
-          <p className="mt-16 text-lg text-[#91918d] font-medium leading-relaxed max-w-md">
+          <p className="mt-16 text-lg text-text-muted font-medium leading-relaxed max-w-md">
             Sign in to access contracts, attendance, and payroll operations.
           </p>
         </div>
       </div>
 
-      {/* Form panel */}
-      <div className="flex flex-col items-center justify-center px-24 py-48 bg-[#fefefe]">
+      <div className="flex flex-col items-center justify-center px-24 py-48 bg-surface">
         <div className="w-full max-w-[420px]">
           <div className="mb-48 flex items-center gap-12 lg:hidden">
-            <div className="flex h-40 w-40 items-center justify-center rounded-lg bg-[#3062e1] font-mono text-sm font-bold text-[#fefefe] shadow-sm">P360</div>
-            <span className="text-lg font-bold text-[#454134] tracking-tight">PeoplePay360</span>
+            <div className="flex h-[40px] w-[40px] items-center justify-center rounded-lg bg-primary font-mono text-sm font-bold text-white shadow-sm">P360</div>
+            <span className="text-lg font-bold text-text tracking-tight">PeoplePay360</span>
           </div>
 
-          <h2 className="text-3xl font-bold text-[#454134] tracking-tight">Sign In</h2>
-          <p className="mt-8 text-base text-[#91918d]">Enter your HR-issued credentials.</p>
+          <h2 className="text-3xl font-bold text-text tracking-tight">Sign In</h2>
+          <p className="mt-8 text-base text-text-muted">Enter your HR-issued credentials.</p>
 
           <form
-            className="mt-40 space-y-24"
+            className="mt-32 space-y-24"
             onSubmit={(e) => {
               e.preventDefault();
               mutation.mutate();
             }}
           >
             <div className="space-y-8">
-              <Label htmlFor="email" className="text-sm font-bold text-[#454134]">Email Address</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoFocus className="h-48 rounded-md bg-[#faf6dc] border-[#c5c7c7]/50 focus:border-[#3062e1] focus:ring-[#3062e1] transition-colors text-[#454134]" placeholder="name@company.com" />
+              <Label htmlFor="email" className="text-sm font-bold text-text">Email Address</Label>
+              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoFocus className="h-48 bg-bg" placeholder="name@company.com" />
             </div>
             <div className="space-y-8">
-              <Label htmlFor="password" className="text-sm font-bold text-[#454134]">Password</Label>
-              <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="h-48 rounded-md bg-[#faf6dc] border-[#c5c7c7]/50 focus:border-[#3062e1] focus:ring-[#3062e1] transition-colors text-[#454134]" placeholder="••••••••" />
+              <Label htmlFor="password" className="text-sm font-bold text-text">Password</Label>
+              <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="h-48 bg-bg" placeholder="••••••••" />
             </div>
 
             {errorMessage && (
-              <div className="rounded-md border border-red-200 bg-red-50 px-16 py-12 text-sm font-medium text-red-600">
+              <div className="rounded-md border border-danger/30 bg-[color-mix(in_srgb,var(--danger)_10%,transparent)] px-16 py-12 text-sm font-medium text-danger">
                 {errorMessage}
               </div>
             )}
 
-            <Button type="submit" className="w-full h-48 rounded-md text-base font-bold bg-[#3062e1] text-[#fefefe] hover:bg-[#3062e1]/90 shadow-sm transition-all" disabled={mutation.isPending}>
+            <Button type="submit" className="w-full h-48 text-base font-bold shadow-sm" disabled={mutation.isPending}>
               {mutation.isPending ? 'Authenticating…' : 'Sign In'}
             </Button>
           </form>

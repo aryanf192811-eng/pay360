@@ -4,6 +4,7 @@ import { useAuthStore, ROLES, HR_ROLES, PAYROLL_ROLES } from '../store/auth.stor
 import { cn } from '../lib/utils';
 import { logout as apiLogout } from '../api/auth.api';
 import { useNavigate } from 'react-router-dom';
+import { Avatar } from './Avatar';
 
 interface NavItem {
   to: string;
@@ -45,24 +46,26 @@ export function Layout() {
   };
 
   return (
-    <div className="flex min-h-screen bg-bg">
-      <aside className="flex w-[220px] shrink-0 flex-col border-r border-border bg-surface">
-        <div className="flex h-64 items-center gap-8 border-b border-border px-24">
-          <div className="flex h-32 w-32 items-center justify-center rounded-md bg-primary font-mono text-sm font-bold text-white">
-            P360
+    <div className="flex min-h-screen">
+      <aside className="sticky top-0 flex h-screen w-[248px] shrink-0 flex-col bg-surface-dark text-surface-dark-foreground">
+        <div className="flex h-[72px] items-center gap-12 px-24">
+          <div className="flex h-[36px] w-[36px] items-center justify-center rounded-md bg-gradient-to-br from-primary to-accent font-mono text-sm font-bold text-white shadow-tinted">
+            P
           </div>
-          <span className="text-sm font-semibold text-text">PeoplePay360</span>
+          <span className="text-base font-bold tracking-tight">PeoplePay360</span>
         </div>
 
-        <nav className="flex-1 space-y-4 px-12 py-16">
+        <nav className="flex-1 space-y-4 overflow-y-auto px-12 py-8">
           {visibleItems.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-12 rounded-full px-16 py-12 text-sm font-medium transition-colors',
-                  isActive ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:bg-bg hover:text-text'
+                  'flex items-center gap-12 rounded-full px-16 py-12 text-sm font-medium transition-all',
+                  isActive
+                    ? 'bg-gradient-to-r from-primary to-primary-hover text-white shadow-tinted'
+                    : 'text-surface-dark-foreground/60 hover:bg-white/5 hover:text-surface-dark-foreground'
                 )
               }
             >
@@ -72,22 +75,25 @@ export function Layout() {
           ))}
         </nav>
 
-        <div className="border-t border-border px-12 py-16">
-          <div className="mb-8 px-12">
-            <div className="truncate text-sm font-medium text-text">{user?.email}</div>
-            <div className="text-xs capitalize text-text-muted">{user?.role.replace(/_/g, ' ')}</div>
+        <div className="mx-12 mb-16 rounded-lg bg-white/5 p-12">
+          <div className="mb-8 flex items-center gap-8 px-4">
+            <Avatar seed={user?.email || 'user'} size="sm" />
+            <div className="min-w-0">
+              <div className="truncate text-xs font-semibold">{user?.email}</div>
+              <div className="text-[11px] capitalize text-surface-dark-foreground/50">{user?.role.replace(/_/g, ' ')}</div>
+            </div>
           </div>
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-12 rounded-md px-12 py-8 text-sm font-medium text-text-muted transition-colors hover:bg-bg hover:text-danger"
+            className="flex w-full items-center gap-8 rounded-full px-8 py-8 text-xs font-medium text-surface-dark-foreground/60 transition-colors hover:bg-white/10 hover:text-danger"
           >
-            <LogOut className="h-16 w-16" />
+            <LogOut className="h-[14px] w-[14px]" />
             Log out
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-x-hidden p-24">
+      <main className="flex-1 overflow-x-hidden p-24 lg:p-32">
         <Outlet />
       </main>
     </div>

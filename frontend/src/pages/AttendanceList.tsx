@@ -59,8 +59,8 @@ export function AttendanceList() {
         <Card>
           <CardContent className="flex items-center justify-between pt-16">
             <div className="flex items-center gap-12">
-              <div className="flex h-40 w-40 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--primary)_10%,transparent)]">
-                <Clock className="h-20 w-20 text-primary" />
+              <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--primary)_10%,transparent)]">
+                <Clock className="h-[20px] w-[20px] text-primary" />
               </div>
               <div>
                 <div className="text-sm font-semibold text-text">{myOpenEntry ? 'You are checked in' : 'Not checked in today'}</div>

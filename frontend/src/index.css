@@ -2,90 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Single source of truth for design tokens — light mode only. Must match UI_GUIDE.md's
+   identity table exactly. If you change a value here, update UI_GUIDE.md in the same commit. */
 @layer base {
   :root {
-    --bg: #F8F9FA;
+    --bg: #F6F5FC;
     --surface: #FFFFFF;
     --surface-raised: #FFFFFF;
-    --border: #E2E8F0;
-    --text: #0F172A;
-    --text-muted: #64748B;
-    
-    /* Vibrant Indigo */
+    --surface-dark: #1E1B4B;
+    --surface-dark-foreground: #F1EFFC;
+    --border: #E6E2F5;
+    --text: #1E1B3A;
+    --text-muted: #6B6B85;
+
     --primary: #4F46E5;
     --primary-hover: #4338CA;
-    
-    --accent: #F97316;
-    --success: #10B981;
-    --warning: #F59E0B;
-    --danger: #EF4444;
-    --info: #3B82F6;
-    
-    /* Soft, diffused shadows */
-    --shadow-alpha-sm: 0.04;
-    --shadow-alpha-md: 0.06;
-    --shadow-alpha-lg: 0.08;
+    --primary-light: #EEF0FE;
 
-    /* shadcn/ui generic requirements aligned with above */
-    --background: 210 20% 98%; /* #F8F9FA */
-    --foreground: 222 47% 11%; /* #0F172A */
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%; /* slightly off-white */
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%; /* #64748B */
-    --accent-foreground: 222 47% 11%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border-hsl: 214 32% 91%; /* #E2E8F0 */
-    --input: 214 32% 91%;
-    --ring: 238 75% 59%; /* #4F46E5 */
-    --radius: 0.75rem;
-  }
+    --accent: #059669;
+    --accent-light: #D6F5E7;
+    --success: #16A34A;
+    --warning: #D97706;
+    --danger: #DC2626;
+    --info: #2563EB;
 
-  .dark {
-    --bg: #0B0F19;
-    --surface: #111827;
-    --surface-raised: #1F2937;
-    --border: #374151;
-    --text: #F8FAFC;
-    --text-muted: #94A3B8;
-    
-    --primary: #6366F1;
-    --primary-hover: #4F46E5;
-    
-    --accent: #FB923C;
-    --success: #34D399;
-    --warning: #FBBF24;
-    --danger: #F87171;
-    --info: #60A5FA;
+    --shadow-alpha-sm: 0.06;
+    --shadow-alpha-md: 0.10;
+    --shadow-alpha-lg: 0.16;
+    --shadow-tint: 243 60% 45%;
 
-    --shadow-alpha-sm: 0.20;
-    --shadow-alpha-md: 0.30;
-    --shadow-alpha-lg: 0.40;
-
-    /* shadcn/ui generic requirements */
-    --background: 222 39% 7%;
-    --foreground: 210 40% 98%;
-    --card: 222 40% 11%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 40% 11%;
-    --popover-foreground: 210 40% 98%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217 33% 18%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-    --border-hsl: 215 19% 27%;
-    --input: 215 19% 27%;
-    --ring: 239 84% 67%;
+    --radius: 1rem;
   }
 }
 
@@ -94,6 +40,33 @@
     @apply border-border;
   }
   body {
-    @apply bg-bg text-text antialiased;
+    @apply text-text antialiased;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(760px circle at 8% -8%, color-mix(in srgb, var(--primary) 8%, transparent), transparent 60%),
+      radial-gradient(680px circle at 96% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 55%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+  ::selection {
+    background-color: color-mix(in srgb, var(--primary) 25%, transparent);
+  }
+}
+
+@layer utilities {
+  .font-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .shadow-tinted {
+    box-shadow: 0 1px 2px hsl(var(--shadow-tint) / var(--shadow-alpha-sm)),
+      0 8px 24px -8px hsl(var(--shadow-tint) / var(--shadow-alpha-md));
+  }
+  .shadow-tinted-lg {
+    box-shadow: 0 4px 8px hsl(var(--shadow-tint) / var(--shadow-alpha-sm)),
+      0 24px 48px -16px hsl(var(--shadow-tint) / var(--shadow-alpha-lg));
+  }
+  .bg-grid-texture {
+    background-image: radial-gradient(color-mix(in srgb, var(--text) 8%, transparent) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
 }

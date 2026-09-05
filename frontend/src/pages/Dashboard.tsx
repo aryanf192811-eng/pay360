@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Wallet, FileCheck, TrendingUp, CalendarClock, Activity, ArrowUpRight, Building2 } from 'lucide-react';
 import { getDashboard } from '../api/dashboard.api';
 import { listDepartments } from '../api/reference.api';
 import { KpiCard } from '../components/KpiCard';
@@ -7,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { CardSkeleton } from '../components/ui/skeleton';
 import { Select, Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
+
+const DEPT_ACCENTS = ['bg-primary', 'bg-accent', 'bg-warning', 'bg-info', 'bg-danger'];
 
 const WARNING_LABEL: Record<string, string> = {
   contract_missing: 'Missing Contract',
@@ -64,33 +67,59 @@ export function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-16 lg:grid-cols-5">
-        <KpiCard label="Total Net Paid" value={`₹${data.kpis.total_net_paid.toLocaleString()}`} />
-        <KpiCard label="Payslips Generated" value={String(data.kpis.payslips_generated)} />
-        <KpiCard label="Average Salary" value={`₹${data.kpis.average_salary.toLocaleString()}`} />
-        <KpiCard label="Approved Time Off" value={`${data.kpis.approved_time_off_days} days`} />
-        <KpiCard
-          label="Attendance Health"
-          value={`${data.kpis.attendance_health_pct}%`}
-          tone={data.kpis.attendance_health_pct >= 90 ? 'success' : data.kpis.attendance_health_pct >= 70 ? 'warning' : 'danger'}
-        />
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
+        <Card dark className="relative overflow-hidden lg:col-span-5">
+          <div className="absolute -right-[100px] -top-[100px] h-[200px] w-[200px] rounded-full bg-white/5" />
+          <div className="absolute -right-8 top-32 h-[120px] w-[120px] rounded-full bg-accent/20" />
+          <CardContent className="relative pt-24">
+            <div className="flex items-center justify-between">
+              <div className="text-xs font-semibold uppercase tracking-wide text-surface-dark-foreground/60">Total Net Paid</div>
+              <div className="flex h-[36px] w-[36px] items-center justify-center rounded-md bg-gradient-to-br from-accent to-accent/70 shadow-tinted">
+                <Wallet className="h-[18px] w-[18px] text-white" />
+              </div>
+            </div>
+            <div className="mt-16 font-mono text-4xl font-bold tabular-nums text-white">₹{data.kpis.total_net_paid.toLocaleString()}</div>
+            <div className="mt-16 flex items-center gap-8 text-xs text-surface-dark-foreground/70">
+              <FileCheck className="h-[14px] w-[14px] text-accent" />
+              {data.kpis.payslips_generated} payslips generated this period
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-2 gap-16 lg:col-span-7">
+          <KpiCard icon={TrendingUp} label="Average Salary" value={`₹${data.kpis.average_salary.toLocaleString()}`} />
+          <KpiCard icon={CalendarClock} label="Approved Time Off" value={`${data.kpis.approved_time_off_days} days`} tone="success" />
+          <KpiCard icon={FileCheck} label="Payslips Generated" value={String(data.kpis.payslips_generated)} tone="default" />
+          <KpiCard
+            icon={Activity}
+            label="Attendance Health"
+            value={`${data.kpis.attendance_health_pct}%`}
+            tone={data.kpis.attendance_health_pct >= 90 ? 'success' : data.kpis.attendance_health_pct >= 70 ? 'warning' : 'danger'}
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-24">
-        <Card>
+      <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-12">
+        <Card className="lg:col-span-7">
           <CardHeader><CardTitle>Salary Cost by Department</CardTitle></CardHeader>
-          <CardContent className="space-y-12">
+          <CardContent className="space-y-16">
             {data.salary_cost_by_department.length === 0 ? (
               <div className="py-24 text-center text-sm text-text-muted">No paid payslips yet for this filter.</div>
             ) : (
-              data.salary_cost_by_department.map((d) => (
-                <div key={d.department} className="space-y-4">
-                  <div className="flex justify-between text-xs">
-                    <span className="font-medium text-text">{d.department}</span>
+              data.salary_cost_by_department.map((d, i) => (
+                <div key={d.department} className="space-y-8">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="flex items-center gap-8 font-semibold text-text">
+                      <Building2 className={`h-[14px] w-[14px] ${DEPT_ACCENTS[i % DEPT_ACCENTS.length].replace('bg-', 'text-')}`} />
+                      {d.department}
+                    </span>
                     <span className="font-mono text-text-muted">₹{d.total_net_cost.toLocaleString()} · {d.headcount} paid</span>
                   </div>
-                  <div className="h-8 w-full rounded-full bg-bg">
-                    <div className="h-8 rounded-full bg-primary" style={{ width: `${(d.total_net_cost / maxDeptCost) * 100}%` }} />
+                  <div className="h-10 w-full rounded-full bg-bg">
+                    <div
+                      className={`h-10 rounded-full ${DEPT_ACCENTS[i % DEPT_ACCENTS.length]} shadow-tinted transition-all`}
+                      style={{ width: `${Math.max((d.total_net_cost / maxDeptCost) * 100, 6)}%` }}
+                    />
                   </div>
                 </div>
               ))
@@ -98,16 +127,22 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="lg:col-span-5">
           <CardHeader><CardTitle>Monthly Net Salary Trend</CardTitle></CardHeader>
           <CardContent>
             {data.monthly_net_salary_trend.length === 0 ? (
               <div className="py-24 text-center text-sm text-text-muted">No historical payroll data yet.</div>
             ) : (
-              <div className="flex h-[140px] items-end gap-8">
+              <div className="flex h-[160px] items-end gap-12 px-4">
                 {data.monthly_net_salary_trend.map((t) => (
-                  <div key={t.month} className="flex flex-1 flex-col items-center gap-4">
-                    <div className="w-full rounded-t bg-accent" style={{ height: `${(t.total_net / maxTrend) * 120}px` }} />
+                  <div key={t.month} className="group flex flex-1 flex-col items-center gap-8">
+                    <span className="font-mono text-xs font-semibold text-text opacity-0 transition-opacity group-hover:opacity-100">
+                      ₹{t.total_net.toLocaleString()}
+                    </span>
+                    <div
+                      className="w-full rounded-t-md bg-gradient-to-t from-accent to-accent/70 transition-all group-hover:from-primary group-hover:to-primary/70"
+                      style={{ height: `${Math.max((t.total_net / maxTrend) * 120, 4)}px` }}
+                    />
                     <span className="text-xs text-text-muted">{t.month}</span>
                   </div>
                 ))}
@@ -117,7 +152,7 @@ export function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-3 gap-24">
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-3">
         <Card>
           <CardHeader><CardTitle>Payroll Alerts</CardTitle></CardHeader>
           <CardContent className="space-y-8">
@@ -125,7 +160,7 @@ export function Dashboard() {
               <div className="text-sm text-text-muted">No open alerts.</div>
             ) : (
               data.payroll_alerts.map((a) => (
-                <div key={a.warning_type} className="flex items-center justify-between text-sm">
+                <div key={a.warning_type} className="flex items-center justify-between rounded-md bg-[color-mix(in_srgb,var(--warning)_8%,transparent)] px-12 py-8 text-sm">
                   <span className="text-text">{WARNING_LABEL[a.warning_type] || a.warning_type}</span>
                   <Badge tone="warning">{a.count}</Badge>
                 </div>
@@ -137,33 +172,40 @@ export function Dashboard() {
         <Card>
           <CardHeader><CardTitle>Attendance Overview</CardTitle></CardHeader>
           <CardContent className="grid grid-cols-2 gap-8 text-sm">
-            <div className="flex justify-between"><span className="text-text-muted">Present</span><span className="font-mono text-success">{data.attendance_overview.present}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Late</span><span className="font-mono text-warning">{data.attendance_overview.late}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Absent</span><span className="font-mono text-danger">{data.attendance_overview.absent}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Overtime</span><span className="font-mono text-info">{data.attendance_overview.overtime}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Missing Checkouts</span><span className="font-mono">{data.attendance_overview.missing_checkouts}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Manual Edits</span><span className="font-mono">{data.attendance_overview.manual_edits}</span></div>
+            <div className="flex justify-between"><span className="text-text-muted">Present</span><span className="font-mono font-semibold text-success">{data.attendance_overview.present}</span></div>
+            <div className="flex justify-between"><span className="text-text-muted">Late</span><span className="font-mono font-semibold text-warning">{data.attendance_overview.late}</span></div>
+            <div className="flex justify-between"><span className="text-text-muted">Absent</span><span className="font-mono font-semibold text-danger">{data.attendance_overview.absent}</span></div>
+            <div className="flex justify-between"><span className="text-text-muted">Overtime</span><span className="font-mono font-semibold text-info">{data.attendance_overview.overtime}</span></div>
+            <div className="flex justify-between"><span className="text-text-muted">Missing Checkouts</span><span className="font-mono font-semibold text-text">{data.attendance_overview.missing_checkouts}</span></div>
+            <div className="flex justify-between"><span className="text-text-muted">Manual Edits</span><span className="font-mono font-semibold text-text">{data.attendance_overview.manual_edits}</span></div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader><CardTitle>Time Off Overview</CardTitle></CardHeader>
           <CardContent className="space-y-8 text-sm">
-            <div className="flex justify-between"><span className="text-text-muted">Approved Days</span><span className="font-mono text-success">{data.time_off_overview.approved_days}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">Pending Requests</span><span className="font-mono text-warning">{data.time_off_overview.pending_requests}</span></div>
+            <div className="flex justify-between"><span className="text-text-muted">Approved Days</span><span className="font-mono font-semibold text-success">{data.time_off_overview.approved_days}</span></div>
+            <div className="flex justify-between"><span className="text-text-muted">Pending Requests</span><span className="font-mono font-semibold text-warning">{data.time_off_overview.pending_requests}</span></div>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader><CardTitle>Department Overview</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-3 gap-16">
-          {data.department_overview.map((d) => (
-            <div key={d.department} className="rounded-md border border-border p-16">
-              <div className="text-sm font-semibold text-text">{d.department}</div>
-              <div className="mt-4 flex justify-between text-xs text-text-muted">
-                <span>{d.headcount} employees</span>
-                <span className="font-mono">₹{d.total_salary.toLocaleString()}</span>
+        <CardContent className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
+          {data.department_overview.map((d, i) => (
+            <div key={d.department} className="flex items-center gap-12 rounded-md border border-border p-16 transition-shadow hover:shadow-tinted">
+              <div className={`flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-md text-white ${DEPT_ACCENTS[i % DEPT_ACCENTS.length]}`}>
+                <Building2 className="h-[18px] w-[18px]" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-semibold text-text">{d.department}</div>
+                <div className="mt-4 flex items-center justify-between text-xs text-text-muted">
+                  <span>{d.headcount} employees</span>
+                  <span className="flex items-center gap-4 font-mono font-semibold text-text">
+                    ₹{d.total_salary.toLocaleString()} <ArrowUpRight className="h-12 w-12 text-success" />
+                  </span>
+                </div>
               </div>
             </div>
           ))}
