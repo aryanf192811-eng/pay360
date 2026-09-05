@@ -10,12 +10,7 @@ import { listEmployees, listEmployeeAllocations } from '../api/employees.api';
 import type { TimeOffAllocation } from '../api/timeOff.api';
 import { useAuthStore, HR_ROLES } from '../store/auth.store';
 import { StatusBadge } from '../components/StatusBadge';
-import { EmptyState } from '../components/EmptyState';
 import { TableSkeleton } from '../components/ui/skeleton';
-import { Table, Thead, Tbody, Tr, Th, Td } from '../components/ui/table';
-import { Button } from '../components/ui/button';
-import { Input, Label, Select } from '../components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { cn } from '../lib/utils';
 
 type SubTab = 'requests' | 'allocations' | 'types';
@@ -101,20 +96,20 @@ export function TimeOffPage() {
   });
 
   return (
-    <div className="space-y-24">
-      <div>
-        <h1 className="text-2xl font-bold text-text">Time Off</h1>
-        <p className="text-sm text-text-muted">Requests, Allocations, and configured Time Off Types.</p>
-      </div>
+    <div className="flex-1 w-full max-w-[1440px] mx-auto px-[16px] md:px-[24px] py-[24px] flex flex-col gap-[24px]">
+      <header>
+        <h1 className="text-[28px] font-bold text-[#172b4d] tracking-tight mb-[4px]">Time Off Management</h1>
+        <p className="text-[13px] text-[#434654]">Review pending requests, allocations, and manage time off types.</p>
+      </header>
 
-      <div className="flex gap-4 border-b border-border">
+      <div className="flex gap-[16px] border-b border-[#dfe1e6]">
         {(['requests', 'allocations', 'types'] as SubTab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={cn(
-              'px-16 py-8 text-sm font-medium capitalize border-b-2 -mb-px',
-              tab === t ? 'border-primary text-primary' : 'border-transparent text-text-muted hover:text-text'
+              'px-[16px] py-[8px] text-[13px] font-semibold capitalize border-b-2 -mb-px transition-colors',
+              tab === t ? 'border-[#3062e1] text-[#3062e1]' : 'border-transparent text-[#434654] hover:text-[#172b4d]'
             )}
           >
             {t}
@@ -123,221 +118,292 @@ export function TimeOffPage() {
       </div>
 
       {tab === 'requests' && (
-        <div className="space-y-16">
+        <div className="flex flex-col gap-[16px]">
           <div className="flex justify-end">
-            <Button onClick={() => setShowReqForm((v) => !v)}>
-              <Plus className="h-16 w-16" /> New Request
-            </Button>
+            <button 
+              onClick={() => setShowReqForm((v) => !v)}
+              className="bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors flex items-center gap-[4px]"
+            >
+              <Plus className="h-[16px] w-[16px]" /> New Request
+            </button>
           </div>
           {showReqForm && (
-            <Card>
-              <CardHeader><CardTitle>New Time Off Request</CardTitle></CardHeader>
-              <CardContent>
-                <form className="grid grid-cols-2 gap-16" onSubmit={(e) => { e.preventDefault(); createReqMut.mutate(); }}>
+            <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm overflow-hidden">
+              <div className="px-[24px] py-[16px] border-b border-[#ebecf0]">
+                <h2 className="text-[16px] font-semibold text-[#172b4d]">New Time Off Request</h2>
+              </div>
+              <div className="p-[24px]">
+                <form className="grid grid-cols-2 gap-[16px]" onSubmit={(e) => { e.preventDefault(); createReqMut.mutate(); }}>
                   {isHr && (
-                    <div className="space-y-4 col-span-2">
-                      <Label>Employee</Label>
-                      <Select required value={reqForm.employee_id} onChange={(e) => setReqForm({ ...reqForm, employee_id: e.target.value, allocation_id: '' })}>
+                    <div className="flex flex-col gap-[8px] col-span-2">
+                      <label className="text-[12px] font-semibold text-[#172b4d]">Employee</label>
+                      <select required value={reqForm.employee_id} onChange={(e) => setReqForm({ ...reqForm, employee_id: e.target.value, allocation_id: '' })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full">
                         <option value="">Select employee…</option>
                         {employees?.map((e) => <option key={e.id} value={e.id}>{e.first_name} {e.last_name}</option>)}
-                      </Select>
+                      </select>
                     </div>
                   )}
-                  <div className="space-y-4">
-                    <Label>Type</Label>
-                    <Select required value={reqForm.time_off_type_id} onChange={(e) => setReqForm({ ...reqForm, time_off_type_id: e.target.value, allocation_id: '' })}>
+                  <div className="flex flex-col gap-[8px]">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">Type</label>
+                    <select required value={reqForm.time_off_type_id} onChange={(e) => setReqForm({ ...reqForm, time_off_type_id: e.target.value, allocation_id: '' })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full">
                       <option value="">Select type…</option>
                       {types?.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
-                    </Select>
+                    </select>
                   </div>
                   {selectedReqType?.requires_allocation && (
-                    <div className="space-y-4">
-                      <Label>Allocation</Label>
+                    <div className="flex flex-col gap-[8px]">
+                      <label className="text-[12px] font-semibold text-[#172b4d]">Allocation</label>
                       {!effectiveEmployeeId ? (
-                        <div className="flex h-10 items-center text-xs text-text-muted">Select an employee first.</div>
+                        <div className="flex h-[36px] items-center text-[12px] text-[#434654]">Select an employee first.</div>
                       ) : usableAllocations.length === 0 ? (
-                        <div className="flex h-10 items-center text-xs text-danger">No approved balance available for this type.</div>
+                        <div className="flex h-[36px] items-center text-[12px] text-[#de350b]">No approved balance available for this type.</div>
                       ) : (
-                        <Select required value={reqForm.allocation_id} onChange={(e) => setReqForm({ ...reqForm, allocation_id: e.target.value })}>
+                        <select required value={reqForm.allocation_id} onChange={(e) => setReqForm({ ...reqForm, allocation_id: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full">
                           <option value="">Select allocation…</option>
                           {usableAllocations.map((a) => (
                             <option key={a.id} value={a.id}>
                               Remaining {a.remaining} of {a.allocated} (from {a.valid_from})
                             </option>
                           ))}
-                        </Select>
+                        </select>
                       )}
                     </div>
                   )}
-                  <div className="space-y-4">
-                    <Label>Duration (days)</Label>
-                    <Input type="number" step="0.5" required value={reqForm.duration} onChange={(e) => setReqForm({ ...reqForm, duration: e.target.value })} />
+                  <div className="flex flex-col gap-[8px]">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">Duration (days)</label>
+                    <input type="number" step="0.5" required value={reqForm.duration} onChange={(e) => setReqForm({ ...reqForm, duration: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full" />
                   </div>
-                  <div className="space-y-4">
-                    <Label>From</Label>
-                    <Input type="date" required value={reqForm.date_from} onChange={(e) => setReqForm({ ...reqForm, date_from: e.target.value })} />
+                  <div className="flex flex-col gap-[8px]">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">From</label>
+                    <input type="date" required value={reqForm.date_from} onChange={(e) => setReqForm({ ...reqForm, date_from: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full" />
                   </div>
-                  <div className="space-y-4">
-                    <Label>To</Label>
-                    <Input type="date" required value={reqForm.date_to} onChange={(e) => setReqForm({ ...reqForm, date_to: e.target.value })} />
+                  <div className="flex flex-col gap-[8px]">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">To</label>
+                    <input type="date" required value={reqForm.date_to} onChange={(e) => setReqForm({ ...reqForm, date_to: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full" />
                   </div>
-                  <ErrorBanner error={reqError} />
-                  <div className="col-span-2 flex justify-end gap-8">
-                    <Button type="button" variant="secondary" onClick={() => setShowReqForm(false)}>Cancel</Button>
-                    <Button
+                  <div className="col-span-2">
+                    <ErrorBanner error={reqError} />
+                  </div>
+                  <div className="col-span-2 flex justify-end gap-[8px] mt-[8px]">
+                    <button type="button" onClick={() => setShowReqForm(false)} className="px-[16px] py-[8px] border border-[#dfe1e6] rounded text-[12px] font-semibold text-[#172b4d] hover:bg-[#f4f5f7] transition-colors bg-[#fefefe]">Cancel</button>
+                    <button
                       type="submit"
                       disabled={createReqMut.isPending || !!(selectedReqType?.requires_allocation && (usableAllocations.length === 0 || !reqForm.allocation_id))}
+                      className="bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors disabled:opacity-50"
                     >
                       Submit Request
-                    </Button>
+                    </button>
                   </div>
                 </form>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
 
-          {loadingRequests ? <TableSkeleton /> : !requests || requests.length === 0 ? (
-            <EmptyState icon={CalendarClock} title="No time off requests" description="Requests submitted by employees will appear here for approval." />
-          ) : (
-            <Table>
-              <Thead><tr><Th>Employee</Th><Th>Type</Th><Th>From</Th><Th>To</Th><Th>Duration</Th><Th>Status</Th>{isHr && <Th>Actions</Th>}</tr></Thead>
-              <Tbody>
-                {requests.map((r) => (
-                  <Tr key={r.id}>
-                    <Td className="font-medium">{r.first_name} {r.last_name}</Td>
-                    <Td>{r.type_name}</Td>
-                    <Td>{r.date_from}</Td>
-                    <Td>{r.date_to}</Td>
-                    <Td className="font-mono">{r.duration}</Td>
-                    <Td><StatusBadge status={r.status} domain="timeOffRequest" /></Td>
-                    {isHr && (
-                      <Td>
-                        {r.status === 'submitted' && (
-                          <div className="flex gap-4">
-                            <Button size="sm" variant="secondary" onClick={() => approveReqMut.mutate(r.id)}><Check className="h-[14px] w-[14px] text-success" /></Button>
-                            <Button size="sm" variant="secondary" onClick={() => refuseReqMut.mutate(r.id)}><X className="h-[14px] w-[14px] text-danger" /></Button>
-                          </div>
+          <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] overflow-hidden shadow-sm">
+            <div className="px-[16px] py-[12px] border-b border-[#ebecf0] bg-[#ffffff] flex justify-between items-center">
+              <h2 className="text-[14px] font-semibold text-[#172b4d]">Time Off Requests</h2>
+            </div>
+            <div className="overflow-x-auto w-full">
+              {loadingRequests ? <TableSkeleton /> : !requests || requests.length === 0 ? (
+                <div className="py-[48px] flex flex-col items-center justify-center text-[#434654]">
+                  <CalendarClock className="h-[32px] w-[32px] mb-[16px] opacity-50" />
+                  <p className="text-[14px] font-medium">No time off requests</p>
+                </div>
+              ) : (
+                <table className="w-full text-left border-collapse min-w-[800px]">
+                  <thead>
+                    <tr className="bg-[#f4f5f7] border-b border-[#dfe1e6]">
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Employee</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Type</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">From</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">To</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Duration</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Status</th>
+                      {isHr && <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider text-right">Actions</th>}
+                    </tr>
+                  </thead>
+                  <tbody className="font-medium text-[13px] text-[#172b4d]">
+                    {requests.map((r) => (
+                      <tr key={r.id} className="border-b border-[#ebecf0] hover:bg-[#f4f5f7] transition-colors">
+                        <td className="py-[12px] px-[12px] font-semibold">{r.first_name} {r.last_name}</td>
+                        <td className="py-[12px] px-[12px] text-[#434654]">{r.type_name}</td>
+                        <td className="py-[12px] px-[12px] text-[#434654] font-normal">{r.date_from}</td>
+                        <td className="py-[12px] px-[12px] text-[#434654] font-normal">{r.date_to}</td>
+                        <td className="py-[12px] px-[12px] font-mono text-[#434654]">{r.duration}d</td>
+                        <td className="py-[12px] px-[12px]"><StatusBadge status={r.status} domain="timeOffRequest" /></td>
+                        {isHr && (
+                          <td className="py-[12px] px-[12px] text-right">
+                            {r.status === 'submitted' && (
+                              <div className="flex gap-[4px] justify-end">
+                                <button onClick={() => approveReqMut.mutate(r.id)} className="bg-[#e6f0ff] hover:bg-[#c2d7f8] text-[#006644] p-[4px] rounded transition-colors"><Check className="h-[14px] w-[14px]" /></button>
+                                <button onClick={() => refuseReqMut.mutate(r.id)} className="bg-[#ffebe6] hover:bg-[#fce8e6] text-[#de350b] p-[4px] rounded transition-colors"><X className="h-[14px] w-[14px]" /></button>
+                              </div>
+                            )}
+                          </td>
                         )}
-                      </Td>
-                    )}
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
       {tab === 'allocations' && isHr && (
-        <div className="space-y-16">
+        <div className="flex flex-col gap-[16px]">
           <div className="flex justify-end">
-            <Button onClick={() => setShowAllocForm((v) => !v)}><Plus className="h-16 w-16" /> New Allocation</Button>
+            <button onClick={() => setShowAllocForm((v) => !v)} className="bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors flex items-center gap-[4px]">
+              <Plus className="h-[16px] w-[16px]" /> New Allocation
+            </button>
           </div>
           {showAllocForm && (
-            <Card>
-              <CardHeader><CardTitle>New Allocation</CardTitle></CardHeader>
-              <CardContent>
-                <form className="grid grid-cols-2 gap-16" onSubmit={(e) => { e.preventDefault(); createAllocMut.mutate(); }}>
-                  <div className="space-y-4 col-span-2">
-                    <Label>Employee</Label>
-                    <Select required value={allocForm.employee_id} onChange={(e) => setAllocForm({ ...allocForm, employee_id: e.target.value })}>
+            <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm overflow-hidden">
+              <div className="px-[24px] py-[16px] border-b border-[#ebecf0]">
+                <h2 className="text-[16px] font-semibold text-[#172b4d]">New Allocation</h2>
+              </div>
+              <div className="p-[24px]">
+                <form className="grid grid-cols-2 gap-[16px]" onSubmit={(e) => { e.preventDefault(); createAllocMut.mutate(); }}>
+                  <div className="flex flex-col gap-[8px] col-span-2">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">Employee</label>
+                    <select required value={allocForm.employee_id} onChange={(e) => setAllocForm({ ...allocForm, employee_id: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full">
                       <option value="">Select employee…</option>
                       {employees?.map((e) => <option key={e.id} value={e.id}>{e.first_name} {e.last_name}</option>)}
-                    </Select>
+                    </select>
                   </div>
-                  <div className="space-y-4">
-                    <Label>Type</Label>
-                    <Select required value={allocForm.time_off_type_id} onChange={(e) => setAllocForm({ ...allocForm, time_off_type_id: e.target.value })}>
+                  <div className="flex flex-col gap-[8px]">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">Type</label>
+                    <select required value={allocForm.time_off_type_id} onChange={(e) => setAllocForm({ ...allocForm, time_off_type_id: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full">
                       <option value="">Select type…</option>
                       {types?.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
-                    </Select>
+                    </select>
                   </div>
-                  <div className="space-y-4">
-                    <Label>Allocated (days)</Label>
-                    <Input type="number" step="0.5" required value={allocForm.allocated} onChange={(e) => setAllocForm({ ...allocForm, allocated: e.target.value })} />
+                  <div className="flex flex-col gap-[8px]">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">Allocated (days)</label>
+                    <input type="number" step="0.5" required value={allocForm.allocated} onChange={(e) => setAllocForm({ ...allocForm, allocated: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full" />
                   </div>
-                  <div className="space-y-4">
-                    <Label>Valid From</Label>
-                    <Input type="date" required value={allocForm.valid_from} onChange={(e) => setAllocForm({ ...allocForm, valid_from: e.target.value })} />
+                  <div className="flex flex-col gap-[8px]">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">Valid From</label>
+                    <input type="date" required value={allocForm.valid_from} onChange={(e) => setAllocForm({ ...allocForm, valid_from: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full" />
                   </div>
-                  <ErrorBanner error={allocError} />
-                  <div className="col-span-2 flex justify-end gap-8">
-                    <Button type="button" variant="secondary" onClick={() => setShowAllocForm(false)}>Cancel</Button>
-                    <Button type="submit" disabled={createAllocMut.isPending}>Create Allocation</Button>
+                  <div className="col-span-2">
+                    <ErrorBanner error={allocError} />
+                  </div>
+                  <div className="col-span-2 flex justify-end gap-[8px] mt-[8px]">
+                    <button type="button" onClick={() => setShowAllocForm(false)} className="px-[16px] py-[8px] border border-[#dfe1e6] rounded text-[12px] font-semibold text-[#172b4d] hover:bg-[#f4f5f7] transition-colors bg-[#fefefe]">Cancel</button>
+                    <button type="submit" disabled={createAllocMut.isPending} className="bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors disabled:opacity-50">Create Allocation</button>
                   </div>
                 </form>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
 
-          {loadingAllocations ? <TableSkeleton /> : !allocations || allocations.length === 0 ? (
-            <EmptyState icon={CalendarClock} title="No allocations" description="Grant employees a leave balance to enable Time Off Requests." />
-          ) : (
-            <Table>
-              <Thead><tr><Th>Employee</Th><Th>Allocated</Th><Th>Taken</Th><Th>Remaining</Th><Th>Status</Th><Th>Actions</Th></tr></Thead>
-              <Tbody>
-                {allocations.map((a) => (
-                  <Tr key={a.id}>
-                    <Td className="font-mono text-xs">{a.employee_id.slice(0, 8)}</Td>
-                    <Td className="font-mono">{a.allocated}</Td>
-                    <Td className="font-mono">{a.taken}</Td>
-                    <Td className="font-mono font-semibold">{a.remaining}</Td>
-                    <Td><StatusBadge status={a.status} domain="timeOffAllocation" /></Td>
-                    <Td>
-                      {a.status === 'draft' && (
-                        <Button size="sm" variant="secondary" onClick={() => approveAllocMut.mutate(a.id)}>Approve</Button>
-                      )}
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          )}
+          <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] overflow-hidden shadow-sm">
+            <div className="px-[16px] py-[12px] border-b border-[#ebecf0] bg-[#ffffff] flex justify-between items-center">
+              <h2 className="text-[14px] font-semibold text-[#172b4d]">Allocations</h2>
+            </div>
+            <div className="overflow-x-auto w-full">
+              {loadingAllocations ? <TableSkeleton /> : !allocations || allocations.length === 0 ? (
+                <div className="py-[48px] flex flex-col items-center justify-center text-[#434654]">
+                  <CalendarClock className="h-[32px] w-[32px] mb-[16px] opacity-50" />
+                  <p className="text-[14px] font-medium">No allocations</p>
+                </div>
+              ) : (
+                <table className="w-full text-left border-collapse min-w-[800px]">
+                  <thead>
+                    <tr className="bg-[#f4f5f7] border-b border-[#dfe1e6]">
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Employee</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Allocated</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Taken</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Remaining</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Status</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="font-medium text-[13px] text-[#172b4d]">
+                    {allocations.map((a) => (
+                      <tr key={a.id} className="border-b border-[#ebecf0] hover:bg-[#f4f5f7] transition-colors">
+                        <td className="py-[12px] px-[12px] font-mono text-[12px] text-[#434654]">{a.employee_id.slice(0, 8)}</td>
+                        <td className="py-[12px] px-[12px] font-mono text-[#434654]">{a.allocated}</td>
+                        <td className="py-[12px] px-[12px] font-mono text-[#434654]">{a.taken}</td>
+                        <td className="py-[12px] px-[12px] font-mono font-bold text-[#172b4d]">{a.remaining}</td>
+                        <td className="py-[12px] px-[12px]"><StatusBadge status={a.status} domain="timeOffAllocation" /></td>
+                        <td className="py-[12px] px-[12px] text-right">
+                          {a.status === 'draft' && (
+                            <button onClick={() => approveAllocMut.mutate(a.id)} className="bg-[#e6f0ff] hover:bg-[#c2d7f8] text-[#3062e1] text-[11px] font-bold px-[8px] py-[4px] rounded transition-colors">Approve</button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
       {tab === 'types' && isHr && (
-        <div className="space-y-16">
+        <div className="flex flex-col gap-[16px]">
           <div className="flex justify-end">
-            <Button onClick={() => setShowTypeForm((v) => !v)}><Plus className="h-16 w-16" /> New Type</Button>
+            <button onClick={() => setShowTypeForm((v) => !v)} className="bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors flex items-center gap-[4px]">
+              <Plus className="h-[16px] w-[16px]" /> New Type
+            </button>
           </div>
           {showTypeForm && (
-            <Card>
-              <CardHeader><CardTitle>New Time Off Type</CardTitle></CardHeader>
-              <CardContent>
-                <form className="grid grid-cols-2 gap-16" onSubmit={(e) => { e.preventDefault(); createTypeMut.mutate(); }}>
-                  <div className="space-y-4">
-                    <Label>Name</Label>
-                    <Input required value={typeForm.name} onChange={(e) => setTypeForm({ ...typeForm, name: e.target.value })} />
+            <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm overflow-hidden">
+              <div className="px-[24px] py-[16px] border-b border-[#ebecf0]">
+                <h2 className="text-[16px] font-semibold text-[#172b4d]">New Time Off Type</h2>
+              </div>
+              <div className="p-[24px]">
+                <form className="grid grid-cols-2 gap-[16px]" onSubmit={(e) => { e.preventDefault(); createTypeMut.mutate(); }}>
+                  <div className="flex flex-col gap-[8px]">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">Name</label>
+                    <input required value={typeForm.name} onChange={(e) => setTypeForm({ ...typeForm, name: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full" />
                   </div>
-                  <div className="space-y-4">
-                    <Label>Unit</Label>
-                    <Select value={typeForm.unit} onChange={(e) => setTypeForm({ ...typeForm, unit: e.target.value })}>
+                  <div className="flex flex-col gap-[8px]">
+                    <label className="text-[12px] font-semibold text-[#172b4d]">Unit</label>
+                    <select value={typeForm.unit} onChange={(e) => setTypeForm({ ...typeForm, unit: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[#dfe1e6] rounded bg-[#ffffff] focus:border-[#3062e1] focus:ring-1 focus:outline-none w-full">
                       <option value="days">Days</option>
                       <option value="hours">Hours</option>
-                    </Select>
+                    </select>
                   </div>
-                  <div className="col-span-2 flex justify-end gap-8">
-                    <Button type="button" variant="secondary" onClick={() => setShowTypeForm(false)}>Cancel</Button>
-                    <Button type="submit" disabled={createTypeMut.isPending}>Create Type</Button>
+                  <div className="col-span-2 flex justify-end gap-[8px] mt-[8px]">
+                    <button type="button" onClick={() => setShowTypeForm(false)} className="px-[16px] py-[8px] border border-[#dfe1e6] rounded text-[12px] font-semibold text-[#172b4d] hover:bg-[#f4f5f7] transition-colors bg-[#fefefe]">Cancel</button>
+                    <button type="submit" disabled={createTypeMut.isPending} className="bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors disabled:opacity-50">Create Type</button>
                   </div>
                 </form>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
-          <Table>
-            <Thead><tr><Th>Name</Th><Th>Unit</Th><Th>Requires Allocation</Th><Th>Payroll Integrated</Th></tr></Thead>
-            <Tbody>
-              {types?.map((t) => (
-                <Tr key={t.id}>
-                  <Td className="font-medium">{t.name}</Td>
-                  <Td className="capitalize">{t.unit}</Td>
-                  <Td>{t.requires_allocation ? 'Yes' : 'No'}</Td>
-                  <Td>{t.payroll_integrated ? 'Yes' : 'No'}</Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+          <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] overflow-hidden shadow-sm">
+            <div className="px-[16px] py-[12px] border-b border-[#ebecf0] bg-[#ffffff] flex justify-between items-center">
+              <h2 className="text-[14px] font-semibold text-[#172b4d]">Time Off Types</h2>
+            </div>
+            <div className="overflow-x-auto w-full">
+              <table className="w-full text-left border-collapse min-w-[600px]">
+                <thead>
+                  <tr className="bg-[#f4f5f7] border-b border-[#dfe1e6]">
+                    <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Name</th>
+                    <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Unit</th>
+                    <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Requires Allocation</th>
+                    <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[#434654] uppercase tracking-wider">Payroll Integrated</th>
+                  </tr>
+                </thead>
+                <tbody className="font-medium text-[13px] text-[#172b4d]">
+                  {types?.map((t) => (
+                    <tr key={t.id} className="border-b border-[#ebecf0] hover:bg-[#f4f5f7] transition-colors">
+                      <td className="py-[12px] px-[12px] font-semibold">{t.name}</td>
+                      <td className="py-[12px] px-[12px] capitalize text-[#434654]">{t.unit}</td>
+                      <td className="py-[12px] px-[12px] text-[#434654]">{t.requires_allocation ? 'Yes' : 'No'}</td>
+                      <td className="py-[12px] px-[12px] text-[#434654]">{t.payroll_integrated ? 'Yes' : 'No'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       )}
     </div>
