@@ -36,7 +36,7 @@ export function EmployeeCard({ employee }: { employee: Employee }) {
   return (
     <div
       onClick={() => setSelectedEmployee(employee)}
-      className="group relative bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:shadow-lg hover:border-[#714B67]/70 transition-all duration-200 cursor-pointer flex flex-col justify-between"
+      className="group relative bg-white/80 backdrop-blur-md border border-slate-200/80 rounded-2xl p-5 shadow-xs hover:shadow-md hover:-translate-y-0.5 hover:border-[#714B67]/60 transition-all duration-200 cursor-pointer flex flex-col justify-between"
     >
       {/* Top Row: Avatar, Identity, Status */}
       <div>
@@ -47,7 +47,7 @@ export function EmployeeCard({ employee }: { employee: Employee }) {
               <img
                 src={employee.avatar}
                 alt={employee.name}
-                className="w-14 h-14 rounded-full object-cover border-2 border-slate-200 group-hover:scale-105 transition-transform"
+                className="w-13 h-13 rounded-full object-cover border-2 border-slate-200/80 group-hover:scale-105 transition-transform"
               />
               <span
                 className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white ${
@@ -57,23 +57,23 @@ export function EmployeeCard({ employee }: { employee: Employee }) {
               />
             </div>
 
-            {/* Name and Role (Upgraded to text-lg font-bold) */}
+            {/* Name and Role */}
             <div>
-              <h3 className="text-lg font-bold text-[#0F172A] group-hover:text-[#714B67] transition-colors line-clamp-1">
+              <h3 className="text-base font-bold text-slate-900 group-hover:text-[#714B67] transition-colors line-clamp-1">
                 {employee.name}
               </h3>
               <p className="text-sm font-medium text-slate-600 line-clamp-1">{employee.role}</p>
-              <div className="mt-2 flex items-center gap-2 flex-wrap">
+              <div className="mt-2 flex items-center gap-1.5 flex-wrap">
                 <span
-                  className={`text-xs font-semibold px-2.5 py-1 rounded-md border ${deptStyle.bg} ${deptStyle.text} ${deptStyle.border}`}
+                  className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${deptStyle.bg} ${deptStyle.text} ${deptStyle.border}`}
                 >
                   {employee.department}
                 </span>
                 <span
-                  className={`text-xs font-semibold px-2.5 py-1 rounded-md ${
+                  className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
                     employee.status === "Active"
-                      ? "bg-teal-50 text-teal-800 border border-teal-200"
-                      : "bg-amber-50 text-amber-800 border border-amber-200"
+                      ? "bg-teal-50/80 text-teal-800 border-teal-200"
+                      : "bg-amber-50/80 text-amber-800 border-amber-200"
                   }`}
                 >
                   {employee.status}
@@ -88,30 +88,38 @@ export function EmployeeCard({ employee }: { employee: Employee }) {
           </div>
         </div>
 
-        {/* CTC & Bank Status Highlights (Upgraded to text-xl font-bold) */}
+        {/* CTC & Bank Status Highlights */}
         <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between">
           <div>
-            <div className="text-xs uppercase tracking-wider text-slate-500 font-bold">
+            <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
               Monthly CTC
             </div>
-            <div className="text-xl font-bold text-[#0F172A] mt-0.5">
+            <div className="text-lg font-bold text-slate-900 mt-0.5">
               {formatINR(employee.monthlyCTC)}
               <span className="text-xs font-normal text-slate-500 ml-1">/ mo</span>
             </div>
           </div>
 
-          {/* Bank Status Badge */}
-          {isBankMissing ? (
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-100 border border-amber-300 text-amber-900 text-xs font-bold shadow-xs">
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>Missing Bank A/c</span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span>Bank Linked</span>
-            </div>
-          )}
+          {/* Bank Verification Warning Chip */}
+          <div>
+            {isBankMissing ? (
+              <span
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-300"
+                title="Missing Bank Account & IFSC Code"
+              >
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                <span>No Bank</span>
+              </span>
+            ) : (
+              <span
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200"
+                title={`Bank Linked: ${employee.bankDetails.bankName}`}
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Verified</span>
+              </span>
+            )}
+          </div>
         </div>
       </div>
 

@@ -59,7 +59,9 @@ export interface AttendanceRecord {
 export interface TimeOffRecord {
   id: string;
   employeeId: string;
+  employeeName?: string;
   leaveType: 'Paid Time Off' | 'Sick Leave' | 'Casual Leave' | 'Unpaid (LOP)';
+  type?: string;
   startDate: string;
   endDate: string;
   days: number;
@@ -571,13 +573,19 @@ export interface WorkingSchedule {
   id: string;
   name: string;
   code: string;
-  type: "Full-Time" | "Part-Time" | "Flex";
+  type?: "Full-Time" | "Part-Time" | "Flex";
   weeklyHours: number;
+  hoursPerWeek?: number;
   days: string;
+  activeDays?: string[];
+  daysPerWeek?: number;
   startTime: string;
+  shiftStart?: string;
   endTime: string;
+  shiftEnd?: string;
   breakMinutes: number;
-  assignedEmployeesCount: number;
+  breakDurationMinutes?: number;
+  assignedEmployeesCount?: number;
 }
 
 export const INITIAL_SCHEDULES: WorkingSchedule[] = [
@@ -587,10 +595,16 @@ export const INITIAL_SCHEDULES: WorkingSchedule[] = [
     code: "STD_40H",
     type: "Full-Time",
     weeklyHours: 40.0,
+    hoursPerWeek: 40.0,
     days: "Monday - Friday (5 Days)",
+    daysPerWeek: 5,
+    activeDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     startTime: "09:00",
+    shiftStart: "09:00",
     endTime: "18:00",
+    shiftEnd: "18:00",
     breakMinutes: 60,
+    breakDurationMinutes: 60,
     assignedEmployeesCount: 6,
   },
   {
@@ -599,10 +613,16 @@ export const INITIAL_SCHEDULES: WorkingSchedule[] = [
     code: "TECH_FLEX_40H",
     type: "Flex",
     weeklyHours: 40.0,
+    hoursPerWeek: 40.0,
     days: "Monday - Friday (5 Days)",
+    daysPerWeek: 5,
+    activeDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     startTime: "09:30",
+    shiftStart: "09:30",
     endTime: "18:30",
+    shiftEnd: "18:30",
     breakMinutes: 60,
+    breakDurationMinutes: 60,
     assignedEmployeesCount: 2,
   },
   {
@@ -611,10 +631,16 @@ export const INITIAL_SCHEDULES: WorkingSchedule[] = [
     code: "CONSULT_20H",
     type: "Part-Time",
     weeklyHours: 20.0,
+    hoursPerWeek: 20.0,
     days: "Monday - Thursday (4 Days)",
+    daysPerWeek: 4,
+    activeDays: ["Monday", "Tuesday", "Wednesday", "Thursday"],
     startTime: "10:00",
+    shiftStart: "10:00",
     endTime: "15:30",
+    shiftEnd: "15:30",
     breakMinutes: 30,
+    breakDurationMinutes: 30,
     assignedEmployeesCount: 0,
   },
 ];

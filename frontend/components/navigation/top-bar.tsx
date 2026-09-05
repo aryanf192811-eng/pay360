@@ -24,7 +24,7 @@ export function TopBar() {
   const navItems = [
     { name: "Employees", icon: Users, count: employees.length },
     { name: "Contracts", icon: FileText, count: contracts.length },
-    { name: "Attendance", icon: Clock },
+    { name: "Working Schedules", icon: Clock },
     { name: "Time Off", icon: Calendar, badge: pendingLeavesCount > 0 ? `${pendingLeavesCount} Pending` : undefined },
     { name: "Payroll", icon: CreditCard },
     { name: "Reports", icon: BarChart3, highlight: true },
