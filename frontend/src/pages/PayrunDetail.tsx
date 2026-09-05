@@ -1,11 +1,48 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Calculator, ClipboardCheck, BadgeCheck, Mail, AlertCircle, AlertTriangle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Calculator, ClipboardCheck, BadgeCheck, Mail, AlertCircle, AlertTriangle, Check } from 'lucide-react';
 import { getPayrun, listPayslips, computePayrun, validatePayrun, markPayrunPaid, sendPayslips } from '../api/payroll.api';
 import { StatusBadge } from '../components/StatusBadge';
 import { CardSkeleton } from '../components/ui/skeleton';
 import { cn } from '../lib/utils';
+
+const LIFECYCLE_STAGES = ['draft', 'computed', 'validated', 'paid'] as const;
+
+function LifecycleStepper({ status }: { status: string }) {
+  const currentIndex = LIFECYCLE_STAGES.indexOf(status as (typeof LIFECYCLE_STAGES)[number]);
+  return (
+    <div className="flex items-center">
+      {LIFECYCLE_STAGES.map((stage, i) => {
+        const done = i < currentIndex;
+        const active = i === currentIndex;
+        return (
+          <div key={stage} className="flex items-center">
+            <div className="flex flex-col items-center gap-4">
+              <motion.div
+                initial={false}
+                animate={{ scale: active ? 1.1 : 1 }}
+                className={cn(
+                  'flex h-24 w-24 items-center justify-center rounded-full border-2 text-xs font-bold',
+                  done && 'border-success bg-success text-white',
+                  active && 'border-primary bg-primary text-white',
+                  !done && !active && 'border-border bg-surface text-text-muted'
+                )}
+              >
+                {done ? <Check className="h-14 w-14" /> : i + 1}
+              </motion.div>
+              <span className={cn('text-[10px] font-medium capitalize', active ? 'text-primary' : 'text-text-muted')}>{stage}</span>
+            </div>
+            {i < LIFECYCLE_STAGES.length - 1 && (
+              <div className={cn('mx-8 h-2 w-24 rounded-full sm:w-40', i < currentIndex ? 'bg-success' : 'bg-border')} />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 const WARNING_SEVERITY: Record<string, 'danger' | 'warning'> = {
   contract_missing: 'danger',
@@ -70,7 +107,8 @@ export function PayrunDetail() {
   return (
     <div className="flex-1 w-full max-w-[1440px] mx-auto px-6 py-6 flex flex-col h-[calc(100vh-64px)] overflow-hidden gap-[16px]">
       {/* Top App Bar / Page Header */}
-      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-lg px-6 py-[16px] flex flex-col md:flex-row md:items-center justify-between gap-[16px] shrink-0 shadow-sm">
+      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-lg px-6 py-[16px] flex flex-col gap-[16px] shrink-0 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-[16px]">
         <div>
           <button onClick={() => navigate('/payroll')} className="flex items-center gap-1 text-[13px] text-[var(--text-muted)] hover:text-[var(--text)] mb-2 font-medium">
             <ArrowLeft className="h-[14px] w-[14px]" /> Back to Payroll
@@ -111,6 +149,10 @@ export function PayrunDetail() {
             <Mail className="h-[16px] w-[16px]" /> {sendMut.isPending ? 'Sending…' : 'Send Payslips'}
           </button>
         </div>
+      </div>
+      <div className="overflow-x-auto">
+        <LifecycleStepper status={payrun.status} />
+      </div>
       </div>
 
       {sendResult && (
