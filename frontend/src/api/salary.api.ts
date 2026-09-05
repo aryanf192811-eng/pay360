@@ -35,6 +35,10 @@ export async function createSalaryStructure(name: string) {
   const { data } = await apiClient.post('/api/salary-structures', { name });
   return data.data as SalaryStructure;
 }
+export async function updateSalaryStructure(id: string, payload: { name?: string; active?: boolean }) {
+  const { data } = await apiClient.patch(`/api/salary-structures/${id}`, payload);
+  return data.data as SalaryStructure;
+}
 
 export async function listSalaryRules(structure_id?: string) {
   const { data } = await apiClient.get('/api/salary-rules', { params: structure_id ? { structure_id } : undefined });
@@ -42,5 +46,9 @@ export async function listSalaryRules(structure_id?: string) {
 }
 export async function createSalaryRule(payload: Partial<SalaryRule>) {
   const { data } = await apiClient.post('/api/salary-rules', payload);
+  return data.data as SalaryRule;
+}
+export async function updateSalaryRule(id: string, payload: Partial<SalaryRule>) {
+  const { data } = await apiClient.patch(`/api/salary-rules/${id}`, payload);
   return data.data as SalaryRule;
 }
