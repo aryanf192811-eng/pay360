@@ -15,6 +15,7 @@ import { PayrunEngine } from "@/components/payroll/payrun-engine";
 import { ExecutiveDashboard } from "@/components/dashboard/executive-dashboard";
 import { PayrunWizardDialog } from "@/components/payroll/payrun-wizard-dialog";
 import { PayslipModal } from "@/components/payroll/payslip-modal";
+import { AuthDialog } from "@/components/auth/auth-dialog";
 import { EnterpriseFooter } from "@/components/footer/enterprise-footer";
 import { Users, Plus } from "lucide-react";
 
@@ -127,6 +128,7 @@ function MainContent() {
       <AddEmployeeDialog />
       <PayrunWizardDialog />
       <PayslipModal />
+      <AuthDialog />
     </div>
   );
 }

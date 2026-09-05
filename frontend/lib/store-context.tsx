@@ -28,9 +28,13 @@ import {
 } from "./mock-data";
 
 interface StoreContextType {
-  // Role switcher
+  // Role & Company Switcher
   currentRole: UserRole;
   setCurrentRole: (role: UserRole) => void;
+  currentCompany: string;
+  setCurrentCompany: (company: string) => void;
+  isAuthOpen: boolean;
+  setIsAuthOpen: (open: boolean) => void;
 
   employees: Employee[];
   contracts: Contract[];
@@ -83,6 +87,8 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [currentRole, setCurrentRole] = useState<UserRole>("Admin");
+  const [currentCompany, setCurrentCompany] = useState<string>("PeoplePay360 Corp (IN) - Gandhinagar HQ");
+  const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
 
   const [employees, setEmployees] = useState<Employee[]>(INITIAL_EMPLOYEES);
   const [contracts, setContracts] = useState<Contract[]>(INITIAL_CONTRACTS);
@@ -320,6 +326,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       value={{
         currentRole,
         setCurrentRole,
+        currentCompany,
+        setCurrentCompany,
+        isAuthOpen,
+        setIsAuthOpen,
         employees,
         contracts,
         attendance,
