@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button';
 import { Select } from '../components/ui/input';
 import { CardSkeleton } from '../components/ui/skeleton';
-import { cn } from '../lib/utils';
+import { cn, amountInWords } from '../lib/utils';
 
 const CATEGORY_LABEL: Record<string, string> = {
   basic: 'Basic',
@@ -129,10 +129,15 @@ export function PayslipDetail() {
               ))}
 
               {netLine && (
-                <div className="mt-16 flex items-center justify-between rounded-md bg-bg px-16 py-16">
-                  <div className="text-base font-semibold text-text">Net Pay</div>
-                  <div className="font-mono text-2xl font-bold tabular-nums text-success">
-                    ₹{Number(netLine.amount).toLocaleString()}
+                <div className="mt-16 rounded-md bg-bg px-16 py-16">
+                  <div className="flex items-center justify-between">
+                    <div className="text-base font-semibold text-text">Net Pay</div>
+                    <div className="font-mono text-2xl font-bold tabular-nums text-success">
+                      ₹{Number(netLine.amount).toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="mt-4 text-right text-xs italic text-text-muted">
+                    {amountInWords(Number(netLine.amount))}
                   </div>
                 </div>
               )}
