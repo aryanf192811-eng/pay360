@@ -145,13 +145,17 @@ export function Dashboard() {
               <div className="p-[16px] text-sm text-[#5e6c84]">No open alerts.</div>
             ) : (
               data.payroll_alerts.map((a) => (
-                <div key={a.warning_type} className="p-[16px] border-b border-[#ebecf0] hover:bg-[#f4f5f7] transition-colors flex gap-3 items-start cursor-pointer group">
+                <button
+                  key={a.warning_type}
+                  onClick={() => navigate('/payroll')}
+                  className="p-[16px] border-b border-[#ebecf0] hover:bg-[#f4f5f7] transition-colors flex gap-3 items-start cursor-pointer group text-left w-full"
+                >
                   <div className="flex flex-col gap-1">
                     <span className="font-medium text-[13px] text-[#172b4d]">{WARNING_LABEL[a.warning_type] || a.warning_type}</span>
                     <span className="text-[12px] text-[#5e6c84]">Count: {a.count} occurrences in current processing period.</span>
-                    <span className="text-[12px] text-[#3062e1] mt-1 font-medium">Review Details →</span>
+                    <span className="text-[12px] text-[#3062e1] mt-1 font-medium group-hover:underline">Review in Payrun History →</span>
                   </div>
-                </div>
+                </button>
               ))
             )}
           </div>

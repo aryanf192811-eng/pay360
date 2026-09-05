@@ -243,12 +243,16 @@ async function seed() {
     await addContract('EMP-009', { position: 'Contract Developer', wage: 80000, structureId: contractorStructId, dateStart: '2025-03-01', dateEnd: null, status: 'active' });
 
     // 6. Attendance
-    // Real check-in/out rows across July 1 -> yesterday for every attendance-tracked employee
-    // (contractors are exempt, matching real-world practice). Frank is deliberately given an
-    // elevated late-rate so the Insights attendance-anomaly detector has a genuine outlier to
-    // find against the rest of the population, not a hand-picked "anomalous" flag.
+    // Real check-in/out rows across July 1 -> yesterday for every employee, contractor included —
+    // this engine pays a fixed contract wage regardless of attendance (see payrollEngine.service.js,
+    // BASIC comes straight from contract.wage), so worked_days is purely informational. Leaving a
+    // real, paid contractor with zero attendance rows made every one of his payslips show
+    // "0.00 worked days" next to a full payout, which reads as a bug even though it isn't one.
+    // Frank is deliberately given an elevated late-rate so the Insights attendance-anomaly
+    // detector has a genuine outlier to find against the rest of the population, not a
+    // hand-picked "anomalous" flag.
     logger.info('Seeding attendance records...');
-    const attendanceEmployees = ['EMP-001', 'EMP-002', 'EMP-003', 'EMP-004', 'EMP-005', 'EMP-006', 'EMP-007', 'EMP-008'];
+    const attendanceEmployees = ['EMP-001', 'EMP-002', 'EMP-003', 'EMP-004', 'EMP-005', 'EMP-006', 'EMP-007', 'EMP-008', 'EMP-009'];
     const rangeStart = new Date('2026-07-01T00:00:00Z');
     const rangeEnd = addDays(TODAY, -1); // through yesterday — "today" itself may be mid-day/unworked yet
 
