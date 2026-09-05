@@ -57,4 +57,35 @@ async function getById(req, res, next) {
   } catch (err) { next(err); }
 }
 
-module.exports = { list, getById };
+//  GET /api/payslips/:id/pdf - stream PDF 
+
+async function getPdf(req, res, next) {
+  try {
+    const { rows } = await pool.query(
+      `SELECT ps.id, ps.payrun_id, ps.employee_id, ps.contract_id, ps.structure_id,
+              ps.period_start, ps.period_end, ps.worked_days, ps.status, ps.email_status,
+              e.first_name, e.last_name, e.employee_code
+       FROM payslips ps
+       JOIN employees e ON e.id = ps.employee_id
+       WHERE ps.id = $1`,
+      [req.params.id]
+    );
+    if (!rows[0]) { const e = new Error('Payslip not found'); e.statusCode = 404; throw e; }
+
+    const { rows: lines } = await pool.query(
+      `SELECT id, salary_rule_id, code, name, category, sequence, amount
+       FROM payslip_lines WHERE payslip_id = $1 ORDER BY sequence ASC`,
+      [req.params.id]
+    );
+
+    const { generatePayslipPdf } = require('../services/pdf.service');
+    const pdfBuffer = await generatePayslipPdf(rows[0], lines);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="payslip_${req.params.id}.pdf"`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+    res.end(pdfBuffer);
+  } catch (err) { next(err); }
+}
+
+module.exports = { list, getById, getPdf };

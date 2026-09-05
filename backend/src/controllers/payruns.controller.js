@@ -233,4 +233,79 @@ async function markPaid(req, res, next) {
   }
 }
 
-module.exports = { draft, create, list, getById, compute, validate, markPaid };
+//  POST /api/payruns/:id/send-payslips 
+
+async function sendPayslips(req, res, next) {
+  try {
+    const { rows: payrunRows } = await pool.query(
+      `SELECT id, status, period_start, period_end FROM payruns WHERE id = $1`,
+      [req.params.id]
+    );
+    if (!payrunRows[0]) { const e = new Error('Payrun not found'); e.statusCode = 404; throw e; }
+    const payrun = payrunRows[0];
+
+    // Find all payslips
+    const { rows: payslips } = await pool.query(
+      `SELECT ps.id, ps.employee_id, ps.status, e.email
+       FROM payslips ps
+       JOIN employees e ON e.id = ps.employee_id
+       WHERE ps.payrun_id = $1`,
+      [req.params.id]
+    );
+
+    const { sendPayslipEmail } = require('../services/email.service');
+    const { generatePayslipPdf } = require('../services/pdf.service');
+
+    let queuedCount = 0;
+    let sentCount = 0;
+    let failedCount = 0;
+
+    for (const ps of payslips) {
+      if (!ps.email) continue; // Can't send if no email
+
+      // Generate PDF
+      const { rows: psData } = await pool.query(
+        `SELECT ps.id, ps.payrun_id, ps.employee_id, ps.contract_id, ps.structure_id,
+                ps.period_start, ps.period_end, ps.worked_days, ps.status, ps.email_status,
+                e.first_name, e.last_name, e.employee_code
+         FROM payslips ps
+         JOIN employees e ON e.id = ps.employee_id
+         WHERE ps.id = $1`,
+        [ps.id]
+      );
+      
+      const { rows: lines } = await pool.query(
+        `SELECT id, salary_rule_id, code, name, category, sequence, amount
+         FROM payslip_lines WHERE payslip_id = $1 ORDER BY sequence ASC`,
+        [ps.id]
+      );
+      
+      try {
+        const pdfBuffer = await generatePayslipPdf(psData[0], lines);
+        const success = await sendPayslipEmail(
+          ps.email, 
+          payrun.period_start, 
+          payrun.period_end, 
+          pdfBuffer
+        );
+        
+        const newStatus = success ? 'sent' : 'queued_no_provider';
+        if (success) sentCount++;
+        else queuedCount++;
+        
+        await pool.query(`UPDATE payslips SET email_status = $1, updated_at = now() WHERE id = $2`, [newStatus, ps.id]);
+      } catch (err) {
+        failedCount++;
+        await pool.query(`UPDATE payslips SET email_status = 'failed', updated_at = now() WHERE id = $1`, [ps.id]);
+        logger.error({ err, payslipId: ps.id }, 'Error processing payslip email');
+      }
+    }
+
+    return sendSuccess(res, {
+      message: 'Payslip emails processed',
+      stats: { sent: sentCount, queued: queuedCount, failed: failedCount }
+    });
+  } catch (err) { next(err); }
+}
+
+module.exports = { draft, create, list, getById, compute, validate, markPaid, sendPayslips };

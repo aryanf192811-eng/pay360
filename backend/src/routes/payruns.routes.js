@@ -15,5 +15,6 @@ router.get('/:id', ctrl.getById);
 router.post('/:id/compute', ctrl.compute);
 router.post('/:id/validate', ctrl.validate);
 router.post('/:id/mark-paid', ctrl.markPaid);
+router.post('/:id/send-payslips', ctrl.sendPayslips);
 
 module.exports = router;

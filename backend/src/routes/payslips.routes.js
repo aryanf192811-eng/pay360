@@ -10,5 +10,6 @@ router.use(authenticate, authorize(...PAYROLL_ROLES));
 
 router.get('/', ctrl.list);
 router.get('/:id', ctrl.getById);
+router.get('/:id/pdf', ctrl.getPdf);
 
 module.exports = router;
