@@ -164,7 +164,7 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - Commit: `95ef38c fix: add optionalAuthenticate so admin can register privileged-role users (T-002 revision)`
 
 ### T-003 — Frontend scaffold: Vite+TS+Tailwind+shadcn init, router shell, auth store
-- Status: SUBMITTED
+- Status: VERIFIED
 - Owner: Antigravity
 - Files allowed: `frontend/**` (new project scaffold only — no backend files)
 - Spec: Vite React-TS template, Tailwind configured with the token values in UI_GUIDE.md
@@ -183,6 +183,11 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - Fake login on the `/login` screen populates the store to prove the frontend logic.
   - `npm run build` passes successfully without TypeScript errors.
   - Commit: `7d781e5 feat: frontend scaffold — Vite+TS, Tailwind, shadcn, router, auth store (T-003)`
+  - **Supervisor re-verification:** `npm run build` re-run independently → clean, 0 TypeScript
+    errors, `dist/` produced. Read `App.tsx`/`client.ts`/`auth.store.ts` by hand — placeholder
+    pages are honestly labeled as placeholders ("Real login form comes in a later task"), not
+    overclaimed as finished. Interceptor correctly avoids an infinite loop on `/refresh` itself
+    401ing. Matches the scaffold's actual scope. **VERIFIED.**
 
 ### T-004 — Postman: real requests + tests for every LIVE route (Auth, Payroll, Time Off)
 - Status: QUEUED
@@ -438,4 +443,79 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   (not a raw Postgres error string). Creating one for Jul–Dec (non-overlapping) → `201`.
 - Result/Notes: —
 
-<!-- Add Phase 2+ tasks here once Phase 1 is underway — keep this board to the current + next phase, not the whole roadmap at once, so it stays skimmable. -->
+## Phase 2 tasks — PS-mandated modules with ZERO code so far (found during a full PS gap-check, not previously queued)
+
+### T-012 — Attendance CRUD (check-in/out, manual correction) — Tier 0, currently missing entirely
+- Status: QUEUED
+- Owner: unclaimed
+- Files allowed: `backend/src/routes/attendances.routes.js`, `backend/src/controllers/attendances.controller.js`, `backend/src/app.js` (uncomment the attendances mount line only)
+- Spec: PS §A3/§B3. `POST /api/attendances` (check-in: `employee_id`, `check_in` defaults to
+  `now()` if omitted; a second `POST` for the same employee with no open check-out should PATCH
+  the check_out of their most recent open entry rather than create a new row — mirrors a real
+  check-in/check-out widget, not two disconnected form submissions). `GET /api/attendances`
+  supports `?employee_id=`, `?status=`. `PATCH /api/attendances/:id` is the manual-correction
+  path — restricted to `hr_manager`/`hr_payroll_user`/`hr_payroll_manager`/`admin`
+  (`authorize()`), sets `is_manual_correction=true` and `corrected_by=req.user.id` automatically
+  (never trust a client-sent `corrected_by`). `status` defaults to `'present'` on check-in;
+  employees may only `POST`/see their own (`role='employee'` ownership check in controller, same
+  pattern as employees/time-off). This data directly feeds T-006's `computeWorkedDays` — right
+  now that function only has SQL-fixture data to read, not anything created through the API.
+- Acceptance check: `POST /api/attendances` (check-in only) → `201`, `status: 'present'`,
+  `check_out: null`. A second `POST` for the same employee same day → `200`, sets `check_out` on
+  the existing row (not a new row) and `worked_hours` becomes non-null (generated column).
+  `PATCH` as an `employee`-role token → `403`. `PATCH` as `hr_manager` → `200`,
+  `is_manual_correction: true`, `corrected_by` set to the caller's id automatically.
+- Result/Notes: —
+
+### T-013 — Payslip PDF generation + bulk email delivery (graceful degradation)
+- Status: QUEUED
+- Owner: unclaimed
+- Files allowed: `backend/src/services/pdf.service.js`, `backend/src/services/email.service.js`, `backend/src/controllers/payslips.controller.js` (add the PDF action only — do not touch `list`/`getById`), `backend/src/controllers/payruns.controller.js` (add the send-payslips action only — do not touch existing actions), `backend/src/routes/payslips.routes.js`, `backend/src/routes/payruns.routes.js`, `backend/package.json` (add a PDF lib — `pdfkit` recommended, lightest option — and `nodemailer`)
+- Spec: PS §B8 / Section 7 ("Include support for generating Payslip PDFs and facilitating bulk
+  email distribution directly from the Payrun workflow" — this is a stated deliverable, not a
+  stretch feature). `GET /api/payslips/:id/pdf` streams a PDF built from real `payslip_lines`
+  data (employee name, period, the same Basic/Allowances/Deductions/Gross/Net breakdown as the
+  JSON detail endpoint — never a separately-hardcoded PDF template with different numbers than
+  the API returns). `POST /api/payruns/:id/send-payslips` — for each payslip under the payrun,
+  attempt an email via `nodemailer` using `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS` from env; **if
+  `SMTP_HOST` is unset, do not throw** — set `payslips.email_status = 'queued_no_provider'`
+  (column already exists) and log it, per CLAUDE.md's Environment Variables section and pattern 8
+  (graceful degradation) — a demo must never 500 because no mail provider is configured. If SMTP
+  *is* configured and a send fails, `email_status = 'failed'`; on success, `'sent'`.
+- Acceptance check: `GET /api/payslips/:id/pdf` (on an already-computed payslip from T-006's
+  fixtures) → `200`, `Content-Type: application/pdf`, non-trivial byte length, and the PDF's
+  visible net amount matches the JSON endpoint's net amount exactly. `POST
+  /api/payruns/:id/send-payslips` with no `SMTP_HOST` set → `200` (not 500), payslips show
+  `email_status: 'queued_no_provider'`.
+- Result/Notes: —
+
+### T-014 — Payroll Dashboard aggregation endpoint
+- Status: QUEUED
+- Owner: unclaimed
+- Files allowed: `backend/src/routes/dashboard.routes.js`, `backend/src/controllers/dashboard.controller.js`, `backend/src/app.js` (uncomment the dashboard mount line only)
+- Spec: PS §A7/§B9. `GET /api/dashboard?period_start=&period_end=&department_id=&employee_type=`
+  — every number computed live from real rows, filtered by whichever query params are present
+  (all optional). Required shape, all via real SQL (DB_GUIDE.md's dashboard query pattern is the
+  template — extend it, don't invent a different aggregation style):
+  ```
+  {
+    kpis: { total_net_paid, payslips_generated, average_salary, approved_time_off_days, attendance_health_pct },
+    salary_cost_by_department: [{ department, headcount, total_net_cost }],
+    monthly_net_salary_trend: [{ month, total_net }],
+    payroll_alerts: [{ warning_type, count }],           // GROUP BY on payroll_warnings, resolved=false
+    attendance_overview: { present, late, absent, overtime, missing_checkouts },
+    time_off_overview: { approved_days, pending_requests },
+    department_overview: [{ department, headcount, total_salary }]
+  }
+  ```
+  `attendance_health_pct` = present+late+overtime days / total attendance rows in range, ×100 —
+  a real ratio, not a fabricated percentage. Every array/object above must be empty/zero rather
+  than error when there's no data yet — an empty dashboard is a valid state (pattern 9).
+- Acceptance check: with T-006's test fixtures (one paid payslip, net 54000) in the DB, `GET
+  /api/dashboard` → `200`, `kpis.total_net_paid` includes `54000` in its sum (verify against a
+  manual `SELECT SUM(...)` you run yourself), `salary_cost_by_department` shows the Engineering
+  department with the correct headcount and total. Filtering with a `department_id` that has no
+  data → `200` with zeroed/empty fields, not a 500.
+- Result/Notes: —
+
+<!-- Add Phase 3+ tasks here once Phase 2 is underway — keep this board to the current + next phase, not the whole roadmap at once, so it stays skimmable. -->
