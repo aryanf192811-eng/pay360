@@ -1,0 +1,22 @@
+{
+  "info": {
+    "name": "PeoplePay360 API",
+    "description": "The one real Postman collection for this project. Grows a folder per route group as routes ship — never a second stray collection file. See API_GUIDE.md for the frozen route list and response shapes.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    { "name": "Auth", "item": [] },
+    { "name": "Departments", "item": [] },
+    { "name": "Working Schedules", "item": [] },
+    { "name": "Employees", "item": [] },
+    { "name": "Contracts", "item": [] },
+    { "name": "Attendance", "item": [] },
+    { "name": "Time Off", "item": [] },
+    { "name": "Salary Structures & Rules", "item": [] },
+    { "name": "Payroll (Payruns & Payslips)", "item": [] },
+    { "name": "Dashboard", "item": [] }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "{{baseUrl}}" }
+  ]
+}
