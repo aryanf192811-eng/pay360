@@ -77,6 +77,11 @@ async function create(req, res, next) {
     if (err.code === '23P01') {
       err.message = 'This employee already has an active contract whose dates overlap this one — end or cancel the existing contract first';
       err.statusCode = 409;
+    } else if (err.code === '23503') {
+      err.message = err.constraint === 'contracts_salary_structure_id_fkey'
+        ? 'salary_structure_id does not refer to a real salary structure'
+        : 'employee_id does not refer to a real employee';
+      err.statusCode = 404;
     }
     next(err);
   }
