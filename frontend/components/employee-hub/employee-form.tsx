@@ -30,21 +30,21 @@ export function EmployeeForm({ employee }: { employee: Employee }) {
         {/* Smart Buttons */}
         <div className="flex items-center gap-2">
           <button 
-            onClick={() => setActiveNavTab("Time Off")}
+            onClick={() => { setSelectedEmployee(null); setActiveNavTab("Time Off"); }}
             className="flex flex-col items-center justify-center px-4 py-2 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg min-w-[100px] transition-colors"
           >
             <span className="text-xs font-bold uppercase tracking-wider">Time Off</span>
             <span className="text-lg font-black">{employee.smartMetrics.leaveBalance}</span>
           </button>
           <button 
-            onClick={() => setActiveNavTab("Contracts")}
+            onClick={() => { setSelectedEmployee(null); setActiveNavTab("Contracts"); }}
             className="flex flex-col items-center justify-center px-4 py-2 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg min-w-[100px] transition-colors"
           >
             <span className="text-xs font-bold uppercase tracking-wider">Contracts</span>
             <span className="text-lg font-black">{employee.smartMetrics.contractsCount}</span>
           </button>
           <button 
-            onClick={() => setActiveNavTab("Attendance")}
+            onClick={() => { setSelectedEmployee(null); setActiveNavTab("Attendance"); }}
             className="flex flex-col items-center justify-center px-4 py-2 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg min-w-[100px] transition-colors"
           >
             <span className="text-xs font-bold uppercase tracking-wider">Attendance</span>

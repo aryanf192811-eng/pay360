@@ -92,16 +92,15 @@ export function TopBar() {
                     <>
                       <button onClick={() => setActiveNavTab("Employees")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Employees</button>
                       <button onClick={() => setActiveNavTab("Contracts")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Contracts</button>
-                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Departments</button>
-                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Working Schedule</button>
+                      <button onClick={() => setActiveNavTab("Working Schedule")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Working Schedule</button>
                     </>
                   )}
                   {tab.key === "Time Off" && (
                     <>
                       <button onClick={() => setActiveNavTab("Time Off")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Dashboard</button>
-                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time offs</button>
-                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time off Types</button>
-                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Allocations</button>
+                      <button onClick={() => setActiveNavTab("Time Off")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time offs</button>
+                      <button onClick={() => setActiveNavTab("Time Off")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time off Types</button>
+                      <button onClick={() => setActiveNavTab("Time Off")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Allocations</button>
                     </>
                   )}
                 </div>

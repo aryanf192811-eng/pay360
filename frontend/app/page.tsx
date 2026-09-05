@@ -14,6 +14,7 @@ import { TimeOffHub } from "@/components/timeoff/timeoff-hub";
 import { PayrunEngine } from "@/components/payroll/payrun-engine";
 import { ExecutiveDashboard } from "@/components/dashboard/executive-dashboard";
 import { UserManagementHub } from "@/components/user-management/user-management-hub";
+import { SchedulesHub } from "@/components/schedules/schedules-hub";
 
 import { PayrunWizardDialog } from "@/components/payroll/payrun-wizard-dialog";
 import { PayslipModal } from "@/components/payroll/payslip-modal";
@@ -136,6 +137,13 @@ function MainContent() {
       {/* Admin Module: User Management */}
       {activeNavTab === "User Management" && (
         <UserManagementHub />
+      )}
+
+      {/* Module: Working Schedules */}
+      {activeNavTab === "Working Schedule" && (
+        <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
+          <SchedulesHub />
+        </main>
       )}
 
       {/* Enterprise Footer */}
