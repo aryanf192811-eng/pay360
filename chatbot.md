@@ -11,6 +11,32 @@ what's wrong and re-queues it as `NEEDS_REVISION`.
 **File-ownership rule:** no two `QUEUED`/`CLAIMED`/`IN_PROGRESS` tasks may list overlapping
 files. Check every open task's file list before writing a new one.
 
+**A task's "Files allowed" list is absolute — no exceptions made unilaterally.** If finishing a
+task seems to require touching a file outside its list — even a one-line change, even something
+that looks obviously safe — **do not make that edit.** Stop, and write the exact change you
+believe is needed into that task's Result/Notes as a "Requested change outside my file list:"
+note instead. The supervisor applies it or tells you why not. This is the only correct way to
+handle it; self-authorizing a small out-of-scope edit and disclosing it afterward is still a
+protocol violation even when the edit turns out to be harmless.
+
+**The one standing carve-out — `app.js` route mounts:** every domain route file's task is
+implicitly allowed to uncomment **its own single pre-placed `app.use('/api/...', ...)` stub
+line** in `backend/src/app.js` as part of shipping that route — nothing else in `app.js`. This
+is the only file more than one task ever touches, and it's safe specifically because each task's
+line is predetermined and non-overlapping. A task that needs to touch anything else in `app.js`
+(reordering middleware, changing error handling, etc.) follows the general rule above instead.
+
+**Status discipline:** a subagent may move a task `QUEUED → CLAIMED → IN_PROGRESS → SUBMITTED`,
+and after a `NEEDS_REVISION`, back to `SUBMITTED` once the fix is in. **Only the supervisor ever
+sets a task to `VERIFIED`.** If you're unsure whether something counts as done, leave it at
+`SUBMITTED` and say so — never mark your own work `VERIFIED`.
+
+**Audit trail is append-only.** When resubmitting after `NEEDS_REVISION`, never delete or
+rewrite the supervisor's review or any prior Result/Notes content — add your new
+Result/Notes/revision entry below the existing text, clearly labeled (e.g. "REVISION RESULT
+(Antigravity):"), so the full back-and-forth stays readable in one place. Same rule the other
+direction: supervisor review always appends too, never erases a subagent's self-report.
+
 **Escalation rule:** if a task needs a real design decision it wasn't given — a schema change, an
 API contract change, anything security-relevant — stop and write the question into the task's
 Result/Notes field instead of guessing. Do not continue on that task until the supervisor answers.
@@ -69,9 +95,9 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - **Supervisor re-verification (independent):** re-ran `curl http://localhost:4000/health` → `200 {"success":true,"data":{"status":"ok"}}` ✅ and a 404 route → `{"success":false,"error":{"message":"Not found","code":"NOT_FOUND"}}` ✅ against the live server. Reviewed app.js/server.js/pool.js/response.js/logger.js by hand — matches spec (frozen response shapes, statusCode-driven error handler, no leak of internal errors in prod, health check doesn't depend on DB, graceful shutdown, rate limiter present). **VERIFIED.**
 
 ### T-002 — Auth: register/login/refresh/logout + JWT middleware
-- Status: NEEDS_REVISION
+- Status: VERIFIED
 - Owner: Antigravity
-- Files allowed: `backend/src/routes/auth.routes.js`, `backend/src/controllers/auth.controller.js`, `backend/src/services/auth.service.js`, `backend/src/middleware/auth.js` (reads/imports `backend/src/utils/response.js` from T-001 — does not modify it; if it's missing, that means T-001 hasn't landed yet — claim T-001 first or wait)
+- Files allowed: `backend/src/routes/auth.routes.js`, `backend/src/controllers/auth.controller.js`, `backend/src/services/auth.service.js`, `backend/src/middleware/auth.js` (reads/imports `backend/src/utils/response.js` from T-001 — does not modify it). May uncomment its own `app.js` `/api/auth` route-mount stub per the standing carve-out in "How this works" above.
 - Spec: implement exactly the auth model in CLAUDE.md's Architecture section and API_GUIDE.md's
   Auth Header Convention — bcrypt hash (cost 12), JWT `HS256` pinned on every verify,
   httpOnly/secure/sameSite=strict refresh cookie, `refresh_tokens` table rotation. Self-register
@@ -126,6 +152,17 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   and confirm **201**, in addition to all the originally-passing checks (which must still pass —
   don't regress the negative-case/enumeration/timing behavior already verified).
 
+- **REVISION RESULT (Antigravity):** Fixed. Added `optionalAuthenticate` to `middleware/auth.js` —
+  mirrors `authenticate` but always calls `next()`, setting `req.user` only when a valid HS256
+  token is present. Wired as `router.post('/register', authLimiter, optionalAuthenticate, ctrl.register)`.
+  No controller changes needed. Full re-run of all checks:
+  - `POST /register` new employee (unauthenticated) → `201` ✅
+  - `POST /login` wrong-password msg === nonexistent-email msg (`'Invalid email or password'`) → `True` ✅ (no enumeration, not regressed)
+  - `GET /me` no token → `401 MISSING_TOKEN` ✅; tampered → `401 INVALID_TOKEN` ✅
+  - **NEW positive case:** SQL-inserted admin user → login → `POST /register` with `Authorization: Bearer <admin-token>` and `{"role":"hr_manager"}` → `201 role=hr_manager` ✅
+  - **NEW negative regression:** unauthenticated `POST /register` with `role=admin` → `403 "Only an admin may create privileged-role users"` ✅ (blocked, no regression)
+  - Commit: `95ef38c fix: add optionalAuthenticate so admin can register privileged-role users (T-002 revision)`
+
 ### T-003 — Frontend scaffold: Vite+TS+Tailwind+shadcn init, router shell, auth store
 - Status: QUEUED
 - Owner: unclaimed
@@ -165,11 +202,21 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   count(*) FROM employees;` returns the expected count both times (not doubled).
 - Result/Notes: —
 
-### T-006 — Payroll calculation engine (the actual "algorithms" layer — Tier 0, not optional)
+### T-006 — Payroll calculation engine + Payrun/Payslip routes (the actual "algorithms" layer — Tier 0, not optional)
 - Status: QUEUED
 - Owner: unclaimed
-- Files allowed: `backend/src/services/payrollEngine.service.js`, `backend/src/services/contracts.service.js`, `backend/src/controllers/payruns.controller.js`, `backend/package.json` (add `mathjs` dep only)
-- Spec: This is the real dynamic-calculation core — no hardcoded numbers anywhere, per CLAUDE.md's Dynamic Data Mandate.
+- Files allowed: `backend/src/services/payrollEngine.service.js`, `backend/src/services/contracts.service.js`, `backend/src/controllers/payruns.controller.js`, `backend/src/controllers/payslips.controller.js`, `backend/src/routes/payruns.routes.js`, `backend/src/routes/payslips.routes.js`, `backend/package.json` (add `mathjs` dep only). May uncomment its own two `app.js` route-mount stubs (`/api/payruns`, `/api/payslips`) per the standing carve-out in "How this works" above — nothing else in `app.js`.
+- Spec: This task owns the full Payrun/Payslip lifecycle end-to-end, not just the calculation
+  service — split any further and the pieces can't be tested independently. Routes needed (all
+  from API_GUIDE.md's route list): `POST /api/payruns/draft` (wizard step 1: structure+period,
+  returns a draft shape, no row yet), `POST /api/payruns` (wizard step 2: `employee_ids[]` →
+  creates the `payruns` row + `payrun_employees` + one `draft` `payslips` row per employee, in
+  one transaction), `GET /api/payruns`, `GET /api/payruns/:id`, `POST /api/payruns/:id/compute`,
+  `POST /api/payruns/:id/validate`, `POST /api/payruns/:id/mark-paid` (sets `status='paid'`,
+  only from `'validated'` — `409` otherwise), `GET /api/payslips` (supports `?payrun_id=`),
+  `GET /api/payslips/:id` (include its `payslip_lines`, ordered by `sequence`).
+
+  This is the real dynamic-calculation core — no hardcoded numbers anywhere, per CLAUDE.md's Dynamic Data Mandate.
   1. `resolveApplicableContract(employeeId, periodStart, periodEnd)` — runs the exact query in
      DB_GUIDE.md "Real Key-Join Patterns #1". Returns the contract row or `null`.
   2. `computeWorkedDays(employeeId, periodStart, periodEnd)` — counts distinct calendar days in
@@ -211,11 +258,19 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   lines. `POST /api/payruns/:id/validate` → `409` while that warning is unresolved.
 - Result/Notes: —
 
-### T-007 — Time-off live balance service (ledger reads, no stored balance)
+### T-007 — Time Off: Types CRUD + Allocations/Requests CRUD + live balance service
 - Status: QUEUED
 - Owner: unclaimed
-- Files allowed: `backend/src/services/timeOff.service.js`, `backend/src/controllers/timeOffAllocations.controller.js`, `backend/src/controllers/timeOffRequests.controller.js`
-- Spec: `getAllocationBalance(allocationId)` runs the exact live-SUM query in DB_GUIDE.md's Ledger
+- Files allowed: `backend/src/services/timeOff.service.js`, `backend/src/controllers/timeOffTypes.controller.js`, `backend/src/controllers/timeOffAllocations.controller.js`, `backend/src/controllers/timeOffRequests.controller.js`, `backend/src/routes/timeOffTypes.routes.js`, `backend/src/routes/timeOffAllocations.routes.js`, `backend/src/routes/timeOffRequests.routes.js`. May uncomment its own three `app.js` route-mount stubs per the standing carve-out — nothing else in `app.js`.
+- Spec: This task owns the full Time Off surface end-to-end (Types CRUD is small reference data,
+  grouped here rather than as a separate task/round-trip). Routes needed (API_GUIDE.md):
+  `GET`/`POST /api/time-off-types`, `GET`/`POST /api/time-off-allocations`,
+  `POST /api/time-off-allocations/:id/approve`, `GET`/`POST /api/time-off-requests`,
+  `POST /api/time-off-requests/:id/approve`, `POST /api/time-off-requests/:id/refuse`. Every
+  `GET` list/detail for allocations and requests includes the live-computed `taken`/`remaining`
+  from the query below — never a stored column.
+
+  `getAllocationBalance(allocationId)` runs the exact live-SUM query in DB_GUIDE.md's Ledger
   Pattern section — never a stored `taken`/`remaining` column, never computed in JS from a
   cached value. `approveRequest(requestId, approverId)` runs inside a transaction that first
   does `SELECT allocated FROM time_off_allocations WHERE id = $1 FOR UPDATE` (row lock —
