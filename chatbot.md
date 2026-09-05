@@ -663,8 +663,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 ## Design tasks (presentation-layer only — see the hard boundary below)
 
 ### T-015 — Visual redesign pass: elevate every screen to a rich, premium HR/payroll product
-- Status: QUEUED
-- Owner: unclaimed (Antigravity — design only, never reassign this one to Supervisor)
+- Status: IN_PROGRESS
+- Owner: Antigravity
 - Files allowed: `frontend/src/**/*.tsx`, `frontend/src/index.css`, `frontend/tailwind.config.js` —
   **presentation only, see the hard boundary below.** Do not touch anything under
   `frontend/src/api/**` (the data-fetching layer), any backend file, or any `.ts` file that isn't
@@ -730,7 +730,7 @@ required demo path. Split below by who owns the fix, per this project's ownershi
 (security/data-integrity → supervisor; well-specified CRUD/UI → Antigravity).
 
 ### T-016 — Time Off allocation integrity: enforce requires_allocation, fix cross-employee exploit
-- Status: QUEUED
+- Status: VERIFIED
 - Owner: Supervisor
 - Files allowed: `backend/src/controllers/timeOffRequests.controller.js`, `backend/src/services/timeOff.service.js`
 - Spec: Two real gaps found by audit. (1) `create()` never checks `time_off_types.requires_allocation`
@@ -746,7 +746,15 @@ required demo path. Split below by who owns the fix, per this project's ownershi
   of the same type; submit a request for employee A but pass employee B's `allocation_id` →
   approval attempt → `409`/`422` (rejected, not silently deducted from B's balance). Existing
   T-007 scenarios (same-employee approve/over-allocate) must still pass unchanged.
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED (real code, real tests).** `create()` now
+  404s on an unknown type, 422s when `requires_allocation:true` and no `allocation_id` given.
+  `approveRequest()` now checks `allocation.employee_id === request.employee_id` inside the
+  existing row-locked transaction, before any balance math. Verified live: requires_allocation
+  type + no allocation → `422` ✅. Real cross-employee attempt — created Frank's own approved
+  allocation, then a request for Rahul pointing at Frank's allocation id → approve → `409`,
+  confirmed via live GET that Frank's balance was completely unaffected (`taken: 0, remaining:
+  10.00`) ✅. Regression: normal same-employee approval against a real valid allocation still
+  succeeds (`200`) ✅.
 
 ### T-017 — Admin: User management (link users to employees, role assignment)
 - Status: QUEUED
@@ -770,7 +778,7 @@ required demo path. Split below by who owns the fix, per this project's ownershi
 - Result/Notes: —
 
 ### T-018 — Fix duplicate_payslip dead warning + Dashboard "Payslips Generated" KPI conflation
-- Status: QUEUED
+- Status: VERIFIED
 - Owner: Supervisor
 - Files allowed: `backend/src/controllers/payruns.controller.js`, `backend/src/controllers/dashboard.controller.js`
 - Spec: Two independent dead-code/wrong-metric bugs found by audit. (1) `warning_type =
@@ -790,7 +798,14 @@ required demo path. Split below by who owns the fix, per this project's ownershi
   warning mentioning A. Dashboard: create payslips in `computed` and `paid` status separately,
   confirm `payslips_generated` counts both while `total_net_paid`/`average_salary` still only
   reflect the `paid` one.
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED.** `create()` dedupes via `Set` before the
+  insert loop, inserts a `duplicate_payslip` warning naming the count removed when applicable.
+  Dashboard splits `payslips_generated` into its own query (`status IN ('computed','validated',
+  'paid')`), independent from `total_net_paid`/`average_salary` (still `status='paid'` only).
+  Verified live: submitted `[Neha, Neha, Priya]` → `201`, exactly 2 payslips created, warning
+  present and correctly worded ✅. Dashboard: real DB state had 2 `computed` + 9 `paid` + 2
+  `draft` payslips — `payslips_generated: 11` (2+9, draft correctly excluded), `total_net_paid:
+  486000` (9 × 54000, hand-verified) ✅.
 
 ### T-019 — Employee Create/Edit forms (frontend — backend already fully supports this)
 - Status: QUEUED

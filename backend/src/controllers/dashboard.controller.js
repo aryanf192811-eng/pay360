@@ -21,15 +21,27 @@ async function getDashboard(req, res, next) {
     const payslipWhere = payslipFilters.length ? `AND ${payslipFilters.join(' AND ')}` : '';
 
     // ── KPIs ──
+    // total_net_paid/average_salary are deliberately scoped to status='paid' only (money that
+    // has actually left the building). payslips_generated is a DIFFERENT, wider metric — any
+    // payslip that has actually been computed at least once, regardless of how far it's
+    // progressed since — conflating the two (both under status='paid') silently zeroed this KPI
+    // for every payslip still sitting at computed/validated, found by audit.
     const { rows: kpiRows } = await pool.query(
       `SELECT
          COALESCE(SUM(pl.amount) FILTER (WHERE pl.category = 'net'), 0) AS total_net_paid,
-         COUNT(DISTINCT p.id) AS payslips_generated,
          COALESCE(AVG(pl.amount) FILTER (WHERE pl.category = 'net'), 0) AS average_salary
        FROM payslips p
        JOIN employees e ON e.id = p.employee_id
        LEFT JOIN payslip_lines pl ON pl.payslip_id = p.id
        WHERE p.status = 'paid' ${payslipWhere}`,
+      payslipParams
+    );
+
+    const { rows: generatedRows } = await pool.query(
+      `SELECT COUNT(DISTINCT p.id) AS payslips_generated
+       FROM payslips p
+       JOIN employees e ON e.id = p.employee_id
+       WHERE p.status IN ('computed', 'validated', 'paid') ${payslipWhere}`,
       payslipParams
     );
 
@@ -129,7 +141,7 @@ async function getDashboard(req, res, next) {
     return sendSuccess(res, {
       kpis: {
         total_net_paid: Number(kpiRows[0].total_net_paid),
-        payslips_generated: Number(kpiRows[0].payslips_generated),
+        payslips_generated: Number(generatedRows[0].payslips_generated),
         average_salary: Math.round(Number(kpiRows[0].average_salary) * 100) / 100,
         approved_time_off_days: Number(timeOffRows[0].approved_days),
         attendance_health_pct,

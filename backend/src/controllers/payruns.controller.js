@@ -61,6 +61,13 @@ async function create(req, res, next) {
       const e = new Error('employee_ids must be a non-empty array'); e.statusCode = 422; throw e;
     }
 
+    // PS/DB_GUIDE.md: duplicate_payslip is meant to be a pre-emptive WARNING, not a hard failure
+    // that aborts the whole payrun over one duplicated employee_id in the submitted array.
+    // Dedupe here and record a warning instead of letting the payslips unique-constraint abort
+    // the transaction.
+    const uniqueEmployeeIds = [...new Set(employee_ids)];
+    const duplicates = employee_ids.length - uniqueEmployeeIds.length;
+
     await client.query('BEGIN');
 
     const { rows: payrunRows } = await client.query(
@@ -71,7 +78,7 @@ async function create(req, res, next) {
     );
     const payrun = payrunRows[0];
 
-    for (const employeeId of employee_ids) {
+    for (const employeeId of uniqueEmployeeIds) {
       await client.query(
         `INSERT INTO payrun_employees (payrun_id, employee_id) VALUES ($1, $2)`,
         [payrun.id, employeeId]
@@ -83,8 +90,16 @@ async function create(req, res, next) {
       );
     }
 
+    if (duplicates > 0) {
+      await client.query(
+        `INSERT INTO payroll_warnings (payrun_id, warning_type, message)
+         VALUES ($1, 'duplicate_payslip', $2)`,
+        [payrun.id, `${duplicates} duplicate employee selection(s) were removed — one payslip per employee was created`]
+      );
+    }
+
     await client.query('COMMIT');
-    logger.info({ payrunId: payrun.id, employeeCount: employee_ids.length }, 'payrun created');
+    logger.info({ payrunId: payrun.id, employeeCount: uniqueEmployeeIds.length, duplicates }, 'payrun created');
 
     return sendSuccess(res, payrun, 201);
   } catch (err) {

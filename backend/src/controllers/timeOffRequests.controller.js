@@ -66,6 +66,20 @@ async function create(req, res, next) {
       const e = new Error('duration must be a positive number'); e.statusCode = 422; throw e;
     }
 
+    // PS §A4: Time Off Types "define... allocation requirements" — enforce it, don't just store
+    // the flag. Without this, a type marked requires_allocation could be requested (and later
+    // approved) with no allocation_id at all, silently bypassing the entire balance ledger.
+    const { rows: typeRows } = await pool.query(
+      `SELECT requires_allocation FROM time_off_types WHERE id = $1`,
+      [time_off_type_id]
+    );
+    if (!typeRows[0]) { const e = new Error('Time off type not found'); e.statusCode = 404; throw e; }
+    if (typeRows[0].requires_allocation && !allocation_id) {
+      const e = new Error('This time off type requires an allocation — allocation_id is required');
+      e.statusCode = 422;
+      throw e;
+    }
+
     const { rows } = await pool.query(
       `INSERT INTO time_off_requests (employee_id, time_off_type_id, allocation_id, date_from, date_to, duration, status)
        VALUES ($1, $2, $3, $4, $5, $6, 'submitted')

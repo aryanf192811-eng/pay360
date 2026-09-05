@@ -33,7 +33,7 @@ async function approveRequest(requestId, approverId) {
     await client.query('BEGIN');
 
     const { rows: reqRows } = await client.query(
-      `SELECT id, allocation_id, duration, status FROM time_off_requests WHERE id = $1 FOR UPDATE`,
+      `SELECT id, employee_id, allocation_id, duration, status FROM time_off_requests WHERE id = $1 FOR UPDATE`,
       [requestId]
     );
     if (!reqRows[0]) {
@@ -47,13 +47,21 @@ async function approveRequest(requestId, approverId) {
     if (request.allocation_id) {
       // Lock the allocation FIRST — this is what actually serializes concurrent approvers.
       const { rows: allocRows } = await client.query(
-        `SELECT id, allocated, status FROM time_off_allocations WHERE id = $1 FOR UPDATE`,
+        `SELECT id, employee_id, allocated, status FROM time_off_allocations WHERE id = $1 FOR UPDATE`,
         [request.allocation_id]
       );
       if (!allocRows[0]) {
         const e = new Error('Linked allocation not found'); e.statusCode = 404; throw e;
       }
       const allocation = allocRows[0];
+      // Real exploit found by audit: nothing previously stopped a request from pointing at a
+      // DIFFERENT employee's allocation — approval would then deduct from the wrong person's
+      // balance. This must be checked before any balance math, not after.
+      if (allocation.employee_id !== request.employee_id) {
+        const e = new Error('This allocation does not belong to the request\'s employee');
+        e.statusCode = 409;
+        throw e;
+      }
       if (allocation.status !== 'approved') {
         const e = new Error('Cannot approve a request against an allocation that is not yet approved');
         e.statusCode = 409;
