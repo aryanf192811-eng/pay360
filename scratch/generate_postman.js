@@ -169,7 +169,7 @@ const collection = {
           request: {
             method: "POST",
             header: [{ key: "Authorization", value: "Bearer {{accessToken}}" }, { key: "Content-Type", value: "application/json" }],
-            url: { raw: "{{baseUrl}}/api/time-off/types", host: ["{{baseUrl}}"], path: ["api", "time-off", "types"] },
+            url: { raw: "{{baseUrl}}/api/time-off-types", host: ["{{baseUrl}}"], path: ["api", "time-off-types"] },
             body: { mode: "raw", raw: JSON.stringify({ name: `Annual Leave ${Date.now()}`, category: "paid", unit: "days", requires_approval: true }) }
           },
           event: [{ listen: "test", script: { exec: [...authTests(201, true), "const jsonData = pm.response.json(); pm.environment.set('timeOffTypeId', jsonData.data.id);"] } }]
@@ -179,8 +179,8 @@ const collection = {
           request: {
             method: "POST",
             header: [{ key: "Authorization", value: "Bearer {{accessToken}}" }, { key: "Content-Type", value: "application/json" }],
-            url: { raw: "{{baseUrl}}/api/time-off/allocations", host: ["{{baseUrl}}"], path: ["api", "time-off", "allocations"] },
-            body: { mode: "raw", raw: JSON.stringify({ employee_id: employeeId1, time_off_type_id: "{{timeOffTypeId}}", amount: 10, valid_from: "2026-01-01", description: "Yearly" }) }
+            url: { raw: "{{baseUrl}}/api/time-off-allocations", host: ["{{baseUrl}}"], path: ["api", "time-off-allocations"] },
+            body: { mode: "raw", raw: JSON.stringify({ employee_id: employeeId1, time_off_type_id: "{{timeOffTypeId}}", allocated: 10, valid_from: "2026-01-01", description: "Yearly" }) }
           },
           event: [{ listen: "test", script: { exec: [...authTests(201, true), "const jsonData = pm.response.json(); pm.environment.set('allocationId', jsonData.data.id);"] } }]
         },
@@ -189,7 +189,7 @@ const collection = {
           request: {
             method: "POST",
             header: [{ key: "Authorization", value: "Bearer {{accessToken}}" }, { key: "Content-Type", value: "application/json" }],
-            url: { raw: "{{baseUrl}}/api/time-off/allocations/{{allocationId}}/approve", host: ["{{baseUrl}}"], path: ["api", "time-off", "allocations", "{{allocationId}}", "approve"] }
+            url: { raw: "{{baseUrl}}/api/time-off-allocations/{{allocationId}}/approve", host: ["{{baseUrl}}"], path: ["api", "time-off-allocations", "{{allocationId}}", "approve"] }
           },
           event: [{ listen: "test", script: { exec: authTests(200, true) } }]
         },
@@ -198,8 +198,8 @@ const collection = {
           request: {
             method: "POST",
             header: [{ key: "Authorization", value: "Bearer {{accessToken}}" }, { key: "Content-Type", value: "application/json" }],
-            url: { raw: "{{baseUrl}}/api/time-off/requests", host: ["{{baseUrl}}"], path: ["api", "time-off", "requests"] },
-            body: { mode: "raw", raw: JSON.stringify({ employee_id: employeeId1, time_off_type_id: "{{timeOffTypeId}}", date_start: "2026-11-01", date_end: "2026-11-02", duration: 2, reason: "Vacation" }) }
+            url: { raw: "{{baseUrl}}/api/time-off-requests", host: ["{{baseUrl}}"], path: ["api", "time-off-requests"] },
+            body: { mode: "raw", raw: JSON.stringify({ employee_id: employeeId1, time_off_type_id: "{{timeOffTypeId}}", allocation_id: "{{allocationId}}", date_from: "2026-11-01", date_to: "2026-11-02", duration: 2, reason: "Vacation" }) }
           },
           event: [{ listen: "test", script: { exec: [...authTests(201, true), "const jsonData = pm.response.json(); pm.environment.set('requestId', jsonData.data.id);"] } }]
         },
@@ -208,7 +208,7 @@ const collection = {
           request: {
             method: "POST",
             header: [{ key: "Authorization", value: "Bearer {{accessToken}}" }, { key: "Content-Type", value: "application/json" }],
-            url: { raw: "{{baseUrl}}/api/time-off/requests/{{requestId}}/approve", host: ["{{baseUrl}}"], path: ["api", "time-off", "requests", "{{requestId}}", "approve"] }
+            url: { raw: "{{baseUrl}}/api/time-off-requests/{{requestId}}/approve", host: ["{{baseUrl}}"], path: ["api", "time-off-requests", "{{requestId}}", "approve"] }
           },
           event: [{ listen: "test", script: { exec: authTests(200, true) } }]
         },
@@ -217,8 +217,17 @@ const collection = {
           request: {
             method: "POST",
             header: [{ key: "Authorization", value: "Bearer {{accessToken}}" }, { key: "Content-Type", value: "application/json" }],
-            url: { raw: "{{baseUrl}}/api/time-off/requests", host: ["{{baseUrl}}"], path: ["api", "time-off", "requests"] },
-            body: { mode: "raw", raw: JSON.stringify({ employee_id: employeeId1, time_off_type_id: "{{timeOffTypeId}}", date_start: "2026-12-01", date_end: "2026-12-15", duration: 15, reason: "Too long" }) }
+            url: { raw: "{{baseUrl}}/api/time-off-requests", host: ["{{baseUrl}}"], path: ["api", "time-off-requests"] },
+            body: { mode: "raw", raw: JSON.stringify({ employee_id: employeeId1, time_off_type_id: "{{timeOffTypeId}}", allocation_id: "{{allocationId}}", date_from: "2026-12-01", date_to: "2026-12-15", duration: 15, reason: "Too long" }) }
+          },
+          event: [{ listen: "test", script: { exec: [...authTests(201, true), "const jsonData = pm.response.json(); pm.environment.set('overRequestId', jsonData.data.id);"] } }]
+        },
+        {
+          name: "Approve Request (Over-allocate)",
+          request: {
+            method: "POST",
+            header: [{ key: "Authorization", value: "Bearer {{accessToken}}" }, { key: "Content-Type", value: "application/json" }],
+            url: { raw: "{{baseUrl}}/api/time-off-requests/{{overRequestId}}/approve", host: ["{{baseUrl}}"], path: ["api", "time-off-requests", "{{overRequestId}}", "approve"] }
           },
           event: [{ listen: "test", script: { exec: authTests(409, false) } }]
         }

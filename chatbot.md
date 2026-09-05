@@ -415,8 +415,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   `403` on another employee's record ✅.
 
 ### T-011 — Salary Structures + Salary Rules CRUD
-- Status: QUEUED
-- Owner: unclaimed
+- Status: VERIFIED
+- Owner: Supervisor
 - Files allowed: `backend/src/routes/salaryStructures.routes.js`, `backend/src/controllers/salaryStructures.controller.js`, `backend/src/routes/salaryRules.routes.js`, `backend/src/controllers/salaryRules.controller.js`, `backend/src/app.js` (uncomment the two matching mount lines only)
 - Spec: CRUD per API_GUIDE.md. `GET /api/salary-structures` list includes a live count of rules
   and employees using it (`(SELECT COUNT(*) FROM salary_rules WHERE structure_id = s.id)`,
@@ -432,7 +432,14 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   `hr_payroll_user` token → 201 for `GET` but `403` for `POST`/`PATCH`; with `hr_payroll_manager`
   token → `201`/`200` succeed. `GET /api/salary-structures` shows correct live rule/employee
   counts for a structure that already has rules/contracts (from T-006's test fixtures or your own).
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED.** All four role scenarios tested against real
+  accounts: `admin` → full access, list shows live `rule_count: 4`, `active_employee_count: 1`
+  (Regular Salary structure) ✅. `hr_payroll_user` → `GET` `200`, `POST` `403` ✅.
+  **`hr_manager` → `403` on `GET` too** — deliberately zero payroll access per the PS role table
+  ("no access to payroll features"), not even read-only ✅. `hr_payroll_manager` → full CRUD,
+  created a `BONUS` fixed-amount rule successfully ✅. Formulas are stored as plain text, never
+  evaluated in this controller — only `payrollEngine.service.js` (T-006) ever calls `mathjs`
+  `evaluate()` on them.
 
 ### T-010 — Contracts CRUD (exclusion-constraint aware)
 - Status: VERIFIED

@@ -30,7 +30,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"email\":\"test_1788590476688@postman.com\",\"password\":\"SecurePass1!\",\"role\":\"employee\"}"
+              "raw": "{\"email\":\"test_1788590640224@postman.com\",\"password\":\"SecurePass1!\",\"role\":\"employee\"}"
             }
           },
           "event": [
@@ -515,19 +515,18 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/time-off/types",
+              "raw": "{{baseUrl}}/api/time-off-types",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "time-off",
-                "types"
+                "time-off-types"
               ]
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"name\":\"Annual Leave 1788590476689\",\"category\":\"paid\",\"unit\":\"days\",\"requires_approval\":true}"
+              "raw": "{\"name\":\"Annual Leave 1788590640224\",\"category\":\"paid\",\"unit\":\"days\",\"requires_approval\":true}"
             }
           },
           "event": [
@@ -563,19 +562,18 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/time-off/allocations",
+              "raw": "{{baseUrl}}/api/time-off-allocations",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "time-off",
-                "allocations"
+                "time-off-allocations"
               ]
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"employee_id\":\"22222222-2222-2222-2222-222222222222\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"amount\":10,\"valid_from\":\"2026-01-01\",\"description\":\"Yearly\"}"
+              "raw": "{\"employee_id\":\"22222222-2222-2222-2222-222222222222\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"allocated\":10,\"valid_from\":\"2026-01-01\",\"description\":\"Yearly\"}"
             }
           },
           "event": [
@@ -611,14 +609,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/time-off/allocations/{{allocationId}}/approve",
+              "raw": "{{baseUrl}}/api/time-off-allocations/{{allocationId}}/approve",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "time-off",
-                "allocations",
+                "time-off-allocations",
                 "{{allocationId}}",
                 "approve"
               ]
@@ -656,19 +653,18 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/time-off/requests",
+              "raw": "{{baseUrl}}/api/time-off-requests",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "time-off",
-                "requests"
+                "time-off-requests"
               ]
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"employee_id\":\"22222222-2222-2222-2222-222222222222\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"date_start\":\"2026-11-01\",\"date_end\":\"2026-11-02\",\"duration\":2,\"reason\":\"Vacation\"}"
+              "raw": "{\"employee_id\":\"22222222-2222-2222-2222-222222222222\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"allocation_id\":\"{{allocationId}}\",\"date_from\":\"2026-11-01\",\"date_to\":\"2026-11-02\",\"duration\":2,\"reason\":\"Vacation\"}"
             }
           },
           "event": [
@@ -704,14 +700,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/time-off/requests/{{requestId}}/approve",
+              "raw": "{{baseUrl}}/api/time-off-requests/{{requestId}}/approve",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "time-off",
-                "requests",
+                "time-off-requests",
                 "{{requestId}}",
                 "approve"
               ]
@@ -749,19 +744,63 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/time-off/requests",
+              "raw": "{{baseUrl}}/api/time-off-requests",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "time-off",
-                "requests"
+                "time-off-requests"
               ]
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"employee_id\":\"22222222-2222-2222-2222-222222222222\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"date_start\":\"2026-12-01\",\"date_end\":\"2026-12-15\",\"duration\":15,\"reason\":\"Too long\"}"
+              "raw": "{\"employee_id\":\"22222222-2222-2222-2222-222222222222\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"allocation_id\":\"{{allocationId}}\",\"date_from\":\"2026-12-01\",\"date_to\":\"2026-12-15\",\"duration\":15,\"reason\":\"Too long\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is correct', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('Response shape is correct', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success', true);\n    if (true) pm.expect(jsonData).to.have.property('data');\n    else pm.expect(jsonData).to.have.property('error');",
+                  "});",
+                  "const jsonData = pm.response.json(); pm.environment.set('overRequestId', jsonData.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Approve Request (Over-allocate)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/time-off-requests/{{overRequestId}}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "time-off-requests",
+                "{{overRequestId}}",
+                "approve"
+              ]
             }
           },
           "event": [
