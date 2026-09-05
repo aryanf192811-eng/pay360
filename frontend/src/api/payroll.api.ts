@@ -43,6 +43,8 @@ export interface Payslip {
   first_name?: string;
   last_name?: string;
   employee_code?: string;
+  structure_name?: string;
+  payrun_name?: string;
   net?: string | number | null;
   lines?: PayslipLine[];
 }

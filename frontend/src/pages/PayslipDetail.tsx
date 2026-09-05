@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Printer } from 'lucide-react';
 import { getPayslip, payslipPdfUrl } from '../api/payroll.api';
+import { useAuthStore, PAYROLL_ROLES } from '../store/auth.store';
 import { StatusBadge } from '../components/StatusBadge';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -19,6 +20,8 @@ const CATEGORY_LABEL: Record<string, string> = {
 export function PayslipDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { user } = useAuthStore();
+  const canOpenPayrun = !!user && PAYROLL_ROLES.includes(user.role);
   const { data: payslip, isLoading } = useQuery({ queryKey: ['payslip', id], queryFn: () => getPayslip(id!), enabled: !!id });
 
   if (isLoading || !payslip) return <CardSkeleton />;
@@ -39,6 +42,17 @@ export function PayslipDetail() {
             <div className="text-xl font-bold text-text">{payslip.first_name} {payslip.last_name}</div>
             <div className="font-mono text-xs text-text-muted">{payslip.employee_code}</div>
             <div className="mt-4 text-sm text-text-muted">{payslip.period_start} → {payslip.period_end} · {payslip.worked_days ?? '—'} worked days</div>
+            {/* PS §B7: Structure + Pay Run are required identification attributes, not just Employee/Period */}
+            <div className="mt-8 flex gap-16 text-xs text-text-muted">
+              <span>Structure: <span className="font-medium text-text">{payslip.structure_name || '—'}</span></span>
+              {payslip.payrun_id && canOpenPayrun ? (
+                <button onClick={() => navigate(`/payroll/payruns/${payslip.payrun_id}`)} className="hover:text-primary hover:underline">
+                  Pay Run: <span className="font-medium text-text">{payslip.payrun_name || '—'}</span>
+                </button>
+              ) : (
+                <span>Pay Run: <span className="font-medium text-text">{payslip.payrun_name || '—'}</span></span>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-12">
             <StatusBadge status={payslip.status} domain="payslip" />

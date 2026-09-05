@@ -59,6 +59,14 @@ export function EmployeeDetail() {
                 <span>{(employee as Record<string, unknown>).department_name as string || 'No department'}</span>
                 <span>{employee.job_position || 'No position'}</span>
                 <span>{(employee as Record<string, unknown>).schedule_name as string || 'No schedule'}</span>
+                {(employee as Record<string, unknown>).manager_first_name ? (
+                  <span>
+                    Reports to {(employee as Record<string, unknown>).manager_first_name as string}{' '}
+                    {(employee as Record<string, unknown>).manager_last_name as string}
+                  </span>
+                ) : (
+                  <span>No manager</span>
+                )}
               </div>
             </div>
           </div>

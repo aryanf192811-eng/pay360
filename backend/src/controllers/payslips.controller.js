@@ -49,12 +49,17 @@ async function list(req, res, next) {
 
 async function getById(req, res, next) {
   try {
+    // PS §B7: "Displays key identification attributes: Employee, Structure, Pay Run, Period,
+    // Status, and Worked Days" — Structure/Pay Run must be shown by name, not just id.
     const { rows } = await pool.query(
       `SELECT ps.id, ps.payrun_id, ps.employee_id, ps.contract_id, ps.structure_id,
               ps.period_start, ps.period_end, ps.worked_days, ps.status, ps.email_status,
-              e.first_name, e.last_name, e.employee_code
+              e.first_name, e.last_name, e.employee_code,
+              s.name AS structure_name, p.name AS payrun_name
        FROM payslips ps
        JOIN employees e ON e.id = ps.employee_id
+       LEFT JOIN salary_structures s ON s.id = ps.structure_id
+       LEFT JOIN payruns p ON p.id = ps.payrun_id
        WHERE ps.id = $1`,
       [req.params.id]
     );

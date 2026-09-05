@@ -76,9 +76,34 @@ async function create(req, res, next) {
 
 // ─── PATCH /api/contracts/:id ───────────────────────────────────────────────────────────────────
 
+// Fields that describe "what this contract's terms actually were" — once any payslip has been
+// computed against this contract, editing these in place would silently rewrite history (the
+// PS: "Maintain historical contract records... to track changes over time"). The correct way to
+// change wage/dates after payslips exist is a NEW contract row (DB_GUIDE.md's effective-dated
+// pattern) — end this one via `status`/`date_end` and create the replacement, don't mutate it.
+const HISTORY_SENSITIVE_FIELDS = ['wage', 'date_start', 'date_end', 'salary_structure_id'];
+
 async function update(req, res, next) {
   try {
     const fields = ['department_id', 'position', 'wage', 'salary_structure_id', 'date_start', 'date_end', 'status'];
+    const requestedHistorySensitive = HISTORY_SENSITIVE_FIELDS.filter((f) => req.body[f] !== undefined);
+
+    if (requestedHistorySensitive.length > 0) {
+      const { rows: usedRows } = await pool.query(
+        `SELECT 1 FROM payslips WHERE contract_id = $1 LIMIT 1`,
+        [req.params.id]
+      );
+      if (usedRows[0]) {
+        const e = new Error(
+          `This contract has already been used to compute at least one payslip — its terms are ` +
+          `historical record and can't be edited (attempted: ${requestedHistorySensitive.join(', ')}). ` +
+          `End this contract (set status/date_end) and create a new contract for the changed terms.`
+        );
+        e.statusCode = 409;
+        throw e;
+      }
+    }
+
     const sets = [];
     const params = [req.params.id];
 
