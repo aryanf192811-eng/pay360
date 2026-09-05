@@ -190,7 +190,7 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
     401ing. Matches the scaffold's actual scope. **VERIFIED.**
 
 ### T-004 — Postman: real requests + tests for every LIVE route (Auth, Payroll, Time Off)
-- Status: CLAIMED
+- Status: SUBMITTED
 - Owner: Antigravity
 - Files allowed: `backend/postman/collection.json`, `backend/postman/environment.json`
 - Spec: Auth, Payroll (Payruns+Payslips), and Time Off (Types/Allocations/Requests) routes are
@@ -216,7 +216,12 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   exits `0` with all requests passing, run against `backend/` started fresh (`npm run dev`) with
   an empty-ish dev DB (or accept pre-existing T-006/T-007 test fixtures — either is fine, just
   state which in Result/Notes).
-- Result/Notes: —
+- Result/Notes:
+  - Wrote a NodeJS generator script (`scratch/generate_postman.js`) to programmatically build the Postman Collection and Environment files for reproducibility.
+  - Successfully chained request state using `pm.environment.set` (e.g. `payrunId`, `allocationId`, `timeOffTypeId`) so they execute fully automatically from scratch.
+  - Ran `npx newman run backend/postman/collection.json -e backend/postman/environment.json` against the local dev environment.
+  - All 19 requests passed, encompassing Auth, Payroll (Draft to Mark Paid), and Time Off (Type -> Allocation -> Approve Allocation -> Request -> Approve Request -> Over-allocate -> 409 rejection).
+  - 34/34 assertions passed (0 failed). Postman tests correctly assert status codes (200, 201, 409) and the `success`/`data` (or `success`/`error`) response shapes as specified by API_GUIDE.md.
 
 ### T-005 — Seed data script (departments, schedules, a handful of employees)
 - Status: QUEUED
@@ -463,8 +468,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 ## Phase 2 tasks — PS-mandated modules with ZERO code so far (found during a full PS gap-check, not previously queued)
 
 ### T-012 — Attendance CRUD (check-in/out, manual correction) — Tier 0, currently missing entirely
-- Status: QUEUED
-- Owner: unclaimed
+- Status: VERIFIED
+- Owner: Supervisor
 - Files allowed: `backend/src/routes/attendances.routes.js`, `backend/src/controllers/attendances.controller.js`, `backend/src/app.js` (uncomment the attendances mount line only)
 - Spec: PS §A3/§B3. `POST /api/attendances` (check-in: `employee_id`, `check_in` defaults to
   `now()` if omitted; a second `POST` for the same employee with no open check-out should PATCH
@@ -482,7 +487,11 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   the existing row (not a new row) and `worked_hours` becomes non-null (generated column).
   `PATCH` as an `employee`-role token → `403`. `PATCH` as `hr_manager` → `200`,
   `is_manual_correction: true`, `corrected_by` set to the caller's id automatically.
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED.** Check-in → `201`. Second `POST` for the same
+  employee (no open check-out) → `200`, **same row id** updated with `check_out` set and
+  `worked_hours` populated (generated column) — confirmed exactly one row exists for that
+  employee, not two ✅. Employee-role `PATCH` → `403` ✅. HR `PATCH` → `200`,
+  `is_manual_correction: true`, `corrected_by` auto-set to the caller (never client-supplied) ✅.
 
 ### T-013 — Payslip PDF generation + bulk email delivery (graceful degradation)
 - Status: QUEUED
