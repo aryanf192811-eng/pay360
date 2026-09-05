@@ -18,6 +18,12 @@ Salary Structure/Rule engine, and surfaces warnings — missing bank details, du
 missing contracts — before anything is finalized. A live Payroll Dashboard aggregates real
 attendance, leave, and payslip data, filterable by period, department, and employee type.
 
+Beyond the PS's own baseline, the build adds: a Payslip Diff ("why did my salary change?"), a
+What-If Simulator that dry-runs the *real* payroll engine and unconditionally rolls back, an
+Audit Timeline over every contract/payrun change, statistical Attendance/Leave Insights (a real
+population mean + stddev, not a hardcoded threshold), and a read-only Gemini-backed AI assistant
+scoped strictly to the same aggregate JSON the Dashboard already shows.
+
 ## Why this approach
 
 Raw PERN (Postgres + Express + React + Node), no ORM, no BaaS, no managed auth — every layer has
@@ -75,6 +81,11 @@ SMTP_USER=
 SMTP_PASS=
 SMTP_FROM=payroll@peoplepay360.local
 CORS_ORIGIN=http://localhost:5173
+
+# Optional — Tier 3 AI assistant. Leave unset to keep it disabled; the app degrades gracefully
+# (GET /api/ai/status reports configured:false) rather than erroring.
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-3.6-flash
 ```
 
 `frontend/.env`:
@@ -102,10 +113,23 @@ All seeded accounts share the password **`SeedPass1!`**.
 | heidi.sales@example.com | Employee (part-time) |
 | ivan.c@example.com | Employee (contract) |
 
-`npm run seed` creates the 9 employees/departments/schedules above. Contracts, a salary
-structure, attendance, time-off, and a paid payrun are not part of the seed script — they're
-demo-data that can be created live through the UI (Employees → Contracts → Salary Config →
-Payroll), which is also the intended demo flow.
+`npm run seed` (or `node src/db/seed.js`) rebuilds the *entire* demo dataset from scratch every
+time it's run — it's idempotent and safe to re-run right before a live demo. It seeds:
+
+- 9 employees above, with realistic job positions and bank account numbers (two — Frank and
+  Heidi — deliberately left without one, so `missing_bank_details` warnings are real)
+- 2 Salary Structures (`Regular Salary` — HRA/PF/Gross/Net; `Contractor Rate` for Ivan)
+- 9 contracts, including a real raise for Eve (₹85,000 → ₹95,000 on 2026-09-01, modeled as two
+  contract rows, never an edit) — Grace is deliberately left with **no** contract at all
+- ~7 weeks of real attendance across every employee (Frank is a genuine statistical outlier, on
+  purpose, for the Insights anomaly detector to find)
+- 3 Time Off Types, allocations, and requests covering every status (approved/submitted/refused)
+- 4 payruns computed live by the real payroll engine — July and September go all the way to
+  `paid`; August is deliberately left at `computed`, blocked from validation by Grace's real
+  `contract_missing` warning, so the Payroll Preflight has a genuine open issue to demo
+
+Re-running the seed script also wipes any stray employees/users/payruns created through manual
+UI testing in between runs, so the dataset never accumulates test debris.
 
 ---
 
@@ -118,8 +142,8 @@ backend/src/
   services/      the two hand-written cores: payrollEngine.service.js, timeOff.service.js
   middleware/    authenticate, authorize(...roles)
   db/migrations/ node-pg-migrate migrations — the schema's real source of truth
-  db/seed.js     baseline demo data (departments, schedules, employees, users)
-  utils/         response envelope, logger
+  db/seed.js     full, idempotent demo dataset — see "Demo credentials" above
+  utils/         response envelope, logger, audit.js (shared logAudit() helper)
 
 frontend/src/
   api/           one file per resource, thin axios wrappers — every function here maps 1:1
@@ -136,14 +160,23 @@ JWT access token (15 min TTL, HS256 pinned) carried in memory (Zustand), plus an
 `sameSite=strict` refresh-token cookie rotated on every use and revocable via the
 `refresh_tokens` table. Five roles enforced at three independent layers: nav visibility (UX only),
 `ProtectedRoute roles={...}` on each frontend route, and `authorize(...roles)` middleware on each
-backend route — the last two are the actual security boundary, verified with real accounts across
-all five roles.
+backend route — the last two are the actual security boundary, verified live with real accounts
+across all five roles against every sensitive endpoint.
+
+**Dev-mode gotcha, already fixed, worth knowing if you touch `AuthBootstrap`:** `React.StrictMode`
+double-invokes effects in dev. The silent-login-on-load effect used to fire two independent
+`/api/auth/refresh` calls per page load; since refresh tokens are one-time-use (rotate on every
+call), whichever request lost that race got a 401 and silently logged out a perfectly valid
+session — on *every* hard refresh, 100% reproducible, not flaky. `App.tsx`'s `AuthBootstrap` now
+guards the real network call behind a `useRef` so it fires exactly once regardless of StrictMode's
+synthetic remount. This is dev-only (StrictMode's double-invoke is stripped in production builds),
+but the demo runs on `npm run dev`, so it mattered.
 
 | Role | Can |
 |---|---|
 | `employee` | See and manage only their own record: attendance, time off, payslips |
 | `hr_manager` | Employees, Contracts, Working Schedules, Attendance, Time Off (read/approve) |
-| `hr_payroll_user` | Everything HR Manager has, plus create/compute payruns |
+| `hr_payroll_user` | Everything HR Manager has, plus create/compute payruns, read-only Salary Structures/Rules |
 | `hr_payroll_manager` | Everything above, plus validate/mark-paid/send payslips, Dashboard |
 | `admin` | Everything, plus User Management (linking login accounts to employee records) |
 
@@ -162,12 +195,13 @@ all five roles.
 ## API Reference
 
 Every route below is mounted in `backend/src/app.js` and called by at least one function in
-`frontend/src/api/*.ts` — this mapping was audited end-to-end (49 distinct frontend calls, 100%
-resolve to a real route; zero orphaned calls, zero mocked endpoints).
+`frontend/src/api/*.ts` — this mapping was re-audited end-to-end this session (every frontend
+call resolves to a real route; zero orphaned calls, zero mocked endpoints, zero hardcoded
+response data anywhere in the frontend).
 
 | Resource | Routes |
 |---|---|
-| Auth | `POST /api/auth/register`, `POST /login`, `POST /refresh`, `POST /logout`, `GET /me` |
+| Auth | `POST /api/auth/register` (self-service, or admin-created with any role), `POST /login`, `POST /refresh`, `POST /logout`, `GET /me` |
 | Users (admin) | `GET /api/users`, `PATCH /api/users/:id` |
 | Departments | `GET /api/departments`, `POST /` |
 | Working Schedules | `GET /api/working-schedules`, `GET /:id`, `POST /`, `PATCH /:id` |
@@ -177,11 +211,15 @@ resolve to a real route; zero orphaned calls, zero mocked endpoints).
 | Time Off Types | `GET /api/time-off-types`, `POST /` |
 | Time Off Allocations | `GET /api/time-off-allocations`, `GET /:id`, `POST /`, `POST /:id/approve` |
 | Time Off Requests | `GET /api/time-off-requests`, `POST /`, `POST /:id/approve`, `POST /:id/refuse` |
-| Salary Structures | `GET /api/salary-structures`, `GET /:id`, `POST /`, `PATCH /:id` |
-| Salary Rules | `GET /api/salary-rules`, `POST /`, `PATCH /:id` |
+| Salary Structures | `GET /api/salary-structures`, `GET /:id`, `POST /`, `PATCH /:id` (rename, active toggle) |
+| Salary Rules | `GET /api/salary-rules`, `POST /`, `PATCH /:id` (edit any field, active toggle) |
 | Payruns | `POST /api/payruns/draft`, `POST /`, `GET /`, `GET /:id`, `POST /:id/compute`, `POST /:id/validate`, `POST /:id/mark-paid`, `POST /:id/send-payslips` |
-| Payslips | `GET /api/payslips`, `GET /:id`, `GET /:id/pdf` |
+| Payslips | `GET /api/payslips`, `GET /:id`, `GET /:id/pdf`, `GET /:id/compare?with=` (rule-by-rule diff against another payslip) |
+| Payslip Simulations | `POST /api/payslip-simulations` (dry-run the real engine, always rolled back) |
 | Dashboard | `GET /api/dashboard?period_start=&period_end=&department_id=&employee_type=` |
+| Audit Logs | `GET /api/audit-logs?table_name=&record_id=&before=&limit=` (payroll-manager/admin only) |
+| Insights | `GET /api/insights/attendance-anomalies`, `GET /api/insights/leave-forecast` |
+| AI Assistant | `GET /api/ai/status`, `POST /api/ai/ask` (read-only, rate-limited 15/hr/user) |
 
 Every response is wrapped `{ success: true, data }` or `{ success: false, error: { message } }`
 (`backend/src/utils/response.js`) — the frontend axios client and every `api/*.ts` function
@@ -195,17 +233,21 @@ unwrap `data.data` consistently.
 |---|---|---|
 | `/` | Landing | Public |
 | `/login` | Login | Public |
+| `/register` | Self-service account creation (always role `employee`) | Public |
 | `/my-space` | Employee self-service home | Employee |
-| `/dashboard` | Payroll Dashboard | Payroll roles |
-| `/employees`, `/employees/new`, `/employees/:id`, `/employees/:id/edit` | Employee hub, create/edit forms, 360 detail | HR roles |
+| `/dashboard` | Payroll Dashboard, incl. AI Assistant card | Payroll roles |
+| `/employees`, `/employees/new`, `/employees/:id`, `/employees/:id/edit` | Employee hub — Kanban/List toggle, create/edit forms, 360 detail with smart-button tabs | HR roles |
 | `/contracts` | Contracts list + create | HR roles |
 | `/working-schedules` | Working Schedule list + weekly-pattern form | HR roles |
 | `/attendance` | Check-in/out (employee) or master table + corrections (HR) | All authenticated |
 | `/time-off` | Requests / Allocations / Types (tabbed) | All authenticated |
 | `/payroll`, `/payroll/payruns/:id` | Payrun list + 2-step wizard, Payrun command center | Payroll roles |
-| `/payroll/payslips/:id` | Payslip calculation trace + PDF | Employee (own) + Payroll roles |
-| `/salary-config` | Salary Structures/Rules editor | Payroll roles |
-| `/user-management` | Link login accounts to employee records | Admin |
+| `/payroll/simulator` | What-If Simulator (dry-run only, nothing persisted) | Payroll roles |
+| `/payroll/payslips/:id` | Payslip calculation trace, PDF, and "why did my salary change?" diff | Employee (own) + Payroll roles |
+| `/salary-config` | Salary Structures/Rules editor — create, rename, edit, active-toggle | HR Payroll Manager + Admin |
+| `/insights` | Attendance anomaly detection + leave-runway forecast | HR roles |
+| `/audit-logs` | Audit Timeline over every contract/payrun change | HR Payroll Manager + Admin |
+| `/user-management` | Link login accounts to employee records, assign roles, create privileged accounts | Admin |
 
 ---
 
