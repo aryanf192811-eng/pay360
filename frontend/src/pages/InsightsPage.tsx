@@ -14,7 +14,9 @@ function currentMonthRange() {
   const now = new Date();
   const start = new Date(now.getFullYear(), now.getMonth(), 1);
   const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+  // toISOString() converts to UTC first, which silently shifts the date back a day for any
+  // timezone ahead of UTC (e.g. UTC+5:30) — build the YYYY-MM-DD string from local fields instead.
+  const fmt = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   return { start: fmt(start), end: fmt(end) };
 }
 
