@@ -115,7 +115,7 @@ function NavDropdown({ item, highlighted, onHover }: { item: NavItem; highlighte
         )}
         <span className="relative z-10 flex items-center gap-4">
           {item.label}
-          <ChevronDown className={cn('h-14 w-14 transition-transform', open && 'rotate-180')} />
+          <ChevronDown className={cn('h-[14px] w-[14px] transition-transform', open && 'rotate-180')} />
         </span>
       </button>
       {open && (
@@ -191,7 +191,7 @@ export function Layout() {
             <div className="leading-tight">
               <div className="text-xs font-semibold text-text">{user?.email}</div>
               <div className="flex items-center gap-4 text-[11px] capitalize text-text-muted">
-                <Building2 className="h-10 w-10" /> {user?.role.replace(/_/g, ' ')}
+                <Building2 className="h-[10px] w-[10px]" /> {user?.role.replace(/_/g, ' ')}
               </div>
             </div>
           </div>

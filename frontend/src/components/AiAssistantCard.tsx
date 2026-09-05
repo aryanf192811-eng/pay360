@@ -50,7 +50,7 @@ export function AiAssistantCard({ filters }: { filters: { period_start?: string;
                 className="flex-1"
               />
               <Button type="submit" disabled={askMut.isPending || !question.trim()}>
-                {askMut.isPending ? 'Asking…' : <><Send className="h-14 w-14" /> Ask</>}
+                {askMut.isPending ? 'Asking…' : <><Send className="h-[14px] w-[14px]" /> Ask</>}
               </Button>
             </form>
             {error && <div className="mt-12 rounded-md bg-[color-mix(in_srgb,var(--danger)_10%,transparent)] px-12 py-8 text-sm text-danger">{error}</div>}

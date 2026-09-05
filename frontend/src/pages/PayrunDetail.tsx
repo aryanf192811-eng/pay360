@@ -30,7 +30,7 @@ function LifecycleStepper({ status }: { status: string }) {
                   !done && !active && 'border-border bg-surface text-text-muted'
                 )}
               >
-                {done ? <Check className="h-14 w-14" /> : i + 1}
+                {done ? <Check className="h-[14px] w-[14px]" /> : i + 1}
               </motion.div>
               <span className={cn('text-[10px] font-medium capitalize', active ? 'text-primary' : 'text-text-muted')}>{stage}</span>
             </div>

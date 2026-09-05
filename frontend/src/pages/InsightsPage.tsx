@@ -50,7 +50,7 @@ export function InsightsPage() {
   return (
     <div className="space-y-24">
       <div>
-        <h1 className="flex items-center gap-8 text-2xl font-bold text-text"><Activity className="h-20 w-20" /> Attendance & Leave Insights</h1>
+        <h1 className="flex items-center gap-8 text-2xl font-bold text-text"><Activity className="h-[20px] w-[20px]" /> Attendance & Leave Insights</h1>
         <p className="text-sm text-text-muted">Statistical outliers and leave-balance runway, computed live — never a hardcoded threshold.</p>
       </div>
 

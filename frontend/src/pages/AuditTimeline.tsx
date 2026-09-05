@@ -46,7 +46,7 @@ export function AuditTimeline() {
     <div className="space-y-24">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="flex items-center gap-8 text-2xl font-bold text-text"><History className="h-20 w-20" /> Audit Timeline</h1>
+          <h1 className="flex items-center gap-8 text-2xl font-bold text-text"><History className="h-[20px] w-[20px]" /> Audit Timeline</h1>
           <p className="text-sm text-text-muted">Every contract and payrun status change, who made it, and what changed.</p>
         </div>
         <Select className="w-auto" value={tableName} onChange={(e) => { setTableName(e.target.value); setPages([]); }}>

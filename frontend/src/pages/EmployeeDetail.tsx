@@ -49,7 +49,7 @@ export function EmployeeDetail() {
           <CardContent className="flex flex-col items-center pt-24 text-center">
             <div className="mb-8 flex w-full justify-start">
               <button onClick={() => navigate('/employees')} className="flex items-center gap-4 text-sm font-medium text-text-muted hover:text-text">
-                <ArrowLeft className="h-14 w-14" /> Back
+                <ArrowLeft className="h-[14px] w-[14px]" /> Back
               </button>
             </div>
             <Avatar seed={employee.id} size="lg" className="mb-16 h-[96px] w-[96px] text-3xl" initials={`${employee.first_name.charAt(0)}${employee.last_name.charAt(0)}`} />
@@ -79,7 +79,7 @@ export function EmployeeDetail() {
               onClick={() => navigate(`/employees/${id}/edit`)}
               className="mt-16 flex w-full items-center justify-center gap-4 rounded-md border border-border bg-surface px-16 py-8 text-xs font-semibold text-text transition-colors hover:bg-bg"
             >
-              <Pencil className="h-14 w-14" /> Edit Profile
+              <Pencil className="h-[14px] w-[14px]" /> Edit Profile
             </button>
           </CardContent>
         </Card>
@@ -101,7 +101,7 @@ export function EmployeeDetail() {
               )}
             >
               <div className="flex items-center gap-6 text-text-muted">
-                <Icon className="h-14 w-14" />
+                <Icon className="h-[14px] w-[14px]" />
                 <span className="text-xs font-medium uppercase tracking-wide">{label}</span>
               </div>
               <span className={cn('text-xl font-bold', tab === key ? 'text-primary' : 'text-text')}>{count}</span>
@@ -130,7 +130,7 @@ export function EmployeeDetail() {
                     <Tr key={c.id as string}>
                       <Td className="font-medium">
                         <div className="flex items-center gap-4">
-                          <FileText className="h-14 w-14 text-text-muted" />
+                          <FileText className="h-[14px] w-[14px] text-text-muted" />
                           {(c.position as string) || '—'}
                         </div>
                       </Td>
@@ -163,7 +163,7 @@ export function EmployeeDetail() {
                     <Tr key={a.id as string}>
                       <Td>
                         <div className="flex items-center gap-4">
-                          <Clock className="h-14 w-14 text-text-muted" />
+                          <Clock className="h-[14px] w-[14px] text-text-muted" />
                           {new Date(a.check_in as string).toLocaleString()}
                         </div>
                       </Td>
@@ -195,7 +195,7 @@ export function EmployeeDetail() {
                     <Tr key={r.id as string}>
                       <Td>
                         <div className="flex items-center gap-4">
-                          <CalendarClock className="h-14 w-14 text-text-muted" />
+                          <CalendarClock className="h-[14px] w-[14px] text-text-muted" />
                           {r.date_from as string}
                         </div>
                       </Td>

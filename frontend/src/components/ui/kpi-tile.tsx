@@ -54,7 +54,7 @@ export function KpiTile({ icon: Icon, label, value, hint, delta, tone = 'primary
               deltaTone === 'neutral' && 'bg-bg text-text-muted'
             )}
           >
-            <DeltaIcon className="h-10 w-10" /> {delta.label}
+            <DeltaIcon className="h-[10px] w-[10px]" /> {delta.label}
           </span>
         )}
       </div>

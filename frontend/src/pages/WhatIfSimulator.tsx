@@ -44,7 +44,7 @@ export function WhatIfSimulator() {
   return (
     <div className="space-y-24">
       <div>
-        <h1 className="flex items-center gap-8 text-2xl font-bold text-text"><FlaskConical className="h-20 w-20" /> What-If Simulator</h1>
+        <h1 className="flex items-center gap-8 text-2xl font-bold text-text"><FlaskConical className="h-[20px] w-[20px]" /> What-If Simulator</h1>
         <p className="text-sm text-text-muted">
           Dry-runs the real payroll engine for a hypothetical employee/structure/period combination. Nothing here is ever saved — every simulation is computed then discarded.
         </p>

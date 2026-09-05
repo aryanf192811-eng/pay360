@@ -24,7 +24,7 @@ export function Footer() {
   return (
     <footer className="mt-32 flex flex-wrap items-center justify-between gap-12 border-t border-border px-24 py-16 text-xs text-text-muted lg:px-32">
       <div className="flex items-center gap-8">
-        <div className="flex h-20 w-20 items-center justify-center rounded-md bg-gradient-to-br from-primary to-accent font-mono text-[10px] font-bold text-white">
+        <div className="flex h-[20px] w-[20px] items-center justify-center rounded-md bg-gradient-to-br from-primary to-accent font-mono text-[10px] font-bold text-white">
           P
         </div>
         <span>&copy; {new Date().getFullYear()} PeoplePay360</span>

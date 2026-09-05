@@ -228,8 +228,8 @@ export function Dashboard() {
         <CardContent className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
           {data.department_overview.map((d) => (
             <div key={d.department} className="flex items-center gap-12 rounded-md border border-border p-16">
-              <div className="flex h-40 w-40 shrink-0 items-center justify-center rounded-md bg-primary text-white">
-                <Building2 className="h-18 w-18" />
+              <div className="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-md bg-primary text-white">
+                <Building2 className="h-[18px] w-[18px]" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold text-text">{d.department}</div>

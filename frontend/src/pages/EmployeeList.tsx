@@ -47,7 +47,7 @@ export function EmployeeList() {
           </div>
           <div className="flex flex-col gap-8 sm:flex-row sm:items-center">
             <div className="relative w-full sm:w-56">
-              <Search className="pointer-events-none absolute left-8 top-1/2 h-14 w-14 -translate-y-1/2 text-text-muted" />
+              <Search className="pointer-events-none absolute left-8 top-1/2 h-[14px] w-[14px] -translate-y-1/2 text-text-muted" />
               <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search name, code, role…" className="pl-28" />
             </div>
             <Select value={departmentId} onChange={(e) => setDepartmentId(e.target.value)} className="w-full sm:w-48">
