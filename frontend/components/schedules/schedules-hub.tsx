@@ -2,13 +2,14 @@
 
 import React, { useState } from "react";
 import { useStore } from "@/lib/store-context";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, Calendar } from "lucide-react";
 import { WorkingSchedule } from "@/lib/mock-data";
 
 export function SchedulesHub() {
   const { schedules } = useStore();
   const [selectedSchedule, setSelectedSchedule] = useState<WorkingSchedule | "NEW" | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<"List" | "Calendar">("List");
 
   const filteredSchedules = schedules.filter((s) =>
     s.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -135,12 +136,30 @@ export function SchedulesHub() {
       </div>
 
       <div className="flex items-center gap-6 mb-6">
-        <button className="text-sm font-bold text-[#714B67] border-b-2 border-[#714B67] pb-1 px-1">List</button>
-        <button className="text-sm font-medium text-slate-500 hover:text-slate-700 pb-1 px-1">Calendar</button>
+        <button 
+          onClick={() => setActiveTab("List")}
+          className={`text-sm font-bold pb-1 px-1 border-b-2 ${activeTab === "List" ? "text-[#714B67] border-[#714B67]" : "text-slate-500 border-transparent hover:text-slate-700"}`}
+        >
+          List
+        </button>
+        <button 
+          onClick={() => setActiveTab("Calendar")}
+          className={`text-sm font-bold pb-1 px-1 border-b-2 ${activeTab === "Calendar" ? "text-[#714B67] border-[#714B67]" : "text-slate-500 border-transparent hover:text-slate-700"}`}
+        >
+          Calendar
+        </button>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex-1">
-        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+        {activeTab === "Calendar" ? (
+          <div className="flex flex-col items-center justify-center h-64 text-slate-500">
+            <Calendar className="w-12 h-12 mb-4 text-slate-300" />
+            <p className="font-bold text-lg text-slate-700">Calendar View</p>
+            <p className="text-sm">This view will display schedules in a calendar format.</p>
+          </div>
+        ) : (
+          <>
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
           <div className="relative w-96">
             <input
               type="text"
@@ -190,15 +209,8 @@ export function SchedulesHub() {
             </tbody>
           </table>
         </div>
-        
-        <div className="p-4 bg-[#F8F9EC] border-t border-slate-200 text-xs font-bold text-slate-600 mt-12 rounded-b-xl mx-4 mb-4 shadow-sm border border-slate-200">
-          WORKING SCHEDULE NOTE:
-          <ul className="list-disc ml-5 mt-1 font-medium text-slate-500">
-            <li>Required Views: List and Form. The List is for finding/opening schedules; the Form defines one schedule.</li>
-            <li>A schedule should capture the weekly working pattern (days, working time and total weekly hours). Breaks or variable shifts can be handled in your own way.</li>
-            <li>Employee/Contract can reference a Working Schedule. Attendance and Payroll may use it as the expected working time.</li>
-          </ul>
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

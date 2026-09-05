@@ -66,7 +66,7 @@ function MainContent() {
       {/* Module 1: Employees Hub — PDF §B1, B2 */}
       {activeNavTab === "Employees" && (
         <div className="flex-1 flex flex-col">
-          <HubHeader />
+          {!selectedEmployee && <HubHeader />}
 
           <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
             {selectedEmployee ? (

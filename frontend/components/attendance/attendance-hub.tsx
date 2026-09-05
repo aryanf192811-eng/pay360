@@ -24,6 +24,7 @@ import { AttendanceRecord, WorkingSchedule, calculateWeeklyHours } from "@/lib/m
 export function AttendanceHub() {
   const { attendance, employees, schedules, addSchedule, addAttendanceRecord } = useStore();
   const [activeTab, setActiveTab] = useState<"matrix" | "schedules">("matrix");
+  const [selectedRecord, setSelectedRecord] = useState<AttendanceRecord | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [isCorrectionOpen, setIsCorrectionOpen] = useState(false);
   const [isNewScheduleOpen, setIsNewScheduleOpen] = useState(false);
@@ -169,8 +170,91 @@ export function AttendanceHub() {
         </div>
       </div>
 
+      {/* FORM VIEW: INDIVIDUAL ATTENDANCE RECORD */}
+      {selectedRecord && (
+        <div className="flex-1 p-6 md:p-8 bg-white h-full flex flex-col mx-6 border border-slate-200 rounded-xl shadow-sm">
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <button 
+                onClick={() => setSelectedRecord(null)}
+                className="text-slate-400 hover:text-slate-600 transition-colors text-sm font-bold tracking-wider mr-2"
+              >
+                ← Back
+              </button>
+              Attendance / {employees.find(e => e.id === selectedRecord.employeeId)?.name || selectedRecord.employeeId} / {selectedRecord.date}
+            </h1>
+            <div className="flex items-center gap-4">
+              <span className={`inline-flex items-center px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider ${
+                selectedRecord.status === "Present"
+                  ? "bg-teal-50 text-teal-800 border border-teal-200"
+                  : selectedRecord.status === "Late"
+                  ? "bg-amber-100 text-amber-800 border border-amber-300"
+                  : "bg-purple-50 text-purple-800 border border-purple-200"
+              }`}>
+                {selectedRecord.status}
+              </span>
+            </div>
+          </div>
+          <p className="text-sm font-medium text-slate-500 mb-8 -mt-6">Form view of one attendance record</p>
+
+          <button className="self-start mb-6 px-6 py-2 border-2 border-slate-200 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50">
+            EDIT
+          </button>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-w-4xl">
+            <div className="space-y-6">
+              <div className="flex flex-col">
+                <label className="text-sm font-bold text-slate-600 mb-2">Employee</label>
+                <input type="text" readOnly value={employees.find(e => e.id === selectedRecord.employeeId)?.name || selectedRecord.employeeId} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 shadow-sm" />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-sm font-bold text-slate-600 mb-2">Check In</label>
+                <input type="text" readOnly value={`${selectedRecord.date} ${selectedRecord.checkIn}`} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 shadow-sm" />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-sm font-bold text-slate-600 mb-2">Check Out</label>
+                <input type="text" readOnly value={`${selectedRecord.date} ${selectedRecord.checkOut}`} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 shadow-sm" />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-sm font-bold text-slate-600 mb-2">Worked Hours</label>
+                <input type="text" readOnly value={`${selectedRecord.workedHours} hrs`} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 shadow-sm" />
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex flex-col">
+                <label className="text-sm font-bold text-slate-600 mb-2">Department</label>
+                <input type="text" readOnly value={employees.find(e => e.id === selectedRecord.employeeId)?.department || ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 shadow-sm" />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-sm font-bold text-slate-600 mb-2">Manager</label>
+                <input type="text" readOnly value={employees.find(e => e.id === selectedRecord.employeeId)?.manager || ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 shadow-sm" />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-sm font-bold text-slate-600 mb-2">Status</label>
+                <input type="text" readOnly value={selectedRecord.status} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 shadow-sm" />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-sm font-bold text-slate-600 mb-2">Overtime</label>
+                <input type="text" readOnly value={selectedRecord.workedHours > 8 ? `${(selectedRecord.workedHours - 8).toFixed(1)} hrs` : "0.00 hrs"} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 shadow-sm" />
+              </div>
+            </div>
+            
+            <div className="md:col-span-2 space-y-2 mt-4 bg-slate-50 border border-slate-200 rounded-xl p-6 relative">
+              <label className="block text-sm font-bold text-slate-700 mb-3">Notes</label>
+              <p className="text-slate-800 font-medium whitespace-pre-wrap min-h-[60px]">
+                System generated from kiosk in/out or manually corrected by an authorized user.
+              </p>
+              <p className="text-xs text-slate-500 absolute bottom-4 left-6 italic">
+                Useful note: worked hours and overtime should be easy to read because they may later influence payroll or reporting.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* VIEW 1: DAILY ATTENDANCE MATRIX */}
-      {activeTab === "matrix" && (
+      {!selectedRecord && activeTab === "matrix" && (
         <div className="px-6 space-y-6">
           {/* KPI Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -255,7 +339,7 @@ export function AttendanceHub() {
                     const emp = employees.find((e) => e.id === rec.employeeId);
 
                     return (
-                      <tr key={rec.id} className="hover:bg-slate-50 transition-colors">
+                      <tr key={rec.id} onClick={() => setSelectedRecord(rec)} className="hover:bg-slate-50 transition-colors cursor-pointer">
                         <td className="py-3.5 px-5">
                           <div className="flex items-center gap-3">
                             {emp && (
@@ -306,7 +390,7 @@ export function AttendanceHub() {
       )}
 
       {/* VIEW 2: WORKING SCHEDULES SETUP (A3 Feature) */}
-      {activeTab === "schedules" && (
+      {!selectedRecord && activeTab === "schedules" && (
         <div className="px-6 space-y-6">
           <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs">
             <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">

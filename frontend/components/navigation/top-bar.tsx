@@ -22,6 +22,7 @@ export function TopBar() {
     setIsAuthOpen,
     setSelectedEmployee,
     employees,
+    setActiveTimeOffTab,
   } = useStore();
 
   const [isNotifOpen, setIsNotifOpen] = useState(false);
@@ -97,10 +98,10 @@ export function TopBar() {
                   )}
                   {tab.key === "Time Off" && (
                     <>
-                      <button onClick={() => setActiveNavTab("Time Off")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Dashboard</button>
-                      <button onClick={() => setActiveNavTab("Time Off")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time offs</button>
-                      <button onClick={() => setActiveNavTab("Time Off")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time off Types</button>
-                      <button onClick={() => setActiveNavTab("Time Off")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Allocations</button>
+                      <button onClick={() => { setActiveNavTab("Time Off"); setActiveTimeOffTab("Dashboard"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Dashboard</button>
+                      <button onClick={() => { setActiveNavTab("Time Off"); setActiveTimeOffTab("Time offs"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time offs</button>
+                      <button onClick={() => { setActiveNavTab("Time Off"); setActiveTimeOffTab("Time off Types"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time off Types</button>
+                      <button onClick={() => { setActiveNavTab("Time Off"); setActiveTimeOffTab("Allocations"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Allocations</button>
                     </>
                   )}
                 </div>
