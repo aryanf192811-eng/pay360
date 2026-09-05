@@ -62,6 +62,8 @@ interface StoreContextType {
   setActiveNavTab: (tab: string) => void;
   activeTimeOffTab: string;
   setActiveTimeOffTab: (tab: string) => void;
+  activePayrollTab: string;
+  setActivePayrollTab: (tab: string) => void;
   addEmployee: (newEmp: Omit<Employee, "id" | "smartMetrics" | "joinedDate">) => void;
   updateEmployeeBankDetails: (empId: string, bank: { accountNumber: string; bankName: string; ifscCode: string }) => void;
 
@@ -112,6 +114,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeNavTab, setActiveNavTab] = useState<string>("Employees");
   const [activeTimeOffTab, setActiveTimeOffTab] = useState<string>("Time offs");
+  const [activePayrollTab, setActivePayrollTab] = useState<string>("Dashboard");
 
   // Payroll state
   const [payrunBatch, setPayrunBatch] = useState<PayrunBatch>(INITIAL_PAYRUN);
@@ -362,6 +365,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         setActiveNavTab,
         activeTimeOffTab,
         setActiveTimeOffTab,
+        activePayrollTab,
+        setActivePayrollTab,
         addEmployee,
         updateEmployeeBankDetails,
 

@@ -11,7 +11,7 @@ import { AddEmployeeDialog } from "@/components/employee-hub/add-employee-dialog
 import { ContractsHub } from "@/components/contracts/contracts-hub";
 import { AttendanceHub } from "@/components/attendance/attendance-hub";
 import { TimeOffHub } from "@/components/timeoff/timeoff-hub";
-import { PayrunEngine } from "@/components/payroll/payrun-engine";
+import { PayrollHub } from "@/components/payroll/payroll-hub";
 import { ExecutiveDashboard } from "@/components/dashboard/executive-dashboard";
 import { UserManagementHub } from "@/components/user-management/user-management-hub";
 import { SchedulesHub } from "@/components/schedules/schedules-hub";
@@ -120,17 +120,10 @@ function MainContent() {
         </main>
       )}
 
-      {/* Module 5: Payrun Engine Pipeline — PDF §B5 B6 B7 B8 */}
+      {/* Module 5: Payroll Hub */}
       {activeNavTab === "Payroll" && (
         <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
-          <PayrunEngine />
-        </main>
-      )}
-
-      {/* Module 6: Executive Reports Dashboard */}
-      {activeNavTab === "Reports" && (
-        <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
-          <ExecutiveDashboard />
+          <PayrollHub />
         </main>
       )}
 

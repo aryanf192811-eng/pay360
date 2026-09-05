@@ -23,6 +23,7 @@ export function TopBar() {
     setSelectedEmployee,
     employees,
     setActiveTimeOffTab,
+    setActivePayrollTab,
   } = useStore();
 
   const [isNotifOpen, setIsNotifOpen] = useState(false);
@@ -51,7 +52,6 @@ export function TopBar() {
     { key: "Attendance", label: "Attendance" },
     { key: "Time Off", label: "Time Off" },
     { key: "Payroll", label: "Payroll" },
-    { key: "Reports", label: "Reports" },
   ];
 
   return (
@@ -102,6 +102,15 @@ export function TopBar() {
                       <button onClick={() => { setActiveNavTab("Time Off"); setActiveTimeOffTab("Time offs"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time offs</button>
                       <button onClick={() => { setActiveNavTab("Time Off"); setActiveTimeOffTab("Time off Types"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time off Types</button>
                       <button onClick={() => { setActiveNavTab("Time Off"); setActiveTimeOffTab("Allocations"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Allocations</button>
+                    </>
+                  )}
+                  {tab.key === "Payroll" && (
+                    <>
+                      <button onClick={() => { setActiveNavTab("Payroll"); setActivePayrollTab("Dashboard"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Dashboard</button>
+                      <button onClick={() => { setActiveNavTab("Payroll"); setActivePayrollTab("Payruns"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Payruns</button>
+                      <button onClick={() => { setActiveNavTab("Payroll"); setActivePayrollTab("Payslips"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Payslips</button>
+                      <button onClick={() => { setActiveNavTab("Payroll"); setActivePayrollTab("Structures"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Structures</button>
+                      <button onClick={() => { setActiveNavTab("Payroll"); setActivePayrollTab("Rules"); }} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Rules</button>
                     </>
                   )}
                 </div>
