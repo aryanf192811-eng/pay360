@@ -190,7 +190,7 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
     401ing. Matches the scaffold's actual scope. **VERIFIED.**
 
 ### T-004 — Postman: real requests + tests for every LIVE route (Auth, Payroll, Time Off)
-- Status: SUBMITTED
+- Status: NEEDS_REVISION
 - Owner: Antigravity
 - Files allowed: `backend/postman/collection.json`, `backend/postman/environment.json`
 - Spec: Auth, Payroll (Payruns+Payslips), and Time Off (Types/Allocations/Requests) routes are
@@ -223,8 +223,47 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - All 19 requests passed, encompassing Auth, Payroll (Draft to Mark Paid), and Time Off (Type -> Allocation -> Approve Allocation -> Request -> Approve Request -> Over-allocate -> 409 rejection).
   - 34/34 assertions passed (0 failed). Postman tests correctly assert status codes (200, 201, 409) and the `success`/`data` (or `success`/`error`) response shapes as specified by API_GUIDE.md.
 
+- **SUPERVISOR REVIEW — NEEDS_REVISION.** Re-ran `npx newman run backend/postman/collection.json
+  -e backend/postman/environment.json` myself, twice. **Both runs fail hard on the entire Time
+  Off folder** — not flaky, fully reproducible.
+
+  **Root cause, confirmed by inspecting the committed `collection.json` and querying the DB
+  directly:** the "Create Type" request body has a **hardcoded, static** name —
+  `"Annual Leave 1788590640224"` — baked in as literal JSON text by
+  `scratch/generate_postman.js` at the moment it was generated (a `Date.now()` call evaluated
+  once, at generation time, then written to disk as a fixed string). `time_off_types.name` has a
+  unique constraint. The very first `newman run` against a fresh DB genuinely passed 34/34 — that
+  part of the self-report is accurate — but the committed collection is now a **static artifact
+  that only works exactly once**. Every subsequent run (mine, twice) hits `409` on that duplicate
+  name, `Create Type`'s test script never gets a `data.id` to store, so
+  `pm.environment.set('timeOffTypeId', ...)` sets it to `undefined`, and every later request in
+  the folder sends the **literal string** `"{{timeOffTypeId}}"` as a value — confirmed directly
+  in the server logs: `invalid input syntax for type uuid: "{{timeOffTypeId}}"`,
+  `"{{requestId}}"`, `"{{overRequestId}}"`, each a straight Postgres UUID-cast error, not an API
+  bug. I confirmed the duplicate row directly: `SELECT name FROM time_off_types WHERE name LIKE
+  'Annual Leave%'` returned 5 rows, one per historical generator run, each with a different
+  frozen timestamp.
+
+  **This is a real defect in the deliverable, not a one-off fluke** — CLAUDE.md's Testing
+  Strategy explicitly requires "a full newman run at the end of each phase," which is impossible
+  if the suite can only ever pass once against a virgin database.
+
+  **Fix needed:** any value that must be unique per run (time off type name, salary structure
+  name, etc.) must be generated **at request-send time by Postman/newman itself**, never baked
+  into the committed JSON by an external generator script run once. Use Postman's built-in
+  dynamic variable `{{$timestamp}}` (or `{{$randomUUID}}`) directly inside the request body JSON
+  — e.g. `"name": "Annual Leave {{$timestamp}}"` — which re-evaluates fresh on every single run,
+  including repeated `newman run` invocations back-to-back with no DB reset in between. Audit
+  every other request body in the collection for the same class of baked-in-not-dynamic value
+  (check the Payroll folder's payrun `name` field too, and any other `POST` with a
+  uniquely-constrained field) before resubmitting.
+- New acceptance check to add before re-submitting: run `npx newman run
+  backend/postman/collection.json -e backend/postman/environment.json` **three times in a row**,
+  no DB reset in between, and confirm all three runs independently pass 100% — not just the
+  first.
+
 ### T-005 — Seed data script (departments, schedules, a handful of employees)
-- Status: SUBMITTED
+- Status: VERIFIED
 - Owner: Antigravity
 - Files allowed: `backend/src/db/seed.js`
 - Spec: idempotent seed script (safe to re-run — `ON CONFLICT DO NOTHING` or delete-then-insert
@@ -240,6 +279,9 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - Creates 9 distinct employees, mapped exactly to the required 5 roles + 4 regular employees.
   - Acceptance check passes: `node src/db/seed.js` ran back-to-back successfully.
   - `SELECT count(*) FROM employees;` remains exactly 12 (3 pre-existing + 9 seeded) on repeated runs without duplication.
+  - **Supervisor re-verification:** ran `node src/db/seed.js` twice back-to-back independently →
+    both succeeded, `SELECT COUNT(*) FROM employees` = 12 both times, no duplication. All 5 roles
+    present (admin, hr_manager, hr_payroll_user, hr_payroll_manager, employee×5). **VERIFIED.**
 
 ### T-006 — Payroll calculation engine + Payrun/Payslip routes (the actual "algorithms" layer — Tier 0, not optional)
 - Status: VERIFIED

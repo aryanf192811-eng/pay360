@@ -76,7 +76,7 @@ app.use('/api/salary-structures',   require('./routes/salaryStructures.routes'))
 app.use('/api/salary-rules',        require('./routes/salaryRules.routes'));
 app.use('/api/payruns',             require('./routes/payruns.routes'));
 app.use('/api/payslips',            require('./routes/payslips.routes'));
-// app.use('/api/dashboard',           require('./routes/dashboard.routes'));
+app.use('/api/dashboard',           require('./routes/dashboard.routes'));
 
 // ─── 404 catch-all ────────────────────────────────────────────────────────────
 
