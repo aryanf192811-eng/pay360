@@ -28,6 +28,30 @@ async function authenticate(req, res, next) {
 }
 
 /**
+ * optionalAuthenticate — like authenticate, but never rejects.
+ * Sets req.user if a valid HS256 Bearer token is present; otherwise req.user
+ * stays undefined and the request continues. Used on /register so that:
+ *   • unauthenticated self-register still works (no token → req.user = undefined → callerRole = null → locked to 'employee')
+ *   • an authenticated admin can pass their token and create privileged-role accounts
+ * Never call next(err) here — a missing/invalid token is simply treated as anonymous.
+ */
+async function optionalAuthenticate(req, _res, next) {
+  const header = req.headers['authorization'];
+  if (header && header.startsWith('Bearer ')) {
+    const token = header.slice(7);
+    try {
+      const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET, {
+        algorithms: ['HS256'],
+      });
+      req.user = { id: payload.sub, role: payload.role };
+    } catch {
+      // Invalid/expired token on an optional route — ignore, proceed as anonymous
+    }
+  }
+  return next();
+}
+
+/**
  * authorize(...roles) — role-based access control middleware factory.
  * Usage: router.get('/', authorize('hr_manager', 'admin'), ctrl.list)
  * Ownership checks (employee self-service) are done inside the controller,
@@ -45,4 +69,4 @@ function authorize(...roles) {
   };
 }
 
-module.exports = { authenticate, authorize };
+module.exports = { authenticate, authorize, optionalAuthenticate };

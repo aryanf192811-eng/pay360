@@ -2,7 +2,7 @@
 
 const router = require('express').Router();
 const ctrl = require('../controllers/auth.controller');
-const { authenticate } = require('../middleware/auth');
+const { authenticate, optionalAuthenticate } = require('../middleware/auth');
 const rateLimit = require('express-rate-limit');
 
 // Tighter rate limit for auth endpoints — 20 attempts per 15 minutes per IP
@@ -14,10 +14,10 @@ const authLimiter = rateLimit({
   message: { success: false, error: { message: 'Too many auth attempts', code: 'RATE_LIMIT' } },
 });
 
-// Self-register: unauthenticated by design.
-// optionally authenticated — if the caller IS authenticated as admin, they can register
-// any role; otherwise role is locked to 'employee' inside the controller.
-router.post('/register', authLimiter, ctrl.register);
+// optionalAuthenticate: sets req.user if a valid Bearer token is present, but never
+// rejects — so unauthenticated self-register still works; an authenticated admin
+// can pass their token to create privileged-role accounts.
+router.post('/register', authLimiter, optionalAuthenticate, ctrl.register);
 
 router.post('/login', authLimiter, ctrl.login);
 
