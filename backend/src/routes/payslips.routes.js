@@ -16,5 +16,6 @@ router.use(authenticate, authorize(...ALL_ROLES));
 router.get('/', ctrl.list);
 router.get('/:id', ctrl.getById);
 router.get('/:id/pdf', ctrl.getPdf);
+router.get('/:id/compare', ctrl.compare);
 
 module.exports = router;

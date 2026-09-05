@@ -108,4 +108,81 @@ async function getPdf(req, res, next) {
   } catch (err) { next(err); }
 }
 
-module.exports = { list, getById, getPdf };
+// ─── GET /api/payslips/:id/compare?with=<payslipId> ────────────────────────────────────────────
+// Tier-2 "Why did my salary change?" (CLAUDE.md): pure read-side diff of two real payslips'
+// already-computed `payslip_lines` for one employee — no recomputation, no second calculation
+// path, just comparing data the engine already produced.
+
+async function compare(req, res, next) {
+  try {
+    const otherId = req.query.with;
+    if (!otherId) { const e = new Error('Query param "with" (the other payslip id) is required'); e.statusCode = 422; throw e; }
+    if (otherId === req.params.id) { const e = new Error('Cannot compare a payslip with itself'); e.statusCode = 422; throw e; }
+
+    const { rows } = await pool.query(
+      `SELECT ps.id, ps.employee_id, ps.period_start, ps.period_end, ps.status,
+              e.first_name, e.last_name, s.name AS structure_name
+       FROM payslips ps
+       JOIN employees e ON e.id = ps.employee_id
+       LEFT JOIN salary_structures s ON s.id = ps.structure_id
+       WHERE ps.id = ANY($1::uuid[])`,
+      [[req.params.id, otherId]]
+    );
+    const a = rows.find((r) => r.id === req.params.id);
+    const b = rows.find((r) => r.id === otherId);
+    if (!a || !b) { const e = new Error('One or both payslips were not found'); e.statusCode = 404; throw e; }
+
+    // Same ownership rule as every other payslip route — checking `a` is enough once we've
+    // confirmed both rows belong to the same employee, checked next.
+    assertOwnRecordOrPayroll(req, a.employee_id);
+    if (a.employee_id !== b.employee_id) {
+      const e = new Error('Can only compare two payslips belonging to the same employee'); e.statusCode = 422; throw e;
+    }
+
+    // Chronological order (by period), not URL param order, so the diff always reads "earlier -> later".
+    const [from, to] = new Date(a.period_start) <= new Date(b.period_start) ? [a, b] : [b, a];
+
+    const { rows: allLines } = await pool.query(
+      `SELECT payslip_id, code, name, category, sequence, amount
+       FROM payslip_lines WHERE payslip_id = ANY($1::uuid[])`,
+      [[from.id, to.id]]
+    );
+    const fromLines = new Map(allLines.filter((l) => l.payslip_id === from.id).map((l) => [l.code, l]));
+    const toLines = new Map(allLines.filter((l) => l.payslip_id === to.id).map((l) => [l.code, l]));
+
+    const codes = [...new Set([...fromLines.keys(), ...toLines.keys()])];
+    // Stable order: by whichever side has the rule's real sequence, falling back to the other side.
+    codes.sort((x, y) => {
+      const sx = fromLines.get(x)?.sequence ?? toLines.get(x)?.sequence ?? 0;
+      const sy = fromLines.get(y)?.sequence ?? toLines.get(y)?.sequence ?? 0;
+      return sx - sy;
+    });
+
+    const diff = codes.map((code) => {
+      const fromLine = fromLines.get(code);
+      const toLine = toLines.get(code);
+      const fromAmount = fromLine ? Number(fromLine.amount) : 0;
+      const toAmount = toLine ? Number(toLine.amount) : 0;
+      const delta = Math.round((toAmount - fromAmount) * 100) / 100;
+      const status = !fromLine ? 'added' : !toLine ? 'removed' : delta === 0 ? 'unchanged' : delta > 0 ? 'increased' : 'decreased';
+      return {
+        code,
+        name: (toLine ?? fromLine).name,
+        category: (toLine ?? fromLine).category,
+        from_amount: fromAmount,
+        to_amount: toAmount,
+        delta,
+        status,
+      };
+    });
+
+    return sendSuccess(res, {
+      employee: { id: a.employee_id, first_name: a.first_name, last_name: a.last_name },
+      from: { id: from.id, period_start: from.period_start, period_end: from.period_end, structure_name: from.structure_name },
+      to: { id: to.id, period_start: to.period_start, period_end: to.period_end, structure_name: to.structure_name },
+      diff,
+    });
+  } catch (err) { next(err); }
+}
+
+module.exports = { list, getById, getPdf, compare };

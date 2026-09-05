@@ -4,6 +4,7 @@ const pool = require('../db/pool');
 const { listEligibleEmployees } = require('../services/contracts.service');
 const { computePayrun } = require('../services/payrollEngine.service');
 const { sendSuccess } = require('../utils/response');
+const { logAudit } = require('../utils/audit');
 const logger = require('../utils/logger');
 
 function validatePeriod(period_start, period_end) {
@@ -156,6 +157,15 @@ async function compute(req, res, next) {
   try {
     const { rows } = await pool.query(`SELECT id, status FROM payruns WHERE id = $1`, [req.params.id]);
     if (!rows[0]) { const e = new Error('Payrun not found'); e.statusCode = 404; throw e; }
+    // PS §B6: "Preserves finalized or paid payroll batches as historical records" — once an
+    // officer has signed off (validated) or the money has actually gone out (paid), silently
+    // recomputing would rewrite that history (e.g. wipe payslip_lines if a contract that was
+    // active at compute time has since ended). Draft/computed are the only recomputable states.
+    if (['validated', 'paid'].includes(rows[0].status)) {
+      const e = new Error(`Cannot recompute a payrun that is already ${rows[0].status} — its payslips are historical record`);
+      e.statusCode = 409;
+      throw e;
+    }
 
     const results = await computePayrun(req.params.id);
 
@@ -163,6 +173,10 @@ async function compute(req, res, next) {
       `UPDATE payruns SET status = 'computed', updated_at = now() WHERE id = $1`,
       [req.params.id]
     );
+    await logAudit(pool, {
+      tableName: 'payruns', recordId: req.params.id, userId: req.user.id, action: 'status_change',
+      changedFields: { from: rows[0].status, to: 'computed', payslip_count: results.length },
+    });
 
     const { rows: warnings } = await pool.query(
       `SELECT id, payslip_id, warning_type, message
@@ -185,6 +199,11 @@ async function validate(req, res, next) {
 
     const { rows } = await client.query(`SELECT id, status FROM payruns WHERE id = $1 FOR UPDATE`, [req.params.id]);
     if (!rows[0]) { const e = new Error('Payrun not found'); e.statusCode = 404; throw e; }
+    if (rows[0].status !== 'computed') {
+      const e = new Error(`Payrun must be computed before it can be validated (current status: ${rows[0].status})`);
+      e.statusCode = 409;
+      throw e;
+    }
 
     // Blocking warnings only: contract_missing. Missing bank details / negative net are advisory.
     const { rows: blocking } = await client.query(
@@ -204,6 +223,10 @@ async function validate(req, res, next) {
       `UPDATE payslips SET status = 'validated', updated_at = now() WHERE payrun_id = $1 AND status = 'computed'`,
       [req.params.id]
     );
+    await logAudit(client, {
+      tableName: 'payruns', recordId: req.params.id, userId: req.user.id, action: 'status_change',
+      changedFields: { from: 'computed', to: 'validated' },
+    });
 
     await client.query('COMMIT');
     logger.info({ payrunId: req.params.id }, 'payrun validated');
@@ -236,6 +259,10 @@ async function markPaid(req, res, next) {
       `UPDATE payslips SET status = 'paid', updated_at = now() WHERE payrun_id = $1 AND status = 'validated'`,
       [req.params.id]
     );
+    await logAudit(client, {
+      tableName: 'payruns', recordId: req.params.id, userId: req.user.id, action: 'status_change',
+      changedFields: { from: 'validated', to: 'paid' },
+    });
 
     await client.query('COMMIT');
     logger.info({ payrunId: req.params.id }, 'payrun marked paid');
