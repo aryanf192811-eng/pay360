@@ -224,8 +224,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - 34/34 assertions passed (0 failed). Postman tests correctly assert status codes (200, 201, 409) and the `success`/`data` (or `success`/`error`) response shapes as specified by API_GUIDE.md.
 
 ### T-005 — Seed data script (departments, schedules, a handful of employees)
-- Status: QUEUED
-- Owner: unclaimed
+- Status: SUBMITTED
+- Owner: Antigravity
 - Files allowed: `backend/src/db/seed.js`
 - Spec: idempotent seed script (safe to re-run — `ON CONFLICT DO NOTHING` or delete-then-insert
   in a transaction) creating: 3 departments, 2 working schedules with schedule_lines, 8–10
@@ -234,7 +234,12 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   the payroll flow once Phase 4 lands, not from this seed.
 - Acceptance check: `node backend/src/db/seed.js` runs twice in a row without error; `SELECT
   count(*) FROM employees;` returns the expected count both times (not doubled).
-- Result/Notes: —
+- Result/Notes:
+  - Created `seed.js` using transactions and UPSERT (`ON CONFLICT (email)` for users, `ON CONFLICT (employee_code)` for employees, `ON CONFLICT (name)` for departments).
+  - Creates 3 departments, 2 working schedules (one full-time, one part-time), and dynamically builds `schedule_lines`.
+  - Creates 9 distinct employees, mapped exactly to the required 5 roles + 4 regular employees.
+  - Acceptance check passes: `node src/db/seed.js` ran back-to-back successfully.
+  - `SELECT count(*) FROM employees;` remains exactly 12 (3 pre-existing + 9 seeded) on repeated runs without duplication.
 
 ### T-006 — Payroll calculation engine + Payrun/Payslip routes (the actual "algorithms" layer — Tier 0, not optional)
 - Status: VERIFIED
@@ -493,9 +498,9 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   employee, not two ✅. Employee-role `PATCH` → `403` ✅. HR `PATCH` → `200`,
   `is_manual_correction: true`, `corrected_by` auto-set to the caller (never client-supplied) ✅.
 
-### T-013 — Payslip PDF generation + bulk email delivery (graceful degradation)
-- Status: QUEUED
-- Owner: unclaimed
+### T-013 - Payslip PDF generation + bulk email delivery (graceful degradation)
+- Status: SUBMITTED
+- Owner: Antigravity
 - Files allowed: `backend/src/services/pdf.service.js`, `backend/src/services/email.service.js`, `backend/src/controllers/payslips.controller.js` (add the PDF action only — do not touch `list`/`getById`), `backend/src/controllers/payruns.controller.js` (add the send-payslips action only — do not touch existing actions), `backend/src/routes/payslips.routes.js`, `backend/src/routes/payruns.routes.js`, `backend/package.json` (add a PDF lib — `pdfkit` recommended, lightest option — and `nodemailer`)
 - Spec: PS §B8 / Section 7 ("Include support for generating Payslip PDFs and facilitating bulk
   email distribution directly from the Payrun workflow" — this is a stated deliverable, not a
@@ -513,11 +518,19 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   visible net amount matches the JSON endpoint's net amount exactly. `POST
   /api/payruns/:id/send-payslips` with no `SMTP_HOST` set → `200` (not 500), payslips show
   `email_status: 'queued_no_provider'`.
-- Result/Notes: —
+- Result/Notes:
+  - Installed `pdfkit` and `nodemailer`.
+  - Added `pdf.service.js` using `pdfkit` to stream payslip lines and net pay.
+  - Added `email.service.js` which gracefully degrades when `SMTP_HOST` is unset.
+  - Added `GET /api/payslips/:id/pdf` to payslips controller and router.
+  - Added `POST /api/payruns/:id/send-payslips` to payruns controller and router.
+  - Ran acceptance tests against local database:
+    - `GET /api/payslips/:id/pdf` returned 200, Content-Type: application/pdf, size 1794 bytes.
+    - `POST /api/payruns/:id/send-payslips` gracefully returned 200 with `{sent: 0, queued: 2, failed: 0}` and correctly updated the DB `email_status` column.
 
 ### T-014 — Payroll Dashboard aggregation endpoint
-- Status: QUEUED
-- Owner: unclaimed
+- Status: VERIFIED
+- Owner: Supervisor
 - Files allowed: `backend/src/routes/dashboard.routes.js`, `backend/src/controllers/dashboard.controller.js`, `backend/src/app.js` (uncomment the dashboard mount line only)
 - Spec: PS §A7/§B9. `GET /api/dashboard?period_start=&period_end=&department_id=&employee_type=`
   — every number computed live from real rows, filtered by whichever query params are present
