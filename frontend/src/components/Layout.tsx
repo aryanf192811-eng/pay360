@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { ChevronDown, LogOut, Building2 } from 'lucide-react';
 import { useAuthStore, ROLES, HR_ROLES, PAYROLL_ROLES, homeFor } from '../store/auth.store';
 import { cn } from '../lib/utils';
 import { logout as apiLogout } from '../api/auth.api';
 import { Avatar } from './Avatar';
+import { Footer } from './Footer';
 
 interface NavLeaf {
   to: string;
@@ -48,53 +50,86 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Audit Log', to: '/audit-logs', roles: [ROLES.HR_PAYROLL_MANAGER, ROLES.ADMIN] },
 ];
 
-function NavDropdown({ item }: { item: NavItem }) {
-  const [open, setOpen] = useState(false);
+function NavDropdown({ item, highlighted, onHover }: { item: NavItem; highlighted: boolean; onHover: (label: string | null) => void }) {
+  // `clicked` is a fallback for devices with no hover (touch) — hovering alone opens the menu
+  // on desktop, so a click-then-hover conflict never fights over the same `open` flag.
+  const [clicked, setClicked] = useState(false);
+  const open = highlighted || clicked;
   const ref = useRef<HTMLDivElement>(null);
+  const location = useLocation();
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node)) setClicked(false);
     }
     document.addEventListener('mousedown', onClickOutside);
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
+  const isActiveRoute = item.children
+    ? item.children.some((leaf) => location.pathname.startsWith(leaf.to))
+    : location.pathname.startsWith(item.to!);
+  const showPill = highlighted || (!highlighted && isActiveRoute);
+
   if (!item.children) {
     return (
       <NavLink
         to={item.to!}
-        className={({ isActive }) =>
-          cn(
-            'flex items-center gap-4 rounded-md px-12 py-8 text-sm font-medium transition-colors',
-            isActive ? 'text-primary' : 'text-text-muted hover:text-text'
-          )
-        }
+        onMouseEnter={() => onHover(item.label)}
+        onMouseLeave={() => onHover(null)}
+        className="relative flex items-center gap-4 rounded-full px-12 py-8 text-sm font-medium text-text-muted transition-colors hover:text-text data-[active=true]:text-primary"
+        data-active={isActiveRoute}
       >
-        {item.label}
+        {showPill && (
+          <motion.span
+            layoutId="navPill"
+            className="absolute inset-0 rounded-full bg-primary-light"
+            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+          />
+        )}
+        <span className="relative z-10">{item.label}</span>
       </NavLink>
     );
   }
 
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => onHover(item.label)}
+      onMouseLeave={() => onHover(null)}
+    >
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setClicked((v) => !v)}
         className={cn(
-          'flex items-center gap-4 rounded-md px-12 py-8 text-sm font-medium transition-colors',
-          open ? 'text-primary' : 'text-text-muted hover:text-text'
+          'relative flex items-center gap-4 rounded-full px-12 py-8 text-sm font-medium transition-colors',
+          open || isActiveRoute ? 'text-primary' : 'text-text-muted hover:text-text'
         )}
       >
-        {item.label}
-        <ChevronDown className={cn('h-14 w-14 transition-transform', open && 'rotate-180')} />
+        {showPill && (
+          <motion.span
+            layoutId="navPill"
+            className="absolute inset-0 rounded-full bg-primary-light"
+            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+          />
+        )}
+        <span className="relative z-10 flex items-center gap-4">
+          {item.label}
+          <ChevronDown className={cn('h-14 w-14 transition-transform', open && 'rotate-180')} />
+        </span>
       </button>
       {open && (
-        <div className="absolute left-0 top-full z-40 mt-4 min-w-[200px] rounded-md border border-border bg-surface py-4 shadow-tinted-lg">
+        <motion.div
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.15 }}
+          className="absolute left-0 top-full z-40 mt-4 min-w-[200px] rounded-md border border-border bg-surface py-4 shadow-tinted-lg"
+        >
           {item.children.map((leaf) => (
             <NavLink
               key={leaf.to}
               to={leaf.to}
-              onClick={() => setOpen(false)}
+              onClick={() => setClicked(false)}
               className={({ isActive }) =>
                 cn(
                   'block px-16 py-8 text-sm transition-colors',
@@ -105,7 +140,7 @@ function NavDropdown({ item }: { item: NavItem }) {
               {leaf.label}
             </NavLink>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );
@@ -116,6 +151,7 @@ export function Layout() {
   const navigate = useNavigate();
 
   const visibleItems = NAV_ITEMS.filter((item) => !item.roles || (user && item.roles.includes(user.role)));
+  const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
 
   const handleLogout = async () => {
     try {
@@ -136,15 +172,15 @@ export function Layout() {
             </div>
             <span className="hidden text-sm font-bold tracking-tight text-text sm:inline">PeoplePay360</span>
           </NavLink>
-          <nav className="flex items-center gap-4">
+          <nav className="flex items-center gap-4 rounded-full bg-bg p-4" onMouseLeave={() => setHoveredLabel(null)}>
             {user?.role === ROLES.EMPLOYEE && (
-              <NavDropdown item={{ label: 'My Space', to: '/my-space' }} />
+              <NavDropdown item={{ label: 'My Space', to: '/my-space' }} highlighted={hoveredLabel === 'My Space'} onHover={setHoveredLabel} />
             )}
             {visibleItems.map((item) => (
-              <NavDropdown key={item.label} item={item} />
+              <NavDropdown key={item.label} item={item} highlighted={hoveredLabel === item.label} onHover={setHoveredLabel} />
             ))}
             {user?.role === ROLES.ADMIN && (
-              <NavDropdown item={{ label: 'User Management', to: '/user-management' }} />
+              <NavDropdown item={{ label: 'User Management', to: '/user-management' }} highlighted={hoveredLabel === 'User Management'} onHover={setHoveredLabel} />
             )}
           </nav>
         </div>
@@ -172,6 +208,7 @@ export function Layout() {
       <main className="p-24 lg:p-32">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }
