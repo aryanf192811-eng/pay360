@@ -69,8 +69,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - **Supervisor re-verification (independent):** re-ran `curl http://localhost:4000/health` → `200 {"success":true,"data":{"status":"ok"}}` ✅ and a 404 route → `{"success":false,"error":{"message":"Not found","code":"NOT_FOUND"}}` ✅ against the live server. Reviewed app.js/server.js/pool.js/response.js/logger.js by hand — matches spec (frozen response shapes, statusCode-driven error handler, no leak of internal errors in prod, health check doesn't depend on DB, graceful shutdown, rate limiter present). **VERIFIED.**
 
 ### T-002 — Auth: register/login/refresh/logout + JWT middleware
-- Status: QUEUED
-- Owner: unclaimed
+- Status: CLAIMED
+- Owner: Antigravity
 - Files allowed: `backend/src/routes/auth.routes.js`, `backend/src/controllers/auth.controller.js`, `backend/src/services/auth.service.js`, `backend/src/middleware/auth.js` (reads/imports `backend/src/utils/response.js` from T-001 — does not modify it; if it's missing, that means T-001 hasn't landed yet — claim T-001 first or wait)
 - Spec: implement exactly the auth model in CLAUDE.md's Architecture section and API_GUIDE.md's
   Auth Header Convention — bcrypt hash (cost 12), JWT `HS256` pinned on every verify,

@@ -110,6 +110,40 @@ The Payrun Processing screen's "duplicate payslip" warning (PS section B6) is a 
 UI surface of this same constraint — checked before insert so the user sees the warning as a
 warning, not as a raw 409 from a failed insert.
 
+## Entity-Relationship Diagram
+
+Renders natively on GitHub — always kept in sync with the migration by hand, since it's text
+next to the schema it describes, not a separate drawing that can drift.
+
+```mermaid
+erDiagram
+    DEPARTMENTS ||--o{ EMPLOYEES : "has"
+    DEPARTMENTS ||--o{ CONTRACTS : "scopes"
+    WORKING_SCHEDULES ||--o{ SCHEDULE_LINES : "defines"
+    WORKING_SCHEDULES ||--o{ EMPLOYEES : "assigned to"
+    EMPLOYEES ||--o{ EMPLOYEES : "manages"
+    EMPLOYEES ||--o| USERS : "logs in as"
+    EMPLOYEES ||--o{ CONTRACTS : "has (versioned)"
+    EMPLOYEES ||--o{ ATTENDANCES : "logs"
+    EMPLOYEES ||--o{ TIME_OFF_ALLOCATIONS : "granted"
+    EMPLOYEES ||--o{ TIME_OFF_REQUESTS : "submits"
+    EMPLOYEES ||--o{ PAYSLIPS : "receives"
+    USERS ||--o{ REFRESH_TOKENS : "holds"
+    SALARY_STRUCTURES ||--o{ SALARY_RULES : "orders"
+    SALARY_STRUCTURES ||--o{ CONTRACTS : "assigned on"
+    SALARY_STRUCTURES ||--o{ PAYRUNS : "chosen for"
+    CONTRACTS ||--o{ PAYSLIPS : "applies to"
+    TIME_OFF_TYPES ||--o{ TIME_OFF_ALLOCATIONS : "categorizes"
+    TIME_OFF_TYPES ||--o{ TIME_OFF_REQUESTS : "categorizes"
+    TIME_OFF_ALLOCATIONS ||--o{ TIME_OFF_REQUESTS : "consumed by (live SUM, not stored)"
+    PAYRUNS ||--o{ PAYRUN_EMPLOYEES : "selects"
+    PAYRUNS ||--o{ PAYSLIPS : "generates"
+    PAYSLIPS ||--o{ PAYSLIP_LINES : "frozen breakdown"
+    SALARY_RULES ||--o{ PAYSLIP_LINES : "produces"
+    PAYSLIPS ||--o{ PAYROLL_WARNINGS : "flags"
+    PAYRUNS ||--o{ PAYROLL_WARNINGS : "flags"
+```
+
 ## Table Reference
 
 | Table | Key columns | Relationships |
