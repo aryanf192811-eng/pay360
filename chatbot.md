@@ -107,4 +107,69 @@ task entry — raw research text never gets pasted into this file.
   count(*) FROM employees;` returns the expected count both times (not doubled).
 - Result/Notes: —
 
+### T-006 — Payroll calculation engine (the actual "algorithms" layer — Tier 0, not optional)
+- Status: QUEUED
+- Owner: unclaimed
+- Files allowed: `backend/src/services/payrollEngine.service.js`, `backend/src/services/contracts.service.js`, `backend/src/controllers/payruns.controller.js`, `backend/package.json` (add `mathjs` dep only)
+- Spec: This is the real dynamic-calculation core — no hardcoded numbers anywhere, per CLAUDE.md's Dynamic Data Mandate.
+  1. `resolveApplicableContract(employeeId, periodStart, periodEnd)` — runs the exact query in
+     DB_GUIDE.md "Real Key-Join Patterns #1". Returns the contract row or `null`.
+  2. `computeWorkedDays(employeeId, periodStart, periodEnd)` — counts distinct calendar days in
+     `attendances` within the period where `status IN ('present','late','overtime')`, using the
+     employee's `working_schedules`/`schedule_lines` to know which weekdays are actually
+     scheduled (a Saturday with no schedule line isn't a missed day).
+  3. `computePayslip(payslipId)` — the rule engine itself:
+     - Load `salary_rules` for the payslip's `structure_id`, ordered by `sequence` ASC.
+     - Build a running `context` object: `{ BASIC: <contract.wage>, WORKED_DAYS: <from step 2>, ...}`
+       seeded from the contract and worked-days figures — never a hardcoded seed value.
+     - For each rule in sequence: `fixed` → `context[rule.code] = rule.amount`; `percentage` →
+       `context[rule.code] = context[rule.base_code] * (rule.percentage / 100)`; `formula` →
+       evaluate `rule.formula` (e.g. `"BASIC * 0.12"`, `"GROSS - PF - TAX"`) using **`mathjs`'s
+       `evaluate(expr, scope)`** with `context` as the scope — **never** `eval()` or
+       `new Function()` on the stored formula string, that's an arbitrary-code-execution hole on
+       a field an HR Payroll Manager can edit.
+     - Each rule's resulting amount becomes one `payslip_lines` row. Persist via the exact
+       DELETE-then-bulk-INSERT transaction in DB_GUIDE.md's Ledger Pattern section (idempotent
+       recompute). Update `payslips.status = 'computed'` and `worked_days` in the same
+       transaction.
+     - After computing, run warning checks and insert `payroll_warnings` rows (no dedup needed —
+       recompute deletes prior lines but warnings should also be cleared/reinserted per
+       recompute): missing `bank_account_number` → `missing_bank_details`; `resolveApplicableContract`
+       returned null → `contract_missing` (and skip line computation for that employee); a
+       `category='net'` line with a negative amount → `negative_net`.
+  4. Wire into `POST /api/payruns/:id/compute` — loop every payslip under the payrun, call
+     `computePayslip`, aggregate warnings, return the summary (per API_GUIDE.md's controller
+     template: validate → persist → side effects → log).
+  5. `POST /api/payruns/:id/validate` — blocks (`409`, per API_GUIDE status table) if any
+     *unresolved* `payroll_warnings` of type `contract_missing` exist for payslips in this
+     payrun (missing bank details / negative net are advisory, don't block); otherwise sets
+     `payruns.status='validated'`.
+- Acceptance check: seed two employees — one with a normal active contract + full attendance, one
+  with a `bank_account_number` of `NULL` and no contract covering the period. Create a payrun
+  covering both. `POST /api/payruns/:id/compute` → `200`; `GET /api/payslips?payrun_id=...` shows
+  computed `payslip_lines` for employee 1 with a real `net` line whose value is NOT a value typed
+  anywhere in seed data (it must be arithmetically derived — verify by hand-computing from the
+  salary rules and comparing); employee 2's payslip has a `contract_missing` warning and no
+  lines. `POST /api/payruns/:id/validate` → `409` while that warning is unresolved.
+- Result/Notes: —
+
+### T-007 — Time-off live balance service (ledger reads, no stored balance)
+- Status: QUEUED
+- Owner: unclaimed
+- Files allowed: `backend/src/services/timeOff.service.js`, `backend/src/controllers/timeOffAllocations.controller.js`, `backend/src/controllers/timeOffRequests.controller.js`
+- Spec: `getAllocationBalance(allocationId)` runs the exact live-SUM query in DB_GUIDE.md's Ledger
+  Pattern section — never a stored `taken`/`remaining` column, never computed in JS from a
+  cached value. `approveRequest(requestId, approverId)` runs inside a transaction that first
+  does `SELECT allocated FROM time_off_allocations WHERE id = $1 FOR UPDATE` (row lock —
+  prevents two concurrent approvals from both passing an over-allocation check), computes
+  current taken+this request's duration against `allocated`, and only then updates the request
+  to `approved`; if it would exceed the allocation, return `409` with the shortfall amount in the
+  error message instead of silently approving. This is the security-baseline "atomic DB-level
+  guard, not read-then-write race" applied to leave balances specifically.
+- Acceptance check: create an allocation of 5 days; submit and approve two requests of 3 days
+  each sequentially — first approves (200), second is rejected (409, "exceeds remaining balance
+  by 1 day" or equivalent). `GET` the allocation and confirm `remaining` reflects only the
+  approved request, computed live (change the DB row directly and re-GET to prove it's not cached).
+- Result/Notes: —
+
 <!-- Add Phase 1+ tasks here as each phase starts — keep this board to the current + next phase, not the whole roadmap at once, so it stays skimmable. -->

@@ -10,6 +10,42 @@ what's next.
 
 ---
 
+## 2026-09-05 (later) — Repo live, gh authenticated, calculation engine queued
+
+- `main`/`naresh`/`parth` all pushed to `https://github.com/aryanf192811-eng/pay360` and tracking
+  their remotes. First commit (`597a9bf` "chore: bootstrap project scaffold") is on all three.
+- `gh` CLI installed (winget) and authenticated as `aryanf192811-eng` via device-code flow (user
+  completed the browser step); `gh auth setup-git` ran, so plain `git push`/`pull` now works
+  non-interactively too. **Note for a fresh shell/session:** `gh.exe` is at
+  `C:\Program Files\GitHub CLI\gh.exe` — not yet on PATH in already-open shells from before the
+  install; new shells should have it automatically via the system PATH winget updated.
+- Real Odoo Excalidraw wireframe reviewed (user supplied a screenshot — WebFetch can't render
+  Excalidraw's canvas, so this required the image directly). It's a bare gray/white functional
+  sketch: plain tables, no color system, no status coloring, generic boxes — confirms the Ledger
+  design system (UI_GUIDE.md) is already positioned to be a large visual upgrade, not just a
+  different flavor of the same thing. The wireframe's actual *screen inventory* matches what's
+  already in API_GUIDE.md's route list and CLAUDE.md's roadmap 1:1 (Login/User Mgmt, Employee+
+  Contract, Working Schedule, Attendance (+ a check-in/out "widget" — worth mirroring as a
+  small persistent header widget, not just a form), Time Off (Requests/Types/Allocations),
+  Payrun wizard (2-step, exactly as speced), Payslip, Salary Structures/Rules, Payroll Dashboard
+  with KPI cards + Salary Cost by Department + Monthly Net Salary Trend + Payslip Status/Alerts +
+  Attendance Overview + Time Off Overview + Department Overview — all of which DB_GUIDE.md's
+  schema already supports with live queries, nothing new needed schema-wise.
+- Added **T-006 (Payroll calculation engine)** and **T-007 (Time-off live balance service)** to
+  chatbot.md — these are the actual "algorithms" the user asked to prioritize: a real
+  sequence-ordered salary-rule evaluator (fixed/percentage/formula, using `mathjs` `evaluate()`
+  against a scoped context — explicitly NOT `eval()`/`new Function()` on a stored formula string,
+  which would be a code-execution hole on an HR-Payroll-Manager-editable field), contract
+  resolution, worked-days computation from attendance+schedule, and the row-locked
+  (`SELECT ... FOR UPDATE`) over-allocation guard for leave approval. Both fully specified with
+  acceptance checks; neither hand-written by supervisor, per the token-discipline correction.
+
+**What's next:** get T-001/T-002 (backend skeleton + auth) and T-006/T-007 (engine) running via
+Antigravity, in that dependency order (engine needs the skeleton+DB connection first). Frontend
+scaffold (T-003) can run in parallel since it has no backend dependency yet.
+
+---
+
 ## 2026-09-05 — Strategic pivot: Tier system, team roles finalized, log book started
 
 **Decision (user-directed, incorporating external "GPT" strategy review):**
