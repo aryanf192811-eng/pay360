@@ -10,6 +10,7 @@ import { MySpace } from './pages/MySpace';
 import { UserManagement } from './pages/UserManagement';
 import { EmployeeList } from './pages/EmployeeList';
 import { EmployeeDetail } from './pages/EmployeeDetail';
+import { EmployeeForm } from './pages/EmployeeForm';
 import { ContractList } from './pages/ContractList';
 import { AttendanceList } from './pages/AttendanceList';
 import { TimeOffPage } from './pages/TimeOffPage';
@@ -106,10 +107,26 @@ export default function App() {
               }
             />
             <Route
+              path="/employees/new"
+              element={
+                <ProtectedRoute roles={HR_ROLES}>
+                  <EmployeeForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/employees/:id"
               element={
                 <ProtectedRoute roles={HR_ROLES}>
                   <EmployeeDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/employees/:id/edit"
+              element={
+                <ProtectedRoute roles={HR_ROLES}>
+                  <EmployeeForm />
                 </ProtectedRoute>
               }
             />

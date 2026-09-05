@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, FileText, Clock, CalendarClock, Wallet } from 'lucide-react';
+import { ArrowLeft, FileText, Clock, CalendarClock, Wallet, Pencil } from 'lucide-react';
 import {
   getEmployee,
   listEmployeeContracts,
@@ -11,6 +11,7 @@ import {
 } from '../api/employees.api';
 import { StatusBadge } from '../components/StatusBadge';
 import { Card, CardContent } from '../components/ui/card';
+import { Button } from '../components/ui/button';
 import { Table, Thead, Tbody, Tr, Th, Td } from '../components/ui/table';
 import { CardSkeleton } from '../components/ui/skeleton';
 import { cn } from '../lib/utils';
@@ -70,7 +71,12 @@ export function EmployeeDetail() {
               </div>
             </div>
           </div>
-          <StatusBadge status={employee.status} domain="employee" />
+          <div className="flex items-center gap-12">
+            <StatusBadge status={employee.status} domain="employee" />
+            <Button size="sm" variant="secondary" onClick={() => navigate(`/employees/${id}/edit`)}>
+              <Pencil className="h-14 w-14" /> Edit
+            </Button>
+          </div>
         </CardContent>
       </Card>
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Users, LayoutGrid, List as ListIcon } from 'lucide-react';
+import { Users, LayoutGrid, List as ListIcon, Plus } from 'lucide-react';
 import { listEmployees } from '../api/employees.api';
 import { listDepartments } from '../api/reference.api';
 import { StatusBadge } from '../components/StatusBadge';
@@ -53,6 +53,9 @@ export function EmployeeList() {
               <ListIcon className="h-16 w-16" />
             </button>
           </div>
+          <Button onClick={() => navigate('/employees/new')}>
+            <Plus className="h-16 w-16" /> New Employee
+          </Button>
         </div>
       </div>
 
@@ -63,6 +66,8 @@ export function EmployeeList() {
           icon={Users}
           title="No employees yet"
           description="Employees you add will appear here, acting as the hub for their contracts, attendance, and time off."
+          actionLabel="New Employee"
+          onAction={() => navigate('/employees/new')}
         />
       ) : view === 'kanban' ? (
         <div className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
