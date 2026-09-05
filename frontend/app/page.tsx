@@ -13,9 +13,10 @@ import { SchedulesHub } from "@/components/schedules/schedules-hub";
 import { TimeOffHub } from "@/components/timeoff/timeoff-hub";
 import { PayrunEngine } from "@/components/payroll/payrun-engine";
 import { ExecutiveDashboard } from "@/components/dashboard/executive-dashboard";
+import { BentoDashboard } from "@/components/dashboard/bento-dashboard";
 import { PayrunWizardDialog } from "@/components/payroll/payrun-wizard-dialog";
 import { PayslipModal } from "@/components/payroll/payslip-modal";
-import { AuthDialog } from "@/components/auth/auth-dialog";
+import { LoginDialog } from "@/components/auth/login-dialog";
 import { EnterpriseFooter } from "@/components/footer/enterprise-footer";
 import { Users, Plus } from "lucide-react";
 
@@ -51,12 +52,19 @@ function MainContent() {
     <div className="flex-1 flex flex-col min-h-screen">
       <TopBar />
 
+      {/* Module 0: Executive Bento Dashboard (Like Reference Image Layout) */}
+      {(activeNavTab === "Dashboard" || activeNavTab === "Reports") && (
+        <main className="flex-1 w-full">
+          <BentoDashboard />
+        </main>
+      )}
+
       {/* Module 1: Employees Hub (Screen 1) */}
       {activeNavTab === "Employees" && (
         <div className="flex-1 flex flex-col">
           <HubHeader />
 
-          <main className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto">
+          <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
             {filteredEmployees.length === 0 ? (
               <div className="text-center py-16 bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-8 shadow-xs">
                 <Users className="w-12 h-12 text-slate-300 mx-auto mb-3" />
@@ -87,36 +95,29 @@ function MainContent() {
 
       {/* Module 2: Contracts Management Hub (Screen 2) */}
       {activeNavTab === "Contracts" && (
-        <main className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <ContractsHub />
         </main>
       )}
 
       {/* Module 3: Working Schedules Hub (NEW - Section A3) */}
       {(activeNavTab === "Working Schedules" || activeNavTab === "Attendance") && (
-        <main className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <SchedulesHub />
         </main>
       )}
 
       {/* Module 4: Time Off & Leave Approvals Hub (NEW - Section A4 & B4) */}
       {activeNavTab === "Time Off" && (
-        <main className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <TimeOffHub />
         </main>
       )}
 
       {/* Module 5: Payrun Engine Pipeline (NEW - Section B5, B6 & B7) */}
-      {activeNavTab === "Payroll" && (
-        <main className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto">
+      {(activeNavTab === "Payroll" || activeNavTab === "Payroll Wizard") && (
+        <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <PayrunEngine />
-        </main>
-      )}
-
-      {/* Module 6: Executive Payroll Dashboard (NEW - Section B9 Reports) */}
-      {activeNavTab === "Reports" && (
-        <main className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto">
-          <ExecutiveDashboard />
         </main>
       )}
 
@@ -128,7 +129,7 @@ function MainContent() {
       <AddEmployeeDialog />
       <PayrunWizardDialog />
       <PayslipModal />
-      <AuthDialog />
+      <LoginDialog />
     </div>
   );
 }

@@ -105,7 +105,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [viewMode, setViewMode] = useState<"kanban" | "list">("kanban");
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [activeNavTab, setActiveNavTab] = useState<string>("Employees");
+  const [activeNavTab, setActiveNavTab] = useState<string>("Dashboard");
 
   // Payroll state
   const [payrunBatch, setPayrunBatch] = useState<PayrunBatch>(INITIAL_PAYRUN);
