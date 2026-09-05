@@ -7,6 +7,7 @@ import { Layout } from './components/Layout';
 import { Landing } from './pages/Landing';
 import { Login } from './pages/Login';
 import { MySpace } from './pages/MySpace';
+import { UserManagement } from './pages/UserManagement';
 import { EmployeeList } from './pages/EmployeeList';
 import { EmployeeDetail } from './pages/EmployeeDetail';
 import { ContractList } from './pages/ContractList';
@@ -88,6 +89,14 @@ export default function App() {
             }
           >
             <Route path="/my-space" element={<MySpace />} />
+            <Route
+              path="/user-management"
+              element={
+                <ProtectedRoute roles={[ROLES.ADMIN]}>
+                  <UserManagement />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/employees"
               element={

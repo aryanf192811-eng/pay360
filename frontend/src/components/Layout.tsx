@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Users, FileText, CalendarClock, Clock, Wallet, Settings, LogOut, Home } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, CalendarClock, Clock, Wallet, Settings, LogOut, Home, ShieldCheck } from 'lucide-react';
 import { useAuthStore, ROLES, HR_ROLES, PAYROLL_ROLES } from '../store/auth.store';
 import { cn } from '../lib/utils';
 import { logout as apiLogout } from '../api/auth.api';
@@ -25,6 +25,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: '/time-off', label: 'Time Off', icon: CalendarClock },
   { to: '/payroll', label: 'Payroll', icon: Wallet, roles: PAYROLL_ROLES },
   { to: '/salary-config', label: 'Salary Config', icon: Settings, roles: PAYROLL_ROLES },
+  { to: '/user-management', label: 'User Management', icon: ShieldCheck, roles: [ROLES.ADMIN] },
 ];
 
 export function Layout() {

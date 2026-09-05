@@ -1,30 +1,7 @@
 import { Navigate, useNavigate } from 'react-router-dom';
-import { ArrowRight, FileText, Calculator, ShieldCheck, LayoutDashboard } from 'lucide-react';
+import { ArrowRight, ShieldCheck, FileText } from 'lucide-react';
 import { useAuthStore, homeFor } from '../store/auth.store';
 import { Button } from '../components/ui/button';
-
-const PILLARS = [
-  {
-    icon: FileText,
-    title: 'Contracts that never lie about history',
-    description: 'A raise is a new contract row, never an overwrite — old payslips stay correct forever, and two overlapping active contracts are structurally impossible.',
-  },
-  {
-    icon: Calculator,
-    title: 'Payroll you can actually audit',
-    description: 'Every payslip shows the real rule pipeline that produced it — Basic → Allowances → Deductions → Net — not just a final number to trust blindly.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Warnings before money moves',
-    description: 'Missing bank details, uncontracted employees, and duplicate payslips are caught and surfaced before a payrun is ever validated.',
-  },
-  {
-    icon: LayoutDashboard,
-    title: 'One live dashboard, zero static charts',
-    description: 'Every KPI, every chart, every department breakdown is computed from real rows the moment you load the page.',
-  },
-];
 
 export function Landing() {
   const { isAuthenticated, isInitializing, user } = useAuthStore();

@@ -757,7 +757,7 @@ required demo path. Split below by who owns the fix, per this project's ownershi
   succeeds (`200`) ✅.
 
 ### T-017 — Admin: User management (link users to employees, role assignment)
-- Status: QUEUED
+- Status: VERIFIED
 - Owner: Supervisor
 - Files allowed: `backend/src/routes/users.routes.js`, `backend/src/controllers/users.controller.js`, `backend/src/app.js` (uncomment its own mount stub — add one if missing, per the standing carve-out), `frontend/src/api/users.api.ts`, `frontend/src/pages/UserManagement.tsx`, `frontend/src/App.tsx` (add the one route), `frontend/src/components/Layout.tsx` (add one nav item, admin-only)
 - Spec: PS §3 Admin role: "User management, role assignment, permission updates." This did not
@@ -775,7 +775,19 @@ required demo path. Split below by who owns the fix, per this project's ownershi
   /api/users/:id` with `{"employee_id": "<real-id>"}` → 200, and that user can then log in and
   successfully hit their own `/api/employees/:id` (their own) and `/api/payslips` scoped
   correctly. Attempting to link a second user to an already-linked employee_id → 409.
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED.** Built `users.controller.js`
+  (list/update), `users.routes.js` (`authorize('admin')` only), mounted at `/api/users`.
+  Frontend: `users.api.ts`, `UserManagement.tsx` (inline role + employee-link editors per row),
+  `/user-management` route (admin-only `ProtectedRoute`), admin-only nav item. Verified live:
+  `GET /api/users` as admin → 200, full list with joined employee names; as `frank.engineer`
+  (employee role) → 403 ✅. Linked a real account, confirmed she can then hit her own employee
+  record (200) ✅. Attempted linking a second user to an already-linked employee → 409 with a
+  clean message (not a raw constraint error) ✅. Discovered along the way: the seed script
+  already links its own seeded accounts at creation time — this feature is specifically for
+  accounts created *after* that (self-registration, or any future account), which is the actual
+  gap the audit found. `npm run build` clean (also fixed an unrelated build-breaking unused-var
+  error in `Landing.tsx` left over from the in-progress Antigravity redesign — restored the
+  icon imports its current JSX actually uses, did not touch any visual/design code).
 
 ### T-018 — Fix duplicate_payslip dead warning + Dashboard "Payslips Generated" KPI conflation
 - Status: VERIFIED
