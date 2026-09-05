@@ -37,6 +37,13 @@ task entry — raw research text never gets pasted into this file.
 
 ## Phase 0 tasks
 
+**Dependency order:** claim **T-001 first** (nothing else can run/test without it). Once T-001
+is VERIFIED, **T-002, T-004, T-005, T-006, T-007 can all run in parallel** (no file overlap
+between them — double-check the current table below before claiming, in case a task's file list
+changed). **T-003 (frontend scaffold) has no backend dependency and can start immediately,
+in parallel with T-001.** T-006/T-007 additionally need a real Postgres connection — run
+`npm run migrate:up` in `backend/` against a real `DATABASE_URL` before testing them.
+
 ### T-001 — Backend skeleton: Express app + DB pool + logger + package.json
 - Status: QUEUED
 - Owner: unclaimed
@@ -56,7 +63,7 @@ task entry — raw research text never gets pasted into this file.
 ### T-002 — Auth: register/login/refresh/logout + JWT middleware
 - Status: QUEUED
 - Owner: unclaimed
-- Files allowed: `backend/src/routes/auth.routes.js`, `backend/src/controllers/auth.controller.js`, `backend/src/services/auth.service.js`, `backend/src/middleware/auth.js`, `backend/src/utils/response.js`
+- Files allowed: `backend/src/routes/auth.routes.js`, `backend/src/controllers/auth.controller.js`, `backend/src/services/auth.service.js`, `backend/src/middleware/auth.js` (reads/imports `backend/src/utils/response.js` from T-001 — does not modify it; if it's missing, that means T-001 hasn't landed yet — claim T-001 first or wait)
 - Spec: implement exactly the auth model in CLAUDE.md's Architecture section and API_GUIDE.md's
   Auth Header Convention — bcrypt hash (cost 12), JWT `HS256` pinned on every verify,
   httpOnly/secure/sameSite=strict refresh cookie, `refresh_tokens` table rotation. Self-register
