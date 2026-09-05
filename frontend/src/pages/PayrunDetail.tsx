@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, AlertTriangle, Mail, Calculator, CheckCircle, DollarSign } from 'lucide-react';
@@ -29,10 +30,18 @@ export function PayrunDetail() {
     queryClient.invalidateQueries({ queryKey: ['payslips', id] });
   };
 
+  const [sendResult, setSendResult] = useState<{ sent: number; queued: number; failed: number } | null>(null);
+
   const computeMut = useMutation({ mutationFn: () => computePayrun(id!), onSuccess: invalidate });
   const validateMut = useMutation({ mutationFn: () => validatePayrun(id!), onSuccess: invalidate });
   const markPaidMut = useMutation({ mutationFn: () => markPayrunPaid(id!), onSuccess: invalidate });
-  const sendMut = useMutation({ mutationFn: () => sendPayslips(id!), onSuccess: invalidate });
+  const sendMut = useMutation({
+    mutationFn: () => sendPayslips(id!),
+    onSuccess: (data) => {
+      setSendResult(data.stats);
+      invalidate();
+    },
+  });
 
   if (isLoading || !payrun) return <CardSkeleton />;
 
@@ -71,9 +80,20 @@ export function PayrunDetail() {
             <DollarSign className="h-16 w-16" /> Mark Paid
           </Button>
           <Button onClick={() => sendMut.mutate()} disabled={anyMutating || payrun.status === 'draft'} variant="secondary">
-            <Mail className="h-16 w-16" /> Send Payslips
+            <Mail className="h-16 w-16" /> {sendMut.isPending ? 'Sending…' : 'Send Payslips'}
           </Button>
         </CardContent>
+        {sendResult && (
+          <CardContent className="border-t border-border pt-16 text-sm text-text">
+            Payslip emails processed —{' '}
+            {sendResult.sent > 0 && <span className="font-medium text-success">{sendResult.sent} sent</span>}
+            {sendResult.sent > 0 && sendResult.queued > 0 && ', '}
+            {sendResult.queued > 0 && (
+              <span className="font-medium text-warning">{sendResult.queued} queued (no email provider configured)</span>
+            )}
+            {sendResult.failed > 0 && <span className="font-medium text-danger">, {sendResult.failed} failed</span>}
+          </CardContent>
+        )}
       </Card>
 
       {/* Payroll Preflight / Health Center — surfaces warnings before finalization (PS §B6) */}

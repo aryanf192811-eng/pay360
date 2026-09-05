@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Printer } from 'lucide-react';
-import { getPayslip, payslipPdfUrl } from '../api/payroll.api';
+import { getPayslip, fetchPayslipPdfObjectUrl } from '../api/payroll.api';
 import { useAuthStore, PAYROLL_ROLES } from '../store/auth.store';
 import { StatusBadge } from '../components/StatusBadge';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -23,10 +24,24 @@ export function PayslipDetail() {
   const { user } = useAuthStore();
   const canOpenPayrun = !!user && PAYROLL_ROLES.includes(user.role);
   const { data: payslip, isLoading } = useQuery({ queryKey: ['payslip', id], queryFn: () => getPayslip(id!), enabled: !!id });
+  const [pdfError, setPdfError] = useState<string | null>(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
 
   if (isLoading || !payslip) return <CardSkeleton />;
 
-  const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+  const handlePrint = async () => {
+    setPdfError(null);
+    setPdfLoading(true);
+    try {
+      const url = await fetchPayslipPdfObjectUrl(payslip.id);
+      window.open(url, '_blank', 'noreferrer');
+    } catch {
+      setPdfError('Failed to load the PDF. Please try again.');
+    } finally {
+      setPdfLoading(false);
+    }
+  };
+
   const lines = payslip.lines ?? [];
   const netLine = [...lines].reverse().find((l) => l.category === 'net');
 
@@ -54,11 +69,14 @@ export function PayslipDetail() {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-12">
-            <StatusBadge status={payslip.status} domain="payslip" />
-            <a href={payslipPdfUrl(payslip.id, baseURL)} target="_blank" rel="noreferrer">
-              <Button variant="secondary" size="sm"><Printer className="h-[14px] w-[14px]" /> Print Payslip</Button>
-            </a>
+          <div className="flex flex-col items-end gap-4">
+            <div className="flex items-center gap-12">
+              <StatusBadge status={payslip.status} domain="payslip" />
+              <Button variant="secondary" size="sm" onClick={handlePrint} disabled={pdfLoading}>
+                <Printer className="h-[14px] w-[14px]" /> {pdfLoading ? 'Loading…' : 'Print Payslip'}
+              </Button>
+            </div>
+            {pdfError && <span className="text-xs text-danger">{pdfError}</span>}
           </div>
         </CardContent>
       </Card>

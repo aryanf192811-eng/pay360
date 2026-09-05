@@ -96,7 +96,10 @@ export function SalaryConfigPage() {
                   selectedStructureId === s.id ? 'bg-primary text-white' : 'hover:bg-bg text-text'
                 }`}
               >
-                <div className="font-medium">{s.name}</div>
+                <div className="flex items-center justify-between gap-8">
+                  <div className="font-medium">{s.name}</div>
+                  <Badge tone={s.active ? 'success' : 'neutral'}>{s.active ? 'Active' : 'Inactive'}</Badge>
+                </div>
                 <div className={`text-xs ${selectedStructureId === s.id ? 'text-white/80' : 'text-text-muted'}`}>
                   {s.rule_count} rules · {s.active_employee_count} employees
                 </div>

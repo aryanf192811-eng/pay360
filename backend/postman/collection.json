@@ -30,10 +30,18 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"email\":\"test_1788590640224@postman.com\",\"password\":\"SecurePass1!\",\"role\":\"employee\"}"
+              "raw": "{\"email\":\"{{testEmail}}\",\"password\":\"SecurePass1!\",\"role\":\"employee\"}"
             }
           },
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.environment.set('testEmail', 'test_' + Date.now() + '_' + Math.floor(Math.random() * 100000) + '@postman.com');"
+                ]
+              }
+            },
             {
               "listen": "test",
               "script": {
@@ -51,7 +59,7 @@
           ]
         },
         {
-          "name": "Login",
+          "name": "Login (as just-registered user)",
           "request": {
             "method": "POST",
             "header": [
@@ -73,7 +81,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"email\":\"admin@peoplepay360.local\",\"password\":\"AdminPass1!\"}"
+              "raw": "{\"email\":\"{{testEmail}}\",\"password\":\"SecurePass1!\"}"
             }
           },
           "event": [
@@ -230,7 +238,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"email\":\"admin@peoplepay360.local\",\"password\":\"AdminPass1!\"}"
+              "raw": "{\"email\":\"diana.pm@example.com\",\"password\":\"SeedPass1!\"}"
             }
           },
           "event": [
@@ -239,6 +247,132 @@
               "script": {
                 "exec": [
                   "const jsonData = pm.response.json(); pm.environment.set('accessToken', jsonData.data.accessToken);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Test Employee (setup)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"first_name\":\"Postman\",\"last_name\":\"Payroll {{$randomUUID}}\",\"email\":\"postman.payroll.{{$randomUUID}}@test.com\",\"employee_type\":\"full_time\",\"status\":\"active\",\"hire_date\":\"2026-01-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is correct', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "const jsonData = pm.response.json(); pm.environment.set('testEmployeeId', jsonData.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Salary Structure (setup)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/salary-structures",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "salary-structures"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"Postman Test Structure {{$randomUUID}}\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is correct', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "const jsonData = pm.response.json(); pm.environment.set('structureId', jsonData.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Salary Rule (setup)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/salary-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "salary-rules"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"structure_id\":\"{{structureId}}\",\"name\":\"Net Pay\",\"code\":\"NET\",\"category\":\"net\",\"sequence\":10,\"computation_method\":\"fixed\",\"amount\":50000}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is correct', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Contract for Test Employee (setup)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/contracts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contracts"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"employee_id\":\"{{testEmployeeId}}\",\"wage\":50000,\"salary_structure_id\":\"{{structureId}}\",\"date_start\":\"2026-10-01\",\"status\":\"active\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is correct', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
                 ]
               }
             }
@@ -271,7 +405,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"salary_structure_id\":\"44444444-4444-4444-4444-444444444444\",\"period_start\":\"2026-10-01\",\"period_end\":\"2026-10-31\"}"
+              "raw": "{\"salary_structure_id\":\"{{structureId}}\",\"period_start\":\"2026-10-01\",\"period_end\":\"2026-10-31\"}"
             }
           },
           "event": [
@@ -317,7 +451,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"name\":\"Oct 2026 Payroll Happy Path\",\"salary_structure_id\":\"44444444-4444-4444-4444-444444444444\",\"period_start\":\"2026-10-01\",\"period_end\":\"2026-10-31\",\"employee_ids\":[\"22222222-2222-2222-2222-222222222222\"]}"
+              "raw": "{\"name\":\"Oct 2026 Payroll Happy Path\",\"salary_structure_id\":\"{{structureId}}\",\"period_start\":\"2026-10-01\",\"period_end\":\"2026-10-31\",\"employee_ids\":[\"{{testEmployeeId}}\"]}"
             }
           },
           "event": [
@@ -486,7 +620,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"email\":\"admin@peoplepay360.local\",\"password\":\"AdminPass1!\"}"
+              "raw": "{\"email\":\"bob.hr@example.com\",\"password\":\"SeedPass1!\"}"
             }
           },
           "event": [
@@ -495,6 +629,38 @@
               "script": {
                 "exec": [
                   "const jsonData = pm.response.json(); pm.environment.set('accessToken', jsonData.data.accessToken);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Test Employee (setup)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"first_name\":\"Postman\",\"last_name\":\"TimeOff {{$randomUUID}}\",\"email\":\"postman.timeoff.{{$randomUUID}}@test.com\",\"employee_type\":\"full_time\",\"status\":\"active\",\"hire_date\":\"2026-01-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is correct', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "const jsonData = pm.response.json(); pm.environment.set('testEmployeeId', jsonData.data.id);"
                 ]
               }
             }
@@ -526,7 +692,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"name\":\"Annual Leave 1788590640224\",\"category\":\"paid\",\"unit\":\"days\",\"requires_approval\":true}"
+              "raw": "{\"name\":\"Annual Leave {{$randomUUID}}\",\"unit\":\"days\",\"requires_allocation\":true,\"payroll_integrated\":false}"
             }
           },
           "event": [
@@ -573,7 +739,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"employee_id\":\"22222222-2222-2222-2222-222222222222\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"allocated\":10,\"valid_from\":\"2026-01-01\",\"description\":\"Yearly\"}"
+              "raw": "{\"employee_id\":\"{{testEmployeeId}}\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"allocated\":10,\"valid_from\":\"2026-01-01\",\"description\":\"Yearly\"}"
             }
           },
           "event": [
@@ -664,7 +830,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"employee_id\":\"22222222-2222-2222-2222-222222222222\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"allocation_id\":\"{{allocationId}}\",\"date_from\":\"2026-11-01\",\"date_to\":\"2026-11-02\",\"duration\":2,\"reason\":\"Vacation\"}"
+              "raw": "{\"employee_id\":\"{{testEmployeeId}}\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"allocation_id\":\"{{allocationId}}\",\"date_from\":\"2026-11-01\",\"date_to\":\"2026-11-02\",\"duration\":2,\"reason\":\"Vacation\"}"
             }
           },
           "event": [
@@ -755,7 +921,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"employee_id\":\"22222222-2222-2222-2222-222222222222\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"allocation_id\":\"{{allocationId}}\",\"date_from\":\"2026-12-01\",\"date_to\":\"2026-12-15\",\"duration\":15,\"reason\":\"Too long\"}"
+              "raw": "{\"employee_id\":\"{{testEmployeeId}}\",\"time_off_type_id\":\"{{timeOffTypeId}}\",\"allocation_id\":\"{{allocationId}}\",\"date_from\":\"2026-12-01\",\"date_to\":\"2026-12-15\",\"duration\":15,\"reason\":\"Too long\"}"
             }
           },
           "event": [

@@ -102,7 +102,7 @@ export async function markPayrunPaid(id: string) {
 
 export async function sendPayslips(id: string) {
   const { data } = await apiClient.post(`/api/payruns/${id}/send-payslips`);
-  return data.data;
+  return data.data as { message: string; stats: { sent: number; queued: number; failed: number } };
 }
 
 export async function listPayslips(params?: { payrun_id?: string; employee_id?: string }) {
@@ -115,6 +115,10 @@ export async function getPayslip(id: string) {
   return data.data as Payslip;
 }
 
-export function payslipPdfUrl(id: string, baseURL: string) {
-  return `${baseURL}/api/payslips/${id}/pdf`;
+// A plain <a href> to this endpoint would 401 — browsers never attach the Authorization
+// header on a top-level navigation, only axios's interceptor does that on XHR/fetch. So this
+// is fetched as an authenticated blob and handed to the caller as an object URL instead.
+export async function fetchPayslipPdfObjectUrl(id: string) {
+  const { data } = await apiClient.get(`/api/payslips/${id}/pdf`, { responseType: 'blob' });
+  return URL.createObjectURL(data as Blob);
 }
