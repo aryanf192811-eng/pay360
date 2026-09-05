@@ -166,6 +166,12 @@ and doc/content contributions, not features. chatbot.md tasks are only ever "Sup
   spec is exactly the "well-specified, wrong guess is cheap to catch" work that belongs to
   Antigravity. Supervisor reviews by running the acceptance check (curl/Postman), not by
   rewriting the code.
+- **Exception: the payroll calculation engine (T-006) and the time-off ledger/balance service
+  (T-007) are hand-written by the supervisor, not delegated.** These are the one place a wrong
+  guess is *not* cheap to catch — a subtly wrong salary-rule sequencing or an over-allocation race
+  condition produces a plausible-looking wrong number, not an obvious crash, and payroll
+  correctness is the thing this whole project is judged on. Everything else in the CRUD/route
+  layer stays delegated as above.
 - **Subagent (Antigravity) owns:** implementation against a spec already written in
   [chatbot.md](chatbot.md), research (→ `docs/research/`), boilerplate CRUD, seed data,
   repetitive UI, doc drafts, and — per the token-discipline rule above — auth/RBAC

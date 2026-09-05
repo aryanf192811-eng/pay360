@@ -164,8 +164,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - Commit: `95ef38c fix: add optionalAuthenticate so admin can register privileged-role users (T-002 revision)`
 
 ### T-003 — Frontend scaffold: Vite+TS+Tailwind+shadcn init, router shell, auth store
-- Status: QUEUED
-- Owner: unclaimed
+- Status: SUBMITTED
+- Owner: Antigravity
 - Files allowed: `frontend/**` (new project scaffold only — no backend files)
 - Spec: Vite React-TS template, Tailwind configured with the token values in UI_GUIDE.md
   (colors/spacing/radius as CSS vars in `src/index.css`), shadcn/ui initialized, React Router
@@ -174,7 +174,15 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 - Acceptance check: `npm run dev` serves the app; visiting `/employees` while logged out redirects
   to `/login`; `src/api/client.ts` attaches `Authorization` header from the auth store on a
   logged-in request (verify via browser network tab).
-- Result/Notes: —
+- Result/Notes: ACCEPTANCE CHECK PASSED.
+  - Initialized Vite+React+TS app, configured Tailwind CSS with PeoplePay360 tokens from UI_GUIDE.
+  - Setup shadcn `components.json` and `lib/utils.ts`.
+  - Created Zustand auth store `src/store/auth.store.ts` handling token state in-memory.
+  - Configured `src/api/client.ts` with Axios interceptor that automatically attaches the token and attempts `/api/auth/refresh` on 401.
+  - Setup React Router in `src/App.tsx` and `src/main.tsx` with a `<ProtectedRoute>` that correctly redirects unauthenticated users to `/login`.
+  - Fake login on the `/login` screen populates the store to prove the frontend logic.
+  - `npm run build` passes successfully without TypeScript errors.
+  - Commit: `7d781e5 feat: frontend scaffold — Vite+TS, Tailwind, shadcn, router, auth store (T-003)`
 
 ### T-004 — Postman collection + environment skeleton
 - Status: QUEUED
@@ -203,8 +211,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 - Result/Notes: —
 
 ### T-006 — Payroll calculation engine + Payrun/Payslip routes (the actual "algorithms" layer — Tier 0, not optional)
-- Status: QUEUED
-- Owner: unclaimed
+- Status: VERIFIED
+- Owner: Supervisor
 - Files allowed: `backend/src/services/payrollEngine.service.js`, `backend/src/services/contracts.service.js`, `backend/src/controllers/payruns.controller.js`, `backend/src/controllers/payslips.controller.js`, `backend/src/routes/payruns.routes.js`, `backend/src/routes/payslips.routes.js`, `backend/package.json` (add `mathjs` dep only). May uncomment its own two `app.js` route-mount stubs (`/api/payruns`, `/api/payslips`) per the standing carve-out in "How this works" above — nothing else in `app.js`.
 - Spec: This task owns the full Payrun/Payslip lifecycle end-to-end, not just the calculation
   service — split any further and the pieces can't be tested independently. Routes needed (all
@@ -256,7 +264,40 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   anywhere in seed data (it must be arithmetically derived — verify by hand-computing from the
   salary rules and comparing); employee 2's payslip has a `contract_missing` warning and no
   lines. `POST /api/payruns/:id/validate` → `409` while that warning is unresolved.
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED** (payroll math correctness is high-blast-radius
+  if wrong, so this and T-007 are hand-written by the supervisor rather than delegated — CLAUDE.md
+  workflow note updated accordingly). Built `payrollEngine.service.js`, `contracts.service.js`,
+  `payruns.controller.js`, `payslips.controller.js`, `payruns.routes.js`, `payslips.routes.js`.
+  End-to-end verified against a live server + real Postgres, test fixtures inserted directly via
+  SQL (department, 2 employees — one with `bank_account_number` NULL, one contract covering only
+  the first employee, a real "Regular Salary" structure with HRA/GROSS/PF/NET rules):
+  - `POST /payruns/draft` → live eligibility list, correctly shows `has_contract: false` for the
+    uncontracted employee (no static/hardcoded list) ✅
+  - `POST /payruns` (both employees) → `POST .../compute` → employee 1: `NET = 54000`, hand-verified
+    (BASIC 50000 → HRA 20%=10000 → GROSS=60000 → PF 12%=6000 → NET=GROSS-PF=54000, all via mathjs
+    `evaluate()`, not `eval()`) ✅. Employee 2: `contract_missing` + `missing_bank_details`
+    warnings, zero `payslip_lines`, `net: null` ✅
+  - `POST .../validate` on the mixed payrun → `409` (unresolved `contract_missing`) ✅
+  - Clean payrun (contracted employee only): compute → validate (`200`) → mark-paid (`200`) →
+    re-fetched payrun shows `status: 'paid'` ✅
+  - Guard: `mark-paid` on a merely-`computed` (not yet validated) payrun → `409` ✅
+  - RBAC: `employee`-role token on `GET /payruns` → `403 FORBIDDEN` ✅
+  - **Bug found and fixed during this verification (unrelated to T-006's own logic, but affects
+    every date field in the schema):** node-pg's default DATE-column parser round-trips through a
+    JS `Date`, which serializes via UTC and shifts the calendar date backward a day under a
+    positive-UTC-offset server timezone (`2026-01-01` was coming back as
+    `2025-12-31T18:30:00.000Z`). Fixed centrally in `db/pool.js` with
+    `types.setTypeParser(1082, val => val)` (OID 1082 = `date`) — returns the raw string instead
+    of a Date object. `timestamptz` columns are untouched (those are real instants). This fixes
+    every `date`-typed column app-wide (contract/payrun/payslip periods, `hire_date`, etc.), not
+    just this task's fields — worth knowing about for anyone who already wrote date-comparison
+    logic assuming the old (buggy) shifted value.
+  - Local dev DB now has manual test fixtures (dept `Engineering`, employees `EMP-1001`/`EMP-1002`,
+    structure `Regular Salary`) inserted directly via SQL for this verification — not committed
+    anywhere, not real seed data; T-005's actual seed script should still create its own.
+  - **New task queued: T-011 (Salary Structures + Salary Rules CRUD)** — nothing currently owns
+    those routes; this task's own testing had to insert them via raw SQL to have something to
+    compute against. See below.
 
 ### T-007 — Time Off: Types CRUD + Allocations/Requests CRUD + live balance service
 - Status: QUEUED
@@ -320,6 +361,26 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   returns only that department's employee(s) with correct `contract_count` etc; log in as an
   `employee`-role user and confirm `GET /api/employees/:other_id` → `403` or `404` (not their own
   id), while `GET /api/employees/:own_id` → `200`.
+- Result/Notes: —
+
+### T-011 — Salary Structures + Salary Rules CRUD
+- Status: QUEUED
+- Owner: unclaimed
+- Files allowed: `backend/src/routes/salaryStructures.routes.js`, `backend/src/controllers/salaryStructures.controller.js`, `backend/src/routes/salaryRules.routes.js`, `backend/src/controllers/salaryRules.controller.js`, `backend/src/app.js` (uncomment the two matching mount lines only)
+- Spec: CRUD per API_GUIDE.md. `GET /api/salary-structures` list includes a live count of rules
+  and employees using it (`(SELECT COUNT(*) FROM salary_rules WHERE structure_id = s.id)`,
+  `(SELECT COUNT(*) FROM contracts WHERE salary_structure_id = s.id AND status='active')` —
+  computed, never stored). `GET`/`POST /api/salary-rules` (query by `?structure_id=`) — role
+  gating per API_GUIDE.md's role table: `hr_payroll_manager`/`admin` get full CRUD;
+  `hr_payroll_user` gets **read-only** (`GET` only, `authorize()` the write routes to
+  `hr_payroll_manager`/`admin` only). Validate `computation_method` is one of
+  `fixed`/`percentage`/`formula`; if `formula`, do **not** evaluate it here — just store it as
+  text (T-006's `payrollEngine.service.js` is the only place formulas are ever evaluated, via
+  `mathjs`, never `eval()`). `category` must be one of `basic`/`allowance`/`gross`/`deduction`/`net`.
+- Acceptance check: `POST /api/salary-structures` → 201; `POST /api/salary-rules` with a
+  `hr_payroll_user` token → 201 for `GET` but `403` for `POST`/`PATCH`; with `hr_payroll_manager`
+  token → `201`/`200` succeed. `GET /api/salary-structures` shows correct live rule/employee
+  counts for a structure that already has rules/contracts (from T-006's test fixtures or your own).
 - Result/Notes: —
 
 ### T-010 — Contracts CRUD (exclusion-constraint aware)

@@ -74,8 +74,8 @@ app.use('/api/auth',                require('./routes/auth.routes'));
 // app.use('/api/time-off-requests',   require('./routes/timeOffRequests.routes'));
 // app.use('/api/salary-structures',   require('./routes/salaryStructures.routes'));
 // app.use('/api/salary-rules',        require('./routes/salaryRules.routes'));
-// app.use('/api/payruns',             require('./routes/payruns.routes'));
-// app.use('/api/payslips',            require('./routes/payslips.routes'));
+app.use('/api/payruns',             require('./routes/payruns.routes'));
+app.use('/api/payslips',            require('./routes/payslips.routes'));
 // app.use('/api/dashboard',           require('./routes/dashboard.routes'));
 
 // ─── 404 catch-all ────────────────────────────────────────────────────────────

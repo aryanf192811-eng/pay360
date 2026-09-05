@@ -1,7 +1,17 @@
 'use strict';
 
-const { Pool } = require('pg');
+const { Pool, types } = require('pg');
 const logger = require('../utils/logger');
+
+// node-pg's default DATE (OID 1082) parser returns a JS Date object, which JSON.stringify then
+// serializes via toISOString() — that converts to UTC and can shift the calendar date by a full
+// day whenever the server's local timezone is ahead of UTC (e.g. '2026-01-01' becomes
+// '2025-12-31T18:30:00.000Z' at UTC+5:30). A plain SQL `date` column has no timezone — it should
+// never round-trip through one. Returning the raw 'YYYY-MM-DD' string instead fixes every date
+// field in the schema at once (contract/payrun/payslip periods, hire_date, etc.) without needing
+// a per-query workaround. timestamptz columns (created_at, check_in, ...) are untouched — those
+// really are instants and should keep their normal Date/ISO handling.
+types.setTypeParser(1082, (val) => val);
 
 // DATABASE_URL must be set in environment (see .env.example)
 const pool = new Pool({
