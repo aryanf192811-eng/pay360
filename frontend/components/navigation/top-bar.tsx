@@ -72,19 +72,46 @@ export function TopBar() {
       <div className="flex items-center h-full gap-6">
         {navTabs.map((tab) => {
           const isActive = activeNavTab === tab.key;
+          const isDropdownTab = tab.key === "Employees" || tab.key === "Time Off";
 
           return (
-            <button
-              key={tab.key}
-              onClick={() => setActiveNavTab(tab.key)}
-              className={`h-full flex items-center transition-colors cursor-pointer text-sm whitespace-nowrap border-b-2 px-1 ${
-                isActive
-                  ? "border-[#714B67] text-[#714B67] font-semibold"
-                  : "border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300 font-medium"
-              }`}
-            >
-              {tab.label}
-            </button>
+            <div key={tab.key} className="relative h-full flex items-center group">
+              <button
+                onClick={() => setActiveNavTab(tab.key)}
+                className={`h-full flex items-center gap-1 transition-colors cursor-pointer text-sm whitespace-nowrap border-b-2 px-1 ${
+                  isActive
+                    ? "border-[#714B67] text-[#714B67] font-semibold"
+                    : "border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300 font-medium"
+                }`}
+              >
+                {tab.label}
+                {isDropdownTab && (
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform group-hover:rotate-180 ${isActive ? 'text-[#714B67]' : 'text-slate-400'}`} />
+                )}
+              </button>
+              
+              {/* Dropdown Menu on Hover */}
+              {isDropdownTab && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-48 bg-white border border-slate-200 shadow-xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-1.5">
+                  {tab.key === "Employees" && (
+                    <>
+                      <button onClick={() => setActiveNavTab("Employees")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Employees</button>
+                      <button onClick={() => setActiveNavTab("Contracts")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Contracts</button>
+                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Departments</button>
+                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Working Schedule</button>
+                    </>
+                  )}
+                  {tab.key === "Time Off" && (
+                    <>
+                      <button onClick={() => setActiveNavTab("Time Off")} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Dashboard</button>
+                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time offs</button>
+                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Time off Types</button>
+                      <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium">Allocations</button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
@@ -208,18 +235,32 @@ export function TopBar() {
           )}
         </div>
 
-        {/* User Management Settings Dropdown */}
+        {/* User Avatar & Settings Dropdown */}
         <div className="relative" ref={settingsRef}>
-          <button
+          <div
             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer border border-slate-200"
+            className="flex items-center gap-2.5 pl-2 cursor-pointer group"
+            title="Click to Open Settings"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#714B67]" />
-            <span className="hidden sm:inline">Users & Settings</span>
-            <span className="sm:hidden">Users</span>
-            <ChevronDown className="w-3.5 h-3.5 ml-1 text-slate-400" />
-          </button>
-
+            <div className="relative">
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+                alt="Aarav Sharma"
+                className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-xs group-hover:scale-105 transition-transform"
+              />
+              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+            </div>
+            <div className="hidden lg:block text-left">
+              <div className="text-xs font-bold text-slate-900 group-hover:text-[#714B67] transition-colors leading-tight">
+                Aarav Sharma
+              </div>
+              <div className="mt-0.5">
+                <span className="px-1.5 py-0.2 rounded-md text-[10px] font-bold bg-[#714B67]/10 text-[#714B67] border border-[#714B67]/20">
+                  {currentRole}
+                </span>
+              </div>
+            </div>
+          </div>
           {isSettingsOpen && (
             <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 shadow-xl rounded-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
               <div className="p-3 border-b border-slate-100 bg-slate-50">
@@ -258,34 +299,6 @@ export function TopBar() {
               </div>
             </div>
           )}
-        </div>
-
-        {/* User Avatar with Green Online Ring & Role Badge */}
-        <div
-          onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-          className="flex items-center gap-2.5 pl-1 cursor-pointer group"
-          title="Click to Open Settings"
-        >
-          <div className="relative">
-            <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-              alt="Aarav Sharma"
-              className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-xs group-hover:scale-105 transition-transform"
-            />
-            {/* Green Online Ring */}
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
-          </div>
-
-          <div className="hidden lg:block text-left">
-            <div className="text-xs font-bold text-slate-900 group-hover:text-[#714B67] transition-colors leading-tight">
-              Aarav Sharma
-            </div>
-            <div className="mt-0.5">
-              <span className="px-1.5 py-0.2 rounded-md text-[10px] font-bold bg-[#714B67]/10 text-[#714B67] border border-[#714B67]/20">
-                {currentRole}
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </nav>

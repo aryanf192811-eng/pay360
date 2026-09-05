@@ -53,24 +53,7 @@ export function HubHeader() {
   ];
 
   return (
-    <div className="bg-white border-b border-slate-200 shadow-xs">
-      {/* Secondary Navigation - "Menus under Employees" */}
-      <div className="px-4 sm:px-6 py-2 border-b border-slate-100 flex items-center gap-1 overflow-x-auto scrollbar-none">
-        <button className="px-3 py-1.5 text-sm font-bold text-[#714B67] bg-[#714B67]/10 rounded-md whitespace-nowrap">
-          Employees
-        </button>
-        <button className="px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md whitespace-nowrap transition-colors">
-          Contracts
-        </button>
-        <button className="px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md whitespace-nowrap transition-colors">
-          Departments
-        </button>
-        <button className="px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md whitespace-nowrap transition-colors">
-          Working Schedule
-        </button>
-      </div>
-
-      <div className="px-4 sm:px-6 py-4">
+    <div className="bg-white border-b border-slate-200 px-4 sm:px-6 py-4 shadow-xs">
         {/* Top Row: Breadcrumb, Search, Add Employee, View Toggles */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           {/* Breadcrumb Title */}
@@ -165,7 +148,6 @@ export function HubHeader() {
             </button>
           );
         })}
-      </div>
       </div>
     </div>
   );

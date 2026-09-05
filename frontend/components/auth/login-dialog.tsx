@@ -112,8 +112,8 @@ export function LoginDialog() {
         )}
 
         {/* Right Side Form */}
-        <div className={`${isGateMode ? "w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#F4F6FA]" : "p-8 w-full"}`}>
-          <div className="w-full max-w-[480px] bg-white p-10 sm:p-12 rounded-xl shadow-sm border border-slate-200">
+        <div className={`${isGateMode ? "w-full lg:w-1/2 flex items-center justify-center p-8 bg-white" : "p-8 w-full bg-[#F4F6FA]"}`}>
+          <div className={`w-full max-w-[480px] ${isGateMode ? "p-4 sm:p-8" : "bg-white p-10 sm:p-12 rounded-xl shadow-sm border border-slate-200"}`}>
             {/* Header Branding */}
             <div className="text-center mb-10">
               {!isGateMode && (
