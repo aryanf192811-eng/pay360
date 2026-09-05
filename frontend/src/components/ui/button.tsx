@@ -12,10 +12,15 @@ const variantClasses: Record<Variant, string> = {
   accent: 'bg-accent text-white shadow-tinted hover:opacity-90',
 };
 
+// Explicit bracket values, not bare scale numbers — this project's custom Tailwind spacing
+// scale (4/8/12/16/24/32/48/64 == literal px) reinterprets any DEFAULT-Tailwind-style size class
+// using those exact numbers, so e.g. h-8 here would render as a literal 8px bar, not the
+// intended ~32px button. Confirmed live: this exact bug made every size="sm" button in the app
+// render as an unusable sliver.
 const sizeClasses: Record<Size, string> = {
-  sm: 'h-8 px-3 text-xs',
-  md: 'h-10 px-4 text-sm',
-  lg: 'h-12 px-6 text-base',
+  sm: 'h-[32px] px-[12px] text-xs',
+  md: 'h-[40px] px-[16px] text-sm',
+  lg: 'h-[48px] px-[24px] text-base',
 };
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

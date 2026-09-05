@@ -111,7 +111,7 @@ export function AttendanceList() {
                 {isHr && (
                   <Td>
                     <Select
-                      className="h-8 w-[140px] text-xs"
+                      className="h-[32px] w-[140px] text-xs"
                       value={a.status}
                       onChange={(e) => correctMutation.mutate({ id: a.id, status: e.target.value })}
                     >
