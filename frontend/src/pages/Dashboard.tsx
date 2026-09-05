@@ -5,7 +5,7 @@ import { listDepartments } from '../api/reference.api';
 import { KpiCard } from '../components/KpiCard';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { CardSkeleton } from '../components/ui/skeleton';
-import { Select } from '../components/ui/input';
+import { Select, Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
 
 const WARNING_LABEL: Record<string, string> = {
@@ -15,12 +15,23 @@ const WARNING_LABEL: Record<string, string> = {
   negative_net: 'Negative Net Pay',
 };
 
+const EMPLOYEE_TYPES = ['full_time', 'part_time', 'contract'];
+
 export function Dashboard() {
   const [departmentId, setDepartmentId] = useState('');
+  const [employeeType, setEmployeeType] = useState('');
+  const [periodStart, setPeriodStart] = useState('');
+  const [periodEnd, setPeriodEnd] = useState('');
   const { data: departments } = useQuery({ queryKey: ['departments'], queryFn: listDepartments });
   const { data, isLoading } = useQuery({
-    queryKey: ['dashboard', departmentId],
-    queryFn: () => getDashboard(departmentId ? { department_id: departmentId } : undefined),
+    queryKey: ['dashboard', departmentId, employeeType, periodStart, periodEnd],
+    queryFn: () =>
+      getDashboard({
+        department_id: departmentId || undefined,
+        employee_type: employeeType || undefined,
+        period_start: periodStart || undefined,
+        period_end: periodEnd || undefined,
+      }),
   });
 
   if (isLoading || !data) return <CardSkeleton />;
@@ -35,12 +46,22 @@ export function Dashboard() {
           <h1 className="text-2xl font-bold text-text">Payroll Dashboard</h1>
           <p className="text-sm text-text-muted">Live data aggregated across Employees, Contracts, Payroll, Attendance, and Time Off.</p>
         </div>
-        <Select value={departmentId} onChange={(e) => setDepartmentId(e.target.value)} className="w-[200px]">
-          <option value="">All Departments</option>
-          {departments?.map((d) => (
-            <option key={d.id} value={d.id}>{d.name}</option>
-          ))}
-        </Select>
+        <div className="flex flex-wrap items-end gap-8">
+          <Input type="date" value={periodStart} onChange={(e) => setPeriodStart(e.target.value)} className="w-[160px]" title="Period start" />
+          <Input type="date" value={periodEnd} onChange={(e) => setPeriodEnd(e.target.value)} className="w-[160px]" title="Period end" />
+          <Select value={employeeType} onChange={(e) => setEmployeeType(e.target.value)} className="w-[160px]">
+            <option value="">All Employee Types</option>
+            {EMPLOYEE_TYPES.map((t) => (
+              <option key={t} value={t}>{t.replace('_', ' ')}</option>
+            ))}
+          </Select>
+          <Select value={departmentId} onChange={(e) => setDepartmentId(e.target.value)} className="w-[200px]">
+            <option value="">All Departments</option>
+            {departments?.map((d) => (
+              <option key={d.id} value={d.id}>{d.name}</option>
+            ))}
+          </Select>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-16 lg:grid-cols-5">

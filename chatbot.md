@@ -862,7 +862,7 @@ required demo path. Split below by who owns the fix, per this project's ownershi
 - Result/Notes: —
 
 ### T-021 — Contract form: add missing Department + Position fields
-- Status: QUEUED
+- Status: VERIFIED
 - Owner: Supervisor
 - Files allowed: `frontend/src/pages/ContractList.tsx`
 - Spec: PS §A2: "Contract forms should capture employment terms including duration, department,
@@ -872,10 +872,13 @@ required demo path. Split below by who owns the fix, per this project's ownershi
   contract silently gets `department_id: null, position: null`.
 - Acceptance check: create a contract through the UI with a department and position filled in →
   `GET /api/contracts?employee_id=...` shows both persisted correctly, not null.
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED.** Added Department `<select>` and Position
+  text input to the form, wired into the mutation payload. `npm run build` clean. Verified the
+  exact payload shape the form now sends round-trips correctly:
+  `department_id`/`position` both persisted and returned as expected (not null).
 
 ### T-022 — Dashboard: add missing Period + Employee Type filters
-- Status: QUEUED
+- Status: VERIFIED
 - Owner: Supervisor
 - Files allowed: `frontend/src/pages/Dashboard.tsx`
 - Spec: PS §A7/§B9 name three filter dimensions — Period, Department, Employee Type. Only
@@ -888,7 +891,14 @@ required demo path. Split below by who owns the fix, per this project's ownershi
   zero out (per T-014's already-verified backend behavior) without an error. Filtering by
   `employee_type` → dashboard numbers change to reflect only that group (verify against a manual
   count of matching test employees).
-- Result/Notes: —
+- Result/Notes: SUPERVISOR-AUTHORED AND VERIFIED. Added period_start/period_end date inputs and
+  an employee_type `<select>` (full_time/part_time/contract — matches the DB CHECK constraint,
+  not the spec'd-but-nonexistent "intern") to `Dashboard.tsx`, wired into the existing `useQuery`
+  params alongside department_id. `npm run build` clean. Verified live against real seed data via
+  curl with a real admin token: no filter → payslips_generated=11; employee_type=contract → 0;
+  department=Sales → 0; department=Engineering → 11 (all seeded payslips belong to Engineering
+  employees); period_start=2099-01-01 → 0. Filters demonstrably narrow real query results, not a
+  UI no-op — backend support for these params was already verified in T-014.
 
 ### T-023 — Time Off Request form: add the Allocation selector (currently unreachable via UI)
 - Status: QUEUED

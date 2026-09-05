@@ -4,6 +4,7 @@ import { FileText, Plus } from 'lucide-react';
 import { listContracts, createContract } from '../api/contracts.api';
 import { listEmployees } from '../api/employees.api';
 import { listSalaryStructures } from '../api/salary.api';
+import { listDepartments } from '../api/reference.api';
 import { StatusBadge } from '../components/StatusBadge';
 import { EmptyState } from '../components/EmptyState';
 import { TableSkeleton } from '../components/ui/skeleton';
@@ -19,14 +20,19 @@ export function ContractList() {
   const { data: contracts, isLoading } = useQuery({ queryKey: ['contracts'], queryFn: () => listContracts() });
   const { data: employees } = useQuery({ queryKey: ['employees'], queryFn: () => listEmployees() });
   const { data: structures } = useQuery({ queryKey: ['salary-structures'], queryFn: listSalaryStructures });
+  const { data: departments } = useQuery({ queryKey: ['departments'], queryFn: listDepartments });
 
-  const [form, setForm] = useState({ employee_id: '', wage: '', salary_structure_id: '', date_start: '', date_end: '', status: 'active' });
+  // PS §A2: "Contract forms should capture employment terms including duration, department,
+  // position, wage, and salary structure" — department_id/position were silently missing.
+  const [form, setForm] = useState({ employee_id: '', department_id: '', position: '', wage: '', salary_structure_id: '', date_start: '', date_end: '', status: 'active' });
   const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: () =>
       createContract({
         ...form,
+        department_id: form.department_id || undefined,
+        position: form.position || undefined,
         wage: Number(form.wage),
         date_end: form.date_end || undefined,
         status: form.status as 'draft' | 'active',
@@ -35,7 +41,7 @@ export function ContractList() {
       queryClient.invalidateQueries({ queryKey: ['contracts'] });
       setShowForm(false);
       setError(null);
-      setForm({ employee_id: '', wage: '', salary_structure_id: '', date_start: '', date_end: '', status: 'active' });
+      setForm({ employee_id: '', department_id: '', position: '', wage: '', salary_structure_id: '', date_start: '', date_end: '', status: 'active' });
     },
     onError: (err: unknown) => {
       const e = err as { response?: { data?: { error?: { message?: string } } } };
@@ -89,6 +95,19 @@ export function ContractList() {
                     </option>
                   ))}
                 </Select>
+              </div>
+              <div className="space-y-4">
+                <Label>Department</Label>
+                <Select value={form.department_id} onChange={(e) => setForm({ ...form, department_id: e.target.value })}>
+                  <option value="">None</option>
+                  {departments?.map((d) => (
+                    <option key={d.id} value={d.id}>{d.name}</option>
+                  ))}
+                </Select>
+              </div>
+              <div className="space-y-4">
+                <Label>Position</Label>
+                <Input value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} placeholder="e.g. Senior Engineer" />
               </div>
               <div className="space-y-4">
                 <Label>Wage</Label>
