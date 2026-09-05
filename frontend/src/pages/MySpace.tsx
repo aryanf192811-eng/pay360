@@ -49,8 +49,8 @@ export function MySpace() {
 
   if (!employeeId) {
     return (
-      <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm p-[24px]">
-        <div className="text-[14px] text-[#434654]">
+      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[6px] shadow-sm p-[24px]">
+        <div className="text-[14px] text-[var(--text-muted)]">
           Your account isn't linked to an employee record yet — ask HR to link it.
         </div>
       </div>
@@ -66,21 +66,21 @@ export function MySpace() {
   return (
     <div className="flex-1 w-full max-w-[1440px] mx-auto px-[16px] md:px-[24px] py-[24px] flex flex-col gap-[24px]">
       <div>
-        <h1 className="text-[28px] font-bold text-[#172b4d] tracking-tight mb-[4px]">Good to see you, {employee.first_name}</h1>
-        <p className="text-[13px] text-[#434654]">{employee.job_position || 'Employee'} · {(employee as Record<string, unknown>).department_name as string || 'No department'}</p>
+        <h1 className="text-[28px] font-bold text-[var(--text)] tracking-tight mb-[4px]">Good to see you, {employee.first_name}</h1>
+        <p className="text-[13px] text-[var(--text-muted)]">{employee.job_position || 'Employee'} · {(employee as Record<string, unknown>).department_name as string || 'No department'}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-[16px]">
         {/* Today Card */}
-        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm p-[24px] flex flex-col justify-between">
+        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[6px] shadow-sm p-[24px] flex flex-col justify-between">
           <div>
-            <div className="flex items-center gap-[8px] text-[11px] font-bold uppercase tracking-widest text-[#434654] mb-[12px]">
+            <div className="flex items-center gap-[8px] text-[11px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-[12px]">
               <Clock className="h-[14px] w-[14px]" /> Today
             </div>
-            <div className="text-[20px] font-bold text-[#172b4d]">{openEntry ? 'Checked In' : 'Not checked in'}</div>
+            <div className="text-[20px] font-bold text-[var(--text)]">{openEntry ? 'Checked In' : 'Not checked in'}</div>
           </div>
           <button 
-            className={cn("w-full mt-[16px] font-semibold text-[13px] px-[16px] py-[8px] rounded transition-colors flex items-center justify-center gap-[6px]", openEntry ? "bg-[#e6f0ff] hover:bg-[#c2d7f8] text-[#3062e1]" : "bg-[#3062e1] hover:bg-[#2552cc] text-[#ffffff]")}
+            className={cn("w-full mt-[16px] font-semibold text-[13px] px-[16px] py-[8px] rounded transition-colors flex items-center justify-center gap-[6px]", openEntry ? "bg-[var(--primary-light)] hover:bg-[var(--primary-light)] text-[var(--primary)]" : "bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--surface)]")}
             onClick={() => checkMutation.mutate()}
           >
             <LogIn className="h-[14px] w-[14px]" /> {openEntry ? 'Check Out' : 'Check In'}
@@ -89,34 +89,34 @@ export function MySpace() {
 
         {/* Leave Balance Card */}
         <div 
-          className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm p-[24px] flex flex-col justify-between cursor-pointer hover:border-[#3062e1] hover:shadow-md transition-all group"
+          className="bg-[var(--surface)] border border-[var(--border)] rounded-[6px] shadow-sm p-[24px] flex flex-col justify-between cursor-pointer hover:border-[var(--primary)] hover:shadow-md transition-all group"
           onClick={() => navigate('/time-off')}
         >
           <div>
-            <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest text-[#434654] mb-[12px]">
+            <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-[12px]">
               <div className="flex items-center gap-[8px]"><CalendarClock className="h-[14px] w-[14px]" /> Leave Balance</div>
-              <ChevronRight className="h-[14px] w-[14px] text-[#434654] group-hover:text-[#3062e1] transition-colors" />
+              <ChevronRight className="h-[14px] w-[14px] text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors" />
             </div>
-            <div className="font-mono text-[32px] font-bold text-[#172b4d] leading-none mb-[4px]">{totalRemaining}</div>
-            <div className="text-[12px] text-[#434654]">days remaining across all types</div>
+            <div className="font-mono text-[32px] font-bold text-[var(--text)] leading-none mb-[4px]">{totalRemaining}</div>
+            <div className="text-[12px] text-[var(--text-muted)]">days remaining across all types</div>
           </div>
         </div>
 
         {/* Latest Payslip Card */}
-        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm p-[24px] flex flex-col justify-between">
+        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[6px] shadow-sm p-[24px] flex flex-col justify-between">
           <div>
-            <div className="flex items-center gap-[8px] text-[11px] font-bold uppercase tracking-widest text-[#434654] mb-[12px]">
+            <div className="flex items-center gap-[8px] text-[11px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-[12px]">
               <Wallet className="h-[14px] w-[14px]" /> Latest Payslip
             </div>
             {latestPayslip ? (
               <>
-                <div className="font-mono text-[28px] font-bold text-[#172b4d] leading-none mb-[8px]">
+                <div className="font-mono text-[28px] font-bold text-[var(--text)] leading-none mb-[8px]">
                   {latestPayslip.net != null ? `₹${Number(latestPayslip.net).toLocaleString()}` : '—'}
                 </div>
-                <div className="text-[12px] text-[#434654]">{latestPayslip.period_start} → {latestPayslip.period_end}</div>
+                <div className="text-[12px] text-[var(--text-muted)]">{latestPayslip.period_start} → {latestPayslip.period_end}</div>
               </>
             ) : (
-              <div className="text-[14px] text-[#434654]">No payslips yet</div>
+              <div className="text-[14px] text-[var(--text-muted)]">No payslips yet</div>
             )}
           </div>
         </div>
@@ -124,38 +124,38 @@ export function MySpace() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-[24px]">
         {/* Recent Attendance */}
-        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm overflow-hidden flex flex-col">
-          <div className="px-[24px] py-[16px] border-b border-[#ebecf0] bg-[#ffffff]">
-            <h2 className="text-[16px] font-semibold text-[#172b4d]">Recent Attendance</h2>
+        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[6px] shadow-sm overflow-hidden flex flex-col">
+          <div className="px-[24px] py-[16px] border-b border-[var(--border)] bg-[var(--surface)]">
+            <h2 className="text-[16px] font-semibold text-[var(--text)]">Recent Attendance</h2>
           </div>
           <div className="p-[24px] flex flex-col gap-[12px]">
             {(attendances ?? []).slice(0, 5).map((a: Record<string, unknown>) => (
-              <div key={a.id as string} className="flex items-center justify-between border-b border-[#ebecf0] pb-[12px] last:border-0 last:pb-0">
-                <span className="text-[13px] text-[#434654]">{new Date(a.check_in as string).toLocaleDateString()}</span>
+              <div key={a.id as string} className="flex items-center justify-between border-b border-[var(--border)] pb-[12px] last:border-0 last:pb-0">
+                <span className="text-[13px] text-[var(--text-muted)]">{new Date(a.check_in as string).toLocaleDateString()}</span>
                 <StatusBadge status={a.status as string} domain="attendance" />
               </div>
             ))}
-            {(!attendances || attendances.length === 0) && <div className="text-[13px] text-[#434654]">No attendance records yet.</div>}
+            {(!attendances || attendances.length === 0) && <div className="text-[13px] text-[var(--text-muted)]">No attendance records yet.</div>}
           </div>
         </div>
 
         {/* My Payslips */}
-        <div className="bg-[#fefefe] border border-[#dfe1e6] rounded-[6px] shadow-sm overflow-hidden flex flex-col">
-          <div className="px-[24px] py-[16px] border-b border-[#ebecf0] bg-[#ffffff]">
-            <h2 className="text-[16px] font-semibold text-[#172b4d]">My Payslips</h2>
+        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[6px] shadow-sm overflow-hidden flex flex-col">
+          <div className="px-[24px] py-[16px] border-b border-[var(--border)] bg-[var(--surface)]">
+            <h2 className="text-[16px] font-semibold text-[var(--text)]">My Payslips</h2>
           </div>
           <div className="p-[24px] flex flex-col gap-[12px]">
             {(payslips ?? []).slice(0, 5).map((p) => (
               <button
                 key={p.id}
                 onClick={() => navigate(`/payroll/payslips/${p.id}`)}
-                className="flex w-full items-center justify-between border-b border-[#ebecf0] pb-[12px] last:border-0 last:pb-0 text-[13px] hover:text-[#3062e1] group"
+                className="flex w-full items-center justify-between border-b border-[var(--border)] pb-[12px] last:border-0 last:pb-0 text-[13px] hover:text-[var(--primary)] group"
               >
-                <span className="text-[#434654] group-hover:text-[#3062e1] transition-colors">{p.period_start} → {p.period_end}</span>
-                <span className="font-mono font-semibold text-[#172b4d] group-hover:text-[#3062e1] transition-colors">{p.net != null ? `₹${Number(p.net).toLocaleString()}` : 'Pending'}</span>
+                <span className="text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors">{p.period_start} → {p.period_end}</span>
+                <span className="font-mono font-semibold text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">{p.net != null ? `₹${Number(p.net).toLocaleString()}` : 'Pending'}</span>
               </button>
             ))}
-            {(!payslips || payslips.length === 0) && <div className="text-[13px] text-[#434654]">No payslips yet.</div>}
+            {(!payslips || payslips.length === 0) && <div className="text-[13px] text-[var(--text-muted)]">No payslips yet.</div>}
           </div>
         </div>
       </div>
