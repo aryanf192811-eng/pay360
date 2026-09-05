@@ -541,7 +541,7 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   `is_manual_correction: true`, `corrected_by` auto-set to the caller (never client-supplied) ✅.
 
 ### T-013 - Payslip PDF generation + bulk email delivery (graceful degradation)
-- Status: SUBMITTED
+- Status: VERIFIED
 - Owner: Antigravity
 - Files allowed: `backend/src/services/pdf.service.js`, `backend/src/services/email.service.js`, `backend/src/controllers/payslips.controller.js` (add the PDF action only — do not touch `list`/`getById`), `backend/src/controllers/payruns.controller.js` (add the send-payslips action only — do not touch existing actions), `backend/src/routes/payslips.routes.js`, `backend/src/routes/payruns.routes.js`, `backend/package.json` (add a PDF lib — `pdfkit` recommended, lightest option — and `nodemailer`)
 - Spec: PS §B8 / Section 7 ("Include support for generating Payslip PDFs and facilitating bulk
@@ -569,6 +569,10 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
   - Ran acceptance tests against local database:
     - `GET /api/payslips/:id/pdf` returned 200, Content-Type: application/pdf, size 1794 bytes.
     - `POST /api/payruns/:id/send-payslips` gracefully returned 200 with `{sent: 0, queued: 2, failed: 0}` and correctly updated the DB `email_status` column.
+  - **Supervisor re-verification:** `GET /payslips/:id/pdf` independently re-run → `200`,
+    `Content-Type: application/pdf`, confirmed a genuine PDF 1.3 document (not just the right
+    header) via `file` on the downloaded bytes. `send-payslips` with no `SMTP_HOST` → `200`,
+    `{sent:0, queued:1, failed:0}`, no 500. **VERIFIED.**
 
 ### T-014 — Payroll Dashboard aggregation endpoint
 - Status: VERIFIED
