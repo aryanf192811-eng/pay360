@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore, homeFor, HR_ROLES, PAYROLL_ROLES, ROLES } from './store/auth.store';
 import { apiClient } from './api/client';
@@ -53,25 +53,33 @@ function FullScreenSpinner() {
 // refresh doesn't force a fresh login as long as the cookie is still valid.
 function AuthBootstrap({ children }: { children: React.ReactNode }) {
   const { setAuth, setInitializing, isInitializing } = useAuthStore();
+  // React.StrictMode (dev only) intentionally mounts this effect twice per page load. Without
+  // this guard, both invocations independently POST /api/auth/refresh with the same httpOnly
+  // cookie; since refresh tokens rotate on use (one-time-use), whichever request loses the race
+  // gets a 401 "invalid refresh token" and silently logs a perfectly valid session out. The ref
+  // survives StrictMode's synthetic double-invoke (only the effect callback re-runs, not the
+  // component instance), so this makes the real network call fire exactly once. AuthBootstrap
+  // wraps the whole app and is only ever mounted once for the session's real lifetime, so there's
+  // no genuine "component actually unmounted mid-flight" case to guard against here — the old
+  // `cancelled` flag was fighting this guard, not complementing it: it belonged to the discarded
+  // first invocation's closure, so it silently swallowed the one real network response and left
+  // the app stuck on the loading spinner forever.
+  const hasRun = useRef(false);
 
   useEffect(() => {
-    let cancelled = false;
+    if (hasRun.current) return;
+    hasRun.current = true;
     (async () => {
       try {
         const { data } = await apiClient.post('/api/auth/refresh', {}, { withCredentials: true });
         const accessToken = data.data.accessToken;
-        if (cancelled) return;
         useAuthStore.getState().setAccessToken(accessToken);
         const user = await apiMe();
-        if (cancelled) return;
         setAuth(user, accessToken);
       } catch {
-        if (!cancelled) setInitializing(false);
+        setInitializing(false);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
