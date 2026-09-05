@@ -47,8 +47,8 @@
 <!-- BEGIN: TopNavigationBar -->
 <header class="flex flex-wrap items-center justify-between gap-4 pb-1">
 <!-- Brand & Tagline -->
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-700 via-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-brand-500/30">
+<a href="#" data-screen="{{DATA:SCREEN:SCREEN_13}}" class="flex items-center gap-3 group transition-opacity hover:opacity-90">
+<div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-700 via-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-brand-500/30 group-hover:scale-105 transition-transform">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24">
 <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
 <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
@@ -59,7 +59,7 @@
 <h1 class="text-2xl font-extrabold tracking-tight text-[#1b1534] leading-none">HRNest</h1>
 <p class="text-[11px] font-semibold text-brand-600 tracking-wider uppercase mt-0.5">Empower. Engage. Elevate.</p>
 </div>
-</div>
+</a>
 <!-- Center Nav Pill Menu -->
 <nav aria-label="Primary" class="order-3 lg:order-2 w-full lg:w-auto flex items-center justify-center overflow-x-auto py-1">
 <div class="inline-flex items-center gap-1.5 bg-white/80 backdrop-blur-md p-1.5 rounded-full border border-slate-200/70 shadow-sm text-xs font-semibold text-slate-600">
@@ -74,25 +74,22 @@
 </div>
 </nav>
 <!-- Right Utility Actions -->
-<div class="order-2 lg:order-3 flex items-center gap-2.5">
-<!-- Settings button -->
-<button class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200/80 px-3.5 py-2 rounded-full shadow-sm transition-colors">
+<div class="order-2 lg:order-3 flex items-center gap-2.5"><button class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200/80 px-3.5 py-2 rounded-full shadow-sm transition-colors">
 <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"></path>
 <circle cx="12" cy="12" r="3"></circle>
 </svg>
-          Settings
-        </button>
-<!-- Notification Bell with Count -->
+Settings
+</button>
 <button class="relative w-9 h-9 flex items-center justify-center bg-white border border-slate-200/80 rounded-full text-slate-600 hover:bg-slate-50 shadow-sm transition">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 <span class="absolute -top-1 -right-1 bg-brand-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">3</span>
 </button>
-<!-- Current User Avatar Profile -->
-<div class="w-9 h-9 rounded-full bg-brand-200 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center text-brand-800 font-bold text-xs"><img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_0osEVsrEc8QoAVUlvp0gQNe4WZrH7oFxuG4o6zQ0LW7Vo4G5xGnIVdmkrbrq5NoFnTy-kJcidos75h_PnoafefocPDofq3SU6mn1zuNYojYW2kTuvAHKR_1-Xzkyf0lGRbHWyf7T9at4R_JNZTWWtjU7xzBfDkK2PVLLMY4GgtwyopagBg_BsCyTxmpkHFLUUGIp_eEwZG0JOYUnnPk--swbbJ2NQDbWm6ZoTA3jGH8GZ5vIaK37"></div>
-</div>
+<a href="#" data-screen="{{DATA:SCREEN:SCREEN_15}}" title="Sign Out / Switch Enterprise Profile" class="w-9 h-9 rounded-full bg-brand-200 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center text-brand-800 font-bold text-xs hover:ring-2 hover:ring-brand-500 transition">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_0osEVsrEc8QoAVUlvp0gQNe4WZrH7oFxuG4o6zQ0LW7Vo4G5xGnIVdmkrbrq5NoFnTy-kJcidos75h_PnoafefocPDofq3SU6mn1zuNYojYW2kTuvAHKR_1-Xzkyf0lGRbHWyf7T9at4R_JNZTWWtjU7xzBfDkK2PVLLMY4GgtwyopagBg_BsCyTxmpkHFLUUGIp_eEwZG0JOYUnnPk--swbbJ2NQDbWm6ZoTA3jGH8GZ5vIaK37">
+</a></div>
 </header>
 <!-- END: TopNavigationBar -->
 <!-- BEGIN: WelcomeHeaderAndStats -->
@@ -570,6 +567,8 @@
 <!-- END: MainDashboardGrid -->
 </div>
 <!-- END: MainDashboardContainer -->
+
+
 
 
 </body></html>
