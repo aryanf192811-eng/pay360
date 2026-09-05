@@ -10,6 +10,82 @@ what's next.
 
 ---
 
+## 2026-09-05 (much later) — Full Tier-0 backend push: 10 tasks built/reviewed in one session
+
+**Directive change:** user shifted from "route everything to Antigravity" to "do it yourself
+now" — they're managing their own Claude usage budget (was at 36%, plans to resume routing to
+Antigravity around 80%) and wants the remaining Tier-0 gaps closed directly by the supervisor
+rather than through more delegation round-trips. Antigravity kept working in parallel on its own
+already-claimed tasks (T-004, T-013) the whole time — this was **not** a full stop on delegation,
+just the supervisor picking up everything else.
+
+**Built and independently verified myself this session (all against the live server + real
+Postgres, never just unit-level):**
+- **T-008** — Departments + Working Schedules CRUD. `total_weekly_hours` computed server-side
+  from `schedule_lines`, never client-trusted (37.5h exact for a 5×8h/30min-break test).
+- **T-009** — Employees CRUD + smart buttons. Added a race-safe `employee_code_seq` Postgres
+  sequence (migration `1757100000000`) instead of a COUNT-based code. Live contract/time-off/
+  attendance-exception counts, department/status/type filters, employee-role ownership boundary.
+- **T-010** — Contracts CRUD. Confirmed the exclusion-constraint 409 mapping end-to-end (overlap
+  blocked, non-overlap succeeds, clean error message vs. raw Postgres code only in `error.code`).
+- **T-011** — Salary Structures + Salary Rules CRUD. Tested all four payroll-adjacent roles for
+  real: `hr_manager` gets **zero** access (not even read) per the PS's "no access to payroll
+  features," `hr_payroll_user` read-only, `hr_payroll_manager`/`admin` full CRUD.
+- **T-012** — Attendance CRUD. This PS-mandated module had **zero code** before this session
+  despite T-006 already depending on it. Check-in/check-out correctly merge into the same row
+  (confirmed by id, not just by count). Manual correction restricted to HR roles,
+  `corrected_by` server-stamped.
+- **T-014** — Payroll Dashboard. Also had **zero code and no task** before this session. Every
+  KPI/chart is a live query, verified `total_net_paid` against a hand-run `SUM()` in psql
+  directly. Found and fixed a real bug myself while building it: filtering attendance/time-off
+  overviews by department wasn't wired at all initially (only payslip queries were) — the PS
+  explicitly asks for attendance/leave patterns to be department-filterable too, so this would
+  have been a silent gap; fixed before calling it done, then hit and fixed an ambiguous-column
+  SQL error (`employees.status` vs `attendances.status` colliding after the join).
+- **T-005** — reviewed and independently re-verified Antigravity's seed script (ran it twice
+  myself, count stable at 12, no duplication).
+
+**Caught a second real defect on independent review (T-004, Postman/newman):** Antigravity's
+self-report claimed "34/34 assertions passed." Re-running the exact same command myself — twice
+— failed hard across the entire Time Off folder both times. Traced it to the actual root cause
+rather than just reporting "it's broken": the collection's `scratch/generate_postman.js` had
+baked a `Date.now()` value into the **committed JSON** as a static string
+(`"Annual Leave 1788590640224"`), so the suite could only ever pass once, against a virgin
+database — every rerun hits a unique-constraint conflict on `time_off_types.name`, and everything
+downstream cascades into literal `"{{timeOffTypeId}}"` strings being sent to Postgres as if they
+were real UUIDs. Sent back to `NEEDS_REVISION` with the precise fix (use Postman's own
+`{{$timestamp}}` dynamic variable inside the request body, evaluated fresh per send, not baked in
+by an external script) and a stronger acceptance check (three consecutive runs must all pass, not
+just one).
+
+**T-013 (Payslip PDF + bulk email) is mid-flight with Antigravity** — `pdf.service.js`,
+`getPdf` on payslips, and `sendPayslips` on payruns all exist in partial form as of this
+entry; not yet submitted, not yet reviewed. Do not re-do this work — check chatbot.md's current
+T-013 status before touching any of its files.
+
+**What's true right now:**
+- Backend Tier 0 is essentially complete except: T-004 needs Antigravity's revision + a
+  re-verified 3-in-a-row newman pass; T-013 needs to land and be reviewed. Every other backend
+  module in the PS (Auth, Employees, Contracts, Working Schedules, Departments, Attendance, Time
+  Off, Salary Structures/Rules, Payruns/Payslips including the calculation engine, Dashboard) is
+  built and independently verified against a live server.
+- **Frontend is still almost entirely a scaffold** — real screens for every module above still
+  need to be built. This is the single largest remaining gap before a demo is possible, bigger
+  than anything left on the backend.
+- A running list of manual test/dev artifacts now exists in the local Postgres DB (not
+  committed anywhere): multiple test users across all 5 roles, Rahul/Priya/Neha as test
+  employees, a "Regular Salary" structure with HRA/GROSS/PF/NET rules, several payruns in
+  various states, 5 duplicate "Annual Leave ####" time-off types from repeated newman runs. None
+  of this is seed data — T-005's seed script is the source of truth for demo data; this is just
+  supervisor/Antigravity testing residue and can be wiped before the real demo without concern.
+
+**What's next:** get T-004's revision and T-013 landed and verified, then the frontend build
+becomes the critical path — start with screens for whatever's already fully verified on the
+backend (Auth login, Employee list/detail, Payroll wizard, Time Off) so there's no backend
+dependency blocking frontend progress.
+
+---
+
 ## 2026-09-05 (later still) — T-002 caught a real bug on independent review
 
 T-001 VERIFIED (backend skeleton — Express/pool/logger/response utils, reviewed + re-run by
