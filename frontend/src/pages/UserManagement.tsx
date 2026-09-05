@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { listUsers, updateUser } from '../api/users.api';
+import { registerUserAsAdmin } from '../api/auth.api';
 import { listEmployees } from '../api/employees.api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Select } from '../components/ui/input';
+import { Input, Label, Select } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { TableSkeleton } from '../components/ui/skeleton';
 import { EmptyState } from '../components/EmptyState';
-import { Users as UsersIcon } from 'lucide-react';
+import { Users as UsersIcon, Plus } from 'lucide-react';
 
 const ROLE_OPTIONS = ['employee', 'hr_manager', 'hr_payroll_user', 'hr_payroll_manager', 'admin'];
 
@@ -21,6 +22,9 @@ const ROLE_OPTIONS = ['employee', 'hr_manager', 'hr_payroll_user', 'hr_payroll_m
 export function UserManagement() {
   const queryClient = useQueryClient();
   const [edits, setEdits] = useState<Record<string, { role?: string; employee_id?: string }>>({});
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newAccount, setNewAccount] = useState({ email: '', password: '', role: 'hr_manager' });
+  const [addError, setAddError] = useState<string | null>(null);
 
   const { data: users, isLoading } = useQuery({ queryKey: ['users'], queryFn: listUsers });
   const { data: employees } = useQuery({ queryKey: ['employees-for-linking'], queryFn: () => listEmployees() });
@@ -38,21 +42,75 @@ export function UserManagement() {
     },
   });
 
-  if (isLoading) return <TableSkeleton rows={6} cols={4} />;
-  if (!users || users.length === 0) {
-    return <EmptyState icon={UsersIcon} title="No user accounts yet" description="User accounts are created via registration." />;
-  }
+  // Reuses POST /api/auth/register, authenticated this time — the backend allows any role for
+  // an admin caller (see auth.service.js), unlike the public self-register flow which is locked
+  // to 'employee'. This is the only way a privileged (hr_manager and up) account gets created.
+  const addAccountMut = useMutation({
+    mutationFn: () => registerUserAsAdmin(newAccount),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      setShowAddForm(false);
+      setNewAccount({ email: '', password: '', role: 'hr_manager' });
+      setAddError(null);
+    },
+    onError: (err: unknown) =>
+      setAddError((err as { response?: { data?: { error?: { message?: string } } } })?.response?.data?.error?.message || 'Failed to create account'),
+  });
 
   return (
     <div className="space-y-24">
-      <div>
-        <h1 className="text-2xl font-bold text-text">User Management</h1>
-        <p className="text-sm text-text-muted">Link login accounts to employee records and assign roles.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-text">User Management</h1>
+          <p className="text-sm text-text-muted">Link login accounts to employee records and assign roles.</p>
+        </div>
+        <Button onClick={() => setShowAddForm((v) => !v)}>
+          <Plus className="h-16 w-16" /> Add Account
+        </Button>
       </div>
 
+      {showAddForm && (
+        <Card>
+          <CardHeader><CardTitle>Create Account</CardTitle></CardHeader>
+          <CardContent>
+            <form
+              className="grid grid-cols-3 gap-16"
+              onSubmit={(e) => { e.preventDefault(); addAccountMut.mutate(); }}
+            >
+              <div className="space-y-4">
+                <Label>Email</Label>
+                <Input type="email" required value={newAccount.email} onChange={(e) => setNewAccount({ ...newAccount, email: e.target.value })} placeholder="name@company.com" />
+              </div>
+              <div className="space-y-4">
+                <Label>Password</Label>
+                <Input type="password" required minLength={8} value={newAccount.password} onChange={(e) => setNewAccount({ ...newAccount, password: e.target.value })} placeholder="At least 8 characters" />
+              </div>
+              <div className="space-y-4">
+                <Label>Role</Label>
+                <Select value={newAccount.role} onChange={(e) => setNewAccount({ ...newAccount, role: e.target.value })}>
+                  {ROLE_OPTIONS.map((r) => (
+                    <option key={r} value={r}>{r.replace(/_/g, ' ')}</option>
+                  ))}
+                </Select>
+              </div>
+              {addError && <div className="col-span-3 rounded-md bg-[color-mix(in_srgb,var(--danger)_10%,transparent)] px-12 py-8 text-sm text-danger">{addError}</div>}
+              <div className="col-span-3 flex justify-end gap-8">
+                <Button type="button" variant="secondary" onClick={() => setShowAddForm(false)}>Cancel</Button>
+                <Button type="submit" disabled={addAccountMut.isPending}>{addAccountMut.isPending ? 'Creating…' : 'Create Account'}</Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      )}
+
       <Card>
-        <CardHeader><CardTitle>Accounts ({users.length})</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Accounts ({users?.length ?? 0})</CardTitle></CardHeader>
         <CardContent>
+          {isLoading ? (
+            <TableSkeleton rows={6} cols={4} />
+          ) : !users || users.length === 0 ? (
+            <EmptyState icon={UsersIcon} title="No user accounts yet" description="Employees can self-register from the login screen, or add one directly above." />
+          ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -129,6 +187,7 @@ export function UserManagement() {
               </tbody>
             </table>
           </div>
+          )}
         </CardContent>
       </Card>
     </div>

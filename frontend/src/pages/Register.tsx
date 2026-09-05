@@ -1,32 +1,44 @@
 import { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { ArrowLeft, Wallet } from 'lucide-react';
-import { login } from '../api/auth.api';
-import { useAuthStore, homeFor } from '../store/auth.store';
+import { register } from '../api/auth.api';
 import { Button } from '../components/ui/button';
 import { Input, Label } from '../components/ui/input';
 
-export function Login() {
-  const location = useLocation();
-  const locationState = location.state as { from?: string; registered?: boolean; email?: string } | null;
-  const [email, setEmail] = useState(locationState?.email || '');
+// Self-service signup — always creates an 'employee' account (backend-enforced, see
+// auth.service.js ALLOWED_SELF_ROLES). An admin who wants to create a privileged account
+// (hr_manager and up) does that from User Management instead, which hits the same endpoint
+// while authenticated so the backend allows any role.
+export function Register() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const setAuth = useAuthStore((s) => s.setAuth);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [localError, setLocalError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: () => login(email, password),
-    onSuccess: (data) => {
-      setAuth(data.user, data.accessToken);
-      navigate(locationState?.from && locationState.from !== '/login' ? locationState.from : homeFor(data.user.role), { replace: true });
+    mutationFn: () => register(email, password),
+    onSuccess: () => {
+      navigate('/login', { state: { registered: true, email } });
     },
   });
 
   const errorMessage =
-    mutation.isError &&
-    ((mutation.error as { response?: { data?: { error?: { message?: string } } } })?.response?.data?.error?.message ||
-      'Login failed');
+    localError ||
+    (mutation.isError &&
+      ((mutation.error as { response?: { data?: { error?: { message?: string } } } })?.response?.data?.error?.message ||
+        'Registration failed'));
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLocalError(null);
+    if (password !== confirmPassword) {
+      setLocalError('Passwords do not match');
+      return;
+    }
+    mutation.mutate();
+  }
 
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2 bg-surface font-sans selection:bg-primary/30">
@@ -49,10 +61,10 @@ export function Login() {
             <Wallet className="h-32 w-32 text-white" />
           </div>
           <h1 className="text-4xl font-bold leading-[1.1] text-text tracking-tight">
-            The source of truth.
+            Your record starts here.
           </h1>
           <p className="mt-16 text-lg text-text-muted font-medium leading-relaxed max-w-md">
-            Sign in to access contracts, attendance, and payroll operations.
+            Create your employee account to view your contracts, attendance, and payslips.
           </p>
         </div>
       </div>
@@ -64,29 +76,24 @@ export function Login() {
             <span className="text-lg font-bold text-text tracking-tight">PeoplePay360</span>
           </div>
 
-          <h2 className="text-3xl font-bold text-text tracking-tight">Sign In</h2>
-          <p className="mt-8 text-base text-text-muted">Enter your HR-issued credentials.</p>
+          <h2 className="text-3xl font-bold text-text tracking-tight">Create Account</h2>
+          <p className="mt-8 text-base text-text-muted">
+            Registers a new employee account. Your login will need to be linked to your employee
+            record by an admin before you can see your own data.
+          </p>
 
-          {locationState?.registered && (
-            <div className="mt-16 rounded-md border border-success/30 bg-[color-mix(in_srgb,var(--success)_10%,transparent)] px-16 py-12 text-sm font-medium text-success">
-              Account created — sign in below. An admin needs to link your account to your employee record before you can see your own data.
-            </div>
-          )}
-
-          <form
-            className="mt-32 space-y-24"
-            onSubmit={(e) => {
-              e.preventDefault();
-              mutation.mutate();
-            }}
-          >
+          <form className="mt-32 space-y-24" onSubmit={handleSubmit}>
             <div className="space-y-8">
               <Label htmlFor="email" className="text-sm font-bold text-text">Email Address</Label>
               <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoFocus className="h-48 bg-bg" placeholder="name@company.com" />
             </div>
             <div className="space-y-8">
               <Label htmlFor="password" className="text-sm font-bold text-text">Password</Label>
-              <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="h-48 bg-bg" placeholder="••••••••" />
+              <Input id="password" type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} className="h-48 bg-bg" placeholder="At least 8 characters" />
+            </div>
+            <div className="space-y-8">
+              <Label htmlFor="confirm-password" className="text-sm font-bold text-text">Confirm Password</Label>
+              <Input id="confirm-password" type="password" required minLength={8} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="h-48 bg-bg" placeholder="Re-enter password" />
             </div>
 
             {errorMessage && (
@@ -96,11 +103,11 @@ export function Login() {
             )}
 
             <Button type="submit" className="w-full h-48 text-base font-bold shadow-sm" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Authenticating…' : 'Sign In'}
+              {mutation.isPending ? 'Creating account…' : 'Create Account'}
             </Button>
 
             <p className="text-center text-sm text-text-muted">
-              New here? <Link to="/register" className="font-bold text-primary hover:underline">Create an account</Link>
+              Already have an account? <Link to="/login" className="font-bold text-primary hover:underline">Sign in</Link>
             </p>
           </form>
         </div>

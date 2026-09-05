@@ -6,6 +6,7 @@ import { me as apiMe } from './api/auth.api';
 import { Layout } from './components/Layout';
 import { Landing } from './pages/Landing';
 import { Login } from './pages/Login';
+import { Register } from './pages/Register';
 import { MySpace } from './pages/MySpace';
 import { UserManagement } from './pages/UserManagement';
 import { EmployeeList } from './pages/EmployeeList';
@@ -85,6 +86,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           <Route
             element={
