@@ -1,11 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, Wallet } from 'lucide-react';
 import { login } from '../api/auth.api';
 import { useAuthStore, homeFor } from '../store/auth.store';
 import { Button } from '../components/ui/button';
 import { Input, Label } from '../components/ui/input';
+import { cn } from '../lib/utils';
+
+// Auto-rotating office photography, cross-fading every few seconds.
+const CAROUSEL_IMAGES = [
+  'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1920&q=80',
+];
 
 export function Login() {
   const location = useLocation();
@@ -14,6 +24,12 @@ export function Login() {
   const [password, setPassword] = useState('');
   const setAuth = useAuthStore((s) => s.setAuth);
   const navigate = useNavigate();
+  const [slide, setSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => setSlide((s) => (s + 1) % CAROUSEL_IMAGES.length), 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   const mutation = useMutation({
     mutationFn: () => login(email, password),
@@ -30,17 +46,21 @@ export function Login() {
 
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2 bg-surface font-sans selection:bg-primary/30">
-      <div className="relative hidden flex-col justify-between overflow-hidden bg-bg lg:flex border-r border-border">
-        <div className="absolute inset-0 p-32 pb-0">
-          <img
-            src="/images/hero.jpg"
-            alt="Dashboard Layout"
-            className="w-full h-full rounded-t-lg object-cover shadow-lg border-t border-l border-r border-border"
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-surface-dark lg:flex">
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={slide}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('${CAROUSEL_IMAGES[slide]}')` }}
           />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/60 to-transparent" />
+        </AnimatePresence>
+        <div className="absolute inset-0 bg-gradient-to-t from-surface-dark via-surface-dark/70 to-black/20" />
 
-        <Link to="/" className="relative z-10 flex items-center gap-8 text-sm font-bold text-text hover:text-primary transition-colors p-32">
+        <Link to="/" className="relative z-10 flex items-center gap-8 text-sm font-bold text-white hover:text-accent transition-colors p-32">
           <ArrowLeft className="h-16 w-16" /> Back to overview
         </Link>
 
@@ -48,12 +68,22 @@ export function Login() {
           <div className="inline-flex items-center justify-center rounded-lg bg-primary p-16 shadow-md mb-24">
             <Wallet className="h-32 w-32 text-white" />
           </div>
-          <h1 className="text-4xl font-bold leading-[1.1] text-text tracking-tight">
+          <h1 className="text-4xl font-bold leading-[1.1] text-white tracking-tight">
             The source of truth.
           </h1>
-          <p className="mt-16 text-lg text-text-muted font-medium leading-relaxed max-w-md">
+          <p className="mt-16 text-lg text-white/80 font-medium leading-relaxed max-w-md">
             Sign in to access contracts, attendance, and payroll operations.
           </p>
+          <div className="mt-24 flex gap-6">
+            {CAROUSEL_IMAGES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setSlide(i)}
+                aria-label={`Slide ${i + 1}`}
+                className={cn('h-4 rounded-full transition-all', i === slide ? 'w-24 bg-white' : 'w-4 bg-white/40')}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
