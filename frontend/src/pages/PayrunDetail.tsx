@@ -17,6 +17,13 @@ const WARNING_SEVERITY: Record<string, 'danger' | 'warning'> = {
   negative_net: 'warning',
 };
 
+const WARNING_SHORT_LABEL: Record<string, string> = {
+  contract_missing: 'No Contract',
+  missing_bank_details: 'A/C Missing',
+  duplicate_payslip: 'Duplicate',
+  negative_net: 'Negative Net',
+};
+
 export function PayrunDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -48,6 +55,18 @@ export function PayrunDetail() {
   const warnings = payrun.warnings ?? [];
   const blocking = warnings.filter((w) => WARNING_SEVERITY[w.warning_type] === 'danger' && !w.resolved);
   const advisory = warnings.filter((w) => WARNING_SEVERITY[w.warning_type] !== 'danger' && !w.resolved);
+
+  // Per-payslip warning lookup — surfaces the same warning inline in the row (matches the
+  // reference wireframe's "Warning" column), not just aggregated in the Preflight card above.
+  const warningsByPayslip = new Map<string, { type: string; severity: 'danger' | 'warning' }>();
+  for (const w of warnings) {
+    if (w.resolved || !w.payslip_id) continue;
+    const severity = WARNING_SEVERITY[w.warning_type] ?? 'warning';
+    const existing = warningsByPayslip.get(w.payslip_id);
+    if (!existing || (severity === 'danger' && existing.severity !== 'danger')) {
+      warningsByPayslip.set(w.payslip_id, { type: w.warning_type, severity });
+    }
+  }
 
   const anyMutating = computeMut.isPending || validateMut.isPending || markPaidMut.isPending || sendMut.isPending;
 
@@ -130,6 +149,7 @@ export function PayrunDetail() {
             <Thead>
               <tr>
                 <Th>Employee</Th>
+                <Th>Warning</Th>
                 <Th>Worked Days</Th>
                 <Th>Net</Th>
                 <Th>Status</Th>
@@ -137,17 +157,29 @@ export function PayrunDetail() {
               </tr>
             </Thead>
             <Tbody>
-              {(payslips ?? []).map((p) => (
-                <Tr key={p.id} className="cursor-pointer" onClick={() => navigate(`/payroll/payslips/${p.id}`)}>
-                  <Td className="font-medium">{p.first_name} {p.last_name}</Td>
-                  <Td className="font-mono">{p.worked_days ?? '—'}</Td>
-                  <Td className={cn('font-mono font-semibold', p.net == null && 'text-text-muted')}>
-                    {p.net != null ? `₹${Number(p.net).toLocaleString()}` : 'Not computed'}
-                  </Td>
-                  <Td><StatusBadge status={p.status} domain="payslip" /></Td>
-                  <Td><Button size="sm" variant="ghost">View →</Button></Td>
-                </Tr>
-              ))}
+              {(payslips ?? []).map((p) => {
+                const warning = warningsByPayslip.get(p.id);
+                return (
+                  <Tr key={p.id} className="cursor-pointer" onClick={() => navigate(`/payroll/payslips/${p.id}`)}>
+                    <Td className="font-medium">{p.first_name} {p.last_name}</Td>
+                    <Td>
+                      {warning ? (
+                        <span className={cn('text-xs font-semibold', warning.severity === 'danger' ? 'text-danger' : 'text-warning')}>
+                          {WARNING_SHORT_LABEL[warning.type] ?? warning.type}
+                        </span>
+                      ) : (
+                        <span className="text-text-muted">—</span>
+                      )}
+                    </Td>
+                    <Td className="font-mono">{p.worked_days ?? '—'}</Td>
+                    <Td className={cn('font-mono font-semibold', p.net == null && 'text-text-muted')}>
+                      {p.net != null ? `₹${Number(p.net).toLocaleString()}` : 'Not computed'}
+                    </Td>
+                    <Td><StatusBadge status={p.status} domain="payslip" /></Td>
+                    <Td><Button size="sm" variant="ghost">View →</Button></Td>
+                  </Tr>
+                );
+              })}
             </Tbody>
           </Table>
         </CardContent>

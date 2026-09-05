@@ -133,19 +133,46 @@ export function Dashboard() {
             {data.monthly_net_salary_trend.length === 0 ? (
               <div className="py-24 text-center text-sm text-text-muted">No historical payroll data yet.</div>
             ) : (
-              <div className="flex h-[160px] items-end gap-12 px-4">
-                {data.monthly_net_salary_trend.map((t) => (
-                  <div key={t.month} className="group flex flex-1 flex-col items-center gap-8">
-                    <span className="font-mono text-xs font-semibold text-text opacity-0 transition-opacity group-hover:opacity-100">
-                      ₹{t.total_net.toLocaleString()}
-                    </span>
-                    <div
-                      className="w-full rounded-t-md bg-gradient-to-t from-accent to-accent/70 transition-all group-hover:from-primary group-hover:to-primary/70"
-                      style={{ height: `${Math.max((t.total_net / maxTrend) * 120, 4)}px` }}
-                    />
-                    <span className="text-xs text-text-muted">{t.month}</span>
-                  </div>
-                ))}
+              <div className="h-[160px] px-4">
+                {(() => {
+                  const trend = data.monthly_net_salary_trend;
+                  const single = trend.length === 1;
+                  // Percentage-based positions so marker dots (plain HTML, not SVG) never get
+                  // squished by the SVG's preserveAspectRatio="none" line/area underneath them.
+                  const points = trend.map((t, i) => ({
+                    xPct: single ? 50 : (i / (trend.length - 1)) * 100,
+                    yPct: 100 - Math.max((t.total_net / maxTrend) * 100, 3),
+                    t,
+                  }));
+                  const svgPoints = single
+                    ? [{ ...points[0], xPct: 0 }, { ...points[0], xPct: 100 }] // flat reference line
+                    : points;
+                  const path = svgPoints.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.xPct} ${p.yPct}`).join(' ');
+                  const area = `${path} L 100 100 L 0 100 Z`;
+                  return (
+                    <div className="h-full overflow-hidden">
+                      <div className="relative h-[128px] w-full overflow-hidden">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+                          <path d={area} fill="color-mix(in srgb, var(--primary) 12%, transparent)" stroke="none" />
+                          <path d={path} fill="none" stroke="var(--primary)" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+                        </svg>
+                        {points.map((p, i) => (
+                          <div
+                            key={i}
+                            title={`₹${p.t.total_net.toLocaleString()}`}
+                            className="absolute h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-tinted"
+                            style={{ left: `${p.xPct}%`, top: `${p.yPct}%` }}
+                          />
+                        ))}
+                      </div>
+                      <div className="mt-8 flex justify-between text-xs text-text-muted">
+                        {trend.map((t) => (
+                          <span key={t.month} title={`₹${t.total_net.toLocaleString()}`}>{t.month}</span>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             )}
           </CardContent>
