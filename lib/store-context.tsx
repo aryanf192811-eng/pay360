@@ -112,18 +112,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       try {
         const apiEmployees = await listEmployees();
         
-        // Curated professional avatars
-        const robustAvatars = [
-          "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80", // professional man
-          "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80", // professional woman
-          "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80", // professional man
-          "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80", // professional woman
-          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80", // professional man
-          "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&q=80", // professional woman
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80", // professional man
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80"  // professional woman
-        ];
-
         // Map backend Employee format to the frontend UI Employee format
         const mappedEmployees: Employee[] = apiEmployees.map((apiEmp: any, idx: number) => {
           let status: Employee["status"] = "Active";
@@ -138,7 +126,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             status,
             email: apiEmp.email,
             phone: apiEmp.phone || "+91 00000 00000",
-            avatar: robustAvatars[idx % robustAvatars.length],
+            avatar: `https://ui-avatars.com/api/?name=${apiEmp.first_name}+${apiEmp.last_name}&background=random`,
             manager: apiEmp.manager_id ? "Manager" : "None",
             joinedDate: new Date(apiEmp.hire_date).toISOString().split('T')[0],
             smartMetrics: {
@@ -166,6 +154,29 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         
         if (mappedEmployees.length > 0) {
           setEmployees(mappedEmployees);
+
+          // Align mock data to use the real IDs from the backend
+          setAttendance(INITIAL_ATTENDANCE.map((rec, i) => ({
+            ...rec,
+            employeeId: mappedEmployees[i % mappedEmployees.length].id
+          })));
+
+          setTimeOff(INITIAL_TIMEOFF.map((rec, i) => ({
+            ...rec,
+            employeeId: mappedEmployees[i % mappedEmployees.length].id
+          })));
+
+          setContracts(INITIAL_CONTRACTS.map((rec, i) => ({
+            ...rec,
+            employeeId: mappedEmployees[i % mappedEmployees.length].id,
+            employeeName: mappedEmployees[i % mappedEmployees.length].name
+          })));
+
+          setAllocations(INITIAL_ALLOCATIONS.map((rec, i) => ({
+            ...rec,
+            employeeId: mappedEmployees[i % mappedEmployees.length].id,
+            employeeName: mappedEmployees[i % mappedEmployees.length].name
+          })));
         }
       } catch (err) {
         console.error("Failed to load initial data", err);

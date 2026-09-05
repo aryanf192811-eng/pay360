@@ -54,31 +54,43 @@ export function TimeOffHub() {
             </button>
             <div>
               <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-                Time Off Request {req ? `/ ${employees.find(e => e.id === req.employeeId)?.name || req.employeeId}` : "/ New"}
+                {isNew ? "New Time Off Request" : `Time Off Request / ${employees.find(e => e.id === req?.employeeId)?.name || req?.employeeId}`}
               </h1>
-              <p className="text-sm font-medium text-slate-500 mt-1">Review or process employee leave request</p>
+              <p className="text-sm font-medium text-slate-500 mt-1">{isNew ? "Submit a new leave request" : "Review or process employee leave request"}</p>
             </div>
           </div>
           
           <div className="flex items-center gap-3">
-            <button 
-              onClick={(e) => {
-                if (req) handleApprove(e, req.id);
-              }}
-              className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold shadow-sm transition-all flex items-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-              Approve
-            </button>
-            <button 
-              onClick={(e) => {
-                if (req) handleRefuse(e, req.id);
-              }}
-              className="px-6 py-2.5 bg-white border border-rose-200 text-rose-700 hover:bg-rose-50 rounded-xl text-sm font-bold shadow-sm transition-all flex items-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
-              Refuse
-            </button>
+            {isNew ? (
+              <button 
+                onClick={() => setSelectedRequest(null)}
+                className="px-6 py-2.5 bg-[#714B67] hover:bg-[#5C3D54] text-white rounded-xl text-sm font-bold shadow-sm transition-all flex items-center gap-2"
+              >
+                <Plus className="w-4 h-4" />
+                Submit Request
+              </button>
+            ) : (
+              <>
+                <button 
+                  onClick={(e) => {
+                    if (req) handleApprove(e, req.id);
+                  }}
+                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold shadow-sm transition-all flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                  Approve
+                </button>
+                <button 
+                  onClick={(e) => {
+                    if (req) handleRefuse(e, req.id);
+                  }}
+                  className="px-6 py-2.5 bg-white border border-rose-200 text-rose-700 hover:bg-rose-50 rounded-xl text-sm font-bold shadow-sm transition-all flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                  Refuse
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -89,8 +101,8 @@ export function TimeOffHub() {
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Employee</label>
               <input 
                 type="text" 
-                value={req ? (employees.find(e => e.id === req.employeeId)?.name || req.employeeId) : ""} 
-                readOnly 
+                defaultValue={req ? (employees.find(e => e.id === req.employeeId)?.name || req.employeeId) : ""} 
+                readOnly={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
             </div>
@@ -98,26 +110,26 @@ export function TimeOffHub() {
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Time Off Type</label>
               <input 
                 type="text" 
-                value={req ? (req.leaveType || req.type || "Paid Time Off") : "Paid Time Off"} 
-                readOnly 
+                defaultValue={req ? (req.leaveType || req.type || "Paid Time Off") : ""} 
+                readOnly={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
             </div>
             <div className="flex flex-col">
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Start Date</label>
               <input 
-                type="text" 
-                value={req ? req.startDate : ""} 
-                readOnly 
+                type="date" 
+                defaultValue={req ? req.startDate : ""} 
+                readOnly={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
             </div>
             <div className="flex flex-col">
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">End Date</label>
               <input 
-                type="text" 
-                value={req ? req.endDate : ""} 
-                readOnly 
+                type="date" 
+                defaultValue={req ? req.endDate : ""} 
+                readOnly={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
             </div>
@@ -129,8 +141,8 @@ export function TimeOffHub() {
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Duration</label>
               <input 
                 type="text" 
-                value={req ? `${req.days} Days` : ""} 
-                readOnly 
+                defaultValue={req ? `${req.days} Days` : ""} 
+                readOnly={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
             </div>
@@ -138,8 +150,8 @@ export function TimeOffHub() {
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Status</label>
               <input 
                 type="text" 
-                value={req ? req.status : "Pending"} 
-                readOnly 
+                defaultValue={req ? req.status : "Pending"} 
+                readOnly
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
             </div>
@@ -147,8 +159,8 @@ export function TimeOffHub() {
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Approver</label>
               <input 
                 type="text" 
-                value={req ? "Sara Khan" : ""} 
-                readOnly 
+                defaultValue={req ? "Sara Khan" : "Admin"} 
+                readOnly
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
             </div>
@@ -156,8 +168,8 @@ export function TimeOffHub() {
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Allocation Used</label>
               <input 
                 type="text" 
-                value={req ? `${req.leaveType || req.type} 2026` : ""} 
-                readOnly 
+                defaultValue={req ? `${req.leaveType || req.type} 2026` : ""} 
+                readOnly={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
             </div>
@@ -166,12 +178,16 @@ export function TimeOffHub() {
           {/* Full Width Reason */}
           <div className="md:col-span-2 space-y-2 mt-4 bg-white/80 border border-slate-200 rounded-xl p-6 relative shadow-sm">
             <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Reason</label>
-            <p className="text-slate-800 font-medium whitespace-pre-wrap min-h-[60px] text-sm">
-              {req ? req.reason || "Family vacation" : ""}
-            </p>
-            <p className="text-[10px] text-slate-400 absolute bottom-4 left-6 italic">
-              Useful note: if the leave type requires allocation, the request should clearly show which balance was consumed.
-            </p>
+            {isNew ? (
+              <textarea 
+                className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all min-h-[100px]"
+                placeholder="Explain the reason for this leave..."
+              />
+            ) : (
+              <p className="text-slate-800 font-medium whitespace-pre-wrap min-h-[60px] text-sm">
+                {req?.reason || "Family vacation"}
+              </p>
+            )}
           </div>
         </div>
       </div>

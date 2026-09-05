@@ -54,25 +54,10 @@ export function HubHeader() {
   ];
 
   return (
-    <div className="bg-white border-b border-slate-200/60 px-6 sm:px-8 py-5 shadow-sm sticky top-16 z-20">
+    <div className="bg-white border-b border-slate-200/60 px-6 sm:px-8 py-5 shadow-sm relative z-20">
       <div className="max-w-[1600px] mx-auto">
-        {/* Top Row: Breadcrumb, Search, Add Employee, View Toggles */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          
-          {/* Breadcrumb Title */}
-          <div className="flex items-center gap-2 text-sm text-slate-500 font-medium">
-            <span className="text-[#714B67] font-bold hover:underline cursor-pointer tracking-wide">
-              PeoplePay360
-            </span>
-            <ChevronRight className="w-4 h-4 text-slate-300" />
-            <span className="text-slate-800 font-semibold tracking-wide">Employees</span>
-            <ChevronRight className="w-4 h-4 text-slate-300" />
-            <span className="text-[#00A09D] font-bold bg-[#00A09D]/10 px-3 py-1 rounded-full text-xs shadow-sm border border-[#00A09D]/20">
-              Active Hub ({employees.length} Staff)
-            </span>
-          </div>
-
-          {/* Action Controls: Search, View Switcher, Add Employee */}
+        {/* Top Row: Search, Add Employee, View Toggles */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">          {/* Action Controls: Search, View Switcher, Add Employee */}
           <div className="flex items-center gap-4 flex-wrap">
             {/* Search Bar */}
             <div className="relative min-w-[280px] sm:min-w-[340px] group">
