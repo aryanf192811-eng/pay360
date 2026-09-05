@@ -6,7 +6,8 @@ import {
   listAllocations, createAllocation, approveAllocation,
   listTimeOffTypes, createTimeOffType,
 } from '../api/timeOff.api';
-import { listEmployees } from '../api/employees.api';
+import { listEmployees, listEmployeeAllocations } from '../api/employees.api';
+import type { TimeOffAllocation } from '../api/timeOff.api';
 import { useAuthStore, HR_ROLES } from '../store/auth.store';
 import { StatusBadge } from '../components/StatusBadge';
 import { EmptyState } from '../components/EmptyState';
@@ -58,9 +59,23 @@ export function TimeOffPage() {
       queryClient.invalidateQueries({ queryKey: ['timeoff-requests'] });
       setShowReqForm(false);
       setReqError(null);
+      setReqForm({ employee_id: '', time_off_type_id: '', allocation_id: '', date_from: '', date_to: '', duration: '' });
     },
     onError: setReqError,
   });
+
+  // Self-service employees never see the Employee select above — the effective employee is
+  // always their own record. HR picks it explicitly.
+  const effectiveEmployeeId = isHr ? reqForm.employee_id : user?.employee_id || '';
+  const selectedReqType = types?.find((t) => t.id === reqForm.time_off_type_id);
+  const { data: reqEmployeeAllocations } = useQuery({
+    queryKey: ['employee-allocations-for-request', effectiveEmployeeId],
+    queryFn: () => listEmployeeAllocations(effectiveEmployeeId) as Promise<TimeOffAllocation[]>,
+    enabled: !!effectiveEmployeeId && !!selectedReqType?.requires_allocation,
+  });
+  const usableAllocations = (reqEmployeeAllocations || []).filter(
+    (a) => a.time_off_type_id === reqForm.time_off_type_id && a.status === 'approved' && Number(a.remaining) > 0
+  );
 
   const [showAllocForm, setShowAllocForm] = useState(false);
   const [allocForm, setAllocForm] = useState({ employee_id: '', time_off_type_id: '', allocated: '', valid_from: '' });
@@ -122,7 +137,7 @@ export function TimeOffPage() {
                   {isHr && (
                     <div className="space-y-4 col-span-2">
                       <Label>Employee</Label>
-                      <Select required value={reqForm.employee_id} onChange={(e) => setReqForm({ ...reqForm, employee_id: e.target.value })}>
+                      <Select required value={reqForm.employee_id} onChange={(e) => setReqForm({ ...reqForm, employee_id: e.target.value, allocation_id: '' })}>
                         <option value="">Select employee…</option>
                         {employees?.map((e) => <option key={e.id} value={e.id}>{e.first_name} {e.last_name}</option>)}
                       </Select>
@@ -130,11 +145,30 @@ export function TimeOffPage() {
                   )}
                   <div className="space-y-4">
                     <Label>Type</Label>
-                    <Select required value={reqForm.time_off_type_id} onChange={(e) => setReqForm({ ...reqForm, time_off_type_id: e.target.value })}>
+                    <Select required value={reqForm.time_off_type_id} onChange={(e) => setReqForm({ ...reqForm, time_off_type_id: e.target.value, allocation_id: '' })}>
                       <option value="">Select type…</option>
                       {types?.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
                     </Select>
                   </div>
+                  {selectedReqType?.requires_allocation && (
+                    <div className="space-y-4">
+                      <Label>Allocation</Label>
+                      {!effectiveEmployeeId ? (
+                        <div className="flex h-10 items-center text-xs text-text-muted">Select an employee first.</div>
+                      ) : usableAllocations.length === 0 ? (
+                        <div className="flex h-10 items-center text-xs text-danger">No approved balance available for this type.</div>
+                      ) : (
+                        <Select required value={reqForm.allocation_id} onChange={(e) => setReqForm({ ...reqForm, allocation_id: e.target.value })}>
+                          <option value="">Select allocation…</option>
+                          {usableAllocations.map((a) => (
+                            <option key={a.id} value={a.id}>
+                              Remaining {a.remaining} of {a.allocated} (from {a.valid_from})
+                            </option>
+                          ))}
+                        </Select>
+                      )}
+                    </div>
+                  )}
                   <div className="space-y-4">
                     <Label>Duration (days)</Label>
                     <Input type="number" step="0.5" required value={reqForm.duration} onChange={(e) => setReqForm({ ...reqForm, duration: e.target.value })} />
@@ -150,7 +184,12 @@ export function TimeOffPage() {
                   <ErrorBanner error={reqError} />
                   <div className="col-span-2 flex justify-end gap-8">
                     <Button type="button" variant="secondary" onClick={() => setShowReqForm(false)}>Cancel</Button>
-                    <Button type="submit" disabled={createReqMut.isPending}>Submit Request</Button>
+                    <Button
+                      type="submit"
+                      disabled={createReqMut.isPending || !!(selectedReqType?.requires_allocation && (usableAllocations.length === 0 || !reqForm.allocation_id))}
+                    >
+                      Submit Request
+                    </Button>
                   </div>
                 </form>
               </CardContent>
