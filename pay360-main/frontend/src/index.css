@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Single source of truth for design tokens — light mode only. Must match UI_GUIDE.md's
+   identity table exactly. If you change a value here, update UI_GUIDE.md in the same commit. */
+@layer base {
+  :root {
+    --bg: #F6F5FC;
+    --surface: #FFFFFF;
+    --surface-raised: #FFFFFF;
+    --surface-dark: #1E1B4B;
+    --surface-dark-foreground: #F1EFFC;
+    --border: #E6E2F5;
+    --text: #1E1B3A;
+    --text-muted: #6B6B85;
+
+    --primary: #4F46E5;
+    --primary-hover: #4338CA;
+    --primary-light: #EEF0FE;
+
+    --accent: #059669;
+    --accent-light: #D6F5E7;
+    --success: #16A34A;
+    --warning: #D97706;
+    --danger: #DC2626;
+    --info: #2563EB;
+
+    --shadow-alpha-sm: 0.06;
+    --shadow-alpha-md: 0.10;
+    --shadow-alpha-lg: 0.16;
+    --shadow-tint: 243 60% 45%;
+
+    --radius: 1rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply text-text antialiased;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(760px circle at 8% -8%, color-mix(in srgb, var(--primary) 8%, transparent), transparent 60%),
+      radial-gradient(680px circle at 96% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 55%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+  ::selection {
+    background-color: color-mix(in srgb, var(--primary) 25%, transparent);
+  }
+}
+
+@layer utilities {
+  .font-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .shadow-tinted {
+    box-shadow: 0 1px 2px hsl(var(--shadow-tint) / var(--shadow-alpha-sm)),
+      0 8px 24px -8px hsl(var(--shadow-tint) / var(--shadow-alpha-md));
+  }
+  .shadow-tinted-lg {
+    box-shadow: 0 4px 8px hsl(var(--shadow-tint) / var(--shadow-alpha-sm)),
+      0 24px 48px -16px hsl(var(--shadow-tint) / var(--shadow-alpha-lg));
+  }
+  .bg-grid-texture {
+    background-image: radial-gradient(color-mix(in srgb, var(--text) 8%, transparent) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}

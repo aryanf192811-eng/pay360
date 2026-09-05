@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Build output
+dist/
+build/
+frontend/dist/
+backend/dist/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+logs/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Generated artifacts
+backend/tmp/
+backend/generated-pdfs/
+coverage/
+.cache/
+
+# Postman (Newman) run output — the collection/environment themselves ARE tracked
+backend/postman/newman-report*.json
+
+# Playwright MCP test artifacts (supervisor's own testing, not demo assets)
+.playwright-mcp/
