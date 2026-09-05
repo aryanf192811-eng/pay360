@@ -159,6 +159,12 @@ async function seed() {
     const canonicalEmails = employees.map((e) => e.email);
     await pool.query(`DELETE FROM users WHERE email <> ALL($1::citext[])`, [canonicalEmails]);
 
+    // Same for stray employee records created via manual QA through the live Employee form
+    // (e.g. "Add Employee" test submissions) — cascades their own contracts/attendance/time-off/
+    // payslips too, so a leftover test employee never lingers into the demo dataset.
+    const canonicalCodes = employees.map((e) => e.code);
+    await pool.query(`DELETE FROM employees WHERE employee_code <> ALL($1::text[])`, [canonicalCodes]);
+
     // Org structure: Alice leads HR directly; Bob manages the payroll specialists; Eve leads
     // the engineers she works alongside; Grace leads sales.
     await pool.query(`UPDATE employees SET manager_id = $1 WHERE employee_code IN ('EMP-002')`, [empIds['EMP-001']]);
