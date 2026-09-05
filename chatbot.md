@@ -190,8 +190,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
     401ing. Matches the scaffold's actual scope. **VERIFIED.**
 
 ### T-004 — Postman: real requests + tests for every LIVE route (Auth, Payroll, Time Off)
-- Status: QUEUED
-- Owner: unclaimed
+- Status: CLAIMED
+- Owner: Antigravity
 - Files allowed: `backend/postman/collection.json`, `backend/postman/environment.json`
 - Spec: Auth, Payroll (Payruns+Payslips), and Time Off (Types/Allocations/Requests) routes are
   now live and VERIFIED (T-002, T-006, T-007) — this task fills in **real requests with real
@@ -435,8 +435,8 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 - Result/Notes: —
 
 ### T-010 — Contracts CRUD (exclusion-constraint aware)
-- Status: QUEUED
-- Owner: unclaimed
+- Status: VERIFIED
+- Owner: Supervisor
 - Files allowed: `backend/src/routes/contracts.routes.js`, `backend/src/controllers/contracts.controller.js`, `backend/src/app.js` (uncomment the contracts mount line only)
 - Spec: CRUD per API_GUIDE.md. On `POST`/`PATCH` to `status='active'`, the INSERT/UPDATE will hit
   the `no_overlapping_active_contracts` exclusion constraint (DB_GUIDE.md) if it overlaps another
@@ -448,7 +448,10 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
 - Acceptance check: create an active contract for employee X covering Jan–Jun; attempt to create
   a second active contract for the same employee covering Apr–Sep → `409` with a clear message
   (not a raw Postgres error string). Creating one for Jul–Dec (non-overlapping) → `201`.
-- Result/Notes: —
+- Result/Notes: **SUPERVISOR-AUTHORED AND VERIFIED.** Jan–Jun active contract → `201`. Overlapping
+  Apr–Sep → `409` with a clean human-readable message (the raw `23P01` Postgres code is exposed
+  only in the response's machine-readable `error.code` field, per API_GUIDE.md's wrapper shape —
+  not leaked into the message text). Non-overlapping Jul–Dec → `201`. Exact acceptance scenario.
 
 ## Phase 2 tasks — PS-mandated modules with ZERO code so far (found during a full PS gap-check, not previously queued)
 
