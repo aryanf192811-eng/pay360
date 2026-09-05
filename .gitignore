@@ -38,3 +38,6 @@ coverage/
 
 # Postman (Newman) run output — the collection/environment themselves ARE tracked
 backend/postman/newman-report*.json
+
+# Playwright MCP test artifacts (supervisor's own testing, not demo assets)
+.playwright-mcp/
