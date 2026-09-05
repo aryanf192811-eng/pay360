@@ -64,7 +64,7 @@ export function ExecutiveDashboard() {
   return (
     <div className="space-y-6">
       {/* 1. Aesthetic Welcome Banner */}
-      <div className="bg-gradient-to-r from-white/90 via-white/80 to-purple-50/70 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-5">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2 text-xs font-bold text-[#714B67] uppercase tracking-wider">
             <Sparkles className="w-4 h-4 text-[#00A09D]" />
@@ -100,7 +100,7 @@ export function ExecutiveDashboard() {
       {/* 2. Hero KPI Cards — PDF B9: "KPI cards display key metrics like Total Net Salary Paid, Payslips Generated, Average Salary, Approved Time Off, and Attendance Health" */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Total Net Disbursed */}
-        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs uppercase tracking-wider font-bold text-slate-500">
               Total Net Disbursed
@@ -121,7 +121,7 @@ export function ExecutiveDashboard() {
         </div>
 
         {/* KPI 2: Payslips Generated — PDF B9 explicitly names this */}
-        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs uppercase tracking-wider font-bold text-slate-500">
               Payslips Generated
@@ -141,7 +141,7 @@ export function ExecutiveDashboard() {
         </div>
 
         {/* KPI 3: Average Salary — PDF B9 */}
-        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs uppercase tracking-wider font-bold text-slate-500">
               Average Salary
@@ -160,7 +160,7 @@ export function ExecutiveDashboard() {
         </div>
 
         {/* KPI 4: Attendance Health — PDF B9 */}
-        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs uppercase tracking-wider font-bold text-slate-500">
               Attendance Health
@@ -180,7 +180,7 @@ export function ExecutiveDashboard() {
       </div>
 
       {/* 3. Monthly Net Salary Trends — PDF B9: "Charts plot Monthly Net Salary Trends using historical data" */}
-      <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-6 shadow-sm">
+      <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-5">
           <div>
             <h3 className="text-base font-bold text-slate-900">Monthly Net Salary Trends</h3>
@@ -224,7 +224,7 @@ export function ExecutiveDashboard() {
       {/* 4. Interactive Analytics Grid (PDF B9: "Charts plot Salary Cost by Department") */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Card: Department Payroll Expenditure */}
-        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-6 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
+        <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
@@ -269,7 +269,7 @@ export function ExecutiveDashboard() {
         </div>
 
         {/* Right Card: Attendance & Leave Distribution */}
-        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-6 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
+        <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm hover:shadow-md hover:border-[#714B67]/30 transition-all duration-200 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
@@ -325,7 +325,7 @@ export function ExecutiveDashboard() {
       </div>
 
       {/* 4. Bottom Alerts Table: Live List of System Anomalies with Direct Fix Links */}
-      <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
         <div className="p-5 border-b border-slate-200/80 flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold text-slate-900">System Anomalies &amp; Operational Alerts</h3>

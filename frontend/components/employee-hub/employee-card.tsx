@@ -36,7 +36,7 @@ export function EmployeeCard({ employee }: { employee: Employee }) {
   return (
     <div
       onClick={() => setSelectedEmployee(employee)}
-      className="group relative bg-white/80 backdrop-blur-md border border-slate-200/80 rounded-2xl p-5 shadow-xs hover:shadow-md hover:-translate-y-0.5 hover:border-[#714B67]/60 transition-all duration-200 cursor-pointer flex flex-col justify-between"
+      className="group relative bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-[#714B67]/40 transition-all duration-300 cursor-pointer flex flex-col justify-between"
     >
       {/* Top Row: Avatar, Identity, Status */}
       <div>

@@ -32,7 +32,7 @@ export function PayslipModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto select-none bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 overflow-y-auto select-none bg-slate-900/60 flex items-center justify-center p-4">
       {/* Modal Card */}
       <div className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-200">
         {/* Top Actions Ribbon (Hidden during print) */}

@@ -64,7 +64,7 @@ export function PayrunEngine() {
   return (
     <div className="space-y-6">
       {/* Top Header & Breadcrumb */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-1">
             <span>PeoplePay360</span>
@@ -106,7 +106,7 @@ export function PayrunEngine() {
       )}
 
       {/* Header Status Bar: Draft -> Computed -> Validated -> Paid (Glowing Active Indicator) */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+      <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="space-y-1">
             <div className="text-xs uppercase tracking-wider font-bold text-slate-500">
@@ -246,7 +246,7 @@ export function PayrunEngine() {
 
       {/* Pre-Run Validation Warning Banner (Rahul Mishra Missing Bank Credentials) */}
       {missingBankCount > 0 && (
-        <div className="p-4 rounded-2xl bg-amber-50/90 backdrop-blur-md border border-amber-300 text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+        <div className="p-4 rounded-lg bg-amber-50 border border-amber-300 text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
             <div>
@@ -272,19 +272,19 @@ export function PayrunEngine() {
 
       {/* Bento Summary KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Total Gross Wages</div>
           <div className="text-2xl font-black text-slate-900 mt-1">{formatINR(totalGross)}</div>
           <div className="text-xs text-slate-500 mt-1">Basic: {formatINR(totalBasic)} + HRA: {formatINR(totalHra)}</div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Statutory Deductions</div>
           <div className="text-2xl font-black text-rose-600 mt-1">-{formatINR(totalDeductions)}</div>
           <div className="text-xs text-slate-500 mt-1">PF: {formatINR(totalPF)} • TDS: {formatINR(totalTDS)} • LOP: {formatINR(totalLOP)}</div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Net Take-Home Payout</div>
           <div className="text-2xl font-black text-[#00A09D] mt-1">{formatINR(totalNetPayout)}</div>
           <div className="text-xs font-semibold text-emerald-600 mt-1 flex items-center gap-1">
@@ -293,7 +293,7 @@ export function PayrunEngine() {
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Eligible Employees</div>
           <div className="text-2xl font-black text-[#714B67] mt-1">{payrunBatch.payslips.length} Staff</div>
           <div className="text-xs text-slate-500 mt-1">
@@ -307,7 +307,7 @@ export function PayrunEngine() {
       </div>
 
       {/* Dynamic Salary Calculation Batch Table */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-xs">
         <div className="p-5 border-b border-slate-200/80 flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold text-slate-900">September 2026 Batch Computation Table</h3>

@@ -57,7 +57,7 @@ export function AddEmployeeDialog() {
     <div className="fixed inset-0 z-50 overflow-y-auto select-none">
       <div
         onClick={() => setIsAddEmployeeOpen(false)}
-        className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-slate-900/50 transition-opacity"
       />
 
       <div className="flex min-h-full items-center justify-center p-4">

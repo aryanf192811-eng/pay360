@@ -372,7 +372,7 @@ export function AttendanceHub() {
 
       {/* Manual Correction Modal */}
       {isCorrectionOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto select-none bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 overflow-y-auto select-none bg-slate-900/50 flex items-center justify-center p-4">
           <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="bg-[#714B67] text-white px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -473,7 +473,7 @@ export function AttendanceHub() {
 
       {/* New Working Schedule Modal (A3 Feature) */}
       {isNewScheduleOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto select-none bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 overflow-y-auto select-none bg-slate-900/50 flex items-center justify-center p-4">
           <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="bg-[#714B67] text-white px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">

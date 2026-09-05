@@ -96,7 +96,7 @@ export function SchedulesHub() {
   return (
     <div className="space-y-6">
       {/* Top Header & Breadcrumb */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-1">
             <span>PeoplePay360</span>
@@ -125,7 +125,7 @@ export function SchedulesHub() {
 
       {/* KPI Overview Strip */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-4 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Configured Schedules</div>
           <div className="text-2xl font-extrabold text-slate-900 mt-1">{schedules.length} Profiles</div>
           <div className="text-xs font-medium text-emerald-600 mt-1 flex items-center gap-1">
@@ -134,19 +134,19 @@ export function SchedulesHub() {
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-4 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Standard Work Week</div>
           <div className="text-2xl font-extrabold text-slate-900 mt-1">40.0 hrs/wk</div>
           <div className="text-xs font-medium text-slate-500 mt-1">8.0 hrs/day • Mon-Fri pattern</div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-4 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Staff Assigned</div>
           <div className="text-2xl font-extrabold text-[#714B67] mt-1">{employees.length} Employees</div>
           <div className="text-xs font-medium text-slate-500 mt-1">All contracts mapped to schedules</div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-4 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Payroll Integration</div>
           <div className="text-2xl font-extrabold text-[#00A09D] mt-1">Automated</div>
           <div className="text-xs font-medium text-slate-500 mt-1">Powers LOP &amp; overtime variance</div>
@@ -173,7 +173,7 @@ export function SchedulesHub() {
                 <div
                   key={sched.id}
                   onClick={() => setSelectedSchedule(sched)}
-                  className={`bg-white/80 backdrop-blur-md rounded-2xl border p-5 cursor-pointer transition-all duration-200 flex flex-col justify-between ${
+                  className={`bg-white rounded-lg border p-5 cursor-pointer transition-all duration-200 flex flex-col justify-between ${
                     isSelected
                       ? "border-[#714B67] ring-2 ring-[#714B67]/20 shadow-md bg-white"
                       : "border-slate-200/80 hover:border-slate-300 hover:shadow-xs"
@@ -272,7 +272,7 @@ export function SchedulesHub() {
 
         {/* Right Col: Selected Schedule Inspection Card */}
         {selectedSchedule && (
-          <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-5">
+          <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs space-y-5">
             <div>
               <div className="flex items-center justify-between">
                 <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#00A09D]/10 text-[#00A09D]">
@@ -340,7 +340,7 @@ export function SchedulesHub() {
       </div>
 
       {/* Employee Schedule Assignment Matrix */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-xs">
         <div className="p-5 border-b border-slate-200/80 flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold text-slate-900">Employee Working Schedule Assignments</h3>
@@ -408,7 +408,7 @@ export function SchedulesHub() {
 
       {/* Modal Dialog: + Create Working Schedule */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 animate-in fade-in">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-5">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
               <div className="flex items-center gap-2">

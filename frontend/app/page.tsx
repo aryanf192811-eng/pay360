@@ -13,7 +13,8 @@ import { AttendanceHub } from "@/components/attendance/attendance-hub";
 import { TimeOffHub } from "@/components/timeoff/timeoff-hub";
 import { PayrunEngine } from "@/components/payroll/payrun-engine";
 import { ExecutiveDashboard } from "@/components/dashboard/executive-dashboard";
-import { BentoDashboard } from "@/components/dashboard/bento-dashboard";
+import { UserManagementHub } from "@/components/user-management/user-management-hub";
+
 import { PayrunWizardDialog } from "@/components/payroll/payrun-wizard-dialog";
 import { PayslipModal } from "@/components/payroll/payslip-modal";
 import { LoginDialog } from "@/components/auth/login-dialog";
@@ -58,12 +59,7 @@ function MainContent() {
     <div className="flex-1 flex flex-col min-h-screen">
       <TopBar />
 
-      {/* Module 0: Bento Dashboard (Landing Home — PDF §B9 operational home) */}
-      {activeNavTab === "Dashboard" && (
-        <main className="flex-1 w-full">
-          <BentoDashboard />
-        </main>
-      )}
+
 
       {/* Module 1: Employees Hub — PDF §B1, B2 */}
       {activeNavTab === "Employees" && (
@@ -127,11 +123,16 @@ function MainContent() {
         </main>
       )}
 
-      {/* Module 6: Payroll Dashboard — PDF §B9 Reports */}
+      {/* Module 6: Executive Reports Dashboard */}
       {activeNavTab === "Reports" && (
         <main className="flex-1 p-4 sm:p-6 w-full mx-auto">
           <ExecutiveDashboard />
         </main>
+      )}
+
+      {/* Admin Module: User Management */}
+      {activeNavTab === "User Management" && (
+        <UserManagementHub />
       )}
 
       {/* Enterprise Footer */}

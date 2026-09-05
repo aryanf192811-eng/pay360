@@ -5,7 +5,7 @@ import { ShieldCheck, Cpu } from "lucide-react";
 
 export function EnterpriseFooter() {
   return (
-    <footer className="mt-auto bg-white/85 backdrop-blur-md border-t border-slate-200/80 py-4 px-6 select-none z-10">
+    <footer className="mt-auto bg-white border-t border-slate-200 py-4 px-6 select-none z-10">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-500 font-medium">
         {/* Left Section */}
         <div className="flex items-center gap-2">

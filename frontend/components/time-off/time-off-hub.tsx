@@ -484,7 +484,7 @@ export function TimeOffHub() {
 
       {/* New Allocation Modal */}
       {isNewAllocationOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto select-none bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 overflow-y-auto select-none bg-slate-900/50 flex items-center justify-center p-4">
           <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="bg-[#714B67] text-white px-6 py-4 flex items-center justify-between">
               <h3 className="font-bold text-sm text-white">Grant Leave Allocation (A4)</h3>

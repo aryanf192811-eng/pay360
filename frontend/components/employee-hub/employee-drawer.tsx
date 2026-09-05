@@ -63,7 +63,7 @@ export function EmployeeDrawer() {
       {/* Backdrop */}
       <div
         onClick={() => setSelectedEmployee(null)}
-        className="absolute inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity duration-300"
+        className="absolute inset-0 bg-slate-900/50 transition-opacity duration-300"
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">

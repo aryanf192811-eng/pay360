@@ -82,7 +82,7 @@ export function TimeOffHub() {
   return (
     <div className="space-y-6">
       {/* Top Header & Breadcrumbs */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-1">
             <span>PeoplePay360</span>
@@ -124,19 +124,19 @@ export function TimeOffHub() {
 
       {/* Top Required Metrics Row: Entitled (18), Taken (6), Remaining (12) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Annual Entitled Days</div>
           <div className="text-2xl font-extrabold text-slate-900 mt-1">{totalEntitled} Days</div>
           <div className="text-xs font-medium text-slate-500 mt-1">Standard corporate entitlement/yr</div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Taken Days (Consumed)</div>
           <div className="text-2xl font-extrabold text-[#714B67] mt-1">{totalTaken} Days</div>
           <div className="text-xs font-medium text-slate-500 mt-1">Approved across 8 team members</div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Remaining Balance</div>
           <div className="text-2xl font-extrabold text-emerald-600 mt-1">{remainingBal} Days</div>
           <div className="text-xs font-medium text-emerald-600 mt-1 flex items-center gap-1">
@@ -145,7 +145,7 @@ export function TimeOffHub() {
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs">
           <div className="text-xs uppercase tracking-wider font-bold text-slate-500">Pending Approvals</div>
           <div className="text-2xl font-extrabold text-amber-600 mt-1">{pendingRequests.length} Requests</div>
           <div className="text-xs font-medium text-amber-700 mt-1 flex items-center gap-1">
@@ -167,7 +167,7 @@ export function TimeOffHub() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Card 1: Paid Casual Leave */}
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs flex flex-col justify-between">
+          <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
             <div>
               <div className="flex items-start justify-between">
                 <div>
@@ -201,7 +201,7 @@ export function TimeOffHub() {
           </div>
 
           {/* Card 2: Sick Leave */}
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs flex flex-col justify-between">
+          <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
             <div>
               <div className="flex items-start justify-between">
                 <div>
@@ -235,7 +235,7 @@ export function TimeOffHub() {
           </div>
 
           {/* Card 3: Unpaid Leave / Loss of Pay */}
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 p-5 shadow-xs flex flex-col justify-between">
+          <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
             <div>
               <div className="flex items-start justify-between">
                 <div>
@@ -271,7 +271,7 @@ export function TimeOffHub() {
       </div>
 
       {/* Section 2: Leave Requests Table (Section B4) */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-xs">
         <div className="p-5 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <h3 className="text-base font-bold text-slate-900">Leave Requests Ledger</h3>
@@ -418,7 +418,7 @@ export function TimeOffHub() {
 
       {/* Modal Dialog: + Request Time Off */}
       {isNewRequestOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 animate-in fade-in">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-5">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
               <div className="flex items-center gap-2">

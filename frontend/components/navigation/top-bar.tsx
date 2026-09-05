@@ -27,11 +27,17 @@ export function TopBar() {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
 
-  // Close notifications on outside click
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const settingsRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
         setIsNotifOpen(false);
+      }
+      if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
+        setIsSettingsOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -39,7 +45,6 @@ export function TopBar() {
   }, []);
 
   const navTabs = [
-    { key: "Dashboard", label: "Dashboard" },
     { key: "Employees", label: "Employees" },
     { key: "Contracts", label: "Contracts" },
     { key: "Attendance", label: "Attendance" },
@@ -48,43 +53,34 @@ export function TopBar() {
     { key: "Reports", label: "Reports" },
   ];
 
-  // Map "Reports" or default to "Dashboard"
-  const isDashboardActive = activeNavTab === "Dashboard";
-
   return (
-    <nav className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-2xl shadow-sm px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4 mb-6 z-30 transition-all select-none">
+    <nav className="bg-white w-full border-b border-slate-200 px-6 h-16 flex items-center justify-between shadow-sm z-30 select-none">
       {/* Left: Bold Brand Mark */}
       <div
-        className="flex items-center gap-3 cursor-pointer self-start md:self-auto"
-        onClick={() => setActiveNavTab("Dashboard")}
+        className="flex items-center gap-2 cursor-pointer h-full"
+        onClick={() => setActiveNavTab("Employees")}
       >
-        <div className="bg-[#714B67] text-white p-2 rounded-xl shadow-md shadow-[#714B67]/20 flex items-center justify-center shrink-0">
-          <ShieldCheck className="w-5 h-5" />
+        <div className="bg-[#714B67] text-white p-1.5 rounded-md flex items-center justify-center shrink-0">
+          <ShieldCheck className="w-4 h-4" />
         </div>
-        <div>
-          <div className="font-bold text-lg text-slate-900 tracking-tight leading-tight">
-            PeoplePay360
-          </div>
-          <div className="text-[11px] text-slate-400 font-medium">
-            Empower. Automate. Scale.
-          </div>
+        <div className="font-bold text-base text-slate-900 tracking-tight">
+          PeoplePay360
         </div>
       </div>
 
-      {/* Center Navigation: Floating Pill Switcher */}
-      <div className="bg-slate-100/80 p-1.5 rounded-full flex items-center gap-1 overflow-x-auto max-w-full">
+      {/* Center Navigation: Flat Text Links with Bottom Border (Excalidraw style) */}
+      <div className="flex items-center h-full gap-6">
         {navTabs.map((tab) => {
-          const isActive =
-            tab.key === "Dashboard" ? isDashboardActive : activeNavTab === tab.key;
+          const isActive = activeNavTab === tab.key;
 
           return (
             <button
               key={tab.key}
               onClick={() => setActiveNavTab(tab.key)}
-              className={`transition-all duration-200 cursor-pointer text-xs whitespace-nowrap ${
+              className={`h-full flex items-center transition-colors cursor-pointer text-sm whitespace-nowrap border-b-2 px-1 ${
                 isActive
-                  ? "bg-[#714B67] text-white shadow-md font-semibold px-5 py-2 rounded-full"
-                  : "text-slate-600 hover:text-[#714B67] px-4 py-2 font-medium rounded-full hover:bg-white/60"
+                  ? "border-[#714B67] text-[#714B67] font-semibold"
+                  : "border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300 font-medium"
               }`}
             >
               {tab.label}
@@ -94,7 +90,7 @@ export function TopBar() {
       </div>
 
       {/* Right Profile & Quick Actions */}
-      <div className="flex items-center gap-3 self-end md:self-auto">
+      <div className="flex items-center gap-4 h-full">
         {/* Notification Bell with Dynamic Badge */}
         <div className="relative" ref={notifRef}>
           <button
@@ -212,21 +208,63 @@ export function TopBar() {
           )}
         </div>
 
-        {/* One-Click "Sign In / Switch Role" Button */}
-        <button
-          onClick={() => setIsAuthOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100/90 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-[#00A09D]" />
-          <span className="hidden sm:inline">Sign In / Switch Role</span>
-          <span className="sm:hidden">Switch</span>
-        </button>
+        {/* User Management Settings Dropdown */}
+        <div className="relative" ref={settingsRef}>
+          <button
+            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer border border-slate-200"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#714B67]" />
+            <span className="hidden sm:inline">Users & Settings</span>
+            <span className="sm:hidden">Users</span>
+            <ChevronDown className="w-3.5 h-3.5 ml-1 text-slate-400" />
+          </button>
+
+          {isSettingsOpen && (
+            <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 shadow-xl rounded-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
+              <div className="p-3 border-b border-slate-100 bg-slate-50">
+                <p className="text-xs font-bold text-slate-900">System Administration</p>
+                <p className="text-[10px] text-slate-500 mt-0.5">Manage roles and permissions</p>
+              </div>
+              <div className="p-1.5">
+                <button
+                  onClick={() => {
+                    setIsSettingsOpen(false);
+                    setActiveNavTab("User Management");
+                  }}
+                  className="w-full text-left px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md transition-colors flex items-center gap-2"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  User Management
+                </button>
+                <button
+                  onClick={() => setIsSettingsOpen(false)}
+                  className="w-full text-left px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md transition-colors flex items-center gap-2"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  Security Settings
+                </button>
+              </div>
+              <div className="p-1.5 border-t border-slate-100">
+                <button
+                  onClick={() => {
+                    setIsSettingsOpen(false);
+                    setIsAuthOpen(true);
+                  }}
+                  className="w-full text-left px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+                >
+                  Log out
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* User Avatar with Green Online Ring & Role Badge */}
         <div
-          onClick={() => setIsAuthOpen(true)}
+          onClick={() => setIsSettingsOpen(!isSettingsOpen)}
           className="flex items-center gap-2.5 pl-1 cursor-pointer group"
-          title="Click to Switch Persona"
+          title="Click to Open Settings"
         >
           <div className="relative">
             <img

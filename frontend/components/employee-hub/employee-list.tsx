@@ -15,10 +15,10 @@ export function EmployeeList({ employees }: { employees: Employee[] }) {
   const { setSelectedEmployee } = useStore();
 
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-md transition-all">
+    <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-600 uppercase tracking-wider font-bold text-xs">
+          <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase tracking-wider font-bold text-xs">
             <tr>
               <th className="py-3.5 px-5">Employee</th>
               <th className="py-3.5 px-5">Position &amp; Dept</th>

@@ -46,8 +46,8 @@ export function AuthDialog() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-white/95 backdrop-blur-xl rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 animate-in fade-in">
+      <div className="bg-white rounded-lg max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 relative overflow-hidden">
         {/* Subtle Decorative Ambient Glows */}
         <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[#714B67]/15 blur-2xl pointer-events-none" />
         <div className="absolute -bottom-20 -left-20 w-48 h-48 rounded-full bg-[#00A09D]/15 blur-2xl pointer-events-none" />
