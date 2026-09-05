@@ -31,6 +31,7 @@ export function InsightsPage() {
   const [runwayMonths, setRunwayMonths] = useState(2);
 
   const { data: departments } = useQuery({ queryKey: ['departments'], queryFn: listDepartments });
+  const selectedDeptName = departmentId ? departments?.find((d) => d.id === departmentId)?.name : null;
 
   const { data: anomalies, isLoading: anomaliesLoading } = useQuery({
     queryKey: ['insights', 'attendance-anomalies', periodStart, periodEnd, departmentId],
@@ -80,6 +81,14 @@ export function InsightsPage() {
       <Card>
         <CardHeader><CardTitle className="flex items-center gap-8"><AlertTriangle className="h-16 w-16" /> Attendance Anomalies</CardTitle></CardHeader>
         <CardContent>
+          {!anomaliesLoading && anomalies && (
+            <div className="mb-12 rounded-md bg-[color-mix(in_srgb,var(--primary)_6%,transparent)] px-12 py-8 text-xs text-text-muted">
+              Compared against <b className="text-text">{selectedDeptName || 'all departments'}</b> only
+              (<b className="text-text">{anomalies.population_size}</b> {anomalies.population_size === 1 ? 'employee' : 'employees'} in this period) —
+              narrowing the department filter changes who counts as "anomalous," since it's always relative to whoever is currently being compared, never a fixed global threshold. The
+              same person can be flagged company-wide but not within their own department if their teammates share the same pattern, or vice versa.
+            </div>
+          )}
           {anomaliesLoading ? (
             <CardSkeleton />
           ) : !anomalies ? null : anomalies.population_too_small ? (
