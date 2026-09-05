@@ -44,6 +44,43 @@ async function computeWorkedDays(client, employeeId, periodStart, periodEnd) {
 }
 
 /**
+ * Time Off -> Payroll integration (PS Project Overview: "leave balances depend on allocations
+ * and approved requests, and payroll must transform all of that into understandable payslips" —
+ * this is the line that actually does that transformation; without it, approved leave has zero
+ * effect on pay, which contradicts the PS's own stated thesis).
+ *
+ * Splits APPROVED leave overlapping the period by each type's `payroll_integrated` flag:
+ *   - payroll_integrated = true  -> paid leave: added to WORKED_DAYS, so the employee is paid
+ *     as if present (sick/annual leave doesn't cost them pay).
+ *   - payroll_integrated = false -> unpaid leave: NOT added to WORKED_DAYS, exposed separately
+ *     as UNPAID_LEAVE_DAYS so a Salary Rule can reference it in a formula (e.g. a proportional
+ *     deduction) if the structure designer wants one. The engine deliberately does not hardcode
+ *     a proration formula itself — per DB_GUIDE.md/CLAUDE.md, "flexible computation methods...
+ *     drive the actual salary calculations," meaning this stays configurable via Salary Rules,
+ *     not baked into the engine.
+ * Uses date-range overlap (not exact period containment) so a leave request spanning across a
+ * period boundary still counts for the days that actually fall inside this period.
+ */
+async function computeLeaveDays(client, employeeId, periodStart, periodEnd) {
+  const { rows } = await client.query(
+    `SELECT
+       COALESCE(SUM(r.duration) FILTER (WHERE t.payroll_integrated = true), 0) AS paid_leave_days,
+       COALESCE(SUM(r.duration) FILTER (WHERE t.payroll_integrated = false), 0) AS unpaid_leave_days
+     FROM time_off_requests r
+     JOIN time_off_types t ON t.id = r.time_off_type_id
+     WHERE r.employee_id = $1
+       AND r.status = 'approved'
+       AND r.date_from <= $3::date
+       AND r.date_to >= $2::date`,
+    [employeeId, periodStart, periodEnd]
+  );
+  return {
+    paidLeaveDays: Number(rows[0].paid_leave_days),
+    unpaidLeaveDays: Number(rows[0].unpaid_leave_days),
+  };
+}
+
+/**
  * Compute (or idempotently recompute) one payslip. Fully transactional: wipes any prior
  * `payslip_lines`/`payroll_warnings` for this payslip and rebuilds both from scratch inside a
  * single BEGIN/COMMIT — a recompute never leaves the payslip in a half-old/half-new state.
@@ -114,7 +151,12 @@ async function computePayslip(payslipId) {
       return { payslipId, computed: false, reason: 'contract_missing' };
     }
 
-    const workedDays = await computeWorkedDays(client, slip.employee_id, slip.period_start, slip.period_end);
+    const attendanceWorkedDays = await computeWorkedDays(client, slip.employee_id, slip.period_start, slip.period_end);
+    const { paidLeaveDays, unpaidLeaveDays } = await computeLeaveDays(client, slip.employee_id, slip.period_start, slip.period_end);
+    // Paid leave counts toward worked days (employee is paid as if present); unpaid leave does
+    // not, and is exposed separately for a Salary Rule to act on if the structure wants to.
+    const workedDays = attendanceWorkedDays + paidLeaveDays;
+    const periodDays = Math.round((new Date(slip.period_end) - new Date(slip.period_start)) / 86400000) + 1;
 
     const { rows: rules } = await client.query(
       `SELECT id, code, name, category, sequence, computation_method, amount, percentage, base_code, formula
@@ -125,8 +167,16 @@ async function computePayslip(payslipId) {
     );
 
     // Running context: rule codes become variables later rules can reference. Seeded only from
-    // real data (contract wage, computed worked days) — never a hardcoded starting value.
-    const context = { BASIC: Number(contract.wage), WORKED_DAYS: workedDays };
+    // real data (contract wage, attendance, and approved leave) — never a hardcoded starting
+    // value. UNPAID_LEAVE_DAYS/PERIOD_DAYS exist so a Salary Rule formula can implement its own
+    // proration (e.g. "BASIC - (BASIC / PERIOD_DAYS) * UNPAID_LEAVE_DAYS") without the engine
+    // hardcoding that policy itself.
+    const context = {
+      BASIC: Number(contract.wage),
+      WORKED_DAYS: workedDays,
+      UNPAID_LEAVE_DAYS: unpaidLeaveDays,
+      PERIOD_DAYS: periodDays,
+    };
     const lines = [];
 
     for (const rule of rules) {

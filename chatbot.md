@@ -399,6 +399,36 @@ in parallel with T-001.** T-006/T-007 additionally need a real Postgres connecti
     those routes; this task's own testing had to insert them via raw SQL to have something to
     compute against. See below.
 
+- **SUPERVISOR FOLLOW-UP FIX (found during a "no tradeoffs against the PS" final audit,
+  after T-006 had already been marked VERIFIED) — SEVERE business-logic gap, now fixed.** The
+  PS's own Project Overview states as its central thesis: "leave balances depend on allocations
+  and approved requests, and payroll must transform all of that into understandable payslips."
+  `computeWorkedDays` only ever queried `attendances` — approved time off had **zero effect on
+  payroll**, and `time_off_types.payroll_integrated` was a stored column with no behavior
+  anywhere in the codebase, despite existing specifically to describe this integration. This
+  directly contradicted the PS, not a stretch feature gap.
+  **Fix:** added `computeLeaveDays()` — sums APPROVED `time_off_requests` overlapping the
+  payslip's period (date-range overlap, not containment), split by each type's
+  `payroll_integrated` flag. `payroll_integrated=true` (paid leave, e.g. Sick Leave) adds to
+  `WORKED_DAYS` so the employee is paid as if present. `payroll_integrated=false` (unpaid leave,
+  e.g. Casual Leave) does **not** add to `WORKED_DAYS`, and is exposed as a new
+  `UNPAID_LEAVE_DAYS` context variable (alongside a new `PERIOD_DAYS` variable) for a Salary
+  Rule formula to act on — the engine deliberately doesn't hardcode a proration policy itself,
+  consistent with "flexible computation methods... drive the actual salary calculations."
+  **Verified end-to-end with real data, not just code review:** created a real `payroll_integrated:
+  true` "Sick Leave (Paid)" type, approved a 3-day request → `worked_days` went from `0.00` to
+  `3.00` on recompute ✅. Added a real `UNPAID_DEDUCTION` rule
+  (`formula: "(BASIC / PERIOD_DAYS) * UNPAID_LEAVE_DAYS"`) to the "Regular Salary" structure and
+  wired it into `NET`'s formula (`GROSS - PF - UNPAID_DEDUCTION`) — this is a real, permanent
+  structure rule now, not a throwaway test. Approved an unpaid Casual Leave request → recomputed
+  → `UNPAID_DEDUCTION = 12903.23`, `NET = 41096.77`, both hand-verified correct against
+  `(50000/31) × 8 unpaid days` (8, not 5, because an earlier test request from much earlier in
+  the session was still live in the dev DB and correctly included in the live SUM — confirms the
+  aggregation is genuinely live, not coincidentally right). `worked_days` stayed at `3.00`
+  (correctly unaffected by the unpaid days).
+  - **DB_GUIDE.md updated** with the exact query and context-variable contract, as key-join
+    pattern #0, so this isn't just a code comment.
+
 ### T-007 — Time Off: Types CRUD + Allocations/Requests CRUD + live balance service
 - Status: VERIFIED
 - Owner: Supervisor

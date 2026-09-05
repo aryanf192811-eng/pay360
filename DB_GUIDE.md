@@ -180,6 +180,27 @@ in the same statement as the actual change — no triggers, keeps logic visible 
 
 ## Real Key-Join Patterns From The Core Workflows
 
+**0. Time Off → Payroll integration (the context a payslip's rules actually see).** The PS's
+own Project Overview states this as the product's central thesis: "leave balances depend on
+allocations and approved requests, and payroll must transform all of that into understandable
+payslips." `payrollEngine.service.js`'s `computePayslip` seeds each payslip's rule-evaluation
+context with:
+```sql
+SELECT
+  COALESCE(SUM(r.duration) FILTER (WHERE t.payroll_integrated = true), 0) AS paid_leave_days,
+  COALESCE(SUM(r.duration) FILTER (WHERE t.payroll_integrated = false), 0) AS unpaid_leave_days
+FROM time_off_requests r JOIN time_off_types t ON t.id = r.time_off_type_id
+WHERE r.employee_id = $1 AND r.status = 'approved'
+  AND r.date_from <= $3::date AND r.date_to >= $2::date;  -- range overlap, not containment
+```
+`WORKED_DAYS = attendance_present_days + paid_leave_days` (paid leave doesn't cost the employee
+pay); `UNPAID_LEAVE_DAYS` and `PERIOD_DAYS` (calendar days in the payrun period) are exposed as
+separate context variables. The engine deliberately does **not** hardcode a proration formula —
+a Salary Rule (e.g. `formula: "(BASIC / PERIOD_DAYS) * UNPAID_LEAVE_DAYS"`, category
+`deduction`) implements that policy, staying configurable like every other rule. The "Regular
+Salary" structure's `UNPAID_DEDUCTION` rule is a real, working example of this, not a
+placeholder — verified end-to-end with real approved leave requests.
+
 **1. Applicable contract for a payrun period** (payroll must use the contract valid for the
 period, never "whatever is currently active"):
 ```sql
