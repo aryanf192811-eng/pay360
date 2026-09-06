@@ -19,6 +19,17 @@ const CATEGORY_LABEL: Record<string, string> = {
   net: 'Net',
 };
 
+// A bigger number is only "good" (green) for an earning line. For a Deduction, a bigger number
+// means more was taken out of the employee's pay, so the favorable direction flips: a growing
+// deduction is unfavorable (red), a shrinking one is favorable (green).
+function diffColorClass(line: PayslipDiffLine): string {
+  const grew = line.status === 'increased' || line.status === 'added';
+  const shrank = line.status === 'decreased' || line.status === 'removed';
+  const favorable = line.category === 'deduction' ? shrank : grew;
+  const unfavorable = line.category === 'deduction' ? grew : shrank;
+  return favorable ? 'text-success' : unfavorable ? 'text-danger' : 'text-text-muted';
+}
+
 export function PayslipDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -199,16 +210,7 @@ export function PayslipDetail() {
                     <span className="text-text-muted">₹{line.from_amount.toLocaleString()}</span>
                     <span className="text-text-muted">→</span>
                     <span className="text-text">₹{line.to_amount.toLocaleString()}</span>
-                    <span
-                      className={cn(
-                        'w-[88px] text-right font-semibold',
-                        line.status === 'increased' || line.status === 'added'
-                          ? 'text-success'
-                          : line.status === 'decreased' || line.status === 'removed'
-                            ? 'text-danger'
-                            : 'text-text-muted'
-                      )}
-                    >
+                    <span className={cn('w-[88px] text-right font-semibold', diffColorClass(line))}>
                       {line.delta > 0 ? '+' : ''}₹{line.delta.toLocaleString()}
                     </span>
                   </div>
