@@ -13,6 +13,10 @@ import { EmployeeList } from './pages/EmployeeList';
 import { EmployeeDetail } from './pages/EmployeeDetail';
 import { EmployeeForm } from './pages/EmployeeForm';
 import { ContractList } from './pages/ContractList';
+import { ContractDetail } from './pages/ContractDetail';
+import { TimeOffRequestDetail } from './pages/TimeOffRequestDetail';
+import { AllocationDetail } from './pages/AllocationDetail';
+import { TimeOffTypeDetail } from './pages/TimeOffTypeDetail';
 import { WorkingSchedules } from './pages/WorkingSchedules';
 import { AttendanceList } from './pages/AttendanceList';
 import { TimeOffPage } from './pages/TimeOffPage';
@@ -153,6 +157,14 @@ export default function App() {
               }
             />
             <Route
+              path="/contracts/:id"
+              element={
+                <ProtectedRoute roles={HR_ROLES}>
+                  <ContractDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/working-schedules"
               element={
                 <ProtectedRoute roles={HR_ROLES}>
@@ -162,6 +174,23 @@ export default function App() {
             />
             <Route path="/attendance" element={<AttendanceList />} />
             <Route path="/time-off" element={<TimeOffPage />} />
+            <Route path="/time-off/requests/:id" element={<TimeOffRequestDetail />} />
+            <Route
+              path="/time-off/allocations/:id"
+              element={
+                <ProtectedRoute roles={HR_ROLES}>
+                  <AllocationDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/time-off/types/:id"
+              element={
+                <ProtectedRoute roles={HR_ROLES}>
+                  <TimeOffTypeDetail />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/payroll"
               element={

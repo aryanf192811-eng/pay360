@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FileText, Plus } from 'lucide-react';
 import { listContracts, createContract } from '../api/contracts.api';
@@ -14,6 +15,7 @@ import { Input, Label, Select } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 
 export function ContractList() {
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const queryClient = useQueryClient();
 
@@ -161,7 +163,7 @@ export function ContractList() {
           </Thead>
           <Tbody>
             {contracts.map((c) => (
-              <Tr key={c.id}>
+              <Tr key={c.id} className="cursor-pointer" onClick={() => navigate(`/contracts/${c.id}`)}>
                 <Td className="font-medium">
                   {c.first_name} {c.last_name}
                 </Td>

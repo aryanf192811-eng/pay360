@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CalendarClock, Plus, Check, X } from 'lucide-react';
 import {
@@ -22,6 +23,7 @@ function ErrorBanner({ error }: { error: unknown }) {
 }
 
 export function TimeOffPage() {
+  const navigate = useNavigate();
   const [tab, setTab] = useState<SubTab>('requests');
   const { user } = useAuthStore();
   const isHr = !!user && HR_ROLES.includes(user.role);
@@ -224,7 +226,7 @@ export function TimeOffPage() {
                   </thead>
                   <tbody className="font-medium text-[13px] text-[var(--text)]">
                     {requests.map((r) => (
-                      <tr key={r.id} className="border-b border-[var(--border)] hover:bg-[var(--bg)] transition-colors">
+                      <tr key={r.id} className="cursor-pointer border-b border-[var(--border)] hover:bg-[var(--bg)] transition-colors" onClick={() => navigate(`/time-off/requests/${r.id}`)}>
                         <td className="py-[12px] px-[12px] font-semibold">{r.first_name} {r.last_name}</td>
                         <td className="py-[12px] px-[12px] text-[var(--text-muted)]">{r.type_name}</td>
                         <td className="py-[12px] px-[12px] text-[var(--text-muted)] font-normal">{r.date_from}</td>
@@ -235,8 +237,8 @@ export function TimeOffPage() {
                           <td className="py-[12px] px-[12px] text-right">
                             {r.status === 'submitted' ? (
                               <div className="flex gap-[4px] justify-end">
-                                <button onClick={() => approveReqMut.mutate(r.id)} className="bg-[var(--primary-light)] hover:bg-[var(--primary-light)] text-[var(--success)] p-[4px] rounded transition-colors"><Check className="h-[14px] w-[14px]" /></button>
-                                <button onClick={() => refuseReqMut.mutate(r.id)} className="bg-[color-mix(in_srgb,var(--danger)_12%,transparent)] hover:bg-[color-mix(in_srgb,var(--danger)_10%,transparent)] text-[var(--danger)] p-[4px] rounded transition-colors"><X className="h-[14px] w-[14px]" /></button>
+                                <button onClick={(e) => { e.stopPropagation(); approveReqMut.mutate(r.id); }} className="bg-[var(--primary-light)] hover:bg-[var(--primary-light)] text-[var(--success)] p-[4px] rounded transition-colors"><Check className="h-[14px] w-[14px]" /></button>
+                                <button onClick={(e) => { e.stopPropagation(); refuseReqMut.mutate(r.id); }} className="bg-[color-mix(in_srgb,var(--danger)_12%,transparent)] hover:bg-[color-mix(in_srgb,var(--danger)_10%,transparent)] text-[var(--danger)] p-[4px] rounded transition-colors"><X className="h-[14px] w-[14px]" /></button>
                               </div>
                             ) : (
                               <span className="text-[12px] text-[var(--text-muted)]">—</span>
@@ -326,7 +328,7 @@ export function TimeOffPage() {
                   </thead>
                   <tbody className="font-medium text-[13px] text-[var(--text)]">
                     {allocations.map((a) => (
-                      <tr key={a.id} className="border-b border-[var(--border)] hover:bg-[var(--bg)] transition-colors">
+                      <tr key={a.id} className="cursor-pointer border-b border-[var(--border)] hover:bg-[var(--bg)] transition-colors" onClick={() => navigate(`/time-off/allocations/${a.id}`)}>
                         <td className="py-[12px] px-[12px]">
                           {a.first_name ? (
                             <>
@@ -344,7 +346,7 @@ export function TimeOffPage() {
                         <td className="py-[12px] px-[12px]"><StatusBadge status={a.status} domain="timeOffAllocation" /></td>
                         <td className="py-[12px] px-[12px] text-right">
                           {a.status === 'draft' ? (
-                            <button onClick={() => approveAllocMut.mutate(a.id)} className="bg-[var(--primary-light)] hover:bg-[var(--primary-light)] text-[var(--primary)] text-[11px] font-bold px-[8px] py-[4px] rounded transition-colors">Approve</button>
+                            <button onClick={(e) => { e.stopPropagation(); approveAllocMut.mutate(a.id); }} className="bg-[var(--primary-light)] hover:bg-[var(--primary-light)] text-[var(--primary)] text-[11px] font-bold px-[8px] py-[4px] rounded transition-colors">Approve</button>
                           ) : (
                             <span className="text-[12px] text-[var(--text-muted)]">—</span>
                           )}
@@ -408,7 +410,7 @@ export function TimeOffPage() {
                 </thead>
                 <tbody className="font-medium text-[13px] text-[var(--text)]">
                   {types?.map((t) => (
-                    <tr key={t.id} className="border-b border-[var(--border)] hover:bg-[var(--bg)] transition-colors">
+                    <tr key={t.id} className="cursor-pointer border-b border-[var(--border)] hover:bg-[var(--bg)] transition-colors" onClick={() => navigate(`/time-off/types/${t.id}`)}>
                       <td className="py-[12px] px-[12px] font-semibold">{t.name}</td>
                       <td className="py-[12px] px-[12px] capitalize text-[var(--text-muted)]">{t.unit}</td>
                       <td className="py-[12px] px-[12px] text-[var(--text-muted)]">{t.requires_allocation ? 'Yes' : 'No'}</td>

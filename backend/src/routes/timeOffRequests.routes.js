@@ -10,6 +10,7 @@ const ALL_ROLES = ['employee', ...HR_ROLES];
 router.use(authenticate, authorize(...ALL_ROLES));
 
 router.get('/', ctrl.list);   // employees see only their own (enforced in controller)
+router.get('/:id', ctrl.getById); // employees may only view their own (enforced in controller)
 router.post('/', ctrl.create); // employees may only create for themselves (enforced in controller)
 router.post('/:id/approve', authorize(...HR_ROLES), ctrl.approve);
 router.post('/:id/refuse', authorize(...HR_ROLES), ctrl.refuse);

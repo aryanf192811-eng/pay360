@@ -44,6 +44,32 @@ async function list(req, res, next) {
   } catch (err) { next(err); }
 }
 
+// ─── GET /api/time-off-requests/:id ────────────────────────────────────────────────────────────
+
+async function getById(req, res, next) {
+  try {
+    const { rows } = await pool.query(
+      `SELECT r.id, r.employee_id, r.time_off_type_id, r.allocation_id, r.date_from, r.date_to,
+              r.duration, r.status, r.approved_by, r.decided_at, r.created_at,
+              e.first_name, e.last_name, e.employee_code, t.name AS type_name,
+              u.email AS approved_by_email
+       FROM time_off_requests r
+       JOIN employees e ON e.id = r.employee_id
+       JOIN time_off_types t ON t.id = r.time_off_type_id
+       LEFT JOIN users u ON u.id = r.approved_by
+       WHERE r.id = $1`,
+      [req.params.id]
+    );
+    if (!rows[0]) { const e = new Error('Time off request not found'); e.statusCode = 404; throw e; }
+
+    if (req.user.role === 'employee' && req.user.employee_id !== rows[0].employee_id) {
+      const e = new Error('Employees may only view their own requests'); e.statusCode = 403; throw e;
+    }
+
+    return sendSuccess(res, rows[0]);
+  } catch (err) { next(err); }
+}
+
 // ─── POST /api/time-off-requests ───────────────────────────────────────────────────────────────
 
 async function create(req, res, next) {
@@ -110,4 +136,4 @@ async function refuse(req, res, next) {
   } catch (err) { next(err); }
 }
 
-module.exports = { list, create, approve, refuse, HR_ROLES };
+module.exports = { list, getById, create, approve, refuse, HR_ROLES };

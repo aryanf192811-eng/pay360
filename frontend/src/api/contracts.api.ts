@@ -20,6 +20,11 @@ export async function listContracts(employee_id?: string) {
   return data.data as Contract[];
 }
 
+export async function getContract(id: string) {
+  const { data } = await apiClient.get(`/api/contracts/${id}`);
+  return data.data as Contract;
+}
+
 export async function createContract(payload: Partial<Contract>) {
   const { data } = await apiClient.post('/api/contracts', payload);
   return data.data as Contract;

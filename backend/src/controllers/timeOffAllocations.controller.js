@@ -43,8 +43,15 @@ async function list(req, res, next) {
 async function getById(req, res, next) {
   try {
     const { rows } = await pool.query(
-      `SELECT id, employee_id, time_off_type_id, allocated, valid_from, valid_to, status, approved_by, created_at
-       FROM time_off_allocations WHERE id = $1`,
+      `SELECT a.id, a.employee_id, a.time_off_type_id, a.allocated, a.valid_from, a.valid_to,
+              a.status, a.approved_by, a.created_at,
+              e.first_name, e.last_name, e.employee_code, t.name AS type_name,
+              u.email AS approved_by_email
+       FROM time_off_allocations a
+       JOIN employees e ON e.id = a.employee_id
+       JOIN time_off_types t ON t.id = a.time_off_type_id
+       LEFT JOIN users u ON u.id = a.approved_by
+       WHERE a.id = $1`,
       [req.params.id]
     );
     if (!rows[0]) { const e = new Error('Allocation not found'); e.statusCode = 404; throw e; }
