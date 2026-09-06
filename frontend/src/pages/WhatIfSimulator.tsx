@@ -7,7 +7,7 @@ import { simulatePayslip, type SimulationResult } from '../api/payroll.api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input, Label, Select } from '../components/ui/input';
-import { cn } from '../lib/utils';
+import { cn, deriveFormula } from '../lib/utils';
 
 const CATEGORY_LABEL: Record<string, string> = {
   basic: 'Basic',
@@ -108,6 +108,10 @@ export function WhatIfSimulator() {
                       <div>
                         <div className="text-sm font-medium text-text">{line.name}</div>
                         <div className="text-xs text-text-muted">{CATEGORY_LABEL[line.category]} · code <span className="font-mono">{line.code}</span></div>
+                        {(() => {
+                          const formula = deriveFormula(result.lines, line);
+                          return formula ? <div className="mt-2 text-xs italic text-text-muted">= {formula}</div> : null;
+                        })()}
                       </div>
                     </div>
                     <div className={cn('font-mono text-base font-semibold tabular-nums', line.category === 'deduction' ? 'text-danger' : line.category === 'net' ? 'text-success' : 'text-text')}>

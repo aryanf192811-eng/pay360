@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button';
 import { Select } from '../components/ui/input';
 import { CardSkeleton } from '../components/ui/skeleton';
-import { cn, amountInWords } from '../lib/utils';
+import { cn, amountInWords, deriveFormula } from '../lib/utils';
 
 const CATEGORY_LABEL: Record<string, string> = {
   basic: 'Basic',
@@ -115,6 +115,10 @@ export function PayslipDetail() {
                       <div className="text-xs text-text-muted">
                         {CATEGORY_LABEL[line.category]} · code <span className="font-mono">{line.code}</span>
                       </div>
+                      {(() => {
+                        const formula = deriveFormula(lines, line);
+                        return formula ? <div className="mt-2 text-xs italic text-text-muted">= {formula}</div> : null;
+                      })()}
                     </div>
                   </div>
                   <div
