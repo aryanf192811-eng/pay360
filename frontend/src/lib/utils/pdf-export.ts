@@ -1,5 +1,5 @@
 import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
 
 export const exportToPDF = async (elementId: string, filename: string) => {
   const element = document.getElementById(elementId);

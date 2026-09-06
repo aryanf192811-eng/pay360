@@ -165,6 +165,16 @@ export function AddEmployeeDialog() {
                       />
                     </div>
                     <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">Mobile Number</label>
+                      <input
+                        type="tel"
+                        placeholder="e.g. +91 98765 43210"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#714B67]"
+                      />
+                    </div>
+                    <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1.5">Work Email *</label>
                       <input
                         type="email" required

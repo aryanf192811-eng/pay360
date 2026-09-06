@@ -155,8 +155,7 @@ export function AttendanceHub() {
                 onClick={() => setIsCorrectionOpen(true)}
                 className="inline-flex items-center gap-2 bg-[#00A09D] hover:bg-[#008A87] text-white px-4 py-2 rounded-lg text-xs font-bold shadow-xs transition-colors"
               >
-                <Plus className="w-4 h-4" />
-                <span>+ Manual Correction</span>
+                <span>Manual Entry</span>
               </button>
             ) : (
               <button
@@ -164,7 +163,7 @@ export function AttendanceHub() {
                 className="inline-flex items-center gap-2 bg-[#00A09D] hover:bg-[#008A87] text-white px-4 py-2 rounded-lg text-xs font-bold shadow-xs transition-colors"
               >
                 <Plus className="w-4 h-4" />
-                <span>+ New Working Schedule</span>
+                <span>New Schedule</span>
               </button>
             )}
           </div>
@@ -172,6 +171,14 @@ export function AttendanceHub() {
       </div>
 
       {/* FORM VIEW: INDIVIDUAL ATTENDANCE RECORD */}
+      {selectedRecord && (
+        <AttendanceFormRecord
+          selectedRecord={selectedRecord}
+          employees={employees}
+          setSelectedRecord={setSelectedRecord}
+          updateAttendance={updateAttendance}
+        />
+      )}
 
       {/* VIEW 1: DAILY ATTENDANCE MATRIX */}
       {!selectedRecord && activeTab === "matrix" && (
@@ -645,7 +652,7 @@ function AttendanceFormRecord({ selectedRecord, employees, setSelectedRecord, up
   };
 
   return (
-    <div className="flex-1 p-6 md:p-8 bg-white h-full flex flex-col mx-6 border border-slate-200 rounded-[24px] shadow-sm">
+    <div className="flex-1 p-6 md:p-8 bg-white flex flex-col m-6 border border-slate-200 rounded-[24px] shadow-sm overflow-y-auto">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
           <button 
@@ -654,7 +661,7 @@ function AttendanceFormRecord({ selectedRecord, employees, setSelectedRecord, up
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          Attendance / {employees.find((e: any) => e.id === selectedRecord.employeeId)?.name || selectedRecord.employeeId} / {selectedRecord.date}
+          Record / {employees.find((e: any) => e.id === selectedRecord.employeeId)?.name || selectedRecord.employeeId}
         </h1>
         <div className="flex items-center gap-4">
           <span className={`inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider ${

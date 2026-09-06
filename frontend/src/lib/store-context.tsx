@@ -87,6 +87,8 @@ interface StoreContextType {
   approveTimeOff: (id: string) => void;
   refuseTimeOff: (id: string) => void;
   addAllocation: (allocation: LeaveAllocation) => void;
+  updateAllocation: (id: string, updates: Partial<LeaveAllocation>) => void;
+  addTimeOffRecord: (record: Omit<TimeOffRecord, "id">) => void;
   addAttendanceRecord: (record: AttendanceRecord) => void;
   updateAttendance: (id: string, updates: Partial<AttendanceRecord>) => void;
 
@@ -315,7 +317,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       // Fallback for presentation purposes if DB is unreachable
       const newEmp: Employee = {
         ...data,
-        id: `EMP-${Math.floor(Math.random() * 1000)}`,
+        id: `EMP-${1000 + employees.length + 1}`,
         joinedDate: new Date().toISOString().split("T")[0],
         smartMetrics: { contractsCount: 1, activeContractId: "NEW", attendancePercentage: 100, leaveBalance: 18, payslipsCount: 0 },
       };
@@ -434,6 +436,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   // Add leave allocation
   const addAllocation = (alloc: LeaveAllocation) => {
     setAllocations((prev) => [alloc, ...prev]);
+  };
+
+  const updateAllocation = (id: string, updates: Partial<LeaveAllocation>) => {
+    setAllocations((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, ...updates } : a))
+    );
+  };
+
+  const addTimeOffRecord = (record: Omit<TimeOffRecord, "id">) => {
+    const newRecord: TimeOffRecord = {
+      ...record,
+      id: `TO-${Math.floor(Math.random() * 10000)}`,
+    };
+    setTimeOff((prev) => [newRecord, ...prev]);
   };
 
   // Add an attendance correction record
@@ -585,6 +601,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         approveTimeOff,
         refuseTimeOff,
         addAllocation,
+        updateAllocation,
+        addTimeOffRecord,
         addAttendanceRecord,
         updateAttendance,
 

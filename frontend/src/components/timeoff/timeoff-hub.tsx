@@ -5,17 +5,130 @@ import { useStore } from "@/lib/store-context";
 import { Search, Plus } from "lucide-react";
 import { TimeOffRecord } from "@/lib/mock-data";
 
+function TimeOffTypeDetail({ initialType, isNew, onBack }: { initialType: any, isNew: boolean, onBack: () => void }) {
+  const [isEditing, setIsEditing] = useState(isNew);
+  const [typ, setTyp] = useState(initialType || { name: "", unit: "Days", allocationRequired: true, requiresApproval: true });
+
+  return (
+    <div className="flex-1 p-6 md:p-8 bg-white h-full flex flex-col">
+      <div className="mb-8">
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+          <button onClick={onBack} className="text-sm text-slate-400 hover:text-slate-600 font-bold uppercase tracking-wider mr-2">← Back</button>
+          Time Off Type / {typ.name || "New"}
+        </h1>
+        <p className="text-sm font-medium text-slate-500 mb-8 mt-2">Form view of one time off type</p>
+        <button 
+          onClick={() => setIsEditing(!isEditing)}
+          className={`px-6 py-2 border-2 border-slate-200 text-slate-700 font-bold rounded-lg shadow-sm transition-colors text-sm ${isEditing ? 'bg-blue-50 border-blue-200 text-blue-700' : 'hover:bg-slate-50'}`}
+        >
+          {isEditing ? "SAVE" : "EDIT"}
+        </button>
+      </div>
+      <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+        <div className="space-y-6">
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-slate-600 mb-2">Type Name</label>
+            <input 
+              type="text" 
+              readOnly={!isEditing} 
+              value={typ.name} 
+              onChange={(e) => setTyp({ ...typ, name: e.target.value })}
+              className={`w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 ${isEditing ? 'focus:ring-2 focus:ring-blue-500 bg-white' : ''}`} 
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-slate-600 mb-2">Unit</label>
+            <input 
+              type="text" 
+              readOnly={!isEditing} 
+              value={typ.unit} 
+              onChange={(e) => setTyp({ ...typ, unit: e.target.value })}
+              className={`w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 ${isEditing ? 'focus:ring-2 focus:ring-blue-500 bg-white' : ''}`} 
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-slate-600 mb-2">Requires Allocation</label>
+            <select 
+              disabled={!isEditing} 
+              value={typ.allocationRequired ? "Yes" : "No"} 
+              onChange={(e) => setTyp({ ...typ, allocationRequired: e.target.value === "Yes" })}
+              className={`w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 ${isEditing ? 'focus:ring-2 focus:ring-blue-500 bg-white' : ''}`} 
+            >
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-slate-600 mb-2">Active</label>
+            <input type="text" readOnly value="True" className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
+          </div>
+        </div>
+        <div className="space-y-6">
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-slate-600 mb-2">Approval</label>
+            <select 
+              disabled={!isEditing} 
+              value={typ.requiresApproval ? "Manager" : "None"} 
+              onChange={(e) => setTyp({ ...typ, requiresApproval: e.target.value === "Manager" })}
+              className={`w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 ${isEditing ? 'focus:ring-2 focus:ring-blue-500 bg-white' : ''}`} 
+            >
+              <option value="Manager">Manager</option>
+              <option value="None">None</option>
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-slate-600 mb-2">Payroll / Work Entry</label>
+            <input type="text" readOnly={!isEditing} defaultValue="Leave Work Entry" className={`w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 ${isEditing ? 'focus:ring-2 focus:ring-blue-500 bg-white' : ''}`} />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-slate-600 mb-2">Display Color</label>
+            <input type="text" readOnly={!isEditing} defaultValue="Blue" className={`w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900 ${isEditing ? 'focus:ring-2 focus:ring-blue-500 bg-white' : ''}`} />
+          </div>
+        </div>
+        <div className="md:col-span-2 mt-4 bg-slate-50 border border-slate-200 rounded-xl p-6 relative">
+          <label className="block text-sm font-bold text-slate-700 mb-3">Configuration Notes</label>
+          <textarea 
+            readOnly={!isEditing}
+            className={`w-full p-3 font-medium text-slate-800 bg-transparent min-h-[60px] border-none resize-none ${isEditing ? 'bg-white rounded-md border border-slate-200 focus:ring-2 focus:ring-blue-500' : ''}`}
+            defaultValue="Standard annual leave. Balance comes from approved allocations."
+          />
+          <p className="text-xs text-slate-500 absolute bottom-4 left-6 italic">
+            Useful note: Time Off Type drives approval behavior and whether a request needs an allocation.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function TimeOffHub() {
-  const { timeOff, employees, approveTimeOff, refuseTimeOff, activeTimeOffTab, allocations, timeOffTypes } = useStore();
+  const { timeOff, employees, approveTimeOff, refuseTimeOff, activeTimeOffTab, setActiveTimeOffTab, allocations, timeOffTypes, addTimeOffRecord, updateAllocation } = useStore();
   const [selectedRequest, setSelectedRequest] = useState<TimeOffRecord | "NEW" | null>(null);
   const [selectedAllocation, setSelectedAllocation] = useState<any | "NEW" | null>(null);
   const [selectedType, setSelectedType] = useState<any | "NEW" | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showMyTeam, setShowMyTeam] = useState(false);
+
+  const [formData, setFormData] = useState({
+    employeeId: employees.length > 0 ? employees[0].id : "",
+    type: "Paid Time Off",
+    startDate: "",
+    endDate: "",
+    days: 1,
+    reason: ""
+  });
 
   const filteredRequests = timeOff.filter((req) => {
     const empName = employees.find(e => e.id === req.employeeId)?.name || req.employeeId;
-    return empName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch = empName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (req.leaveType || req.type || "").toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (showMyTeam) {
+      // Mock "My Team" filter: employees 2 and 3 if they exist
+      const myTeamIds = [employees[1]?.id, employees[2]?.id].filter(Boolean);
+      return matchesSearch && myTeamIds.includes(req.employeeId);
+    }
+    return matchesSearch;
   });
 
   const handleApprove = (e: React.MouseEvent, id: string) => {
@@ -63,7 +176,19 @@ export function TimeOffHub() {
           <div className="flex items-center gap-3">
             {isNew ? (
               <button 
-                onClick={() => setSelectedRequest(null)}
+                onClick={() => {
+                  addTimeOffRecord({
+                    employeeId: formData.employeeId,
+                    type: formData.type as any,
+                    leaveType: formData.type as any,
+                    startDate: formData.startDate,
+                    endDate: formData.endDate,
+                    days: formData.days,
+                    status: "Pending",
+                    reason: formData.reason,
+                  });
+                  setSelectedRequest(null);
+                }}
                 className="px-6 py-2.5 bg-[#714B67] hover:bg-[#5C3D54] text-white rounded-xl text-sm font-bold shadow-sm transition-all flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
@@ -99,27 +224,34 @@ export function TimeOffHub() {
           <div className="space-y-6">
             <div className="flex flex-col">
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Employee</label>
-              <input 
-                type="text" 
-                defaultValue={req ? (employees.find(e => e.id === req.employeeId)?.name || req.employeeId) : ""} 
-                readOnly={!isNew}
+              <select
+                value={isNew ? formData.employeeId : req?.employeeId}
+                onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
+                disabled={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
-              />
+              >
+                {employees.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
+              </select>
             </div>
             <div className="flex flex-col">
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Time Off Type</label>
-              <input 
-                type="text" 
-                defaultValue={req ? (req.leaveType || req.type || "Paid Time Off") : ""} 
-                readOnly={!isNew}
+              <select
+                value={isNew ? formData.type : (req?.leaveType || req?.type || "Paid Time Off")}
+                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                disabled={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
-              />
+              >
+                <option value="Paid Time Off">Paid Time Off</option>
+                <option value="Sick Leave">Sick Leave</option>
+                <option value="Unpaid Leave">Unpaid Leave</option>
+              </select>
             </div>
             <div className="flex flex-col">
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Start Date</label>
               <input 
                 type="date" 
-                defaultValue={req ? req.startDate : ""} 
+                value={isNew ? formData.startDate : req?.startDate}
+                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                 readOnly={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
@@ -128,7 +260,8 @@ export function TimeOffHub() {
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">End Date</label>
               <input 
                 type="date" 
-                defaultValue={req ? req.endDate : ""} 
+                value={isNew ? formData.endDate : req?.endDate}
+                onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
                 readOnly={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
@@ -140,8 +273,9 @@ export function TimeOffHub() {
             <div className="flex flex-col">
               <label className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Duration</label>
               <input 
-                type="text" 
-                defaultValue={req ? `${req.days} Days` : ""} 
+                type="number" 
+                value={isNew ? formData.days : req?.days}
+                onChange={(e) => setFormData({ ...formData, days: Number(e.target.value) })}
                 readOnly={!isNew}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all"
               />
@@ -180,6 +314,8 @@ export function TimeOffHub() {
             <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Reason</label>
             {isNew ? (
               <textarea 
+                value={formData.reason}
+                onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
                 className="w-full p-3 bg-white border border-slate-200/80 rounded-xl font-medium text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all min-h-[100px]"
                 placeholder="Explain the reason for this leave..."
               />
@@ -194,8 +330,169 @@ export function TimeOffHub() {
     );
   }
 
-  // Dashboard / Time offs view
-  if (activeTimeOffTab === "Dashboard" || activeTimeOffTab === "Time offs") {
+  // Dashboard view
+  if (activeTimeOffTab === "Dashboard") {
+    const pendingApprovals = timeOff.filter(r => r.status === "Pending").length;
+    const approvedLeaves = timeOff.filter(r => r.status === "Approved").length;
+    const today = new Date().toISOString().split('T')[0];
+    const onLeaveToday = timeOff.filter(r => 
+      r.status === "Approved" && r.startDate <= today && r.endDate >= today
+    ).length;
+
+    return (
+      <div className="flex-1 p-6 md:p-8 bg-slate-50/50 h-full flex flex-col overflow-y-auto">
+        {/* Header */}
+        <div className="flex justify-between items-end mb-8">
+          <div>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Time Off Dashboard</h1>
+            <p className="text-sm font-medium text-slate-500 mt-1">Company-wide overview of leave requests and balances</p>
+          </div>
+          <button 
+            onClick={() => setActiveTimeOffTab("Time offs")}
+            className="px-5 py-2.5 bg-[#714B67] hover:bg-[#5a3a52] text-white font-bold rounded-xl shadow-sm transition-colors flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" /> New Request
+          </button>
+        </div>
+  
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden group hover:border-amber-300 transition-colors">
+            <div className="absolute top-0 inset-x-0 h-1.5 bg-amber-400"></div>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 mt-2">Pending Approvals</h3>
+            <p className="text-4xl font-black text-slate-900">{pendingApprovals}</p>
+            <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded mt-2">Action Required</span>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden group hover:border-emerald-300 transition-colors">
+            <div className="absolute top-0 inset-x-0 h-1.5 bg-emerald-400"></div>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 mt-2">Approved Leaves</h3>
+            <p className="text-4xl font-black text-slate-900">{approvedLeaves}</p>
+            <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded mt-2">This Month</span>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden group hover:border-[#714B67] transition-colors">
+            <div className="absolute top-0 inset-x-0 h-1.5 bg-[#714B67]"></div>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 mt-2">On Leave Today</h3>
+            <p className="text-4xl font-black text-slate-900">{onLeaveToday}</p>
+            <span className="text-xs font-bold text-[#714B67] bg-[#714B67]/10 px-2 py-0.5 rounded mt-2">{employees.length ? ((onLeaveToday / employees.length) * 100).toFixed(0) : 0}% of Workforce</span>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden group hover:border-blue-300 transition-colors">
+            <div className="absolute top-0 inset-x-0 h-1.5 bg-blue-400"></div>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 mt-2">Total Allocations</h3>
+            <p className="text-4xl font-black text-slate-900">{allocations.length}</p>
+            <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded mt-2">Active Plans</span>
+          </div>
+        </div>
+  
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          
+          {/* Trend Chart (Mock) */}
+          <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+            <div className="mb-6 flex justify-between items-center border-b border-slate-100 pb-4">
+              <div>
+                <h2 className="text-base font-bold text-slate-900">Leave Trends</h2>
+                <p className="text-xs text-slate-500 font-medium">Monthly time off distribution</p>
+              </div>
+              <select className="text-xs font-bold text-slate-600 bg-slate-50 border border-slate-200 rounded px-2 py-1 outline-none">
+                <option>Year 2026</option>
+                <option>Year 2025</option>
+              </select>
+            </div>
+            
+            <div className="flex-1 flex items-end justify-between gap-4 h-48 mt-4 relative">
+              {/* Horizontal Grid lines */}
+              <div className="absolute inset-x-0 bottom-0 border-b border-slate-100"></div>
+              <div className="absolute inset-x-0 bottom-[25%] border-b border-slate-100"></div>
+              <div className="absolute inset-x-0 bottom-[50%] border-b border-slate-100"></div>
+              <div className="absolute inset-x-0 bottom-[75%] border-b border-slate-100"></div>
+  
+              {/* Bars */}
+              {[
+                { label: 'Jan', val1: 40, val2: 20 },
+                { label: 'Feb', val1: 30, val2: 15 },
+                { label: 'Mar', val1: 60, val2: 25 },
+                { label: 'Apr', val1: 50, val2: 10 },
+                { label: 'May', val1: 80, val2: 40 },
+                { label: 'Jun', val1: 70, val2: 30 },
+                { label: 'Jul', val1: 45, val2: 20 },
+                { label: 'Aug', val1: 90, val2: 50 },
+              ].map((m, i) => (
+                <div key={i} className="flex flex-col items-center w-full z-10 group">
+                  <div className="flex items-end gap-1 w-full justify-center h-40 relative">
+                    {/* Tooltip on hover */}
+                    <div className="absolute -top-8 bg-slate-800 text-white text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity">
+                      {m.val1 + m.val2} Days
+                    </div>
+                    <div className="w-1/3 bg-[#714B67] rounded-t-sm transition-all group-hover:opacity-80 group-hover:w-1/2" style={{ height: `${m.val1}%` }}></div>
+                    <div className="w-1/3 bg-[#D6F0FF] rounded-t-sm transition-all group-hover:opacity-80 group-hover:w-1/2" style={{ height: `${m.val2}%` }}></div>
+                  </div>
+                  <div className="text-xs font-bold text-slate-500 mt-2">{m.label}</div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="flex items-center gap-4 mt-6 pt-4 border-t border-slate-100 justify-center">
+              <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-[#714B67]"></div><span className="text-xs font-bold text-slate-600">Paid Time Off</span></div>
+              <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-[#D6F0FF]"></div><span className="text-xs font-bold text-slate-600">Sick Leave</span></div>
+            </div>
+          </div>
+  
+          {/* Needs Attention / Recent List */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+            <div className="mb-4 border-b border-slate-100 pb-4">
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+                Pending Requests
+              </h2>
+              <p className="text-xs text-slate-500 font-medium">Action required by HR/Manager</p>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto pr-2 space-y-3">
+              {timeOff.filter(r => r.status === "Pending").slice(0, 5).map(req => {
+                const emp = employees.find(e => e.id === req.employeeId);
+                return (
+                  <div key={req.id} className="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-slate-200 flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[#714B67]/10 text-[#714B67] flex items-center justify-center font-bold text-xs shrink-0">
+                      {emp?.name.charAt(0) || "U"}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-slate-900 truncate">{emp?.name || req.employeeId}</p>
+                      <p className="text-xs text-slate-500">{req.leaveType} • <span className="font-bold">{req.days} Days</span></p>
+                      <p className="text-[10px] text-slate-400 mt-1">{req.startDate} to {req.endDate}</p>
+                    </div>
+                  </div>
+                );
+              })}
+              
+              {pendingApprovals === 0 && (
+                <div className="flex flex-col items-center justify-center h-40 text-center">
+                  <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center mb-3">
+                    <svg className="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  </div>
+                  <p className="text-sm font-bold text-slate-700">All caught up!</p>
+                  <p className="text-xs text-slate-500 mt-1">No pending requests to review.</p>
+                </div>
+              )}
+            </div>
+            
+            {pendingApprovals > 0 && (
+              <button 
+                onClick={() => setActiveTimeOffTab("Time offs")}
+                className="mt-4 w-full py-2 text-xs font-bold text-[#714B67] bg-[#714B67]/5 hover:bg-[#714B67]/10 rounded-lg transition-colors"
+              >
+                View All {pendingApprovals} Requests →
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Time offs view
+  if (activeTimeOffTab === "Time offs") {
     return (
       <div className="flex-1 p-6 md:p-8 bg-slate-50 h-full flex flex-col relative overflow-hidden">
         {/* Premium Background Blurs */}
@@ -220,7 +517,9 @@ export function TimeOffHub() {
                 className="w-64 pl-10 pr-4 py-2 bg-white/80 backdrop-blur-md border border-slate-200/80 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 transition-all shadow-sm"
               />
             </div>
-            <button className="px-5 py-2 bg-white/80 backdrop-blur-md border border-slate-200/80 text-slate-700 font-bold text-sm rounded-xl hover:bg-white transition-all shadow-sm">
+            <button 
+              onClick={() => setShowMyTeam(!showMyTeam)}
+              className={`px-5 py-2 backdrop-blur-md border border-slate-200/80 font-bold text-sm rounded-xl transition-all shadow-sm ${showMyTeam ? 'bg-blue-50 text-blue-700' : 'bg-white/80 text-slate-700 hover:bg-white'}`}>
               My Team
             </button>
             <button 
@@ -313,8 +612,28 @@ export function TimeOffHub() {
             </h1>
             <p className="text-sm font-medium text-slate-500 mb-8 mt-2">Form view of one allocation record</p>
             <div className="flex gap-2">
-              <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-sm transition-colors text-sm">Approve</button>
-              <button className="px-6 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-lg shadow-sm transition-colors text-sm">Refuse</button>
+              <button 
+                onClick={() => {
+                  if (alloc) {
+                    updateAllocation(alloc.id, { status: "Approved" });
+                    setSelectedAllocation({ ...alloc, status: "Approved" });
+                  }
+                }}
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-sm transition-colors text-sm"
+              >
+                Approve
+              </button>
+              <button 
+                onClick={() => {
+                  if (alloc) {
+                    updateAllocation(alloc.id, { status: "Refused" as any });
+                    setSelectedAllocation({ ...alloc, status: "Refused" });
+                  }
+                }}
+                className="px-6 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-lg shadow-sm transition-colors text-sm"
+              >
+                Refuse
+              </button>
             </div>
           </div>
           <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
@@ -426,60 +745,13 @@ export function TimeOffHub() {
     if (selectedType) {
       const isNew = selectedType === "NEW";
       const typ = isNew ? null : selectedType;
+      // Define inline component state for editing so it persists during edit
       return (
-        <div className="flex-1 p-6 md:p-8 bg-white h-full flex flex-col">
-          <div className="mb-8">
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-              <button onClick={() => setSelectedType(null)} className="text-sm text-slate-400 hover:text-slate-600 font-bold uppercase tracking-wider mr-2">← Back</button>
-              Time Off Type / {typ ? typ.name : "New"}
-            </h1>
-            <p className="text-sm font-medium text-slate-500 mb-8 mt-2">Form view of one time off type</p>
-            <button className="px-6 py-2 border-2 border-slate-200 text-slate-700 font-bold rounded-lg shadow-sm transition-colors text-sm hover:bg-slate-50">EDIT</button>
-          </div>
-          <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-            <div className="space-y-6">
-              <div className="flex flex-col">
-                <label className="text-sm font-bold text-slate-600 mb-2">Type Name</label>
-                <input type="text" readOnly value={typ ? typ.name : ""} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-sm font-bold text-slate-600 mb-2">Unit</label>
-                <input type="text" readOnly value={typ ? typ.unit : "Days"} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-sm font-bold text-slate-600 mb-2">Requires Allocation</label>
-                <input type="text" readOnly value={typ ? (typ.allocationRequired ? "Yes" : "No") : "Yes"} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-sm font-bold text-slate-600 mb-2">Active</label>
-                <input type="text" readOnly value="True" className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="flex flex-col">
-                <label className="text-sm font-bold text-slate-600 mb-2">Approval</label>
-                <input type="text" readOnly value={typ ? (typ.requiresApproval ? "Manager" : "None") : "Manager"} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-sm font-bold text-slate-600 mb-2">Payroll / Work Entry</label>
-                <input type="text" readOnly value="Leave Work Entry" className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-sm font-bold text-slate-600 mb-2">Display Color</label>
-                <input type="text" readOnly value="Blue" className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md font-medium text-slate-900" />
-              </div>
-            </div>
-            <div className="md:col-span-2 mt-4 bg-slate-50 border border-slate-200 rounded-xl p-6 relative">
-              <label className="block text-sm font-bold text-slate-700 mb-3">Configuration Notes</label>
-              <p className="text-slate-800 font-medium whitespace-pre-wrap min-h-[60px]">
-                Standard annual leave. Balance comes from approved allocations.
-              </p>
-              <p className="text-xs text-slate-500 absolute bottom-4 left-6 italic">
-                Useful note: Time Off Type drives approval behavior and whether a request needs an allocation.
-              </p>
-            </div>
-          </div>
-        </div>
+        <TimeOffTypeDetail 
+          initialType={typ} 
+          isNew={isNew} 
+          onBack={() => setSelectedType(null)} 
+        />
       );
     }
 

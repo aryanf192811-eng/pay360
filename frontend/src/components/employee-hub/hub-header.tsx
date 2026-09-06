@@ -57,20 +57,22 @@ export function HubHeader() {
     <div className="bg-white border-b border-slate-200/60 px-6 sm:px-8 py-5 shadow-sm relative z-20">
       <div className="max-w-[1600px] mx-auto">
         {/* Top Row: Search, Add Employee, View Toggles */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">          {/* Action Controls: Search, View Switcher, Add Employee */}
-          <div className="flex items-center gap-4 flex-wrap">
-            {/* Search Bar */}
-            <div className="relative min-w-[280px] sm:min-w-[340px] group">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[#714B67] transition-colors" />
-              <input
-                type="text"
-                placeholder="Search employees..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 focus:border-[#714B67]/50 focus:bg-white transition-all text-slate-900 placeholder:text-slate-400 font-medium shadow-sm"
-              />
-            </div>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          
+          {/* Left Side: Search Bar */}
+          <div className="relative min-w-[280px] sm:min-w-[340px] group flex-1 max-w-md">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[#714B67] transition-colors" />
+            <input
+              type="text"
+              placeholder="Search employees..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#714B67]/30 focus:border-[#714B67]/50 focus:bg-white transition-all text-slate-900 placeholder:text-slate-400 font-medium shadow-sm"
+            />
+          </div>
 
+          {/* Right Side: View Toggles & Add Employee */}
+          <div className="flex items-center gap-4 flex-wrap justify-end">
             {/* View Mode Toggle */}
             <div className="flex items-center bg-slate-100/80 p-1 rounded-xl border border-slate-200/60 shadow-sm">
               <button

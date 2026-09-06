@@ -15,13 +15,17 @@ export function SchedulesHub() {
     s.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const mockWeeklySchedule = [
+  const [mockWeeklySchedule, setMockWeeklySchedule] = useState([
     { day: "Monday", start: "9:00 AM", end: "6:00 PM", break: "1h", hours: "8h" },
     { day: "Tuesday", start: "9:00 AM", end: "6:00 PM", break: "1h", hours: "8h" },
     { day: "Wednesday", start: "9:00 AM", end: "6:00 PM", break: "1h", hours: "8h" },
     { day: "Thursday", start: "9:00 AM", end: "6:00 PM", break: "1h", hours: "8h" },
     { day: "Friday", start: "9:00 AM", end: "6:00 PM", break: "1h", hours: "8h" },
-  ];
+  ]);
+
+  const handleAddDay = () => {
+    setMockWeeklySchedule([...mockWeeklySchedule, { day: "New Day", start: "9:00 AM", end: "6:00 PM", break: "1h", hours: "8h" }]);
+  };
 
   if (selectedSchedule) {
     const isNew = selectedSchedule === "NEW";
@@ -90,7 +94,7 @@ export function SchedulesHub() {
         <div className="max-w-4xl">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-black text-slate-900">Weekly Schedule</h2>
-            <button className="px-5 py-2 text-emerald-700 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 rounded-xl text-sm font-bold transition-colors flex items-center gap-2">
+            <button onClick={handleAddDay} className="px-5 py-2 text-emerald-700 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 rounded-xl text-sm font-bold transition-colors flex items-center gap-2">
               <Plus className="w-4 h-4" /> Add Day
             </button>
           </div>
@@ -110,18 +114,66 @@ export function SchedulesHub() {
               <tbody className="divide-y divide-slate-100 bg-white">
                 {mockWeeklySchedule.map((day, idx) => (
                   <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4 font-bold text-slate-900">{day.day}</td>
                     <td className="px-6 py-4">
-                      <div className="w-24 p-2 bg-white border border-slate-200 rounded text-slate-700 font-medium text-center">{day.start}</div>
+                      <input 
+                        type="text" 
+                        value={day.day}
+                        onChange={(e) => {
+                          const newSchedule = [...mockWeeklySchedule];
+                          newSchedule[idx].day = e.target.value;
+                          setMockWeeklySchedule(newSchedule);
+                        }}
+                        className="font-bold text-slate-900 bg-transparent border-none focus:ring-2 focus:ring-[#714B67]/30 rounded px-2 w-32"
+                      />
                     </td>
                     <td className="px-6 py-4">
-                      <div className="w-24 p-2 bg-white border border-slate-200 rounded text-slate-700 font-medium text-center">{day.end}</div>
+                      <input 
+                        type="text" 
+                        value={day.start}
+                        onChange={(e) => {
+                          const newSchedule = [...mockWeeklySchedule];
+                          newSchedule[idx].start = e.target.value;
+                          setMockWeeklySchedule(newSchedule);
+                        }}
+                        className="w-24 p-2 bg-white border border-slate-200 rounded text-slate-700 font-medium text-center focus:outline-none focus:ring-2 focus:ring-[#714B67]/30"
+                      />
+                    </td>
+                    <td className="px-6 py-4">
+                      <input 
+                        type="text" 
+                        value={day.end}
+                        onChange={(e) => {
+                          const newSchedule = [...mockWeeklySchedule];
+                          newSchedule[idx].end = e.target.value;
+                          setMockWeeklySchedule(newSchedule);
+                        }}
+                        className="w-24 p-2 bg-white border border-slate-200 rounded text-slate-700 font-medium text-center focus:outline-none focus:ring-2 focus:ring-[#714B67]/30"
+                      />
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="w-16 mx-auto p-2 bg-white border border-slate-200 rounded text-slate-700 font-medium">{day.break}</div>
+                      <input 
+                        type="text" 
+                        value={day.break}
+                        onChange={(e) => {
+                          const newSchedule = [...mockWeeklySchedule];
+                          newSchedule[idx].break = e.target.value;
+                          setMockWeeklySchedule(newSchedule);
+                        }}
+                        className="w-16 mx-auto p-2 bg-white border border-slate-200 rounded text-slate-700 font-medium text-center focus:outline-none focus:ring-2 focus:ring-[#714B67]/30"
+                      />
                     </td>
                     <td className="px-6 py-4 font-bold text-slate-900 text-center">{day.hours}</td>
-                    <td className="px-6 py-4 text-slate-400 text-center">x</td>
+                    <td className="px-6 py-4 text-slate-400 text-center">
+                      <button 
+                        onClick={() => {
+                          const newSchedule = mockWeeklySchedule.filter((_, i) => i !== idx);
+                          setMockWeeklySchedule(newSchedule);
+                        }}
+                        className="w-6 h-6 rounded-full hover:bg-rose-50 text-rose-500 hover:text-rose-700 transition-colors flex items-center justify-center"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

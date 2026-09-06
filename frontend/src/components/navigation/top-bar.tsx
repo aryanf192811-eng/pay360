@@ -62,49 +62,50 @@ export function TopBar() {
   ];
 
   return (
-    <nav className="bg-white/80 backdrop-blur-xl w-full border-b border-slate-200/60 px-6 h-16 flex items-center justify-between shadow-sm z-30 select-none sticky top-0">
-      {/* Left: Brand Logo */}
-      <div
-        className="flex items-center gap-3 cursor-pointer h-full group"
-        onClick={() => setActiveNavTab("Employees")}
-      >
-        <img src="/logo.png" alt="PeoplePay360" className="h-8 md:h-10 object-contain drop-shadow-sm group-hover:scale-105 transition-transform" />
-        <div className="hidden sm:flex flex-col justify-center">
-          <span className="text-xl font-black text-slate-900 tracking-tight leading-none group-hover:text-[#714B67] transition-colors">PeoplePay360</span>
-          <span className="text-[10px] font-bold text-[#00A09D] uppercase tracking-widest mt-0.5">Enterprise HR</span>
+    <nav className="bg-[#714B67] w-full border-b border-[#5c3d54] px-6 h-14 flex items-center justify-between shadow-md z-30 select-none sticky top-0">
+      {/* Left: Brand Logo & App Switcher */}
+      <div className="flex items-center gap-4 h-full">
+        <button 
+          title="Apps"
+          className="p-1.5 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+        >
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
+        </button>
+        <div
+          className="flex items-center gap-3 cursor-pointer group"
+          onClick={() => setActiveNavTab("Employees")}
+        >
+          <img src="/logo.png" alt="PeoplePay360" className="h-7 md:h-8 object-contain drop-shadow-sm group-hover:scale-105 transition-transform" />
+          <div className="hidden sm:flex flex-col justify-center">
+            <span className="text-lg font-black text-white tracking-tight leading-none transition-colors">PeoplePay360</span>
+            <span className="text-[9px] font-bold text-teal-200 uppercase tracking-widest mt-0.5">Enterprise HR</span>
+          </div>
         </div>
       </div>
 
-      {/* Center Navigation: Animated Pills */}
-      <div className="hidden md:flex items-center gap-2 bg-slate-100/50 p-1.5 rounded-full border border-slate-200/50">
+      {/* Center Navigation: Tabs */}
+      <div className="hidden md:flex items-center gap-1">
         {navTabs.map((tab) => {
           const isActive = activeNavTab === tab.key;
           const isDropdownTab = tab.key === "Employees" || tab.key === "Time Off" || tab.key === "Payroll";
 
           return (
-            <div key={tab.key} className="relative group">
+            <div key={tab.key} className="relative group h-14 flex items-center">
               <button
                 onClick={() => setActiveNavTab(tab.key)}
-                className={`relative px-4 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer text-sm font-semibold whitespace-nowrap z-10 ${
-                  isActive ? "text-white" : "text-slate-600 hover:text-slate-900"
+                className={`relative px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer text-sm font-semibold whitespace-nowrap z-10 ${
+                  isActive ? "text-white bg-white/20 shadow-inner" : "text-white/80 hover:text-white hover:bg-white/10"
                 }`}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="active-nav-pill"
-                    className="absolute inset-0 bg-gradient-to-r from-[#714B67] to-[#8C6081] rounded-full shadow-sm -z-10"
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  />
-                )}
                 {tab.label}
                 {isDropdownTab && (
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform group-hover:rotate-180 ${isActive ? 'text-white/80' : 'text-slate-400'}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform group-hover:rotate-180 ${isActive ? 'text-white/90' : 'text-white/60'}`} />
                 )}
               </button>
 
               {/* Dropdown Menu on Hover */}
               {isDropdownTab && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-white/95 backdrop-blur-xl border border-slate-200/60 shadow-xl rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2 overflow-hidden">
+                <div className="absolute top-12 left-0 mt-1 w-48 bg-white shadow-xl rounded-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2 overflow-hidden">
                   {tab.key === "Employees" && (
                      <>
                       <button onClick={() => setActiveNavTab("Employees")} className="w-full text-left px-5 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#714B67] font-semibold transition-colors">Employees</button>
@@ -137,14 +138,14 @@ export function TopBar() {
       </div>
 
       {/* Right Profile & Quick Actions */}
-      <div className="flex items-center gap-4 h-full">
+      <div className="flex items-center gap-3 h-full">
 
         {/* Notification Bell with Dynamic Badge */}
         <div className="relative" ref={notifRef}>
           <button
             onClick={() => setIsNotifOpen(!isNotifOpen)}
             title="System Alerts"
-            className="relative p-2 rounded-full hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
+            className="relative p-2 rounded-full hover:bg-white/10 text-white/90 transition-colors cursor-pointer"
           >
             <Bell className="w-5 h-5" />
             <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-rose-500 border-2 border-white shadow-sm animate-pulse" />
@@ -229,7 +230,7 @@ export function TopBar() {
           </AnimatePresence>
         </div>
 
-        <div className="w-px h-6 bg-slate-200 mx-1 hidden md:block"></div>
+        <div className="w-px h-6 bg-white/20 mx-1 hidden md:block"></div>
 
         {/* User Avatar & Settings Dropdown */}
         <div className="relative" ref={settingsRef}>
@@ -238,14 +239,14 @@ export function TopBar() {
             className="flex items-center gap-3 pl-2 cursor-pointer group"
           >
             <div className="hidden md:flex flex-col items-end">
-              <span className="text-xs font-bold text-slate-900 leading-tight">
+              <span className="text-xs font-bold text-white leading-tight">
                 {user?.email?.split('@')[0] || "Admin"}
               </span>
-              <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 rounded-sm mt-0.5">
+              <span className="text-[10px] font-semibold text-teal-100 bg-black/20 px-1.5 rounded-sm mt-0.5">
                 {currentRole}
               </span>
             </div>
-            <div className="w-9 h-9 rounded-full border border-slate-200 overflow-hidden bg-slate-100 group-hover:ring-2 group-hover:ring-[#714B67]/30 transition-all shadow-sm">
+            <div className="w-8 h-8 rounded-full border-2 border-white/20 overflow-hidden bg-slate-100 group-hover:ring-2 group-hover:ring-white/50 transition-all shadow-sm">
               <img
                 src={`https://ui-avatars.com/api/?name=${user?.email?.split('@')[0] || 'Admin'}&background=714B67&color=fff`}
                 alt="Profile"
@@ -270,16 +271,31 @@ export function TopBar() {
                 </div>
                 <div className="space-y-1">
                   <button
+                    onClick={() => {
+                      setIsSettingsOpen(false);
+                      setActiveNavTab("Employees");
+                      if (employees.length > 0) {
+                        setSelectedEmployee(employees[0]);
+                      }
+                    }}
                     className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-[#714B67] rounded-xl font-medium flex items-center gap-2 transition-colors"
                   >
                     <User className="w-4 h-4" /> My Profile
                   </button>
                   <button
+                    onClick={() => {
+                      setIsSettingsOpen(false);
+                      alert("Roles & Permissions module is restricted to Super Admins in this environment.");
+                    }}
                     className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-[#714B67] rounded-xl font-medium flex items-center gap-2 transition-colors"
                   >
                     <ShieldCheck className="w-4 h-4" /> Roles & Permissions
                   </button>
                   <button
+                    onClick={() => {
+                      setIsSettingsOpen(false);
+                      alert("You are running PeoplePay360 Enterprise v1.0.0");
+                    }}
                     className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-[#714B67] rounded-xl font-medium flex items-center gap-2 transition-colors"
                   >
                     <Sparkles className="w-4 h-4" /> What's New
@@ -298,6 +314,7 @@ export function TopBar() {
                       clearAuth();
                       setIsSettingsOpen(false);
                       setIsAuthOpen(true);
+                      window.location.reload();
                     }}
                     className="w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 rounded-xl font-bold flex items-center gap-2 transition-colors"
                   >
