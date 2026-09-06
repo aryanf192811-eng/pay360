@@ -123,7 +123,9 @@ time it's run — it's idempotent and safe to re-run right before a live demo. I
   filtering Insights to any single department still clears its minimum sample size), with
   realistic job positions and bank account numbers (two — Frank and Heidi — deliberately left
   without one, so `missing_bank_details` warnings are real)
-- 2 Salary Structures (`Regular Salary` — HRA/PF/Gross/Net; `Contractor Rate` for Ivan)
+- 2 Salary Structures (`Regular Salary` — Basic/HRA/Special Allowance/Gross/PF/Net, in that
+  canonical sequence; `Contractor Rate` for Ivan — Basic/Gross/Net, no HRA/allowances/PF since a
+  flat-rate contractor engagement genuinely has none of those)
 - 12 contracts, including a real raise for Eve (₹85,000 → ₹95,000 on 2026-09-01, modeled as two
   contract rows, never an edit) — Grace is deliberately left with **no** contract at all
 - ~7 weeks of real attendance across every employee (Frank is a genuine statistical outlier by
