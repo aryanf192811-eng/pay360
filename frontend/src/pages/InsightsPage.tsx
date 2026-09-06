@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Activity, AlertTriangle, CalendarClock } from 'lucide-react';
+import { Activity, AlertTriangle, CalendarClock, HelpCircle, X } from 'lucide-react';
 import { getAttendanceAnomalies, getLeaveForecast } from '../api/insights.api';
 import { listDepartments } from '../api/reference.api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -29,6 +29,7 @@ export function InsightsPage() {
   const [periodEnd, setPeriodEnd] = useState(defaultRange.end);
   const [departmentId, setDepartmentId] = useState('');
   const [runwayMonths, setRunwayMonths] = useState(2);
+  const [showHelp, setShowHelp] = useState(false);
 
   const { data: departments } = useQuery({ queryKey: ['departments'], queryFn: listDepartments });
   const selectedDeptName = departmentId ? departments?.find((d) => d.id === departmentId)?.name : null;
@@ -50,9 +51,58 @@ export function InsightsPage() {
   return (
     <div className="space-y-24">
       <div>
-        <h1 className="flex items-center gap-8 text-2xl font-bold text-text"><Activity className="h-[20px] w-[20px]" /> Attendance & Leave Insights</h1>
+        <div className="flex items-center gap-8">
+          <h1 className="flex items-center gap-8 text-2xl font-bold text-text"><Activity className="h-[20px] w-[20px]" /> Attendance & Leave Insights</h1>
+          <button
+            onClick={() => setShowHelp((v) => !v)}
+            title="How this works"
+            aria-label="How this works"
+            className="flex h-24 w-24 items-center justify-center rounded-full border border-border text-text-muted transition-colors hover:border-primary hover:text-primary"
+          >
+            <HelpCircle className="h-16 w-16" />
+          </button>
+        </div>
         <p className="text-sm text-text-muted">Statistical outliers and leave-balance runway, computed live — never a hardcoded threshold.</p>
       </div>
+
+      {showHelp && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-8"><HelpCircle className="h-16 w-16" /> How this page works</CardTitle>
+            <button onClick={() => setShowHelp(false)} className="rounded p-4 text-text-muted hover:bg-bg hover:text-text">
+              <X className="h-16 w-16" />
+            </button>
+          </CardHeader>
+          <CardContent className="space-y-16 text-sm text-text">
+            <div>
+              <div className="font-semibold text-text">Attendance Anomalies — how "anomalous" is decided</div>
+              <p className="mt-4 text-text-muted">
+                An employee is flagged only when their late-rate or absent-rate for the selected period
+                exceeds <b className="text-text">this exact comparison group's own average by more than 1.5×
+                its standard deviation</b> — never a fixed percentage picked in advance. Narrowing the
+                department filter changes the comparison group, so the same person can be flagged
+                company-wide but clean within their own department (or vice versa) if their teammates
+                share the same pattern.
+              </p>
+              <ul className="mt-8 list-disc space-y-4 pl-20 text-text-muted">
+                <li>An employee needs at least <b className="text-text">3 attendance records</b> in the period before being scored at all — one late day out of one record isn't a "100% late" anomaly, it's just missing data.</li>
+                <li>At least <b className="text-text">4 employees</b> are required in the comparison group before any anomaly is computed. Below that, the page says so explicitly instead of silently showing "no anomalies" — for exactly 2 data points, the statistical spread always works out so no point can ever cross the threshold, so a 2-person comparison can't produce a meaningful answer either way.</li>
+              </ul>
+            </div>
+            <div>
+              <div className="font-semibold text-text">Leave Runway — how "months of runway" is projected</div>
+              <p className="mt-4 text-text-muted">
+                For each approved leave allocation, the page computes the employee's real historical
+                consumption rate — approved days taken so far, divided by the months the allocation has
+                actually been active — and projects that rate forward against the remaining balance.
+                An allocation is flagged "at risk" when it's on track to run out within the runway
+                threshold you set above. Nothing here is a guess; it's the same arithmetic HR would do
+                by hand, just kept current automatically.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardContent className="grid grid-cols-4 gap-16 pt-24">

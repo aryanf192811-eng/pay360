@@ -205,13 +205,24 @@ async function seed() {
         [structureId, r.name, r.code, r.category, r.sequence, r.method, r.amount ?? null, r.percentage ?? null, r.base_code ?? null, r.formula ?? null]
       );
     }
-    await addRule(regularStructId, { name: 'House Rent Allowance', code: 'HRA', category: 'allowance', sequence: 10, method: 'percentage', percentage: 40, base_code: 'BASIC' });
-    await addRule(regularStructId, { name: 'Gross Salary', code: 'GROSS', category: 'gross', sequence: 20, method: 'formula', formula: 'BASIC + HRA' });
-    await addRule(regularStructId, { name: 'Provident Fund', code: 'PF', category: 'deduction', sequence: 30, method: 'percentage', percentage: 12, base_code: 'BASIC' });
-    await addRule(regularStructId, { name: 'Net Salary', code: 'NET', category: 'net', sequence: 40, method: 'formula', formula: 'GROSS - PF' });
+    // Canonical rule sequencing convention for this app (documented in DB_GUIDE.md): 10=Basic,
+    // 20=HRA, 30=other Allowances, 40=Gross, 50=Deductions, 60=Net. Basic is always its own
+    // explicit line (via formula "BASIC", which resolves to the engine's context.BASIC =
+    // contract.wage) — never left as an invisible number other rules merely reference, so a
+    // payslip's Gross is always visibly traceable to the lines above it.
+    await addRule(regularStructId, { name: 'Basic Salary', code: 'BASIC', category: 'basic', sequence: 10, method: 'formula', formula: 'BASIC' });
+    await addRule(regularStructId, { name: 'House Rent Allowance', code: 'HRA', category: 'allowance', sequence: 20, method: 'percentage', percentage: 40, base_code: 'BASIC' });
+    await addRule(regularStructId, { name: 'Special Allowance', code: 'ALLOW', category: 'allowance', sequence: 30, method: 'fixed', amount: 2000 });
+    await addRule(regularStructId, { name: 'Gross Salary', code: 'GROSS', category: 'gross', sequence: 40, method: 'formula', formula: 'BASIC + HRA + ALLOW' });
+    await addRule(regularStructId, { name: 'Provident Fund', code: 'PF', category: 'deduction', sequence: 50, method: 'percentage', percentage: 12, base_code: 'BASIC' });
+    await addRule(regularStructId, { name: 'Net Salary', code: 'NET', category: 'net', sequence: 60, method: 'formula', formula: 'GROSS - PF' });
 
-    await addRule(contractorStructId, { name: 'Gross Salary', code: 'GROSS', category: 'gross', sequence: 10, method: 'formula', formula: 'BASIC' });
-    await addRule(contractorStructId, { name: 'Net Salary', code: 'NET', category: 'net', sequence: 20, method: 'formula', formula: 'GROSS' });
+    // Contractors are paid a flat rate with no HRA/allowances/statutory deductions (realistic —
+    // PF etc. don't apply to a contractor engagement) — but Basic is still its own visible line,
+    // never just an implicit number folded straight into Gross.
+    await addRule(contractorStructId, { name: 'Basic Salary', code: 'BASIC', category: 'basic', sequence: 10, method: 'formula', formula: 'BASIC' });
+    await addRule(contractorStructId, { name: 'Gross Salary', code: 'GROSS', category: 'gross', sequence: 40, method: 'formula', formula: 'BASIC' });
+    await addRule(contractorStructId, { name: 'Net Salary', code: 'NET', category: 'net', sequence: 60, method: 'formula', formula: 'GROSS' });
 
     // 5. Contracts
     // Grace deliberately has NO contract at all — the live contract_missing warning and the

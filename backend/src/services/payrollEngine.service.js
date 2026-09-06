@@ -95,7 +95,7 @@ async function computeLeaveDays(client, employeeId, periodStart, periodEnd) {
  */
 async function computePayslipCore(client, payslipId) {
   const { rows: slipRows } = await client.query(
-    `SELECT id, payrun_id, employee_id, period_start, period_end
+    `SELECT id, payrun_id, employee_id, period_start, period_end, structure_id
      FROM payslips WHERE id = $1 FOR UPDATE`,
     [payslipId]
   );
@@ -124,9 +124,14 @@ async function computePayslipCore(client, payslipId) {
   }
 
   // Resolve the applicable contract (DB_GUIDE.md Real Key-Join Pattern #1) — inline here
-  // rather than via contracts.service so it shares this transaction's client/lock.
+  // rather than via contracts.service so it shares this transaction's client/lock. The contract
+  // supplies BASIC (its wage) — it does NOT decide which Salary Structure computes this payslip.
+  // That choice is made once, at the Payrun/Payslip level (CLAUDE.md: "a Payrun's chosen
+  // structure is what actually drives every payslip line"), so every employee in the same
+  // payrun is computed under the same, explicitly-selected rule set regardless of what
+  // structure their individual contract happens to reference.
   const { rows: contractRows } = await client.query(
-    `SELECT id, wage, salary_structure_id
+    `SELECT id, wage
      FROM contracts
      WHERE employee_id = $1
        AND status = 'active'
@@ -164,7 +169,7 @@ async function computePayslipCore(client, payslipId) {
      FROM salary_rules
      WHERE structure_id = $1 AND active = true
      ORDER BY sequence ASC`,
-    [contract.salary_structure_id]
+    [slip.structure_id]
   );
 
   // Running context: rule codes become variables later rules can reference. Seeded only from

@@ -122,7 +122,7 @@ export function TimeOffPage() {
       {tab === 'requests' && (
         <div className="flex flex-col gap-[16px]">
           <div className="flex justify-end">
-            <button 
+            <button
               onClick={() => setShowReqForm((v) => !v)}
               className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--surface)] font-semibold text-[12px] px-[16px] py-[8px] rounded transition-colors flex items-center gap-[4px]"
             >
@@ -173,7 +173,24 @@ export function TimeOffPage() {
                   )}
                   <div className="flex flex-col gap-[8px]">
                     <label className="text-[12px] font-semibold text-[var(--text)]">Duration (days)</label>
-                    <input type="number" step="0.5" required value={reqForm.duration} onChange={(e) => setReqForm({ ...reqForm, duration: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[var(--border)] rounded bg-[var(--surface)] focus:border-[var(--primary)] focus:ring-1 focus:outline-none w-full" />
+                    <input
+                      type="number"
+                      min={1}
+                      max={365}
+                      step={1}
+                      required
+                      value={reqForm.duration}
+                      onChange={(e) => {
+                        const raw = e.target.value;
+                        if (raw === '') { setReqForm({ ...reqForm, duration: '' }); return; }
+                        // Whole days only, never negative/zero, capped at a sane yearly max — a
+                        // bare `min`/`step` attribute only blocks native form submission, not
+                        // typing or the spinner arrows, so clamp the value itself here too.
+                        const clamped = Math.min(365, Math.max(1, Math.round(Number(raw))));
+                        setReqForm({ ...reqForm, duration: String(clamped) });
+                      }}
+                      className="h-[36px] px-[12px] text-[13px] border border-[var(--border)] rounded bg-[var(--surface)] focus:border-[var(--primary)] focus:ring-1 focus:outline-none w-full"
+                    />
                   </div>
                   <div className="flex flex-col gap-[8px]">
                     <label className="text-[12px] font-semibold text-[var(--text)]">From</label>
@@ -285,7 +302,21 @@ export function TimeOffPage() {
                   </div>
                   <div className="flex flex-col gap-[8px]">
                     <label className="text-[12px] font-semibold text-[var(--text)]">Allocated (days)</label>
-                    <input type="number" step="0.5" required value={allocForm.allocated} onChange={(e) => setAllocForm({ ...allocForm, allocated: e.target.value })} className="h-[36px] px-[12px] text-[13px] border border-[var(--border)] rounded bg-[var(--surface)] focus:border-[var(--primary)] focus:ring-1 focus:outline-none w-full" />
+                    <input
+                      type="number"
+                      min={1}
+                      max={365}
+                      step={1}
+                      required
+                      value={allocForm.allocated}
+                      onChange={(e) => {
+                        const raw = e.target.value;
+                        if (raw === '') { setAllocForm({ ...allocForm, allocated: '' }); return; }
+                        const clamped = Math.min(365, Math.max(1, Math.round(Number(raw))));
+                        setAllocForm({ ...allocForm, allocated: String(clamped) });
+                      }}
+                      className="h-[36px] px-[12px] text-[13px] border border-[var(--border)] rounded bg-[var(--surface)] focus:border-[var(--primary)] focus:ring-1 focus:outline-none w-full"
+                    />
                   </div>
                   <div className="flex flex-col gap-[8px]">
                     <label className="text-[12px] font-semibold text-[var(--text)]">Valid From</label>
