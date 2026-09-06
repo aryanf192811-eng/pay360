@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Wallet, Plus } from 'lucide-react';
+import { Wallet, Plus, AlertTriangle } from 'lucide-react';
 import { listPayruns, draftPayrun, createPayrun, type EligibleEmployee } from '../api/payroll.api';
 import { listSalaryStructures } from '../api/salary.api';
 import { StatusBadge } from '../components/StatusBadge';
@@ -187,6 +187,7 @@ export function PayrollPage() {
                       <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[var(--text-muted)] uppercase tracking-wider">Name</th>
                       <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[var(--text-muted)] uppercase tracking-wider">Period</th>
                       <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[var(--text-muted)] uppercase tracking-wider">Payslips</th>
+                      <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[var(--text-muted)] uppercase tracking-wider">Warnings</th>
                       <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[var(--text-muted)] uppercase tracking-wider">Status</th>
                       <th className="py-[8px] px-[12px] font-semibold text-[12px] text-[var(--text-muted)] uppercase tracking-wider text-right">Action</th>
                     </tr>
@@ -197,6 +198,15 @@ export function PayrollPage() {
                         <td className="py-[12px] px-[12px]">{p.name}</td>
                         <td className="py-[12px] px-[12px] text-[var(--text-muted)] font-normal">{p.period_start} → {p.period_end}</td>
                         <td className="py-[12px] px-[12px] font-mono text-[var(--text-muted)]">{p.payslip_count}</td>
+                        <td className="py-[12px] px-[12px]">
+                          {p.warning_count ? (
+                            <span className="flex items-center gap-4 text-xs font-semibold text-danger">
+                              <AlertTriangle className="h-[14px] w-[14px]" /> {p.warning_count} warning{p.warning_count === 1 ? '' : 's'}
+                            </span>
+                          ) : (
+                            <span className="text-xs text-text-muted">No warnings</span>
+                          )}
+                        </td>
                         <td className="py-[12px] px-[12px]"><StatusBadge status={p.status} domain="payrun" /></td>
                         <td className="py-[12px] px-[12px] text-right">
                            <span className="text-[var(--primary)] opacity-0 group-hover:opacity-100 transition-opacity">Review →</span>

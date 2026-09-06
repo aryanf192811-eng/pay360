@@ -42,6 +42,7 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       { to: '/dashboard', label: 'Dashboard' },
       { to: '/payroll', label: 'Payruns' },
+      { to: '/payroll/payslips', label: 'Payslips' },
       { to: '/salary-config', label: 'Structures & Rules' },
       { to: '/payroll/simulator', label: 'What-If Simulator' },
     ],
@@ -66,9 +67,14 @@ function NavDropdown({ item, highlighted, onHover }: { item: NavItem; highlighte
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
-  const isActiveRoute = item.children
-    ? item.children.some((leaf) => location.pathname.startsWith(leaf.to))
-    : location.pathname.startsWith(item.to!);
+  // Sibling leaves can share a URL prefix (e.g. `/payroll` and `/payroll/payslips`) — a plain
+  // `startsWith` would wrongly mark both active while viewing either. Only the longest matching
+  // `to` "wins", so a shorter sibling never lights up just because another leaf's path extends it.
+  const matchesPath = (to: string) => location.pathname === to || location.pathname.startsWith(`${to}/`);
+  const bestMatch = item.children
+    ? item.children.filter((leaf) => matchesPath(leaf.to)).sort((a, b) => b.to.length - a.to.length)[0]?.to
+    : undefined;
+  const isActiveRoute = item.children ? bestMatch !== undefined : matchesPath(item.to!);
   const showPill = highlighted || (!highlighted && isActiveRoute);
 
   if (!item.children) {
@@ -130,12 +136,10 @@ function NavDropdown({ item, highlighted, onHover }: { item: NavItem; highlighte
               key={leaf.to}
               to={leaf.to}
               onClick={() => setClicked(false)}
-              className={({ isActive }) =>
-                cn(
-                  'block px-16 py-8 text-sm transition-colors',
-                  isActive ? 'bg-primary-light text-primary font-medium' : 'text-text hover:bg-bg'
-                )
-              }
+              className={cn(
+                'block px-16 py-8 text-sm transition-colors',
+                leaf.to === bestMatch ? 'bg-primary-light text-primary font-medium' : 'text-text hover:bg-bg'
+              )}
             >
               {leaf.label}
             </NavLink>

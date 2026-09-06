@@ -13,7 +13,7 @@ function assertOwnRecordOrPayroll(req, employeeId) {
 
 async function list(req, res, next) {
   try {
-    const { payrun_id, employee_id } = req.query;
+    const { payrun_id, employee_id, period_start, period_end } = req.query;
     const conditions = [];
     const params = [];
 
@@ -26,22 +26,32 @@ async function list(req, res, next) {
       conditions.push(`ps.employee_id = $${params.length}`);
     }
     if (payrun_id) { params.push(payrun_id); conditions.push(`ps.payrun_id = $${params.length}`); }
+    if (period_start) { params.push(period_start); conditions.push(`ps.period_start >= $${params.length}`); }
+    if (period_end) { params.push(period_end); conditions.push(`ps.period_end <= $${params.length}`); }
 
     const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
 
-    // Net is read live from payslip_lines (Ledger Pattern, DB_GUIDE.md) — never a stored column.
+    // Net/Basic/Gross are read live from payslip_lines (Ledger Pattern, DB_GUIDE.md) — never
+    // stored columns. Structure/Pay Run shown by name (this list spans every payrun, so the
+    // payrun name is how a user tells two payslips for the same employee apart at a glance).
     const { rows } = await pool.query(
       `SELECT ps.id, ps.payrun_id, ps.employee_id, ps.contract_id, ps.structure_id,
               ps.period_start, ps.period_end, ps.worked_days, ps.status, ps.email_status,
-              e.first_name, e.last_name,
-              (SELECT amount FROM payslip_lines pl WHERE pl.payslip_id = ps.id AND pl.category = 'net' ORDER BY pl.sequence DESC LIMIT 1) AS net
+              e.first_name, e.last_name, e.employee_code,
+              s.name AS structure_name, p.name AS payrun_name,
+              (SELECT amount FROM payslip_lines pl WHERE pl.payslip_id = ps.id AND pl.category = 'basic' ORDER BY pl.sequence ASC LIMIT 1) AS basic,
+              (SELECT amount FROM payslip_lines pl WHERE pl.payslip_id = ps.id AND pl.category = 'gross' ORDER BY pl.sequence DESC LIMIT 1) AS gross,
+              (SELECT amount FROM payslip_lines pl WHERE pl.payslip_id = ps.id AND pl.category = 'net' ORDER BY pl.sequence DESC LIMIT 1) AS net,
+              (SELECT COUNT(*) FROM payroll_warnings w WHERE w.payslip_id = ps.id AND w.resolved = false) AS warning_count
        FROM payslips ps
        JOIN employees e ON e.id = ps.employee_id
+       LEFT JOIN salary_structures s ON s.id = ps.structure_id
+       LEFT JOIN payruns p ON p.id = ps.payrun_id
        ${where}
        ORDER BY ps.created_at DESC`,
       params
     );
-    return sendSuccess(res, rows);
+    return sendSuccess(res, rows.map((r) => ({ ...r, warning_count: Number(r.warning_count) })));
   } catch (err) { next(err); }
 }
 

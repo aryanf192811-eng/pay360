@@ -49,8 +49,15 @@ async function list(req, res, next) {
 async function getById(req, res, next) {
   try {
     const { rows } = await pool.query(
-      `SELECT id, employee_id, check_in, check_out, worked_hours, status, is_manual_correction, corrected_by, notes
-       FROM attendances WHERE id = $1`,
+      `SELECT a.id, a.employee_id, a.check_in, a.check_out, a.worked_hours, a.status,
+              a.is_manual_correction, a.corrected_by, a.notes, a.created_at,
+              e.first_name, e.last_name, e.employee_code, e.department_id, d.name AS department,
+              u.email AS corrected_by_email
+       FROM attendances a
+       JOIN employees e ON e.id = a.employee_id
+       LEFT JOIN departments d ON d.id = e.department_id
+       LEFT JOIN users u ON u.id = a.corrected_by
+       WHERE a.id = $1`,
       [req.params.id]
     );
     if (!rows[0]) { const e = new Error('Attendance record not found'); e.statusCode = 404; throw e; }

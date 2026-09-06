@@ -12,11 +12,20 @@ export interface Attendance {
   notes: string | null;
   first_name?: string;
   last_name?: string;
+  employee_code?: string;
+  department?: string;
+  corrected_by_email?: string | null;
+  created_at?: string;
 }
 
 export async function listAttendances(params?: { employee_id?: string; status?: string }) {
   const { data } = await apiClient.get('/api/attendances', { params });
   return data.data as Attendance[];
+}
+
+export async function getAttendance(id: string) {
+  const { data } = await apiClient.get(`/api/attendances/${id}`);
+  return data.data as Attendance;
 }
 
 export async function checkInOut(employee_id?: string) {

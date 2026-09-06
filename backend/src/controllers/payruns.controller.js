@@ -121,11 +121,15 @@ async function list(req, res, next) {
   try {
     const { rows } = await pool.query(
       `SELECT p.id, p.name, p.salary_structure_id, p.period_start, p.period_end, p.status, p.created_at,
-              (SELECT COUNT(*) FROM payslips ps WHERE ps.payrun_id = p.id) AS payslip_count
+              (SELECT COUNT(*) FROM payslips ps WHERE ps.payrun_id = p.id) AS payslip_count,
+              (SELECT COUNT(*) FROM payroll_warnings w
+                WHERE w.resolved = false
+                  AND (w.payrun_id = p.id OR w.payslip_id IN (SELECT id FROM payslips WHERE payrun_id = p.id))
+              ) AS warning_count
        FROM payruns p
        ORDER BY p.created_at DESC`
     );
-    return sendSuccess(res, rows);
+    return sendSuccess(res, rows.map((r) => ({ ...r, warning_count: Number(r.warning_count) })));
   } catch (err) { next(err); }
 }
 

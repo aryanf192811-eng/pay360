@@ -16,7 +16,7 @@ export async function listUsers() {
   return data.data as AppUser[];
 }
 
-export async function updateUser(id: string, payload: { role?: string; employee_id?: string | null }) {
+export async function updateUser(id: string, payload: { role?: string; employee_id?: string | null; is_active?: boolean }) {
   const { data } = await apiClient.patch(`/api/users/${id}`, payload);
   return data.data as AppUser;
 }

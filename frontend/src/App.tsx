@@ -19,9 +19,11 @@ import { AllocationDetail } from './pages/AllocationDetail';
 import { TimeOffTypeDetail } from './pages/TimeOffTypeDetail';
 import { WorkingSchedules } from './pages/WorkingSchedules';
 import { AttendanceList } from './pages/AttendanceList';
+import { AttendanceDetail } from './pages/AttendanceDetail';
 import { TimeOffPage } from './pages/TimeOffPage';
 import { PayrollPage } from './pages/PayrollPage';
 import { PayrunDetail } from './pages/PayrunDetail';
+import { PayslipList } from './pages/PayslipList';
 import { PayslipDetail } from './pages/PayslipDetail';
 import { SalaryConfigPage } from './pages/SalaryConfigPage';
 import { Dashboard } from './pages/Dashboard';
@@ -173,6 +175,7 @@ export default function App() {
               }
             />
             <Route path="/attendance" element={<AttendanceList />} />
+            <Route path="/attendance/:id" element={<AttendanceDetail />} />
             <Route path="/time-off" element={<TimeOffPage />} />
             <Route path="/time-off/requests/:id" element={<TimeOffRequestDetail />} />
             <Route
@@ -204,6 +207,14 @@ export default function App() {
               element={
                 <ProtectedRoute roles={PAYROLL_ROLES}>
                   <PayrunDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payroll/payslips"
+              element={
+                <ProtectedRoute roles={PAYROLL_ROLES}>
+                  <PayslipList />
                 </ProtectedRoute>
               }
             />

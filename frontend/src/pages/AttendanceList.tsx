@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Clock, LogIn, Filter } from 'lucide-react';
 import { listAttendances, checkInOut, correctAttendance } from '../api/attendances.api';
@@ -9,6 +10,7 @@ import { TableSkeleton } from '../components/ui/skeleton';
 import { cn } from '../lib/utils';
 
 export function AttendanceList() {
+  const navigate = useNavigate();
   const { user } = useAuthStore();
   const isHr = !!user && HR_ROLES.includes(user.role);
   const [employeeFilter, setEmployeeFilter] = useState('');
@@ -109,7 +111,7 @@ export function AttendanceList() {
               </thead>
               <tbody className="text-[13px] font-medium text-[var(--text)]">
                 {attendances.map((a) => (
-                  <tr key={a.id} className="border-b border-[var(--border)] hover:bg-[var(--bg)] transition-colors">
+                  <tr key={a.id} className="cursor-pointer border-b border-[var(--border)] hover:bg-[var(--bg)] transition-colors" onClick={() => navigate(`/attendance/${a.id}`)}>
                     {isHr && (
                       <td className="py-[12px] px-[12px] font-semibold">
                         {a.first_name} {a.last_name}
@@ -127,6 +129,7 @@ export function AttendanceList() {
                         <select
                           className="h-[28px] w-[120px] text-[12px] px-[8px] border border-[var(--border)] rounded bg-[var(--surface)] focus:border-[var(--primary)] focus:ring-1 focus:outline-none"
                           value={a.status}
+                          onClick={(e) => e.stopPropagation()}
                           onChange={(e) => correctMutation.mutate({ id: a.id, status: e.target.value })}
                         >
                           <option value="present">Present</option>

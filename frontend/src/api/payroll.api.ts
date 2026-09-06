@@ -8,6 +8,7 @@ export interface Payrun {
   period_end: string;
   status: 'draft' | 'computed' | 'validated' | 'paid';
   payslip_count?: number | string;
+  warning_count?: number;
   warnings?: PayrollWarning[];
 }
 
@@ -45,7 +46,10 @@ export interface Payslip {
   employee_code?: string;
   structure_name?: string;
   payrun_name?: string;
+  basic?: string | number | null;
+  gross?: string | number | null;
   net?: string | number | null;
+  warning_count?: number;
   lines?: PayslipLine[];
 }
 
@@ -106,7 +110,7 @@ export async function sendPayslips(id: string) {
   return data.data as { message: string; stats: { sent: number; queued: number; failed: number } };
 }
 
-export async function listPayslips(params?: { payrun_id?: string; employee_id?: string }) {
+export async function listPayslips(params?: { payrun_id?: string; employee_id?: string; period_start?: string; period_end?: string }) {
   const { data } = await apiClient.get('/api/payslips', { params });
   return data.data as Payslip[];
 }

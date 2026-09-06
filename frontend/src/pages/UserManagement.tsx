@@ -42,6 +42,11 @@ export function UserManagement() {
     },
   });
 
+  const toggleActiveMut = useMutation({
+    mutationFn: ({ id, is_active }: { id: string; is_active: boolean }) => updateUser(id, { is_active }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] }),
+  });
+
   // Reuses POST /api/auth/register, authenticated this time — the backend allows any role for
   // an admin caller (see auth.service.js), unlike the public self-register flow which is locked
   // to 'employee'. This is the only way a privileged (hr_manager and up) account gets created.
@@ -178,7 +183,15 @@ export function UserManagement() {
                             Save
                           </Button>
                         ) : (
-                          <Badge tone={u.is_active ? 'success' : 'neutral'}>{u.is_active ? 'Active' : 'Inactive'}</Badge>
+                          <Badge
+                            role="button"
+                            tone={u.is_active ? 'success' : 'neutral'}
+                            className="cursor-pointer"
+                            title={u.is_active ? 'Click to deactivate this account' : 'Click to reactivate this account'}
+                            onClick={() => toggleActiveMut.mutate({ id: u.id, is_active: !u.is_active })}
+                          >
+                            {u.is_active ? 'Active' : 'Inactive'}
+                          </Badge>
                         )}
                       </td>
                     </tr>

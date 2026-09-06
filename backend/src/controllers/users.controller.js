@@ -24,9 +24,14 @@ async function list(req, res, next) {
 
 async function update(req, res, next) {
   try {
-    const { role, employee_id } = req.body;
+    const { role, employee_id, is_active } = req.body;
     const sets = [];
     const params = [req.params.id];
+
+    if (is_active !== undefined) {
+      params.push(!!is_active);
+      sets.push(`is_active = $${params.length}`);
+    }
 
     if (role !== undefined) {
       if (!ROLES.includes(role)) {
